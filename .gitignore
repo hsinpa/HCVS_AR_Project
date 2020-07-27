@@ -1,0 +1,4 @@
+ServerCode/node_modules/
+ServerCode/dist/
+
+*.lock
