@@ -1,0 +1,25 @@
+<html>
+<title>{{title}}</title>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+</head>
+<body>
+<h1>Server Console</h1>
+
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+
+
+<script type="text/javascript">
+  var socket = io.connect();
+
+  socket.on('OnConnect', function (data) {
+    console.log(data);
+    let connectJSON = JSON.parse(data);
+    socket_id = connectJSON["socket_id"];
+
+    createRoomBt.disabled = false;
+  });
+</script>
+</html>
