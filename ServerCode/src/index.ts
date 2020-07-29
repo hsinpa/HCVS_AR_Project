@@ -1,6 +1,6 @@
 import * as http from 'http';
 import * as koa_static from 'koa-static';
-import * as SocketIOManager from './socket/socket_main';
+import * as SocketIOManager from './socket/SocketManager';
 
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
