@@ -1,28 +1,45 @@
 import * as socket from 'socket.io';
 import * as http from 'http';
-import EnvironmentComponent from './Components/EnvironmentComponent';
+import SocketEnvironment from './SocketEnvironment';
 import EventProcessor from './Utility/EventProcessor';
 
 //Paramter
 const fps = 30;
 
-export function SocketListen (app : http.Server) {
-    const io = socket.listen(app);
-    const env = new EnvironmentComponent();
-    const eventProcesser = new EventProcessor(env, io, fps);
+export default class SocketManager {
+    public env : SocketEnvironment;
 
-    io.sockets.on('connection', function (socket) {
-        console.log(socket.id + " is connect");
+    private io :socket.Server; 
+    private eventProcesser : EventProcessor
 
-        //Send back basic server info when user first connected
-        socket.emit("OnConnect", JSON.stringify({
-                socket_id : socket.id,
-            })
-        );
+    constructor(app : http.Server) {
+        this.io = socket.listen(app);
+        this.env = new SocketEnvironment();
+        this.eventProcesser = new EventProcessor(this.env, this.io, fps);
 
-        //When client discconected
-        socket.on('disconnect', function () {
-            console.log(socket.id + " is disconnect");
+        this.InitListener();
+    }
+
+    InitListener() {
+        let self = this;
+
+        this.io.sockets.on('connection', function (socket) {
+            console.log(socket.id + " is connect");
+            self.env.UserJoin(socket);
+    
+            //Send back basic server info when user first connected
+            socket.emit("OnConnect", JSON.stringify({
+                    socket_id : socket.id,
+                })
+            );
+    
+            //When client discconected
+            socket.on('disconnect', function () {
+                console.log(socket.id + " is disconnect");
+                self.env.UserDisconnect(socket.id);
+            });
         });
-    });
-};
+    }
+
+
+}

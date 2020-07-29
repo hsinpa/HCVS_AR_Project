@@ -1,10 +1,24 @@
 <html>
 <title>{{title}}</title>
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/css/main.css" /> -->
 </head>
 <body>
 <h1>Server Console</h1>
+
+<form>
+  <h2>Login Panel</h2>
+  <select>
+    <option value="teacher">Teacher</option>
+    <option value="student">Student</option>
+    <option value="guest">Guest</option>
+  </select>
+
+  <input placeholder="Account" name="account">
+  <!-- Only teacher need input password -->
+  <input placeholder="Password" name="password">
+  <input type="submit" value="Submit">
+</form>
 
 </body>
 
@@ -13,13 +27,41 @@
 
 <script type="text/javascript">
   var socket = io.connect();
+  let socket_id = "";
 
   socket.on('OnConnect', function (data) {
     console.log(data);
     let connectJSON = JSON.parse(data);
     socket_id = connectJSON["socket_id"];
-
-    createRoomBt.disabled = false;
   });
+
+  let formDom =  document.querySelector("form");
+  console.log(formDom);
+
+  formDom.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    let accountType = e.target[0].value;
+    let account = e.target[1].value;
+    let password = e.target[2].value;
+
+    fetch('/login', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type : accountType,
+        account : account,
+        password : password
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+    });
+
+  });
+
 </script>
 </html>

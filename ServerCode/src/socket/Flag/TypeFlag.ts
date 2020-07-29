@@ -7,19 +7,22 @@ export interface EnvironmentType {
 }
 
 export interface UserComponentType {
-    socket_id : string,
-    socket : SocketIO.Socket,
+    socket_id : string
     name : string,
-    student_id : string,
-
+    user_id : string,
     room_id : string,
-    type : UserStatus
+    type : UserStatus,
+    
+    //Only teacher might have this value
+    mobilephone? : number,
 }
 
 export interface RoomComponentType {
     room_id : string,
     host_id : string,
-    students : UserComponentType[]
+
+    //SocketID List
+    students : string[]
 }
 
 export interface MessageType {
@@ -32,12 +35,25 @@ export interface MessageType {
 
 export const SocketIOKey = {
     socket_id : "socket_id",
-    roomCapacity : "room_capacity"
+    roomCapacity : "room_capacity",
+
+    teacherType : "teacher",
+    studentType : "student",
+    guestType : "guest",
 }
 
-export const SocketIOEvent = {
-    FindRoom : "event@find_room",
-    StartGame : "event@start_game",
-    ForceEndGame : "event@force_end_game",
-    Rally : "event@rally"
+export interface TeacherCreateMsgRoomType {
+    socket_id : string,
+    user_id : string,
+    room_id : string
+}
+
+export interface TeacherCommonType {
+    room_id : string
+}
+
+export interface LoginReturnType { 
+    status : boolean,
+    username? : string,
+    user_id? : string
 }

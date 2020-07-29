@@ -1,14 +1,16 @@
-import EnvironmentComponent from "../Components/EnvironmentComponent";
+import SocketEnvironment from "../SocketEnvironment";
 import {SocketIOKey} from "../Flag/TypeFlag";
+
+import EventQueue from "./EventQueue";
 
  export default class EventProcesser {
 
     _socketIO : SocketIO.Server;
-    _env : EnvironmentComponent;
+    _env : SocketEnvironment;
     _gameLoopFps : number;
     _queueManager : EventQueue;
 
-    constructor(env : EnvironmentComponent, socketIO : SocketIO.Server, gameLoopFps : number) {
+    constructor(env : SocketEnvironment, socketIO : SocketIO.Server, gameLoopFps : number) {
         this._socketIO = socketIO;
         this._env = env;
 

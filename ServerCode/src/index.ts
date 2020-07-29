@@ -1,6 +1,9 @@
 import * as http from 'http';
 import * as koa_static from 'koa-static';
-import * as SocketIOManager from './socket/SocketManager';
+import * as Router from 'koa-router';
+
+import SocketIOManager from './socket/SocketManager';
+import Models from './service/Models';
 
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
@@ -9,9 +12,9 @@ const sql = require('mssql');
 const rootRouter = require('./routing');
 const so = require('koa-views');
 
-const Router = require('koa-router');
 const router = new Router();
 const views = require('koa-views');
+const models = new Models();
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -35,7 +38,7 @@ app.use(bodyParser());
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-rootRouter(router, rootFolder);
+rootRouter(router, rootFolder, models);
 
 const config = {
   user : env.DATABASE_USER,
@@ -64,7 +67,7 @@ const config = {
 
 // @ts-ignore
 var server = http.Server(app.callback());
-SocketIOManager.SocketListen(server);
+var socketServer = new SocketIOManager(server);
 
 //"192.168.0.86"
 server.listen(env.NODE_PORT || 8020, 'localhost', function () {
