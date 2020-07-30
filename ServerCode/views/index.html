@@ -6,12 +6,12 @@
 <body>
 <h1>Server Console</h1>
 
-<form>
+<form id="login_panel">
   <h2>Login Panel</h2>
   <select>
-    <option value="teacher">Teacher</option>
-    <option value="student">Student</option>
-    <option value="guest">Guest</option>
+    <option value="1">Teacher</option>
+    <option value="0">Student</option>
+    <option value="2">Guest</option>
   </select>
 
   <input placeholder="Account" name="account">
@@ -20,6 +20,20 @@
   <input type="submit" value="Submit">
 </form>
 
+<br><br>
+
+<div class="createRoom">
+  <h2>Create Room</h2>
+
+  <select>
+  </select>
+  <button >Create Room</button>  
+</div>
+
+<br><br>
+
+<button class="gameStart">Game Start</button>
+<button class="forceEnd">Force End</button>
 </body>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -28,6 +42,9 @@
 <script type="text/javascript">
   var socket = io.connect();
   let socket_id = "";
+  let user_id = "";
+
+  let classRooms = [];
 
   socket.on('OnConnect', function (data) {
     console.log(data);
@@ -35,13 +52,16 @@
     socket_id = connectJSON["socket_id"];
   });
 
-  let formDom =  document.querySelector("form");
-  console.log(formDom);
+  socket.on('event@create_room', function (data) {
+    console.log(data);
+  });
 
-  formDom.addEventListener("submit", (e) => {
+//#region Login
+let formDom =  document.querySelector("form");
+formDom.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    let accountType = e.target[0].value;
+    let accountType = parseInt(e.target[0].value);
     let account = e.target[1].value;
     let password = e.target[2].value;
 
@@ -58,10 +78,61 @@
     })
     .then(response => response.json())
     .then(data => {
-      console.log('Success:', data);
-    });
+      console.log('Success login:', data);
 
+      user_id = data["user_id"];
+
+      FindAllRoom();
+    });
   });
+//#endregion
+
+//#region Others
+
+
+
+//Create Room
+function FindAllRoom() {
+  fetch('/getAllClassInfo/108', {
+      method: 'GET', // or 'PUT'
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success getAllClassInfo:', data);
+      classRooms = data.result;
+
+      CreateOptionToSelect(classRooms);
+    });
+}
+
+function CreateOptionToSelect(rooms) {
+  let selectDom = document.querySelector(".createRoom select");
+  selectDom.innerHTML = "";
+
+  rooms.forEach(x => {
+    var option = document.createElement("option");
+
+    option.text = x["class_name"];
+    option.value =  x["class_id"];
+
+    selectDom.add(option);
+  });
+}
+
+document.querySelector(".createRoom button").addEventListener("click", (e) => {
+  e.preventDefault();
+
+  let selectValue = document.querySelector(".createRoom select").value;
+  let roomComp = classRooms.find(x=>x.class_id == selectValue);
+
+  console.log(roomComp);
+
+  if (roomComp)
+    socket.emit("event@create_room", {socket_id : socket_id, user_id : user_id, room_id : selectValue, year : roomComp.year});
+});
+
+
+//#endregion
 
 </script>
 </html>

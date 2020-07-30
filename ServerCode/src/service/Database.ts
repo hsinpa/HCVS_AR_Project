@@ -31,7 +31,6 @@ export default class Database {
         };
 
         try {
-            console.log(p_query);
             pool = await sql.connect(this.config);
             const { recordset } = await sql.query(p_query);
             dataResult.result = recordset;

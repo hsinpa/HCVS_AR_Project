@@ -1,4 +1,4 @@
-import {SocketIOKey, LoginReturnType} from '../../Utility/Flag/TypeFlag';
+import {SocketIOKey, LoginReturnType, UserStatus} from '../../Utility/Flag/TypeFlag';
 import {GenerateRandomString} from '../../Utility/GeneralMethod';
 import Database from '../Database';
 
@@ -9,15 +9,15 @@ export default class LoginModel {
         this._database = database;
     }
 
-    Login(type : string, account: string, password : string) : LoginReturnType {
+    Login(type : UserStatus, account: string, password : string) : LoginReturnType {
 
         // let defaultData : LoginReturnType = {
         //     status : false
         // }
 
-        if (type == SocketIOKey.teacherType) {
+        if (type == UserStatus.Teacher) {
             return this.TeacherLogin(account, password);
-        } else if (type == SocketIOKey.studentType) {
+        } else if (type == UserStatus.Student) {
             return this.StudentLogin(account);
         }
 

@@ -62,3 +62,10 @@ export interface DatabaseResultType {
     status : boolean,
     result : any
 }
+
+export interface UserDataType {
+    userType : UserStatus,
+    user_id : string,
+    user_name : string,
+    room_id? : string
+}

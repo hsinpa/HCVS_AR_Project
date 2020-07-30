@@ -14,14 +14,28 @@ class SocketEnvironment {
         this.rooms = new Map<string, RoomComponentType>();
     }
 
-    UpdateUserLoginInfo(socketID : string, name : string, student_id : string, room_id : string, type : UserStatus, mobile_phone? : number) {
+    CreateRoom(host_id : string, room_id: string) : boolean {
+        //No duplicate room
+        if (this.rooms.has(room_id)) return false;
+
+        this.rooms.set(room_id, {
+            host_id : host_id,
+            room_id : room_id,
+            students : []
+        });
+
+        return true;
+    }
+
+    UpdateUserLoginInfo(socketID : string, name : string, user_id : string, room_id : string, type : UserStatus, mobile_phone? : number) : UserComponentType {
+        let userComp = null;
 
         if (this.users.has(socketID)) {
-            let userComp = this.users.get(socketID);
+            userComp = this.users.get(socketID);
 
             if (name) userComp.name = name;
 
-            if (student_id) userComp.user_id = student_id;
+            if (user_id) userComp.user_id = user_id;
 
             if (room_id) userComp.room_id = room_id;
             
@@ -33,7 +47,9 @@ class SocketEnvironment {
         }
 
         //Update UserSocketTable
-        this.userSocketTable.set(student_id, socketID);
+        this.userSocketTable.set(user_id, socketID);
+
+        return userComp;
     }
 
     public UserJoin(socketInfo : SocketIO.Socket) {
@@ -43,7 +59,7 @@ class SocketEnvironment {
         console.log(userComp);
     }
 
-    UserDisconnect(socketID : string) {
+    UserDisconnect(socketID : string) : UserComponentType {
         let userComp = this.users.get(socketID);
 
         //Remove student from classroom
@@ -56,6 +72,7 @@ class SocketEnvironment {
 
         this.userSocketTable.delete(userComp.user_id);
         this.users.delete(socketID);
+        return userComp;
     }
 
     /**
@@ -71,13 +88,24 @@ class SocketEnvironment {
 
     /**
      *
-     * Only For Student Type
+     * Only For Student Type, and has not join any room
      * @memberof SocketEnvironment
      */
-    CheckIfRoomAvailable(userComp : UserComponentType) {
-        if (userComp.type !=  UserStatus.Student || !userComp.room_id) return;
+    CheckIfRoomAvailable(userComp : UserComponentType) : boolean{
+        if (userComp.type !=  UserStatus.Student || !userComp.room_id) return false;
 
+        if (!this.rooms.has(userComp.room_id)) return false;
 
+        let roomComp = this.rooms.get(userComp.room_id);
+        let index = roomComp.students.indexOf(userComp.socket_id);
+
+        if (index >= 0)  return false
+
+        //Is unique user
+        roomComp.students.push(userComp.socket_id);
+        this.rooms.set(userComp.room_id, roomComp);
+
+        return true;
     }
 }
 
