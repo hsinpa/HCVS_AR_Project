@@ -1,0 +1,9 @@
+docker-compose up -d //Run in background
+docker-compose down //Erase all container
+docker-compose stop //Stop container, but the memory remain
+
+
+docker exec -it sql-server-db "bash" //sql-server-db is the name of container
+/opt/mssql-tools/bin/sqlcmd - S localhost -U SA -P super_duper_password@2020
+
+CREATE DATABASE testARDB

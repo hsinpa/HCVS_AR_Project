@@ -1,4 +1,4 @@
-import {UserComponentType, UserStatus} from '../Flag/TypeFlag';
+import {UserComponentType, UserStatus} from './Flag/TypeFlag';
 
 
 export function CreateUserType(socket : SocketIO.Socket) : UserComponentType{ 

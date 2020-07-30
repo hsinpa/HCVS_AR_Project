@@ -1,5 +1,5 @@
-import {TeacherSocketEvent} from '../Flag/EventFlag';
-import {TeacherCreateMsgRoomType, TeacherCommonType} from '../Flag/TypeFlag';
+import {TeacherSocketEvent} from '../../Utility/Flag/EventFlag';
+import {TeacherCreateMsgRoomType, TeacherCommonType} from '../../Utility/Flag/TypeFlag';
 
 export function ListenUserEvent(socket : SocketIO.Socket) {
 

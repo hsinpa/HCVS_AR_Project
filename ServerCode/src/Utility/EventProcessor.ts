@@ -1,5 +1,5 @@
-import SocketEnvironment from "../SocketEnvironment";
-import {SocketIOKey} from "../Flag/TypeFlag";
+import SocketEnvironment from "../socket/SocketEnvironment";
+import {SocketIOKey} from "./Flag/TypeFlag";
 
 import EventQueue from "./EventQueue";
 

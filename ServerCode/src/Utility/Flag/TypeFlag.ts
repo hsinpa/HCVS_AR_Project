@@ -57,3 +57,8 @@ export interface LoginReturnType {
     username? : string,
     user_id? : string
 }
+
+export interface DatabaseResultType {
+    status : boolean,
+    result : any
+}

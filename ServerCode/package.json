@@ -17,7 +17,7 @@
     "@types/koa-static": "^4.0.1",
     "@types/koa-views": "*",
     "@types/mkdirp": "*",
-    "@types/mssql": "^6.0.3",
+    "@types/mssql": "*",
     "@types/node": "^14.0.26",
     "@types/nodemon": "*",
     "@types/request": "*",

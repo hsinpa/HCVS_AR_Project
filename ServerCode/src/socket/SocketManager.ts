@@ -1,7 +1,7 @@
 import * as socket from 'socket.io';
 import * as http from 'http';
 import SocketEnvironment from './SocketEnvironment';
-import EventProcessor from './Utility/EventProcessor';
+import EventProcessor from '../Utility/EventProcessor';
 
 //Paramter
 const fps = 30;

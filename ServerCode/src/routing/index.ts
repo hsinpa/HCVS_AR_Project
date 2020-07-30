@@ -12,9 +12,23 @@ module.exports =  (router : Router, rootPath:string, model : Models) => {
   });
 
   router.post('/login', async function (ctx:any, next:any) {
-    
     console.log(ctx.request.body);
     
-    ctx.body = {title: "HSINPA"};
+    let loginResult = model.UserModel.Login(ctx.request.body['type'], ctx.request.body['account'], ctx.request.body['password']);
+
+    ctx.body = loginResult;
   });
+
+
+  //#region Teacher Http Request
+  router.get('/getAllStudentByID/:class_id/:year', async function (ctx:any, next:any) {
+    ctx.body = await model.UserModel.GetAllStudentInClass(ctx.params.class_id, ctx.params.year);
+  });
+
+  router.get('/getAllClassInfo/:from_year', async function (ctx:any, next:any) {
+    ctx.body = await model.ClassModel.GetAllAvailableClass(ctx.params.from_year);
+  });
+//#endregion
+
+
 }

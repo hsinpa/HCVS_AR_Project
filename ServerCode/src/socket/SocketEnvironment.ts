@@ -1,5 +1,5 @@
-import {RoomComponentType, UserComponentType, UserStatus} from './Flag/TypeFlag';
-import {CreateUserType} from './Utility/SocketUtility';
+import {RoomComponentType, UserComponentType, UserStatus} from '../Utility/Flag/TypeFlag';
+import {CreateUserType} from '../Utility/SocketUtility';
 
 class SocketEnvironment {
 

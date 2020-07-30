@@ -1,7 +1,13 @@
-import {SocketIOKey, LoginReturnType} from '../../socket/Flag/TypeFlag';
-import {GenerateRandomString} from '../../socket/Utility/GeneralMethod';
+import {SocketIOKey, LoginReturnType} from '../../Utility/Flag/TypeFlag';
+import {GenerateRandomString} from '../../Utility/GeneralMethod';
+import Database from '../Database';
 
 export default class LoginModel {
+    _database : Database;
+
+    constructor(database : Database) {
+        this._database = database;
+    }
 
     Login(type : string, account: string, password : string) : LoginReturnType {
 
@@ -10,9 +16,9 @@ export default class LoginModel {
         // }
 
         if (type == SocketIOKey.teacherType) {
-
+            return this.TeacherLogin(account, password);
         } else if (type == SocketIOKey.studentType) {
-            
+            return this.StudentLogin(account);
         }
 
         return {
@@ -34,6 +40,13 @@ export default class LoginModel {
             username : "FakeStudentName",
             user_id : GenerateRandomString(8)
         };
+    }
+
+    async GetAllStudentInClass(classroom_id:string, year : number) {
+        let query = `SELECT id, year, semester, student_name, seat, class_id 
+                    FROM Student
+                    WHERE year = ${year} AND class_id = ${classroom_id}`;
+        return await this._database.ExecuteQuery(query);
     }
 
 }
