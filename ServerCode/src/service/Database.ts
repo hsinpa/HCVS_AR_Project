@@ -20,8 +20,6 @@ export default class Database {
 
     }
 
-
-
     async ExecuteQuery(p_query : string) : Promise<DatabaseResultType> {
         let pool;
 

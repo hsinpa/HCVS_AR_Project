@@ -226,7 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   titleTxt: {fileID: 1346288083919058663}
-  inputField: {fileID: 1346288083574227544}
+  _inputField: {fileID: 1346288083574227544}
 --- !u!1 &1346288083919058661
 GameObject:
   m_ObjectHideFlags: 0

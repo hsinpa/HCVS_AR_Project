@@ -9,16 +9,12 @@ export default class LoginModel {
         this._database = database;
     }
 
-    Login(type : UserStatus, account: string, password : string) : LoginReturnType {
-
-        // let defaultData : LoginReturnType = {
-        //     status : false
-        // }
+    async Login(type : UserStatus, account: string, password : string) {
 
         if (type == UserStatus.Teacher) {
-            return this.TeacherLogin(account, password);
+            return await this.TeacherLogin(account, password);
         } else if (type == UserStatus.Student) {
-            return this.StudentLogin(account);
+            return await this.StudentLogin(account);
         }
 
         return {
@@ -26,20 +22,43 @@ export default class LoginModel {
         };
     }
     
-    TeacherLogin(account: string, password : string) : LoginReturnType {
-        return {
-            status : true,
-            username : "FakeTeacherName",
-            user_id : GenerateRandomString(8)
+    async TeacherLogin(account: string, password : string) : Promise<LoginReturnType> {
+        let q = `SELECT id, account_name, account_type, isValid 
+                FROM Teacher 
+                WHERE email=${account} AND id=${password}`;
+
+        let r = await this._database.ExecuteQuery(q);
+        let s : LoginReturnType= {
+            status : false,
         };
+        
+        if (r.result.length > 0 && r.result[0]['isValid'] == 1) {
+            s.status = true;
+            s.user_id = r.result[0]['id'];
+            s.username = r.result[0]['account_name'];
+        }
+
+        return s;
     }
 
-    StudentLogin(account: string) : LoginReturnType {
-        return {
-            status : true,
-            username : "FakeStudentName",
-            user_id : GenerateRandomString(8)
+    async StudentLogin(account: string) {
+        let q = `SELECT id, student_name, seat, class_id 
+                FROM Teacher 
+                WHERE email=${account}`;
+
+        let r = await this._database.ExecuteQuery(q);
+        let s : LoginReturnType= {
+            status : false,
         };
+
+        if (r.result.length > 0) {
+            s.status = true;
+            s.user_id = r.result[0]['id'];
+            s.username = r.result[0]['student_name'];
+            s.seat = r.result[0]['seat'];
+        }
+        
+        return s;
     }
 
     async GetAllStudentInClass(classroom_id:string, year : number) {

@@ -11,14 +11,10 @@ module.exports =  (router : Router, rootPath:string, model : Models) => {
     await ctx.render('index', {title: "HSINPA"});
   });
 
-  router.post('/login', async function (ctx:any, next:any) {
-    console.log(ctx.request.body);
-    
-    let loginResult = model.UserModel.Login(ctx.request.body['type'], ctx.request.body['account'], ctx.request.body['password']);
-
-    ctx.body = loginResult;
+  router.post('/login', async function (ctx:any, next:any) {    
+    ctx.body = await model.UserModel.Login(ctx.request.body['type'], ctx.request.body['account'], 
+                                            ctx.request.body['password']);
   });
-
 
   //#region Teacher Http Request
   router.get('/getAllStudentByID/:class_id/:year', async function (ctx:any, next:any) {

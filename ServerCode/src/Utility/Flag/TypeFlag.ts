@@ -55,7 +55,8 @@ export interface TeacherCommonType {
 export interface LoginReturnType { 
     status : boolean,
     username? : string,
-    user_id? : string
+    user_id? : string,
+    seat? : string
 }
 
 export interface DatabaseResultType {
