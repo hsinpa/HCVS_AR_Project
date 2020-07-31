@@ -1,0 +1,10 @@
+{
+    "name": "ViveToolkitEditor",
+    "references": [
+        "ViveToolkit"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}
