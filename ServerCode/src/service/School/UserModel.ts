@@ -23,15 +23,18 @@ export default class LoginModel {
     }
     
     async TeacherLogin(account: string, password : string) : Promise<LoginReturnType> {
+
         let q = `SELECT id, account_name, account_type, isValid 
                 FROM Teacher 
-                WHERE email=${account} AND id=${password}`;
+                WHERE email='${account}' AND id=${password}`;
 
         let r = await this._database.ExecuteQuery(q);
         let s : LoginReturnType= {
             status : false,
         };
-        
+
+        console.log(r.result);
+
         if (r.result.length > 0 && r.result[0]['isValid'] == 1) {
             s.status = true;
             s.user_id = r.result[0]['id'];
@@ -43,8 +46,8 @@ export default class LoginModel {
 
     async StudentLogin(account: string) {
         let q = `SELECT id, student_name, seat, class_id 
-                FROM Teacher 
-                WHERE email=${account}`;
+                FROM Student 
+                WHERE id=${account}`;
 
         let r = await this._database.ExecuteQuery(q);
         let s : LoginReturnType= {
@@ -56,6 +59,7 @@ export default class LoginModel {
             s.user_id = r.result[0]['id'];
             s.username = r.result[0]['student_name'];
             s.seat = r.result[0]['seat'];
+            s.room_id = r.result[0]['class_id'];
         }
         
         return s;

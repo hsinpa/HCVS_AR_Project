@@ -99,9 +99,9 @@ class SocketEnvironment {
         let roomComp = this.rooms.get(userComp.room_id);
         let index = roomComp.students.indexOf(userComp.socket_id);
 
+        //Is unique user
         if (index >= 0)  return false
 
-        //Is unique user
         roomComp.students.push(userComp.socket_id);
         this.rooms.set(userComp.room_id, roomComp);
 

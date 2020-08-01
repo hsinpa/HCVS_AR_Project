@@ -43,7 +43,6 @@ export const SocketIOKey = {
 }
 
 export interface TeacherCreateMsgRoomType {
-    socket_id : string,
     user_id : string,
     room_id : string
 }
@@ -56,7 +55,8 @@ export interface LoginReturnType {
     status : boolean,
     username? : string,
     user_id? : string,
-    seat? : string
+    seat? : string,
+    room_id? : string
 }
 
 export interface DatabaseResultType {

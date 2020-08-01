@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HTC.View {
+namespace Hsinpa.View {
     public class BaseView : MonoBehaviour
     {
 

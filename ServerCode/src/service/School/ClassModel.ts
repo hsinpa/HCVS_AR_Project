@@ -8,10 +8,10 @@ export default class ClassModel {
         this._database = database;
     }
 
-    async GetAllAvailableClass(from_year : number) {
-        let query = `SELECT class_name, class_id, year 
+    async GetAllAvailableClass() {
+        let query = `SELECT TOP 80 class_name, class_id, year 
                     FROM ClassRoom
-                    WHERE year >= ${from_year}`;
-        return await this._database.ExecuteQuery(query);
+                    ORDER BY year DESC`;
+        return await (await this._database.ExecuteQuery(query)).result;
     }
 }

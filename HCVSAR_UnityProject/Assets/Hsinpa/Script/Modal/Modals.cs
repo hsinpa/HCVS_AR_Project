@@ -1,51 +1,101 @@
-﻿using HTC.View;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Modals : MonoBehaviour
+namespace Hsinpa.View
 {
-    BaseView[] modals;
 
-    public void SetUp() {
-        modals = GetComponentsInChildren<BaseView>();
-    }
+    public class Modals : MonoBehaviour
+    {
+        [SerializeField]
+        Image background;
 
-    public T GetModal<T>() where T : BaseView {
-        return GetComponentInChildren<T>();
-    }
+        [SerializeField]
+        bool hasBackground;
 
-    public T OpenModal<T>() where T : BaseView {
-        if (modals == null) return null;
+        BaseView[] modals;
 
-        BaseView targetModal = null;
+        private static Modals _instance;
 
-        foreach (BaseView modal in modals) {
-
-            if (typeof(T) == modal.GetType())
+        public static Modals instance
+        {
+            get
             {
-                targetModal = modal;
-                targetModal.Show(true);
-            }
-            else {
-                modal.Show(false);
+                if (_instance == null)
+                {
+                    _instance = FindObjectOfType<Modals>();
+                    _instance.SetUp();
+                }
+                return _instance;
             }
         }
 
-        return targetModal as T;
-    }
+        private List<Modal> openModals = new List<Modal>();
+        private Modal currentModals;
 
-    //public void Close() { 
-        
-    //}
-
-    public void CloseAll()
-    {
-        if (modals == null) return;
-
-        foreach (var modal in modals)
+        public void SetUp()
         {
-            modal.Show(false);
+            modals = GetComponentsInChildren<Modal>();
+        }
+
+        public T GetModal<T>() where T : Modal
+        {
+            return modals.First(x=> typeof(T) == x.GetType()) as T;
+        }
+
+        public T OpenModal<T>() where T : Modal
+        {
+            if (modals == null) return null;
+
+            Modal targetModal = null;
+
+            foreach (Modal modal in modals)
+            {
+
+                if (typeof(T) == modal.GetType())
+                {
+                    targetModal = modal;
+                    targetModal.Show(true);
+                }
+                else
+                {
+                    modal.Show(false);
+                }
+            }
+
+            openModals.Add(targetModal as T);
+            currentModals = targetModal as T;
+
+            background.enabled = (hasBackground);
+
+            return targetModal as T;
+        }
+
+        public void Close() {
+            if (currentModals != null)
+                currentModals.Show(false);
+
+            if (openModals.Count > 0) {
+                openModals.RemoveAt(openModals.Count - 1);
+            }
+
+            currentModals = (openModals.Count > 0) ? openModals[openModals.Count - 1] : null;
+            background.enabled = (currentModals != null && hasBackground);
+        }
+
+        public void CloseAll()
+        {
+            if (modals == null) return;
+
+            foreach (var modal in modals)
+            {
+                modal.Show(false);
+            }
+
+            background.enabled = false;
+            openModals.Clear();
         }
     }
 }

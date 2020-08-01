@@ -11,7 +11,7 @@ export function ListenUserEvent(socket : SocketIO.Socket, socektEnv : SocketEnvi
 
         let isSucess = socektEnv.CreateRoom(data.user_id, data.room_id);
 
-        socket.emit(TeacherSocketEvent.CreateRoom, {status : isSucess});
+        socket.emit(TeacherSocketEvent.CreateRoom, JSON.stringify({status : isSucess}));
     });
 
     socket.on(TeacherSocketEvent.ForceEndGame, function (data : TeacherCommonType) {
@@ -34,8 +34,10 @@ export function ListenUserEvent(socket : SocketIO.Socket, socektEnv : SocketEnvi
 //#endregion
 
 //#region Universal Section
-    socket.on(UniversalSocketEvent.UpdateUserInfo, function (data : UserDataType) {
-        let userComp = socektEnv.UpdateUserLoginInfo(socket.id, data.user_name, data.user_id, data.room_id, data.userType);
+    socket.on(UniversalSocketEvent.UpdateUserInfo, function (data : string) {
+        let parseData : UserDataType = JSON.parse(data);
+
+        let userComp = socektEnv.UpdateUserLoginInfo(socket.id, parseData.user_name, parseData.user_id, parseData.room_id, parseData.userType);
 
         if (userComp && socektEnv.CheckIfRoomAvailable(userComp)) {
             socket.join(userComp.room_id);

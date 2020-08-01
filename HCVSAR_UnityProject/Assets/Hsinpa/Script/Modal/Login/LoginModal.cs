@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Expect.StaticAsset;
 using UnityEngine;
 using UnityEngine.UI;
+using Hsinpa.View;
 
 namespace Expect.View
 {
-    public class LoginModal : MonoBehaviour
+    public class LoginModal : Modal
     {
         #region Inspector
         [Header("Tab")]
@@ -29,11 +30,14 @@ namespace Expect.View
 
         [SerializeField]
         Button guestBtn;
+
+        [SerializeField]
+        Text warningMsg;
         #endregion
 
         #region Parameter
         private TypeFlag.UserType _currentTab;
-        private System.Action<string, string, TypeFlag.UserType> _loginEvent;
+        private System.Action<Button, TypeFlag.UserType, string, string> _loginEvent;
         #endregion
 
         private void Start()
@@ -44,7 +48,7 @@ namespace Expect.View
             SetTabEvent(StudentTab, TypeFlag.UserType.Student, StringAsset.Login.StudentInputLabel);
         }
 
-        public void SetUp(System.Action<string, string, TypeFlag.UserType> loginEvent) {
+        public void SetUp(System.Action<Button, TypeFlag.UserType, string, string> loginEvent) {
             this._loginEvent = loginEvent;
         }
 
@@ -61,15 +65,30 @@ namespace Expect.View
             {
                 SetTabEvent(TeacherTab, TypeFlag.UserType.Teacher, StringAsset.Login.TeacherInputLabel);
             });
-
         }
 
         private void RegisterButtonEvent() {
+            loginBtn.onClick.AddListener(() =>
+            {
+                if (this._loginEvent != null)
+                    this._loginEvent(loginBtn, _currentTab, userIDInput._inputField.text, passwordInput._inputField.text);
+            });
 
+            guestBtn.onClick.AddListener(() =>
+            {
+                if (this._loginEvent != null)
+                    this._loginEvent(guestBtn, TypeFlag.UserType.Guest, "","");
+            });
+        }
+
+        public void SetWarningMsg(string message) {
+            warningMsg.text = (string.IsNullOrEmpty(message)) ? "" : message;
+            warningMsg.gameObject.SetActive(!string.IsNullOrEmpty(message));
         }
 
         private void SetTabEvent(Button tab, TypeFlag.UserType usertype, string userIDLabel)
         {
+            SetWarningMsg(null);
             passwordInput.gameObject.SetActive(usertype == TypeFlag.UserType.Teacher);
             passwordInput.Erase();
             userIDInput.Erase();
