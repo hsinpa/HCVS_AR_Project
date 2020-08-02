@@ -24,9 +24,9 @@ namespace Expect.View
         private List<TypeFlag.SocketDataType.ClassroomDatabaseType> FilterDatabaseList;
 
 
-        private System.Action<string> OnHostRoomEvent;
+        private System.Action<TypeFlag.SocketDataType.ClassroomDatabaseType> OnHostRoomEvent;
 
-        public void SetUp(System.Action<string>  OnHostRoomEvent) {
+        public void SetUp(System.Action<TypeFlag.SocketDataType.ClassroomDatabaseType>  OnHostRoomEvent) {
             this.OnHostRoomEvent = OnHostRoomEvent;
             YearSelection.onValueChanged.RemoveAllListeners();
             ClassSelection.onValueChanged.RemoveAllListeners();
@@ -77,7 +77,7 @@ namespace Expect.View
 
         private void OnHostRoomBtnClick() {
             if(ClassSelection.value >= 0)
-                OnHostRoomEvent(FilterDatabaseList[ClassSelection.value].class_id);
+                OnHostRoomEvent(FilterDatabaseList[ClassSelection.value]);
         }
 
 

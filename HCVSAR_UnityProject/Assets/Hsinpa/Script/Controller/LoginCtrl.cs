@@ -8,14 +8,14 @@ using System.Text.RegularExpressions;
 using Hsinpa.Socket;
 using UnityEngine.UI;
 using Htc.ViveToolkit;
+using UnityEngine.Networking;
 
 namespace Hsinpa.Controller {
     public class LoginCtrl : ObserverPattern.Observer
     {
-        LoginModal _loginModal;
-        SocketIOManager _socketIOManager;
-
-        public TypeFlag.SocketDataType.LoginDatabaseType userDataInfo;
+        private LoginModal _loginModal;
+        private SocketIOManager _socketIOManager;
+        private TypeFlag.SocketDataType.LoginDatabaseType userDataInfo;
 
         public void SetUp(LoginModal loginModal, SocketIOManager socketIOManager) {
             _loginModal = loginModal;
@@ -70,7 +70,8 @@ namespace Hsinpa.Controller {
             
             Debug.Log(JsonUtility.ToJson(loginDataStruct));
 
-            APIHttpRequest.Curl(StringAsset.GetFullAPIUri(StringAsset.API.Login), BestHTTP.HTTPMethods.Post, JsonUtility.ToJson(loginDataStruct),
+
+            StartCoroutine(APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(StringAsset.API.Login), UnityWebRequest.kHttpVerbPOST, JsonUtility.ToJson(loginDataStruct),
                 (bool isSuccess, string rawData) => {
                     Debug.Log("IsSuccess " + isSuccess.ToString() + ", " + rawData);
 
@@ -88,7 +89,7 @@ namespace Hsinpa.Controller {
                     }
 
                     uiButton.enabled = true;
-                });
+                }));
         }
 
         private void UpdateSocketUserInfo(TypeFlag.UserType type, TypeFlag.SocketDataType.LoginDatabaseType loginInfo) {

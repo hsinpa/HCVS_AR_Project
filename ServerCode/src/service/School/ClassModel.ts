@@ -12,6 +12,6 @@ export default class ClassModel {
         let query = `SELECT TOP 80 class_name, class_id, year 
                     FROM ClassRoom
                     ORDER BY year DESC`;
-        return await (await this._database.ExecuteQuery(query)).result;
+        return (await this._database.ExecuteQuery(query)).result;
     }
 }

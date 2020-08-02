@@ -31,13 +31,15 @@ export default class Database {
         try {
             pool = await sql.connect(this.config);
             const { recordset } = await sql.query(p_query);
-            dataResult.result = recordset;
+            dataResult.result = JSON.stringify (recordset);
             dataResult.status = true;
         } catch(err) {
+
             //Insert Error to result
             dataResult.result = err;
         } finally {
-            await pool.close();
+            if (pool != null)
+                await pool.close();
             return dataResult;
         }
     }

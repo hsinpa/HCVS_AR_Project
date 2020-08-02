@@ -21,10 +21,10 @@ module.exports =  (router : Router, rootPath:string, model : Models) => {
     ctx.body = await model.UserModel.GetAllStudentInClass(ctx.params.class_id, ctx.params.year);
   });
 
+
   router.get('/getAllClassInfo', async function (ctx:any, next:any) {
     ctx.body = await model.ClassModel.GetAllAvailableClass();
   });
 //#endregion
-
 
 }

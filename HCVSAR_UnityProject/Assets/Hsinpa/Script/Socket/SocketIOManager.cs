@@ -35,8 +35,8 @@ namespace Hsinpa.Socket {
             }
         }
 
-        public void Emit(string event_id, string raw_json) {
-            if (!IsConnected || string.IsNullOrEmpty(event_id) || string.IsNullOrEmpty(raw_json)) return;
+        public void Emit(string event_id, string raw_json = "{}") {
+            if (!IsConnected || string.IsNullOrEmpty(event_id)) return;
 
             _socket.Emit(event_id, raw_json);
         }

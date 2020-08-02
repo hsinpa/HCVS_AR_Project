@@ -1,5 +1,6 @@
 import {RoomComponentType, UserComponentType, UserStatus} from '../Utility/Flag/TypeFlag';
 import {CreateUserType} from '../Utility/SocketUtility';
+import UserEmitter from './Listener/UserEmitter';
 
 class SocketEnvironment {
 
@@ -7,14 +8,16 @@ class SocketEnvironment {
     userSocketTable : Map<string, string>;
     users : Map<string, UserComponentType>;
     rooms : Map<string, RoomComponentType>;
+    userEmitter : UserEmitter;
 
-    constructor() {
+    constructor(userEmitter : UserEmitter) {
+        this.userEmitter = userEmitter;
         this.userSocketTable = new Map<string, string>();
         this.users = new Map<string, UserComponentType>();
         this.rooms = new Map<string, RoomComponentType>();
     }
 
-    CreateRoom(host_id : string, room_id: string) : boolean {
+    CreateRoom(host_id : string, room_id: string, socket_id : string) : boolean {
         //No duplicate room
         if (this.rooms.has(room_id)) return false;
 
@@ -23,6 +26,8 @@ class SocketEnvironment {
             room_id : room_id,
             students : []
         });
+
+        this.UpdateUserLoginInfo(socket_id, null, host_id, room_id, UserStatus.Teacher);
 
         return true;
     }
@@ -55,8 +60,6 @@ class SocketEnvironment {
     public UserJoin(socketInfo : SocketIO.Socket) {
         let userComp = CreateUserType(socketInfo);
         this.users.set(socketInfo.id, userComp);
-
-        console.log(userComp);
     }
 
     UserDisconnect(socketID : string) : UserComponentType {
@@ -65,9 +68,18 @@ class SocketEnvironment {
         //Remove student from classroom
         if (this.rooms.has(userComp.room_id) && userComp.room_id) {
             let room = this.rooms.get(userComp.room_id);
-            let studentIndex = room.students.indexOf(socketID);
-            room.students = room.students.splice(studentIndex,1);
-            this.rooms.set(userComp.room_id, room);
+
+
+            //Teacher has leave the room, remove everyone inside
+            if (userComp.type ==  UserStatus.Teacher && room.host_id == userComp.user_id) {
+
+                this.RoomDismiss(room.room_id);
+
+            } else {
+                let studentIndex = room.students.indexOf(socketID);
+                room.students = room.students.splice(studentIndex,1);
+                this.rooms.set(userComp.room_id, room);
+            }
         }
 
         this.userSocketTable.delete(userComp.user_id);
@@ -79,11 +91,11 @@ class SocketEnvironment {
      * Execute by Teacher
      *
      * @param {string} room_id
-     * @param {string} socket_id
      * @memberof SocketEnvironment
      */
-    RoomDismiss(room_id : string, socket_id : string) {
-
+    RoomDismiss(room_id : string) {
+        this.userEmitter.EmitForceLeave(room_id);
+        this.rooms.delete(room_id);
     }
 
     /**
@@ -92,6 +104,7 @@ class SocketEnvironment {
      * @memberof SocketEnvironment
      */
     CheckIfRoomAvailable(userComp : UserComponentType) : boolean{
+
         if (userComp.type !=  UserStatus.Student || !userComp.room_id) return false;
 
         if (!this.rooms.has(userComp.room_id)) return false;
@@ -106,6 +119,24 @@ class SocketEnvironment {
         this.rooms.set(userComp.room_id, roomComp);
 
         return true;
+    }
+
+    AutoJoinAllUserInClass(socket : SocketIO.Socket, room_id : string) {
+        this.users.forEach(userComp => {
+            if (userComp && userComp.room_id == room_id && this.CheckIfRoomAvailable(userComp)) {
+             this.userEmitter.EmitUserJoinRoom(socket, room_id, userComp);   
+            }
+        });
+    }
+
+    FindAllUserInClass(room_id : string) : UserComponentType[]{
+        let userComps : UserComponentType[] = [];
+        this.users.forEach(userComp => {
+            if (userComp && userComp.room_id == room_id) {
+                userComps.push(userComp);
+            }
+        });
+        return userComps;
     }
 }
 

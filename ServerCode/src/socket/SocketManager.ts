@@ -4,7 +4,7 @@ import SocketEnvironment from './SocketEnvironment';
 import EventProcessor from '../Utility/EventProcessor';
 
 import {ListenUserEvent} from './Listener/UserListener';
-import {EmitUserLeave} from './Listener/UserEmitter';
+import UserEmitter from './Listener/UserEmitter';
 
 //Paramter
 const fps = 30;
@@ -14,10 +14,13 @@ export default class SocketManager {
 
     private io :socket.Server; 
     private eventProcesser : EventProcessor
+    private userEmitter : UserEmitter;
 
     constructor(app : http.Server) {
         this.io = socket.listen(app);
-        this.env = new SocketEnvironment();
+        this.userEmitter = new UserEmitter(this.io);
+        this.env = new SocketEnvironment(this.userEmitter);
+
         this.eventProcesser = new EventProcessor(this.env, this.io, fps);
         this.InitListener();
     }
@@ -41,7 +44,7 @@ export default class SocketManager {
             socket.on('disconnect', function () {
                 console.log(socket.id + " is disconnect");
                 let userComp = self.env.UserDisconnect(socket.id);
-                EmitUserLeave(socket, userComp);
+                self.userEmitter.EmitUserLeave(userComp);
             });
         });
     }

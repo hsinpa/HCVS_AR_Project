@@ -36,10 +36,12 @@ public class MainApp : Singleton<MainApp>
 
         LoginCtrl loginCtrl = GetObserver<LoginCtrl>();
         HostRoomCtrl hostRoomCtrl = GetObserver<HostRoomCtrl>();
+        MonitorCtrl monitorCtrl = GetObserver<MonitorCtrl>();
 
         LoginModal loginModal = Modals.instance.GetModal<LoginModal>();
         loginCtrl.SetUp(loginModal, _socketManager);
         hostRoomCtrl.SetUp(Modals.instance.GetModal<HostRoomModal>(), _socketManager);
+        monitorCtrl.SetUp(_socketManager);
         //hostRoomCtrl.Process();
         loginCtrl.ProcessLogin();
     }

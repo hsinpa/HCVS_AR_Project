@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+using UnityEngine.Networking;
 
 namespace Hsinpa.Controller
 {
@@ -18,6 +18,7 @@ namespace Hsinpa.Controller
 
         private List<TypeFlag.SocketDataType.ClassroomDatabaseType> classroomDataSet;
         private TypeFlag.SocketDataType.LoginDatabaseType userDataInfo;
+        private TypeFlag.SocketDataType.ClassroomDatabaseType selectedRoomData;
 
         public void SetUp(HostRoomModal hostRoomModal, SocketIOManager socketIOManager)
         {
@@ -53,7 +54,8 @@ namespace Hsinpa.Controller
         }
 
         private void GetClassRoomData() {
-            APIHttpRequest.Curl(StringAsset.GetFullAPIUri(StringAsset.API.GetAllClassInfo), BestHTTP.HTTPMethods.Get, null, (bool isSuccess, string json) =>
+            StartCoroutine(
+            APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(StringAsset.API.GetAllClassInfo), UnityWebRequest.kHttpVerbGET, null, (bool isSuccess, string json) =>
             {
                 if (!isSuccess || string.IsNullOrEmpty(json)) {
                     return;
@@ -66,17 +68,18 @@ namespace Hsinpa.Controller
                     classroomDataSet = classArray.ToList();
                     this._hostRoomModal.DecorateSelectionView(classroomDataSet);
                 }
-            });
+            }));
         }
 
-        private void OnHostRoomEvent(string room_id) {
+        private void OnHostRoomEvent(TypeFlag.SocketDataType.ClassroomDatabaseType roomData) {
 
-            if (string.IsNullOrEmpty(room_id) || !userDataInfo.status) return;
+            if (string.IsNullOrEmpty(roomData.class_id) || !userDataInfo.status) return;
+
+            selectedRoomData = roomData;
 
             var teacherCreateMsgRoomType = new TypeFlag.SocketDataType.TeacherCreateMsgRoomType();
-            teacherCreateMsgRoomType.room_id = room_id;
+            teacherCreateMsgRoomType.room_id = roomData.class_id;
             teacherCreateMsgRoomType.user_id = userDataInfo.user_id;
-
 
             _socketIOManager.Emit(TypeFlag.SocketEvent.CreateRoom, JsonUtility.ToJson(teacherCreateMsgRoomType));
         }
@@ -87,8 +90,11 @@ namespace Hsinpa.Controller
 
                 var HostResult = JsonUtility.FromJson<TypeFlag.SocketDataType.GeneralDatabaseType>(args[0].ToString());
 
-                if (HostResult.status)
+                if (HostResult.status) {
+                    MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.PrepareMonitorUI, selectedRoomData);
+                    Modals.instance.CloseAll();
                     Debug.Log("Show Teacher Navigation Screen");
+                }
                 else
                     Debug.Log("Show Toast");
             }

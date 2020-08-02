@@ -6,12 +6,28 @@ export function ListenUserEvent(socket : SocketIO.Socket, socektEnv : SocketEnvi
 
     let self = this;
 //#region Teacher Section
-    socket.on(TeacherSocketEvent.CreateRoom, function (data : TeacherCreateMsgRoomType) {
+    socket.on(TeacherSocketEvent.CreateRoom, function (data : string) {
         //TODO : Should force all student joined room
+        let parseData : TeacherCreateMsgRoomType = JSON.parse(data);
+        let isSucess = socektEnv.CreateRoom(parseData.user_id, parseData.room_id, socket.id);
 
-        let isSucess = socektEnv.CreateRoom(data.user_id, data.room_id);
+        if (isSucess) {
+            socket.join(parseData.room_id);
+
+            socektEnv.AutoJoinAllUserInClass(socket, parseData.room_id);
+        }
 
         socket.emit(TeacherSocketEvent.CreateRoom, JSON.stringify({status : isSucess}));
+    });
+
+    socket.on(TeacherSocketEvent.RefreshUserStatus, function() {
+        let userComp = socektEnv.users.get(socket.id);
+
+        if (socektEnv.rooms.has(userComp.room_id)) {
+            let students = socektEnv.FindAllUserInClass(userComp.room_id);
+            console.log(userComp.room_id);
+            socket.emit(TeacherSocketEvent.RefreshUserStatus, JSON.stringify(students));
+        }
     });
 
     socket.on(TeacherSocketEvent.ForceEndGame, function (data : TeacherCommonType) {
@@ -42,7 +58,7 @@ export function ListenUserEvent(socket : SocketIO.Socket, socektEnv : SocketEnvi
         if (userComp && socektEnv.CheckIfRoomAvailable(userComp)) {
             socket.join(userComp.room_id);
 
-            socket.to(userComp.room_id).emit(UniversalSocketEvent.UserJoined, userComp);
+            socket.to(userComp.room_id).emit(UniversalSocketEvent.UserJoined, JSON.stringify(userComp));
         }
     });
 //#endregion

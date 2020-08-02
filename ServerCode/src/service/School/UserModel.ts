@@ -26,16 +26,16 @@ export default class LoginModel {
 
         let q = `SELECT id, account_name, account_type, isValid 
                 FROM Teacher 
-                WHERE email='${account}' AND id=${password}`;
+                WHERE email='${account}' AND id='${password}'`;
 
         let r = await this._database.ExecuteQuery(q);
         let s : LoginReturnType= {
             status : false,
         };
 
-        console.log(r.result);
+        r.result = JSON.parse(r.result);
 
-        if (r.result.length > 0 && r.result[0]['isValid'] == 1) {
+        if (r.result.length > 0) {
             s.status = true;
             s.user_id = r.result[0]['id'];
             s.username = r.result[0]['account_name'];
@@ -47,12 +47,14 @@ export default class LoginModel {
     async StudentLogin(account: string) {
         let q = `SELECT id, student_name, seat, class_id 
                 FROM Student 
-                WHERE id=${account}`;
+                WHERE id='${account}'`;
 
         let r = await this._database.ExecuteQuery(q);
         let s : LoginReturnType= {
             status : false,
         };
+        
+        r.result = JSON.parse(r.result);
 
         if (r.result.length > 0) {
             s.status = true;
@@ -68,8 +70,9 @@ export default class LoginModel {
     async GetAllStudentInClass(classroom_id:string, year : number) {
         let query = `SELECT id, year, semester, student_name, seat, class_id 
                     FROM Student
-                    WHERE year = ${year} AND class_id = ${classroom_id}`;
-        return await this._database.ExecuteQuery(query);
+                    WHERE year = ${year} AND class_id = '${classroom_id}'`;
+
+        return await(this._database.ExecuteQuery(query));
     }
 
 }

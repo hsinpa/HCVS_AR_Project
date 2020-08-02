@@ -8,10 +8,13 @@ public class TypeFlag
         public const string OnConnect = "OnConnect";
         public const string UpdateUserInfo = "event@update_userInfo";
         public const string UserJoined = "event@user_joined";
+        public const string RefreshUserStatus = "event@refresh_user_status";
+        public const string UserLeaved = "event@user_leave";
         public const string CreateRoom = "event@create_room";
     }
 
-    public class SocketDataType {
+    public class SocketDataType
+    {
         [System.Serializable]
         public struct UserDataType
         {
@@ -60,5 +63,28 @@ public class TypeFlag
             public string user_id;
             public string room_id;
         }
+
+        [System.Serializable]
+        public struct StudentDatabaseType
+        {
+            public string id;
+            public int year;
+            public int semester;
+            public string student_name;
+            public string seat;
+            public string class_id;
+        }
+
+        [System.Serializable]
+        public struct UserComponentType
+        {
+            public string socket_id;
+            public string name;
+            public string user_id;
+            public string room_id;
+            public TypeFlag.UserType type;
+            public int mobilephone;
+        }
+
     }
 }

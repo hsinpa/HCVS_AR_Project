@@ -10,5 +10,7 @@ public class GeneralFlag
 
     public class ObeserverEvent {
         public const string HostRoomShowUI = "event@show_create_hostroom";
+        public const string PrepareMonitorUI = "event@prepare_monitor";
+
     }
 }

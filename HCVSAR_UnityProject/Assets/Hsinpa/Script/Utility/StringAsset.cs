@@ -20,6 +20,7 @@ namespace Expect.StaticAsset {
             public const string Socket = "socket.io/";
             public const string Login = "login";
             public const string GetAllClassInfo = "getAllClassInfo";
+            public const string GetAllStudentByID = "getAllStudentByID/{0}/{1}";
         }
 
         public static string GetFullAPIUri(string apiUrl)

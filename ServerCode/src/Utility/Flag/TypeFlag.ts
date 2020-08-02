@@ -70,3 +70,8 @@ export interface UserDataType {
     user_name : string,
     room_id? : string
 }
+
+export interface RoomStudentType {
+    socketID : string,
+    user_id : string
+}

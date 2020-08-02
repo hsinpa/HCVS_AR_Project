@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using BestHTTP;
+using BestHTTP.SecureProtocol.Org.BouncyCastle.Ocsp;
+using UnityEngine.Networking;
+using System.Text;
 
 public class APIHttpRequest : MonoBehaviour
 {
@@ -16,7 +19,7 @@ public class APIHttpRequest : MonoBehaviour
                 callback(true, response.DataAsText);
             }
             else {
-                Debug.Log(request.State);
+                Debug.LogError("Request Finished with Error! " + (request.Exception != null ? (request.Exception.Message + "\n" + request.Exception.StackTrace) : "No Exception"));
                 callback(false, "");
             }
         });
@@ -28,8 +31,30 @@ public class APIHttpRequest : MonoBehaviour
 
         //r.Timeout = System.TimeSpan.FromSeconds(4);
         //r.ConnectTimeout = System.TimeSpan.FromSeconds(4);
-
+        r.DisableCache = true;
+        
         r.Send();
+    }
+
+
+
+    public static IEnumerator NativeCurl(string url, string httpMethods, string rawJsonObject, System.Action<bool, string> callback)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+        {
+            webRequest.timeout = 4;
+            webRequest.method = httpMethods;
+
+            if (rawJsonObject != null) {
+                webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(rawJsonObject));
+                webRequest.uploadHandler.contentType = "application/json";
+            }
+
+            // Request and wait for the desired page.
+            yield return webRequest.SendWebRequest();
+
+            callback(!webRequest.isNetworkError, webRequest.downloadHandler.text);
+        }
     }
 
 }
