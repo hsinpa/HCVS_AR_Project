@@ -102,10 +102,10 @@ namespace Expect.View
 
             foreach (Transform childTab in onClickTab.transform.parent.transform) {
                 Button tabBtn = childTab.GetComponent<Button>();
-                tabBtn.targetGraphic.color = Color.gray;
+                tabBtn.targetGraphic.color = Color.white;
             }
 
-            onClickTab.targetGraphic.color = Color.white;
+            onClickTab.targetGraphic.color = Color.gray;
         }
     }
 }

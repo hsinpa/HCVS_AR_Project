@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 namespace Hsinpa.Controller
 {
@@ -39,6 +40,8 @@ namespace Hsinpa.Controller
             _socketIOManager.socket.On(TypeFlag.SocketEvent.UserJoined, OnUserJoinEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.UserLeaved, OnUesrLeaveEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.RefreshUserStatus, OnRefreshUserStatusEvent);
+
+            _monitorView.SetUp(OnGameStartBtnClickEvent, OnTerminateBtnClickEvent, OnMoreInfoBtnClickEvent);
         }
 
         private void PrepareStudentData(TypeFlag.SocketDataType.ClassroomDatabaseType selectedRoomData) {
@@ -66,6 +69,20 @@ namespace Hsinpa.Controller
                     }
                 }
             }));
+        }
+
+        private void OnGameStartBtnClickEvent(Button btn) {
+            btn.interactable = false;
+        }
+
+        private void OnTerminateBtnClickEvent(Button btn)
+        {
+            btn.interactable = false;
+        }
+
+        private void OnMoreInfoBtnClickEvent(Button btn)
+        {
+
         }
 
         #region Socket Section

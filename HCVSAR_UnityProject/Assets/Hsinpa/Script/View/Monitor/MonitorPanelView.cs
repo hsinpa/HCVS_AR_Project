@@ -36,10 +36,18 @@ namespace Hsinpa.View
         private List<TypeFlag.SocketDataType.StudentDatabaseType> allStudentData;
         private Dictionary<string, MonitorItemPrefabView> studentItemDict = new Dictionary<string, MonitorItemPrefabView>();
 
-        public void SetUp() {
+        public void SetUp(OnBottomBtnClick onGameStartBtnClickEvent, OnBottomBtnClick onTerminateBtnClickEvent, OnBottomBtnClick onMoreInfoBtnClickEvent) {
+            GameStartBtn.onClick.AddListener(() => { onGameStartBtnClickEvent(GameStartBtn); });
+            GameTerminateBtn.onClick.AddListener(() => { onTerminateBtnClickEvent(GameTerminateBtn); });
+            MoreInfoBtn.onClick.AddListener(() => { onMoreInfoBtnClickEvent(MoreInfoBtn); });
         }
 
         public void SetContent(string titleText, TypeFlag.SocketDataType.StudentDatabaseType[] allStudentData) {
+
+            GameStartBtn.interactable = true;
+            GameTerminateBtn.interactable = false;
+            MoreInfoBtn.interactable = false;
+
             ClassTitleTxt.text = titleText;
             this.allStudentData = allStudentData.ToList();
 
@@ -55,6 +63,14 @@ namespace Hsinpa.View
                 var itemObj = StudentContainer.GetChild(findStudentIndex).GetComponent<MonitorItemPrefabView>();
                 itemObj.ChangeStatus(isConnect);
             }
+        }
+
+        public void GameStartAndSetTimer() {
+            GameStartBtn.interactable = false;
+            GameTerminateBtn.interactable = true;
+            MoreInfoBtn.interactable = true;
+
+
         }
 
         private void RenderStudentInfoToScrollView(List<TypeFlag.SocketDataType.StudentDatabaseType> allStudentData) {
@@ -83,7 +99,6 @@ namespace Hsinpa.View
                     item.ChangeStatus(true);
                 }
             }
-
         }
 
         
