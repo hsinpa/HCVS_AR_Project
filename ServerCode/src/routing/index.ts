@@ -25,6 +25,16 @@ module.exports =  (router : Router, rootPath:string, model : Models) => {
   router.get('/getAllClassInfo', async function (ctx:any, next:any) {
     ctx.body = await model.ClassModel.GetAllAvailableClass();
   });
+
+  router.get('/getAllClassInfo', async function (ctx:any, next:any) {
+    ctx.body = await model.ClassModel.GetAllAvailableClass();
+  });
+//#endregion
+
+//#region Overall
+router.get('/getStudentScore/:student_id', async function (ctx:any, next:any) {
+  ctx.body = await model.ScoreTableModel.GetStudentScores(ctx.params.student_id);
+});
 //#endregion
 
 }

@@ -86,5 +86,13 @@ public class TypeFlag
             public int mobilephone;
         }
 
+        [System.Serializable]
+        public struct UserScoreType
+        {
+            public int id;
+            public string user_id;
+            public string mission_id;
+            public int score;
+        }
     }
 }

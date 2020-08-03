@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.38069504}
   m_AnchorMax: {x: 1, y: 0.90300006}
-  m_AnchoredPosition: {x: 0.10998535, y: 0.5}
-  m_SizeDelta: {x: -154.13104, y: -2.4670105}
+  m_AnchoredPosition: {x: 0.10998535, y: 0.8667755}
+  m_SizeDelta: {x: -154.13104, y: -1.7334976}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5199904784925060301
 CanvasRenderer:
@@ -285,7 +285,6 @@ GameObject:
   - component: {fileID: 845444691447454480}
   - component: {fileID: 342868149}
   - component: {fileID: 342868148}
-  - component: {fileID: 2193105855119308512}
   m_Layer: 5
   m_Name: DialogueModal
   m_TagString: Untagged
@@ -368,8 +367,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 342868148}
-  titleText: {fileID: 0}
-  contentText: {fileID: 0}
+  titleText: {fileID: 845444691866342763}
+  contentText: {fileID: 8577635703496950680}
+  dropDownMenu: {fileID: 7207123059726158577}
   decorateImage: {fileID: 845444692542761623}
 --- !u!225 &342868148
 CanvasGroup:
@@ -379,31 +379,10 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 845444691447454486}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!223 &2193105855119308512
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 845444691447454486}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
 --- !u!1 &845444691863803395
 GameObject:
   m_ObjectHideFlags: 0

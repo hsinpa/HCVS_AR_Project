@@ -29,13 +29,22 @@ CREATE TABLE Student (
     class_id VARCHAR(150)
 );
 
+CREATE TABLE ScoreTable (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    student_id VARCHAR(150) NOT NULL,
+    mission_id VARCHAR(80) NOT NULL,
+    score INT
+);
+CREATE INDEX StudentIndex
+ON  ScoreTable(student_id)
+
 INSERT INTO ClassRoom (id, year, semester, grade, class_id, class_name)
 VALUES
     ('212', 108, 1, 1, '14343432', N'體育一真'),
     ('523', 108, 1, 1, '57838582', N'美術一真'),
     ('8742', 108, 1, 1, '39836729', N'管琴樂一真');
 
-INSERT INTO Ｔeacher (id, account_name, email, account_type, isValid)
+INSERT INTO Teacher (id, account_name, email, account_type, isValid)
 VALUES
     ('0905556696', 'Hsinpa', 'hsinpa@gmail.com', 'teacher', 1),
     ('339939823', 'FakeTeacher_1', 'faket_1@gmail.com', 'teacher', 1),
@@ -73,3 +82,42 @@ VALUES
     ('10399875', 108, 1, 'FakeMusic_7', '7', '39836729'),
     ('4458744', 108, 1, 'FakeMusic_8', '8', '39836729'),
     ('39294874', 108, 1, 'FakeMusic_9', '9', '39836729');
+
+
+INSERT INTO ScoreTable (student_id, mission_id, score)
+VALUES
+    ('4897347', 'A', 1),
+    ('4897347', 'B', 2),
+    ('4897347', 'C', 1),
+
+    ('124125', 'A', 1),
+    ('124125', 'B', 2),
+    ('124125', 'D', 1),
+
+    ('997422', 'A', 3),
+    ('997422', 'B', 1),
+    ('997422', 'D', 5),
+
+    ('9746822', 'E', 3),
+    ('9746822', 'B', 1),
+    ('9746822', 'D', 5),
+
+    ('763462', 'J', 3),
+    ('763462', 'B', 1),
+    ('763462', 'D', 5),
+
+    ('5779403', 'I', 3),
+    ('5779403', 'B', 1),
+    ('5779403', 'D', 5),
+
+    ('14741588', 'J', 3),
+    ('14741588', 'B', 1),
+    ('14741588', 'D', 5),
+
+    ('10399875', 'A', 3),
+    ('10399875', 'F', 1),
+    ('10399875', 'D', 5),
+
+    ('20148854', 'J', 3),
+    ('20148854', 'G', 1),
+    ('20148854', 'D', 5);

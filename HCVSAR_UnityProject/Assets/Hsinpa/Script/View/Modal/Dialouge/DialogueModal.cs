@@ -17,6 +17,9 @@ namespace Expect.View
         private Text contentText;
 
         [SerializeField]
+        private Dropdown dropDownMenu;
+
+        [SerializeField]
         private Image decorateImage;
 
         public enum ButtonType {
@@ -44,6 +47,17 @@ namespace Expect.View
             RegisterButtons(allowBtns, btnEvent);
         }
 
+        public void SetDropDown(string[] options) {
+            dropDownMenu.ClearOptions();
+
+            if (options != null && options.Length > 0) {
+                dropDownMenu.gameObject.SetActive(true);
+
+                var optionItems = options.Select(x => new Dropdown.OptionData(x)).ToList();
+                dropDownMenu.AddOptions(optionItems);
+            }
+        }
+
         private void RegisterButtons(ButtonType[] allowBtns, System.Action<ButtonType> btnEvent) {
             int btnlength = allowBtns.Length;
 
@@ -63,6 +77,8 @@ namespace Expect.View
 
         private void ResetContent() {
             DecorateSideImage(null);
+
+            dropDownMenu.gameObject.SetActive(false);
 
             buttons.ForEach(x => x.gameObject.SetActive(false));
         }
