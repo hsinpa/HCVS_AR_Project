@@ -17,7 +17,9 @@ export function ListenUserEvent(socket : SocketIO.Socket, socektEnv : SocketEnvi
             socektEnv.AutoJoinAllUserInClass(socket, parseData.room_id);
         }
 
-        socket.emit(TeacherSocketEvent.CreateRoom, JSON.stringify({status : isSucess}));
+        socket.emit(TeacherSocketEvent.CreateRoom, JSON.stringify({
+            status : isSucess,
+        }));
     });
 
     socket.on(TeacherSocketEvent.RefreshUserStatus, function() {
@@ -31,12 +33,15 @@ export function ListenUserEvent(socket : SocketIO.Socket, socektEnv : SocketEnvi
     });
 
     socket.on(TeacherSocketEvent.ForceEndGame, function (data : TeacherCommonType) {
-        socket.to(data.room_id).emit(TeacherSocketEvent.ForceEndGame);
+        socektEnv.RoomDismiss(data.room_id);
     });
 
     socket.on(TeacherSocketEvent.StartGame, function (data : TeacherCommonType) {
-        //TODO : timer 40 min
-        socket.to(data.room_id).emit(TeacherSocketEvent.StartGame);
+
+        socektEnv.SetRoomTimer(data.room_id, Date.now());
+        let roomComp = socektEnv.rooms.get(data.room_id);
+
+        socket.to(data.room_id).emit(TeacherSocketEvent.StartGame, roomComp);
     });
 
     socket.on(TeacherSocketEvent.Rally, function (data : TeacherCommonType) {

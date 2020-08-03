@@ -1,6 +1,7 @@
 import {RoomComponentType, UserComponentType, UserStatus} from '../Utility/Flag/TypeFlag';
 import {CreateUserType} from '../Utility/SocketUtility';
 import UserEmitter from './Listener/UserEmitter';
+import { start } from 'repl';
 
 class SocketEnvironment {
 
@@ -24,6 +25,8 @@ class SocketEnvironment {
         this.rooms.set(room_id, {
             host_id : host_id,
             room_id : room_id,
+            start_time : 0,
+            end_time : 0,
             students : []
         });
 
@@ -138,6 +141,22 @@ class SocketEnvironment {
         });
         return userComps;
     }
+
+    SetRoomTimer(room_id : string, start_time : number) {
+        if (this.rooms.has(room_id)) {
+            let room = this.rooms.get(room_id);
+
+            let endExtendSec = 40;
+            let endDateMiliSecond = new Date(start_time + endExtendSec * 60000);
+    
+            room.start_time = start_time;
+            room.end_time = endDateMiliSecond.getTime();
+
+            this.rooms.set(room_id, room);
+        }
+
+    }
+
 }
 
 export default SocketEnvironment;

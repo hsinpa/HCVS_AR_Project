@@ -20,6 +20,9 @@ export interface UserComponentType {
 export interface RoomComponentType {
     room_id : string,
     host_id : string,
+    
+    start_time : number,
+    end_time : number,
 
     //SocketID List
     students : string[]
