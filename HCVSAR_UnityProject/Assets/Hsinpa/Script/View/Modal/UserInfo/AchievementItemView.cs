@@ -19,6 +19,8 @@ namespace Expect.View
         public bool hashed = false;
 
         public void SetTitle(string title, bool highlight) {
+
+            Debug.Log(hashed.ToString() + ",  highlight " + highlight.ToString());
             titleText.text =  (hashed && !highlight) ? GetHashText() : title;
 
             dotImage.enabled = highlight;
@@ -27,7 +29,7 @@ namespace Expect.View
         }
 
         private string GetHashText() {
-            return "???????????";
+            return "????????????????";
         }
     }
 }

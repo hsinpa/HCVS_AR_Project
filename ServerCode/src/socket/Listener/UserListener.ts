@@ -2,9 +2,9 @@ import {TeacherSocketEvent, UniversalSocketEvent} from '../../Utility/Flag/Event
 import {TeacherCreateMsgRoomType, TeacherCommonType, UserDataType} from '../../Utility/Flag/TypeFlag';
 import SocketEnvironment from '../SocketEnvironment';
 
-export function ListenUserEvent(socket : SocketIO.Socket, socektEnv : SocketEnvironment) {
-
+export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketIO.Server, socektEnv : SocketEnvironment) {
     let self = this;
+
 //#region Teacher Section
     socket.on(TeacherSocketEvent.CreateRoom, function (data : string) {
         //TODO : Should force all student joined room
@@ -36,12 +36,12 @@ export function ListenUserEvent(socket : SocketIO.Socket, socektEnv : SocketEnvi
         socektEnv.RoomDismiss(data.room_id);
     });
 
-    socket.on(TeacherSocketEvent.StartGame, function (data : TeacherCommonType) {
+    socket.on(TeacherSocketEvent.StartGame, function (data : string) {        
+        let parseData : TeacherCommonType = JSON.parse(data);
+        socektEnv.SetRoomTimer(parseData.room_id, Date.now());
+        let roomComp = socektEnv.rooms.get(parseData.room_id);
 
-        socektEnv.SetRoomTimer(data.room_id, Date.now());
-        let roomComp = socektEnv.rooms.get(data.room_id);
-
-        socket.to(data.room_id).emit(TeacherSocketEvent.StartGame, roomComp);
+        socketServer.to(parseData.room_id).emit(TeacherSocketEvent.StartGame, JSON.stringify(roomComp));
     });
 
     socket.on(TeacherSocketEvent.Rally, function (data : TeacherCommonType) {

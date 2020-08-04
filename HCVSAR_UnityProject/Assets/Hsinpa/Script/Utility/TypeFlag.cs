@@ -11,6 +11,7 @@ public class TypeFlag
         public const string RefreshUserStatus = "event@refresh_user_status";
         public const string UserLeaved = "event@user_leave";
         public const string CreateRoom = "event@create_room";
+        public const string StartGame = "event@start_game";
     }
 
     public class InGameType {
@@ -101,6 +102,17 @@ public class TypeFlag
             public string user_id;
             public string mission_id;
             public int score;
+        }
+
+        [System.Serializable]
+        public struct RoomComponentType
+        {
+            public string room_id;
+            public string host_id;
+            public long start_time;
+            public long end_time;
+
+            //public string[] students;
         }
     }
 }

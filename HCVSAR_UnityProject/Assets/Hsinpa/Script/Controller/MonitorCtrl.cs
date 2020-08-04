@@ -41,12 +41,15 @@ namespace Hsinpa.Controller
             _socketIOManager.socket.On(TypeFlag.SocketEvent.UserJoined, OnUserJoinEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.UserLeaved, OnUesrLeaveEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.RefreshUserStatus, OnRefreshUserStatusEvent);
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
 
             _monitorView.SetUp(OnGameStartBtnClickEvent, OnTerminateBtnClickEvent, OnMoreInfoBtnClickEvent, OnStudentObjClick);
         }
 
         private void PrepareStudentData(TypeFlag.SocketDataType.ClassroomDatabaseType selectedRoomData) {
             string getStudentURI = string.Format(StringAsset.API.GetAllStudentByID, selectedRoomData.class_id, selectedRoomData.year);
+
+            _monitorView.ResetContent();
 
             StartCoroutine(
             APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(getStudentURI), UnityWebRequest.kHttpVerbGET, null, (string json) => {
@@ -72,6 +75,8 @@ namespace Hsinpa.Controller
 
         private void OnGameStartBtnClickEvent(Button btn) {
             btn.interactable = false;
+
+            _socketIOManager.socket.Emit(TypeFlag.SocketEvent.StartGame, string.Format("{{\"room_id\" : \"{0}\"}}", selectedRoomData.class_id));
         }
 
         private void OnTerminateBtnClickEvent(Button btn)
@@ -85,25 +90,9 @@ namespace Hsinpa.Controller
         }
 
         private void OnStudentObjClick(MonitorItemPrefabView studentItem) {
-            studentItem.button.interactable = false;
 
             MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowUserInfo, studentItem.studentDatabaseType, studentItem.isOnline);
 
-            //string uri = StringAsset.GetFullAPIUri(string.Format(StringAsset.API.GetStudentScore, btn.name));
-            //APIHttpRequest.NativeCurl(uri, UnityWebRequest.kHttpVerbGET, null, (string json) =>
-            //{
-            //    btn.interactable = true;
-
-
-            //    var userScoreArray = JsonHelper.FromJson<TypeFlag.SocketDataType.UserScoreType>(json);
-
-            //    MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowUserInfo, userScoreArray);
-
-            //}, () =>
-            //{
-            //    //Error Handler
-            //    btn.interactable = true;
-            //});
         }
 
         #region Socket Section
@@ -130,6 +119,18 @@ namespace Hsinpa.Controller
             {
                 var userComps = JsonHelper.FromJson<TypeFlag.SocketDataType.UserComponentType>(args[0].ToString());
                 _monitorView.SyncUserStateByArray(userComps);
+            }
+        }
+
+        private void OnGameStartSocketEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
+        {
+            if (args.Length > 0)
+            {
+                Debug.Log(args[0].ToString());
+
+                var roomComps = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
+
+                _monitorView.SetTimer(roomComps.end_time);
             }
         }
         #endregion

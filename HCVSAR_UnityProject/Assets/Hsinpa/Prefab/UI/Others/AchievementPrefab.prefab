@@ -61,7 +61,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titleText: {fileID: 7638188041376376750}
   dotImage: {fileID: 4404807031322978081}
-  defaultColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
+  defaultColor: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
+  hashed: 0
 --- !u!1 &2764110291572029530
 GameObject:
   m_ObjectHideFlags: 0

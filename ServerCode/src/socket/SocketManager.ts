@@ -32,7 +32,7 @@ export default class SocketManager {
             console.log(socket.id + " is connect");
             self.env.UserJoin(socket);
             
-            ListenUserEvent(socket, self.env);
+            ListenUserEvent(socket, self.io, self.env);
 
             //Send back basic server info when user first connected
             socket.emit("OnConnect", JSON.stringify({

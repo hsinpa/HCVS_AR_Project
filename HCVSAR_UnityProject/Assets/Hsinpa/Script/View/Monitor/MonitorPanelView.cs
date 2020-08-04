@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -33,8 +34,14 @@ namespace Hsinpa.View
         [SerializeField]
         private Text ClassTitleTxt;
 
+        [SerializeField]
+        private Text TimerText;
+
         private List<TypeFlag.SocketDataType.StudentDatabaseType> allStudentData;
         private Dictionary<string, MonitorItemPrefabView> studentItemDict = new Dictionary<string, MonitorItemPrefabView>();
+
+        private DateTime startTime = DateTime.MinValue;
+        private DateTime endTime = DateTime.MinValue;
 
         private System.Action<MonitorItemPrefabView> studentItemClickEvent;
 
@@ -77,8 +84,7 @@ namespace Hsinpa.View
         private void RenderStudentInfoToScrollView(List<TypeFlag.SocketDataType.StudentDatabaseType> allStudentData) {
             int studentCount = allStudentData.Count;
 
-            UtilityMethod.ClearChildObject(StudentContainer);
-            studentItemDict.Clear();
+            ResetContent();
 
             for (int i = 0; i < studentCount; i++) {
                 GameObject studentObj = UtilityMethod.CreateObjectToParent(StudentContainer, StudentItemPrefab);
@@ -105,6 +111,32 @@ namespace Hsinpa.View
             }
         }
 
-        
+        public void SetTimer(long endTimestamp) {
+            startTime = DateTime.UtcNow;
+            endTime = DateTimeOffset.FromUnixTimeMilliseconds(endTimestamp).DateTime;
+
+            Debug.Log(endTime);
+            Debug.Log(startTime);
+        }
+
+        public void ResetContent() {
+            UtilityMethod.ClearChildObject(StudentContainer);
+            studentItemDict.Clear();
+
+            startTime = DateTime.MinValue;
+            endTime = DateTime.MinValue;
+
+            TimerText.text = "00:00";
+        }
+
+        private void Update()
+        {
+            if (endTime == DateTime.MinValue) return;
+
+            TimeSpan t = endTime - DateTime.UtcNow;
+
+            TimerText.text = string.Format("{0}:{1}", t.Minutes, t.Seconds);
+        }
+
     }
 }

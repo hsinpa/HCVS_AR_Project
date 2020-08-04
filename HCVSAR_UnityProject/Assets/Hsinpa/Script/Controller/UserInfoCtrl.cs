@@ -15,8 +15,6 @@ namespace Hsinpa.Controller
         private SocketIOManager _socketIOManager;
         private UserInfoModal _userInfoModal;
 
-        
-
         public override void OnNotify(string p_event, params object[] p_objects)
         {
             switch (p_event)
@@ -42,16 +40,20 @@ namespace Hsinpa.Controller
 
             string uri = StringAsset.GetFullAPIUri(string.Format(StringAsset.API.GetStudentScore, studentObj.id));
 
+            var modal = Modals.instance.OpenModal<UserInfoModal>();
+
+            modal.SetUserInfo(studentObj, isConnect);
+
             StartCoroutine(
                 APIHttpRequest.NativeCurl(uri, UnityWebRequest.kHttpVerbGET, null, (string json) =>
                 {
                     var scoreType = JsonHelper.FromJson<TypeFlag.SocketDataType.UserScoreType>(json);
 
-                    var modal = Modals.instance.OpenModal<UserInfoModal>();
+                    modal.SetContent(scoreType, ownerType);
 
-                    modal.SetContent(studentObj, isConnect, scoreType, ownerType);
+                }, () => {
 
-                }, null)
+                })
             );
         }
 

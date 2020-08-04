@@ -16,7 +16,7 @@ namespace Expect.StaticAsset {
 
         public class UserInfo
         {
-            public const string HeaderUserInfo = "海青工商\n使用者{0} {1} {2}\n連線狀況 : <color={3}>{4}</color>";
+            public const string HeaderUserInfo = "海青工商\n使用者 {0} {1}\n連線狀況 : <color={2}>{3}</color>";
             public const string Online = "正常";
             public const string Offline = "離線";
 

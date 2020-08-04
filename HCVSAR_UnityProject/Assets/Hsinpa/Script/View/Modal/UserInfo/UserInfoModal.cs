@@ -30,10 +30,22 @@ namespace Expect.View
 
         private TypeFlag.UserType userType;
 
-        public void SetContent(TypeFlag.SocketDataType.StudentDatabaseType studentObj, bool hasConnection, TypeFlag.SocketDataType.UserScoreType[] scoreArray, TypeFlag.UserType userType) {
-            this.userType = userType;
+        private void Awake()
+        {
+            CloseButton.onClick.AddListener(() =>
+            {
+                Modals.instance.Close();
+            });
+        }
+
+        public void SetUserInfo(TypeFlag.SocketDataType.StudentDatabaseType studentObj, bool hasConnection) {
+            ResetContent();
 
             UserInfoText.text = GetUserInfoText(studentObj, hasConnection);
+        }
+
+        public void SetContent(TypeFlag.SocketDataType.UserScoreType[] scoreArray, TypeFlag.UserType userType) {
+            this.userType = userType;
             TotalScoreText.text = CalculateAccompishPercent(scoreArray);
 
             GenerateScoreBoard(scoreArray);
@@ -41,7 +53,7 @@ namespace Expect.View
 
         private string GetUserInfoText(TypeFlag.SocketDataType.StudentDatabaseType studentObj, bool hasConnection) {
 
-            string formString = string.Format(StringAsset.UserInfo.HeaderUserInfo, studentObj.seat, studentObj.student_name, studentObj.id,
+            string formString = string.Format(StringAsset.UserInfo.HeaderUserInfo, studentObj.student_name, studentObj.id,
 
                 (hasConnection) ? StringAsset.UserInfo.OnlineColor : StringAsset.UserInfo.OfflineColor,
                 (hasConnection) ? StringAsset.UserInfo.Online : StringAsset.UserInfo.Offline);
@@ -80,6 +92,13 @@ namespace Expect.View
 
                 a_item.SetTitle(missionItemSObj.missionArray[i].mission_name, (userScoreIndex >= 0));
             }
+        }
+
+        private void ResetContent() {
+            UserInfoText.text = "";
+            TotalScoreText.text = "0%";
+
+            Utility.UtilityMethod.ClearChildObject(AchievementHolder);
         }
 
     }
