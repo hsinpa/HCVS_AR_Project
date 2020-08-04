@@ -10,6 +10,18 @@ namespace Expect.StaticAsset {
 
             public const string UserIDInputError = "帳號格式錯誤 : 字數6-20";
             public const string PasswordInputError = "密碼格式錯誤 : 字數6-20";
+
+            
+        }
+
+        public class UserInfo
+        {
+            public const string HeaderUserInfo = "海青工商\n使用者{0} {1} {2}\n連線狀況 : <color={3}>{4}</color>";
+            public const string Online = "正常";
+            public const string Offline = "離線";
+
+            public const string OnlineColor = "#52ED66";
+            public const string OfflineColor = "#CACACA";
         }
 
         public class Domain {
@@ -21,6 +33,8 @@ namespace Expect.StaticAsset {
             public const string Login = "login";
             public const string GetAllClassInfo = "getAllClassInfo";
             public const string GetAllStudentByID = "getAllStudentByID/{0}/{1}";
+            public const string GetStudentScore = "getStudentScore/{0}";
+
         }
 
         public static string GetFullAPIUri(string apiUrl)

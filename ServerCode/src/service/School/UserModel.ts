@@ -1,4 +1,4 @@
-import {SocketIOKey, LoginReturnType, UserStatus} from '../../Utility/Flag/TypeFlag';
+import {SocketIOKey, LoginReturnType, UserStatus, DatabaseResultType} from '../../Utility/Flag/TypeFlag';
 import {GenerateRandomString} from '../../Utility/GeneralMethod';
 import Database from '../Database';
 
@@ -22,23 +22,23 @@ export default class LoginModel {
         };
     }
     
-    async TeacherLogin(account: string, password : string) : Promise<LoginReturnType> {
+    async TeacherLogin(account: string, password : string) : Promise<DatabaseResultType> {
 
         let q = `SELECT id, account_name, account_type, isValid 
                 FROM Teacher 
                 WHERE email='${account}' AND id='${password}'`;
 
         let r = await this._database.ExecuteQuery(q);
-        let s : LoginReturnType= {
+        let s : DatabaseResultType= {
             status : false,
+            result : {}
         };
 
         r.result = JSON.parse(r.result);
 
         if (r.result.length > 0) {
             s.status = true;
-            s.user_id = r.result[0]['id'];
-            s.username = r.result[0]['account_name'];
+            s.result = {user_id : r.result[0]['id'], username : r.result[0]['account_name']};
         }
 
         return s;
@@ -50,18 +50,21 @@ export default class LoginModel {
                 WHERE id='${account}'`;
 
         let r = await this._database.ExecuteQuery(q);
-        let s : LoginReturnType= {
+        let s : DatabaseResultType= {
             status : false,
+            result : {}
         };
         
         r.result = JSON.parse(r.result);
 
         if (r.result.length > 0) {
             s.status = true;
-            s.user_id = r.result[0]['id'];
-            s.username = r.result[0]['student_name'];
-            s.seat = r.result[0]['seat'];
-            s.room_id = r.result[0]['class_id'];
+            s.result = {
+                user_id : r.result[0]['id'],
+                username : r.result[0]['student_name'],
+                seat : r.result[0]['seat'],
+                room_id : r.result[0]['class_id'] 
+            }
         }
         
         return s;

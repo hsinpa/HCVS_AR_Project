@@ -11,9 +11,10 @@ module.exports =  (router : Router, rootPath:string, model : Models) => {
     await ctx.render('index', {title: "HSINPA"});
   });
 
-  router.post('/login', async function (ctx:any, next:any) {    
-    ctx.body = await model.UserModel.Login(ctx.request.body['type'], ctx.request.body['account'], 
-                                            ctx.request.body['password']);
+  router.post('/login', async function (ctx:any, next:any) {
+    var r = await model.UserModel.Login(ctx.request.body['type'], ctx.request.body['account'], ctx.request.body['password']);
+    
+    ctx.body = JSON.stringify(r);
   });
 
   //#region Teacher Http Request
@@ -26,9 +27,6 @@ module.exports =  (router : Router, rootPath:string, model : Models) => {
     ctx.body = await model.ClassModel.GetAllAvailableClass();
   });
 
-  router.get('/getAllClassInfo', async function (ctx:any, next:any) {
-    ctx.body = await model.ClassModel.GetAllAvailableClass();
-  });
 //#endregion
 
 //#region Overall

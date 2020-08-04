@@ -38,7 +38,7 @@ public class APIHttpRequest : MonoBehaviour
 
 
 
-    public static IEnumerator NativeCurl(string url, string httpMethods, string rawJsonObject, System.Action<bool, string> callback)
+    public static IEnumerator NativeCurl(string url, string httpMethods, string rawJsonObject, System.Action<string> success_callback, System.Action fail_callback)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
@@ -53,7 +53,25 @@ public class APIHttpRequest : MonoBehaviour
             // Request and wait for the desired page.
             yield return webRequest.SendWebRequest();
 
-            callback(!webRequest.isNetworkError, webRequest.downloadHandler.text);
+            if (webRequest.isNetworkError) {
+                if (fail_callback != null) fail_callback();
+
+                yield break;
+            }
+
+            try
+            {
+                string rawJSON = webRequest.downloadHandler.text;
+                var DatabaseResult = JsonUtility.FromJson<TypeFlag.SocketDataType.GeneralDatabaseType>(rawJSON);
+
+                if (DatabaseResult.status && !string.IsNullOrEmpty(DatabaseResult.result))
+                    if (success_callback != null) success_callback(DatabaseResult.result);
+                else
+                    if (fail_callback != null) fail_callback();
+            }
+            catch {
+                if (fail_callback != null) fail_callback();
+            }
         }
     }
 

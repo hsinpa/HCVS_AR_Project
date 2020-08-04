@@ -27,7 +27,6 @@ public class TypeFlag
         [System.Serializable]
         public struct LoginDatabaseType
         {
-            public bool status;
             public string username;
             public string user_id;
             public string room_id;

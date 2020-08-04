@@ -1,4 +1,5 @@
-﻿using Hsinpa.View;
+﻿using Expect.StaticAsset;
+using Hsinpa.View;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +25,19 @@ namespace Expect.View
         [SerializeField]
         private GameObject AchievementPrefab;
 
-        public void SetContent(string userInfo, bool isConnection, TypeFlag.SocketDataType.UserScoreType[] rawScoreArray, TypeFlag.UserType userType) {
-            UserInfoText.text = userInfo;
+        public void SetContent(TypeFlag.SocketDataType.StudentDatabaseType studentObj, bool hasConnection, TypeFlag.SocketDataType.UserScoreType[] rawScoreArray, TypeFlag.UserType userType) {
+            UserInfoText.text = GetUserInfoText(studentObj, hasConnection);
         }
+
+        private string GetUserInfoText(TypeFlag.SocketDataType.StudentDatabaseType studentObj, bool hasConnection) {
+
+            string formString = string.Format(StringAsset.UserInfo.HeaderUserInfo, studentObj.seat, studentObj.student_name, studentObj.id,
+
+                (hasConnection) ? StringAsset.UserInfo.OnlineColor : StringAsset.UserInfo.OfflineColor,
+                (hasConnection) ? StringAsset.UserInfo.Online : StringAsset.UserInfo.Offline);
+
+            return formString;
+        }
+
     }
 }

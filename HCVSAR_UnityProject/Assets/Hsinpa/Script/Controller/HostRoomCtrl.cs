@@ -37,7 +37,7 @@ namespace Hsinpa.Controller
         public override void OnNotify(string p_event, params object[] p_objects)
         {
             switch (p_event) {
-                case GeneralFlag.ObeserverEvent.HostRoomShowUI:
+                case GeneralFlag.ObeserverEvent.ShowHostRoomUI:
                     userDataInfo = (TypeFlag.SocketDataType.LoginDatabaseType) p_objects[0];
                     Process();
                     break;
@@ -55,12 +55,9 @@ namespace Hsinpa.Controller
 
         private void GetClassRoomData() {
             StartCoroutine(
-            APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(StringAsset.API.GetAllClassInfo), UnityWebRequest.kHttpVerbGET, null, (bool isSuccess, string json) =>
+            APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(StringAsset.API.GetAllClassInfo), UnityWebRequest.kHttpVerbGET, null, (string json) =>
             {
-                if (!isSuccess || string.IsNullOrEmpty(json)) {
-                    return;
-                }
-
+     
                 var classArray = JsonHelper.FromJson<TypeFlag.SocketDataType.ClassroomDatabaseType>(json);
 
                 if (classArray != null)
@@ -68,12 +65,13 @@ namespace Hsinpa.Controller
                     classroomDataSet = classArray.ToList();
                     this._hostRoomModal.DecorateSelectionView(classroomDataSet);
                 }
-            }));
+
+            }, null));
         }
 
         private void OnHostRoomEvent(TypeFlag.SocketDataType.ClassroomDatabaseType roomData) {
 
-            if (string.IsNullOrEmpty(roomData.class_id) || !userDataInfo.status) return;
+            if (string.IsNullOrEmpty(roomData.class_id) || !string.IsNullOrEmpty(userDataInfo.user_id)) return;
 
             selectedRoomData = roomData;
 
@@ -91,7 +89,7 @@ namespace Hsinpa.Controller
                 var HostResult = JsonUtility.FromJson<TypeFlag.SocketDataType.GeneralDatabaseType>(args[0].ToString());
 
                 if (HostResult.status) {
-                    MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.PrepareMonitorUI, selectedRoomData);
+                    MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowMonitorUI, selectedRoomData);
                     Modals.instance.CloseAll();
                     Debug.Log("Show Teacher Navigation Screen");
                 }

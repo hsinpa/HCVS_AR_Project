@@ -24,7 +24,7 @@ namespace Hsinpa.Controller
         {
             switch (p_event)
             {
-                case GeneralFlag.ObeserverEvent.PrepareMonitorUI:
+                case GeneralFlag.ObeserverEvent.ShowMonitorUI:
                     selectedRoomData = (TypeFlag.SocketDataType.ClassroomDatabaseType)p_objects[0];
 
                     _monitorView.Show(true);
@@ -48,27 +48,23 @@ namespace Hsinpa.Controller
             string getStudentURI = string.Format(StringAsset.API.GetAllStudentByID, selectedRoomData.class_id, selectedRoomData.year);
 
             StartCoroutine(
-            APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(getStudentURI), UnityWebRequest.kHttpVerbGET, null, (bool isSuccess, string json) => {
-                if (!isSuccess || string.IsNullOrEmpty(json))
+            APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(getStudentURI), UnityWebRequest.kHttpVerbGET, null, (string json) => {
+                if (string.IsNullOrEmpty(json))
                 {
                     return;
                 }
 
-                var DatabaseResult = JsonUtility.FromJson<TypeFlag.SocketDataType.GeneralDatabaseType>(json);
+                allStudentData = JsonHelper.FromJson<TypeFlag.SocketDataType.StudentDatabaseType>(json);
 
-                if (DatabaseResult.status)
+                if (allStudentData != null)
                 {
-                    allStudentData = JsonHelper.FromJson<TypeFlag.SocketDataType.StudentDatabaseType>(DatabaseResult.result);
+                    string fullRoomName = string.Format("{0}年, {1}", selectedRoomData.year, selectedRoomData.class_name);
+                    _monitorView.SetContent(fullRoomName, allStudentData);
 
-                    if (allStudentData != null)
-                    {
-                        string fullRoomName = string.Format("{0}年, {1}", selectedRoomData.year, selectedRoomData.class_name);
-                        _monitorView.SetContent(fullRoomName, allStudentData);
-
-                        _socketIOManager.Emit(TypeFlag.SocketEvent.RefreshUserStatus);
-                    }
+                    _socketIOManager.Emit(TypeFlag.SocketEvent.RefreshUserStatus);
                 }
-            }));
+                
+            }, null));
         }
 
         private void OnGameStartBtnClickEvent(Button btn) {

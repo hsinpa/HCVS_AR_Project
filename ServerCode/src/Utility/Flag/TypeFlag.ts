@@ -64,7 +64,7 @@ export interface LoginReturnType {
 
 export interface DatabaseResultType {
     status : boolean,
-    result : any
+    result? : any
 }
 
 export interface UserDataType {

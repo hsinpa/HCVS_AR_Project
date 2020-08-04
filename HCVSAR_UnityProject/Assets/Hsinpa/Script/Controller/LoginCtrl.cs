@@ -70,26 +70,19 @@ namespace Hsinpa.Controller {
             
             Debug.Log(JsonUtility.ToJson(loginDataStruct));
 
-
             StartCoroutine(APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(StringAsset.API.Login), UnityWebRequest.kHttpVerbPOST, JsonUtility.ToJson(loginDataStruct),
-                (bool isSuccess, string rawData) => {
-                    Debug.Log("IsSuccess " + isSuccess.ToString() + ", " + rawData);
+                (string rawData) => {
 
-                    if (isSuccess && !string.IsNullOrEmpty(rawData))
-                    {
-                        userDataInfo = JsonUtility.FromJson<TypeFlag.SocketDataType.LoginDatabaseType>(rawData);
+                    userDataInfo = JsonUtility.FromJson<TypeFlag.SocketDataType.LoginDatabaseType>(rawData);
 
-                        if (userDataInfo.status)
-                        {
-                            //Modals.instance.Close();
-                            UpdateSocketUserInfo(type, userDataInfo);
+                    //Modals.instance.Close();
+                    UpdateSocketUserInfo(type, userDataInfo);
 
-                            NextStage(type);
-                        }
-                    }
+                    NextStage(type);
 
                     uiButton.enabled = true;
-                }));
+
+                } , null));
         }
 
         private void UpdateSocketUserInfo(TypeFlag.UserType type, TypeFlag.SocketDataType.LoginDatabaseType loginInfo) {
@@ -117,7 +110,7 @@ namespace Hsinpa.Controller {
                 case TypeFlag.UserType.Teacher:
                     Debug.Log("To Guest Teacher");
 
-                    MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.HostRoomShowUI, userDataInfo);
+                    MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowHostRoomUI, userDataInfo);
 
                     break;
             }
