@@ -15,6 +15,8 @@ namespace Hsinpa.Controller
         private SocketIOManager _socketIOManager;
         private UserInfoModal _userInfoModal;
 
+        
+
         public override void OnNotify(string p_event, params object[] p_objects)
         {
             switch (p_event)
@@ -23,7 +25,8 @@ namespace Hsinpa.Controller
                 case GeneralFlag.ObeserverEvent.ShowUserInfo: {
                     if (p_objects.Length == 2)
                         // 0 => StudentDatabaseType, 1 = HasConnection
-                        ShowUserInfo( (TypeFlag.SocketDataType.StudentDatabaseType) p_objects[0], (bool)p_objects[1], TypeFlag.UserType.Teacher);
+                        ShowUserInfo(
+                            (TypeFlag.SocketDataType.StudentDatabaseType) p_objects[0], (bool)p_objects[1], TypeFlag.UserType.Teacher);
                 }
                 break;
             }

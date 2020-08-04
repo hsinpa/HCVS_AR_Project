@@ -63,6 +63,8 @@ public class APIHttpRequest : MonoBehaviour
             {
                 string rawJSON = webRequest.downloadHandler.text;
                 var DatabaseResult = JsonUtility.FromJson<TypeFlag.SocketDataType.GeneralDatabaseType>(rawJSON);
+                Debug.Log(rawJSON);
+                Debug.Log(DatabaseResult.result);
 
                 if (DatabaseResult.status && !string.IsNullOrEmpty(DatabaseResult.result))
                     if (success_callback != null) success_callback(DatabaseResult.result);

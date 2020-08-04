@@ -13,6 +13,15 @@ public class TypeFlag
         public const string CreateRoom = "event@create_room";
     }
 
+    public class InGameType {
+        [System.Serializable]
+        public struct MissionType
+        {
+            public string mission_id;
+            public string mission_name;
+        }
+    }
+
     public class SocketDataType
     {
         [System.Serializable]

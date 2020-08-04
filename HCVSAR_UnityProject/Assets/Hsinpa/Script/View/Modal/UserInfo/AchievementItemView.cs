@@ -16,11 +16,18 @@ namespace Expect.View
         [SerializeField]
         private Color defaultColor;
 
-        private void SetTitle(string title, bool highlight) {
-            titleText.text = title;
+        public bool hashed = false;
+
+        public void SetTitle(string title, bool highlight) {
+            titleText.text =  (hashed && !highlight) ? GetHashText() : title;
+
             dotImage.enabled = highlight;
 
             titleText.color = (highlight) ? dotImage.color : defaultColor;
+        }
+
+        private string GetHashText() {
+            return "???????????";
         }
     }
 }

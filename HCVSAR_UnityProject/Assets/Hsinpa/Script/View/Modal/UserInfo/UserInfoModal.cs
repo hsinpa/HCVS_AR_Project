@@ -25,8 +25,18 @@ namespace Expect.View
         [SerializeField]
         private GameObject AchievementPrefab;
 
-        public void SetContent(TypeFlag.SocketDataType.StudentDatabaseType studentObj, bool hasConnection, TypeFlag.SocketDataType.UserScoreType[] rawScoreArray, TypeFlag.UserType userType) {
+        [SerializeField]
+        private MissionItemSObj missionItemSObj;
+
+        private TypeFlag.UserType userType;
+
+        public void SetContent(TypeFlag.SocketDataType.StudentDatabaseType studentObj, bool hasConnection, TypeFlag.SocketDataType.UserScoreType[] scoreArray, TypeFlag.UserType userType) {
+            this.userType = userType;
+
             UserInfoText.text = GetUserInfoText(studentObj, hasConnection);
+            TotalScoreText.text = CalculateAccompishPercent(scoreArray);
+
+            GenerateScoreBoard(scoreArray);
         }
 
         private string GetUserInfoText(TypeFlag.SocketDataType.StudentDatabaseType studentObj, bool hasConnection) {
@@ -37,6 +47,39 @@ namespace Expect.View
                 (hasConnection) ? StringAsset.UserInfo.Online : StringAsset.UserInfo.Offline);
 
             return formString;
+        }
+
+        private int CalculateScore(TypeFlag.SocketDataType.UserScoreType[] scoreArray) {
+            return scoreArray.Sum(x => x.score);
+        }
+
+        private string CalculateAccompishPercent(TypeFlag.SocketDataType.UserScoreType[] scoreArray)
+        {
+            float a_percent = (((float)scoreArray.Length) / missionItemSObj.missionArray.Length) * 100;
+
+            return a_percent + "%";
+        }
+
+        private void GenerateScoreBoard(TypeFlag.SocketDataType.UserScoreType[] scoreArray) {
+
+            if (missionItemSObj.missionArray == null) return;
+
+            var scoreList = scoreArray.ToList();
+            int missionLength = missionItemSObj.missionArray.Length;
+
+            Utility.UtilityMethod.ClearChildObject(AchievementHolder);
+
+            for (int i = 0; i < missionLength; i++)
+            {
+                AchievementItemView a_item = Utility.UtilityMethod.CreateObjectToParent(AchievementHolder, AchievementPrefab).GetComponent<AchievementItemView>();
+
+                a_item.hashed = (userType != TypeFlag.UserType.Teacher);
+
+                //Check if this task is been accompished
+                var userScoreIndex = scoreList.FindIndex(x => x.mission_id == missionItemSObj.missionArray[i].mission_id);
+
+                a_item.SetTitle(missionItemSObj.missionArray[i].mission_name, (userScoreIndex >= 0));
+            }
         }
 
     }

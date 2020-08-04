@@ -12,9 +12,7 @@ module.exports =  (router : Router, rootPath:string, model : Models) => {
   });
 
   router.post('/login', async function (ctx:any, next:any) {
-    var r = await model.UserModel.Login(ctx.request.body['type'], ctx.request.body['account'], ctx.request.body['password']);
-    
-    ctx.body = JSON.stringify(r);
+    ctx.body = await model.UserModel.Login(ctx.request.body['type'], ctx.request.body['account'], ctx.request.body['password']);
   });
 
   //#region Teacher Http Request

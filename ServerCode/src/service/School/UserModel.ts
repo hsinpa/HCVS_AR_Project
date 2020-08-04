@@ -38,7 +38,7 @@ export default class LoginModel {
 
         if (r.result.length > 0) {
             s.status = true;
-            s.result = {user_id : r.result[0]['id'], username : r.result[0]['account_name']};
+            s.result = JSON.stringify({user_id : r.result[0]['id'], username : r.result[0]['account_name']});
         }
 
         return s;
@@ -59,12 +59,12 @@ export default class LoginModel {
 
         if (r.result.length > 0) {
             s.status = true;
-            s.result = {
+            s.result = JSON.stringify({
                 user_id : r.result[0]['id'],
                 username : r.result[0]['student_name'],
                 seat : r.result[0]['seat'],
                 room_id : r.result[0]['class_id'] 
-            }
+            });
         }
         
         return s;

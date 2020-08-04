@@ -36,20 +36,23 @@ namespace Hsinpa.View
         private List<TypeFlag.SocketDataType.StudentDatabaseType> allStudentData;
         private Dictionary<string, MonitorItemPrefabView> studentItemDict = new Dictionary<string, MonitorItemPrefabView>();
 
-        public void SetUp(OnBottomBtnClick onGameStartBtnClickEvent, OnBottomBtnClick onTerminateBtnClickEvent, OnBottomBtnClick onMoreInfoBtnClickEvent) {
+        private System.Action<MonitorItemPrefabView> studentItemClickEvent;
+
+        public void SetUp(OnBottomBtnClick onGameStartBtnClickEvent, OnBottomBtnClick onTerminateBtnClickEvent,
+            OnBottomBtnClick onMoreInfoBtnClickEvent, System.Action<MonitorItemPrefabView> studentItemClickEvent) {
             GameStartBtn.onClick.AddListener(() => { onGameStartBtnClickEvent(GameStartBtn); });
             GameTerminateBtn.onClick.AddListener(() => { onTerminateBtnClickEvent(GameTerminateBtn); });
             MoreInfoBtn.onClick.AddListener(() => { onMoreInfoBtnClickEvent(MoreInfoBtn); });
+            this.studentItemClickEvent = studentItemClickEvent;
         }
 
-        public void SetContent(string titleText, TypeFlag.SocketDataType.StudentDatabaseType[] allStudentData) {
-
+        public void SetContent(string titleText, List<TypeFlag.SocketDataType.StudentDatabaseType>allStudentData) {
             GameStartBtn.interactable = true;
             GameTerminateBtn.interactable = false;
             MoreInfoBtn.interactable = false;
 
             ClassTitleTxt.text = titleText;
-            this.allStudentData = allStudentData.ToList();
+            this.allStudentData = allStudentData;
 
             RenderStudentInfoToScrollView(this.allStudentData);
         }
@@ -69,8 +72,6 @@ namespace Hsinpa.View
             GameStartBtn.interactable = false;
             GameTerminateBtn.interactable = true;
             MoreInfoBtn.interactable = true;
-
-
         }
 
         private void RenderStudentInfoToScrollView(List<TypeFlag.SocketDataType.StudentDatabaseType> allStudentData) {
@@ -84,7 +85,10 @@ namespace Hsinpa.View
 
                 MonitorItemPrefabView prefabView = studentObj.GetComponent<MonitorItemPrefabView>();
 
-                prefabView.SetNameAndID(allStudentData[i].student_name, allStudentData[i].id);
+                prefabView.SetNameAndID(allStudentData[i]);
+
+                prefabView.SetClickEvent(this.studentItemClickEvent);
+
                 studentItemDict.Add(allStudentData[i].id, prefabView);
             }
         }

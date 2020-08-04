@@ -511,6 +511,7 @@ MonoBehaviour:
   AchievementHolder: {fileID: 323199765308516939}
   AchievementPrefab: {fileID: 1655537018739376963, guid: e3b8c36dac89ef54ca77fb7def742eb2,
     type: 3}
+  missionItemSObj: {fileID: 11400000, guid: ea786e08ca9494660b6a0f0976c370a8, type: 2}
 --- !u!225 &5459843122782232742
 CanvasGroup:
   m_ObjectHideFlags: 0

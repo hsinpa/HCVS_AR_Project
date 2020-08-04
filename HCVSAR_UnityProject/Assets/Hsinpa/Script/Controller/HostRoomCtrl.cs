@@ -70,8 +70,7 @@ namespace Hsinpa.Controller
         }
 
         private void OnHostRoomEvent(TypeFlag.SocketDataType.ClassroomDatabaseType roomData) {
-
-            if (string.IsNullOrEmpty(roomData.class_id) || !string.IsNullOrEmpty(userDataInfo.user_id)) return;
+            if (string.IsNullOrEmpty(roomData.class_id) || string.IsNullOrEmpty(userDataInfo.user_id)) return;
 
             selectedRoomData = roomData;
 
@@ -79,10 +78,14 @@ namespace Hsinpa.Controller
             teacherCreateMsgRoomType.room_id = roomData.class_id;
             teacherCreateMsgRoomType.user_id = userDataInfo.user_id;
 
+            Debug.Log("_socketIOManager.Emit");
+
             _socketIOManager.Emit(TypeFlag.SocketEvent.CreateRoom, JsonUtility.ToJson(teacherCreateMsgRoomType));
         }
 
         private void OnSocketHostRoomEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args) {
+            Debug.Log("OnSocketHostRoomEvent");
+
             if (args.Length > 0) {
                 Debug.Log(args[0].ToString());
 

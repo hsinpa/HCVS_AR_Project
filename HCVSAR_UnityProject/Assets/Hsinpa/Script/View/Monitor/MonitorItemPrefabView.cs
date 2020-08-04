@@ -2,25 +2,51 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class MonitorItemPrefabView : MonoBehaviour
+namespace Hsinpa.View
 {
-    [SerializeField]
-    private Text InfoText;
 
-    [SerializeField]
-    private Image avatar;
+    public class MonitorItemPrefabView : MonoBehaviour
+    {
+        [SerializeField]
+        private Text InfoText;
 
-    public void SetNameAndID(string studentName, string studentID) {
-        InfoText.text = studentName + "\n" + studentID;
+        [SerializeField]
+        private Image avatar;
 
-        gameObject.name = studentID;
+        [SerializeField]
+        private Button _button;
 
-        ChangeStatus(false);
+        public Button button => _button;
+
+        private TypeFlag.SocketDataType.StudentDatabaseType _studentDatabaseType;
+        public TypeFlag.SocketDataType.StudentDatabaseType studentDatabaseType => _studentDatabaseType;
+
+        private bool _isOnline;
+        public bool isOnline => _isOnline;
+
+        public void SetNameAndID(TypeFlag.SocketDataType.StudentDatabaseType studentDataType)
+        {
+            _studentDatabaseType = studentDataType;
+
+            InfoText.text = studentDatabaseType.student_name + "\n" + studentDatabaseType.id;
+
+            gameObject.name = studentDatabaseType.id;
+
+            ChangeStatus(false);
+        }
+
+        public void ChangeStatus(bool isOnline)
+        {
+            _isOnline = isOnline;
+            avatar.color = (isOnline) ? Color.white : Color.gray;
+        }
+
+        public void SetClickEvent(System.Action<MonitorItemPrefabView> clickEvent)
+        {
+            button.onClick.RemoveAllListeners();
+
+            button.onClick.AddListener(() => clickEvent(this));
+        }
+
     }
-
-    public void ChangeStatus(bool isOnline) {
-        avatar.color = (isOnline) ? Color.white : Color.gray;
-    }
-
 }

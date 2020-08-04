@@ -76,6 +76,9 @@ namespace Expect.View
         }
 
         private void OnHostRoomBtnClick() {
+
+            Debug.Log("OnHostRoomBtnClick " + ClassSelection.value);
+
             if(ClassSelection.value >= 0)
                 OnHostRoomEvent(FilterDatabaseList[ClassSelection.value]);
         }

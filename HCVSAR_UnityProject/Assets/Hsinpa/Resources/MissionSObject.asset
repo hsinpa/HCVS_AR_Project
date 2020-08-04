@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 090a33d9ca7914b1ea816a61931ae3f9, type: 3}
+  m_Name: MissionSObject
+  m_EditorClassIdentifier: 
+  missionArray:
+  - mission_id: A
+    mission_name: "\u5357\u57CE\u7246\u6BB5"
+  - mission_id: B
+    mission_name: "\u6D77\u6E05\u820A\u6821\u9580\u53E3"
+  - mission_id: C
+    mission_name: "\u5EE3\u6FDF\u5BAE"
+  - mission_id: D
+    mission_name: "\u65E5\u672C\u6D77\u8ECD\u93AE\u6D0B\u9632\u7A7A\u58D5"
+  - mission_id: E
+    mission_name: "\u6D77\u6E05\u7B2C\u4E00\u5C46\u7562\u696D\u5408\u7167"
+  - mission_id: F
+    mission_name: "\u6821\u53F2\u5BA4"
+  - mission_id: G
+    mission_name: "\u5152\u7389\u6E90\u592A\u90CE\u5851\u50CF\u57FA\u5EA7"
+  - mission_id: I
+    mission_name: "\u8523\u5B8B\u7F8E\u9F61\u53C3\u8A2A"
+  - mission_id: J
+    mission_name: "\u897F\u81EA\u52A9\u65B0\u6751\u9CE5\u77B0"
+  - mission_id: K
+    mission_name: "\u9CF3\u5C71\u820A\u57CE\u5357\u9580"

@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using System.Linq;
 
 namespace Hsinpa.Controller
 {
@@ -17,7 +18,7 @@ namespace Hsinpa.Controller
         private MonitorPanelView _monitorView;
 
         private TypeFlag.SocketDataType.ClassroomDatabaseType selectedRoomData;
-        private TypeFlag.SocketDataType.StudentDatabaseType[] allStudentData;
+        private List<TypeFlag.SocketDataType.StudentDatabaseType> allStudentData;
         private SocketIOManager _socketIOManager;
 
         public override void OnNotify(string p_event, params object[] p_objects)
@@ -41,7 +42,7 @@ namespace Hsinpa.Controller
             _socketIOManager.socket.On(TypeFlag.SocketEvent.UserLeaved, OnUesrLeaveEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.RefreshUserStatus, OnRefreshUserStatusEvent);
 
-            _monitorView.SetUp(OnGameStartBtnClickEvent, OnTerminateBtnClickEvent, OnMoreInfoBtnClickEvent);
+            _monitorView.SetUp(OnGameStartBtnClickEvent, OnTerminateBtnClickEvent, OnMoreInfoBtnClickEvent, OnStudentObjClick);
         }
 
         private void PrepareStudentData(TypeFlag.SocketDataType.ClassroomDatabaseType selectedRoomData) {
@@ -54,10 +55,12 @@ namespace Hsinpa.Controller
                     return;
                 }
 
-                allStudentData = JsonHelper.FromJson<TypeFlag.SocketDataType.StudentDatabaseType>(json);
+                var tempStudentData = JsonHelper.FromJson<TypeFlag.SocketDataType.StudentDatabaseType>(json);
 
-                if (allStudentData != null)
+                if (tempStudentData != null)
                 {
+                    allStudentData = tempStudentData.ToList();
+
                     string fullRoomName = string.Format("{0}年, {1}", selectedRoomData.year, selectedRoomData.class_name);
                     _monitorView.SetContent(fullRoomName, allStudentData);
 
@@ -79,6 +82,28 @@ namespace Hsinpa.Controller
         private void OnMoreInfoBtnClickEvent(Button btn)
         {
 
+        }
+
+        private void OnStudentObjClick(MonitorItemPrefabView studentItem) {
+            studentItem.button.interactable = false;
+
+            MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowUserInfo, studentItem.studentDatabaseType, studentItem.isOnline);
+
+            //string uri = StringAsset.GetFullAPIUri(string.Format(StringAsset.API.GetStudentScore, btn.name));
+            //APIHttpRequest.NativeCurl(uri, UnityWebRequest.kHttpVerbGET, null, (string json) =>
+            //{
+            //    btn.interactable = true;
+
+
+            //    var userScoreArray = JsonHelper.FromJson<TypeFlag.SocketDataType.UserScoreType>(json);
+
+            //    MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowUserInfo, userScoreArray);
+
+            //}, () =>
+            //{
+            //    //Error Handler
+            //    btn.interactable = true;
+            //});
         }
 
         #region Socket Section
