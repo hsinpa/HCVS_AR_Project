@@ -21,9 +21,11 @@ export default class UserEmitter {
             this._socket.to(userType.room_id).emit(UniversalSocketEvent.UserLeaved, JSON.stringify(userType));
     }
 
-    EmitForceLeave(room_id : string) {
+    EmitForceLeave(room_id : string, location_id : string) {
         //Only emit to others, if room exist
         if (room_id)
-            this._socket.to(room_id).emit(TeacherSocketEvent.ForceEndGame);
+            this._socket.to(room_id).emit(TeacherSocketEvent.ForceEndGame,
+                JSON.stringify({location_id : location_id})
+            );
     }
 }

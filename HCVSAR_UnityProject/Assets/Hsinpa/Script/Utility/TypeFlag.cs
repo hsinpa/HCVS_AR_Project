@@ -12,6 +12,8 @@ public class TypeFlag
         public const string UserLeaved = "event@user_leave";
         public const string CreateRoom = "event@create_room";
         public const string StartGame = "event@start_game";
+        public const string TerminateGame = "event@force_end_game";
+
     }
 
     public class InGameType {

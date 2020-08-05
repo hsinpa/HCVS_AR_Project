@@ -20,7 +20,7 @@ export interface UserComponentType {
 export interface RoomComponentType {
     room_id : string,
     host_id : string,
-    
+
     start_time : number,
     end_time : number,
 
@@ -77,4 +77,9 @@ export interface UserDataType {
 export interface RoomStudentType {
     socketID : string,
     user_id : string
+}
+
+export interface TerminateEventType {
+    location_id: string,
+    room_id : string
 }

@@ -25,6 +25,10 @@ module.exports =  (router : Router, rootPath:string, model : Models) => {
     ctx.body = await model.ClassModel.GetAllAvailableClass();
   });
 
+  router.get('/getClassScoreInfo/:class_id', async function (ctx:any, next:any) {
+    ctx.body = await model.ScoreTableModel.GetClassScoreInfo(ctx.params.class_id);
+  });
+
 //#endregion
 
 //#region Overall

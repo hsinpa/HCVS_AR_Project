@@ -17,7 +17,8 @@ namespace Expect.View
         private Text contentText;
 
         [SerializeField]
-        private Dropdown dropDownMenu;
+        private Dropdown _dropDownMenu;
+        public Dropdown dropDownMenu => _dropDownMenu;
 
         [SerializeField]
         private Image decorateImage;
@@ -62,7 +63,7 @@ namespace Expect.View
             int btnlength = allowBtns.Length;
 
             for (int i = 0; i < btnlength; i++) {
-                var DialogueButtonObj = buttons.Find(x => x.type == allowBtns[0]);
+                var DialogueButtonObj = buttons.Find(x => x.type == allowBtns[i]);
 
                 DialogueButtonObj.gameObject.SetActive(true);
 

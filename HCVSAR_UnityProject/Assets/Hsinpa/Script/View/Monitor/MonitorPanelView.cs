@@ -115,8 +115,6 @@ namespace Hsinpa.View
             startTime = DateTime.UtcNow;
             endTime = DateTimeOffset.FromUnixTimeMilliseconds(endTimestamp).DateTime;
 
-            Debug.Log(endTime);
-            Debug.Log(startTime);
         }
 
         public void ResetContent() {

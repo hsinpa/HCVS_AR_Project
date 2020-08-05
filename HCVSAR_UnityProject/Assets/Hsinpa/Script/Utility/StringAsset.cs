@@ -11,7 +11,7 @@ namespace Expect.StaticAsset {
             public const string UserIDInputError = "帳號格式錯誤 : 字數6-20";
             public const string PasswordInputError = "密碼格式錯誤 : 字數6-20";
 
-            
+
         }
 
         public class UserInfo
@@ -22,6 +22,17 @@ namespace Expect.StaticAsset {
 
             public const string OnlineColor = "#52ED66";
             public const string OfflineColor = "#CACACA";
+
+            public const string GameStartTitle = "開始遊戲";
+            public const string GameStartDesc = "遊戲開始後, 同學們需要在40分鐘內完成探索";
+
+            public const string GameTerminateTitle = "結束遊戲";
+            public const string GameTerminateDesc = "所有同學請到以下地點集合";
+        }
+
+        public class ClassInfo {
+            public const string Participant = "闖關人數";
+            public const string AverageScore = "平均得點";
         }
 
         public class Domain {
@@ -34,6 +45,7 @@ namespace Expect.StaticAsset {
             public const string GetAllClassInfo = "getAllClassInfo";
             public const string GetAllStudentByID = "getAllStudentByID/{0}/{1}";
             public const string GetStudentScore = "getStudentScore/{0}";
+            public const string GetClassScore = "getClassScoreInfo/{0}";
 
         }
 

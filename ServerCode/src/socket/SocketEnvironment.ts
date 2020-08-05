@@ -94,10 +94,11 @@ class SocketEnvironment {
      * Execute by Teacher
      *
      * @param {string} room_id
+     * @param {string} location_id
      * @memberof SocketEnvironment
      */
-    RoomDismiss(room_id : string) {
-        this.userEmitter.EmitForceLeave(room_id);
+    RoomDismiss(room_id : string, location_id = "K") {
+        this.userEmitter.EmitForceLeave(room_id, location_id);
         this.rooms.delete(room_id);
     }
 

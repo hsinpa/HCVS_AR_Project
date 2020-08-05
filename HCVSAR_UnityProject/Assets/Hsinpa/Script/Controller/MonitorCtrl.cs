@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Linq;
+using Expect.View;
 
 namespace Hsinpa.Controller
 {
@@ -16,6 +17,16 @@ namespace Hsinpa.Controller
     {
         [SerializeField]
         private MonitorPanelView _monitorView;
+
+        [Header("Sprites")]
+        [SerializeField]
+        private Sprite GameStartSprite;
+
+        [SerializeField]
+        private Sprite TerminateStartSprite;
+
+        [SerializeField]
+        private MissionItemSObj MissionItemSObj;
 
         private TypeFlag.SocketDataType.ClassroomDatabaseType selectedRoomData;
         private List<TypeFlag.SocketDataType.StudentDatabaseType> allStudentData;
@@ -74,14 +85,53 @@ namespace Hsinpa.Controller
         }
 
         private void OnGameStartBtnClickEvent(Button btn) {
-            btn.interactable = false;
+            var dialogueModal = Modals.instance.OpenModal<DialogueModal>();
+            dialogueModal.DecorateSideImage(GameStartSprite);
+            dialogueModal.SetDialogue(StringAsset.UserInfo.GameStartTitle, StringAsset.UserInfo.GameStartDesc,
+                new DialogueModal.ButtonType[] { DialogueModal.ButtonType.Accept, DialogueModal.ButtonType.Cancel },
+                (x) =>
+                {
 
-            _socketIOManager.socket.Emit(TypeFlag.SocketEvent.StartGame, string.Format("{{\"room_id\" : \"{0}\"}}", selectedRoomData.class_id));
+                    Modals.instance.Close();
+
+                    if (x == DialogueModal.ButtonType.Accept) {
+                        string roomJSONString = string.Format("{{\"room_id\" : \"{0}\"}}", selectedRoomData.class_id);
+                        _socketIOManager.socket.Emit(TypeFlag.SocketEvent.StartGame, roomJSONString);
+
+                        btn.interactable = false;
+                    }
+                }
+            );
         }
 
         private void OnTerminateBtnClickEvent(Button btn)
         {
-            btn.interactable = false;
+
+            var dialogueModal = Modals.instance.OpenModal<DialogueModal>();
+            dialogueModal.DecorateSideImage(TerminateStartSprite);
+
+            dialogueModal.SetDropDown(MissionItemSObj.missionArray.Select(x=>x.mission_name).ToArray());
+
+            dialogueModal.SetDialogue(StringAsset.UserInfo.GameTerminateTitle, StringAsset.UserInfo.GameTerminateTitle,
+                new DialogueModal.ButtonType[] { DialogueModal.ButtonType.Accept, DialogueModal.ButtonType.Cancel },
+                (x) =>
+                {
+                    Modals.instance.Close();
+
+                    if (x == DialogueModal.ButtonType.Accept)
+                    {
+                        int dropDownIndex = dialogueModal.dropDownMenu.value;
+                        string location_id = MissionItemSObj.missionArray[dropDownIndex].mission_id;
+
+                        string jsonString = string.Format("{{\"room_id\" : \"{0}\", \"location_id\" : \"{1}\"}}",
+                                                            selectedRoomData.class_id, location_id);
+
+                        _socketIOManager.socket.Emit(TypeFlag.SocketEvent.TerminateGame, jsonString);
+
+                        btn.interactable = false;
+                    }
+                }
+            );
         }
 
         private void OnMoreInfoBtnClickEvent(Button btn)
@@ -126,7 +176,6 @@ namespace Hsinpa.Controller
         {
             if (args.Length > 0)
             {
-                Debug.Log(args[0].ToString());
 
                 var roomComps = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
 

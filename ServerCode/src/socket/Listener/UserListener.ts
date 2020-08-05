@@ -1,5 +1,5 @@
 import {TeacherSocketEvent, UniversalSocketEvent} from '../../Utility/Flag/EventFlag';
-import {TeacherCreateMsgRoomType, TeacherCommonType, UserDataType} from '../../Utility/Flag/TypeFlag';
+import {TeacherCreateMsgRoomType, TerminateEventType, TeacherCommonType, UserDataType} from '../../Utility/Flag/TypeFlag';
 import SocketEnvironment from '../SocketEnvironment';
 
 export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketIO.Server, socektEnv : SocketEnvironment) {
@@ -32,8 +32,10 @@ export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketI
         }
     });
 
-    socket.on(TeacherSocketEvent.ForceEndGame, function (data : TeacherCommonType) {
-        socektEnv.RoomDismiss(data.room_id);
+    socket.on(TeacherSocketEvent.ForceEndGame, function (data : string) {
+        let parseData : TerminateEventType = JSON.parse(data);
+
+        socektEnv.RoomDismiss(parseData.room_id, parseData.location_id);
     });
 
     socket.on(TeacherSocketEvent.StartGame, function (data : string) {        

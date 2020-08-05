@@ -20,7 +20,6 @@ namespace Expect.View
 
         public void SetTitle(string title, bool highlight) {
 
-            Debug.Log(hashed.ToString() + ",  highlight " + highlight.ToString());
             titleText.text =  (hashed && !highlight) ? GetHashText() : title;
 
             dotImage.enabled = highlight;
