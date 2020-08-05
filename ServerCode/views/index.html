@@ -118,9 +118,8 @@ function CreateOptionToSelect(rooms) {
   let selectDom = document.querySelector(".createRoom select");
   selectDom.innerHTML = "";
 
-  console.log(rooms);
-
-  rooms.forEach(x => {
+  let roomsArray = JSON.parse(rooms.result);
+  roomsArray.forEach(x => {
     var option = document.createElement("option");
 
     option.text = x["class_name"];

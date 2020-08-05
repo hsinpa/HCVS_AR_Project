@@ -25,9 +25,6 @@ namespace Hsinpa.Controller
         [SerializeField]
         private Sprite TerminateStartSprite;
 
-        [SerializeField]
-        private MissionItemSObj MissionItemSObj;
-
         private TypeFlag.SocketDataType.ClassroomDatabaseType selectedRoomData;
         private List<TypeFlag.SocketDataType.StudentDatabaseType> allStudentData;
         private SocketIOManager _socketIOManager;
@@ -84,6 +81,7 @@ namespace Hsinpa.Controller
             }, null));
         }
 
+        #region Button Event
         private void OnGameStartBtnClickEvent(Button btn) {
             var dialogueModal = Modals.instance.OpenModal<DialogueModal>();
             dialogueModal.DecorateSideImage(GameStartSprite);
@@ -106,13 +104,12 @@ namespace Hsinpa.Controller
 
         private void OnTerminateBtnClickEvent(Button btn)
         {
-
             var dialogueModal = Modals.instance.OpenModal<DialogueModal>();
             dialogueModal.DecorateSideImage(TerminateStartSprite);
 
-            dialogueModal.SetDropDown(MissionItemSObj.missionArray.Select(x=>x.mission_name).ToArray());
+            MissionItemSObj missionItemSObj = MainApp.Instance.database.MissionItemSObj;
 
-            dialogueModal.SetDialogue(StringAsset.UserInfo.GameTerminateTitle, StringAsset.UserInfo.GameTerminateTitle,
+            dialogueModal.SetDialogue(StringAsset.UserInfo.GameTerminateTitle, StringAsset.UserInfo.GameTerminateDesc,
                 new DialogueModal.ButtonType[] { DialogueModal.ButtonType.Accept, DialogueModal.ButtonType.Cancel },
                 (x) =>
                 {
@@ -121,7 +118,7 @@ namespace Hsinpa.Controller
                     if (x == DialogueModal.ButtonType.Accept)
                     {
                         int dropDownIndex = dialogueModal.dropDownMenu.value;
-                        string location_id = MissionItemSObj.missionArray[dropDownIndex].mission_id;
+                        string location_id = missionItemSObj.missionArray[dropDownIndex].mission_id;
 
                         string jsonString = string.Format("{{\"room_id\" : \"{0}\", \"location_id\" : \"{1}\"}}",
                                                             selectedRoomData.class_id, location_id);
@@ -132,11 +129,13 @@ namespace Hsinpa.Controller
                     }
                 }
             );
+
+            dialogueModal.SetDropDown(missionItemSObj.missionArray.Select(x => x.mission_name).ToArray());
         }
 
         private void OnMoreInfoBtnClickEvent(Button btn)
         {
-
+            MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowClassScore, selectedRoomData);
         }
 
         private void OnStudentObjClick(MonitorItemPrefabView studentItem) {
@@ -144,6 +143,8 @@ namespace Hsinpa.Controller
             MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowUserInfo, studentItem.studentDatabaseType, studentItem.isOnline);
 
         }
+
+        #endregion
 
         #region Socket Section
         private void OnUserJoinEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
@@ -179,7 +180,7 @@ namespace Hsinpa.Controller
 
                 var roomComps = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
 
-                _monitorView.SetTimer(roomComps.end_time);
+                _monitorView.SetTimerAndGameStart(roomComps.end_time);
             }
         }
         #endregion

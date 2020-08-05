@@ -75,12 +75,6 @@ namespace Hsinpa.View
             }
         }
 
-        public void GameStartAndSetTimer() {
-            GameStartBtn.interactable = false;
-            GameTerminateBtn.interactable = true;
-            MoreInfoBtn.interactable = true;
-        }
-
         private void RenderStudentInfoToScrollView(List<TypeFlag.SocketDataType.StudentDatabaseType> allStudentData) {
             int studentCount = allStudentData.Count;
 
@@ -111,10 +105,14 @@ namespace Hsinpa.View
             }
         }
 
-        public void SetTimer(long endTimestamp) {
+        public void SetTimerAndGameStart(long endTimestamp) {
             startTime = DateTime.UtcNow;
             endTime = DateTimeOffset.FromUnixTimeMilliseconds(endTimestamp).DateTime;
 
+
+            GameStartBtn.interactable = false;
+            GameTerminateBtn.interactable = true;
+            MoreInfoBtn.interactable = true;
         }
 
         public void ResetContent() {
@@ -135,6 +133,8 @@ namespace Hsinpa.View
 
             TimerText.text = string.Format("{0}:{1}", t.Minutes, t.Seconds);
         }
-
+    
+        
+    
     }
 }

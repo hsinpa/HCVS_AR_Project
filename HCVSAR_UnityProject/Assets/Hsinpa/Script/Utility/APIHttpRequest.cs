@@ -6,7 +6,7 @@ using BestHTTP.SecureProtocol.Org.BouncyCastle.Ocsp;
 using UnityEngine.Networking;
 using System.Text;
 
-public class APIHttpRequest : MonoBehaviour
+public class APIHttpRequest
 {
 
     public static void Curl(string url, HTTPMethods httpMethods, string rawJsonObject, System.Action<bool, string> callback) {

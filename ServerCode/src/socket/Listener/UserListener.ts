@@ -62,7 +62,11 @@ export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketI
 
         let userComp = socektEnv.UpdateUserLoginInfo(socket.id, parseData.user_name, parseData.user_id, parseData.room_id, parseData.userType);
 
+        console.log(userComp);
+
         if (userComp && socektEnv.CheckIfRoomAvailable(userComp)) {
+            console.log("socektEnv.CheckIfRoomAvailable");
+
             socket.join(userComp.room_id);
 
             socket.to(userComp.room_id).emit(UniversalSocketEvent.UserJoined, JSON.stringify(userComp));

@@ -6,6 +6,7 @@ using ObserverPattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Hsinpa.Model;
 
 public class MainApp : Singleton<MainApp>
 {
@@ -16,6 +17,10 @@ public class MainApp : Singleton<MainApp>
     SocketIOManager _socketManager;
 
     private Observer[] observers = new Observer[0];
+
+    [SerializeField]
+    private SimpleDatabase _database;
+    public SimpleDatabase database => _database;
 
     private void Start()
     {
@@ -33,18 +38,18 @@ public class MainApp : Singleton<MainApp>
     }
 
     public void Init() {
-
         LoginCtrl loginCtrl = GetObserver<LoginCtrl>();
         HostRoomCtrl hostRoomCtrl = GetObserver<HostRoomCtrl>();
         MonitorCtrl monitorCtrl = GetObserver<MonitorCtrl>();
         UserInfoCtrl userInfoCtrl = GetObserver<UserInfoCtrl>();
-
+        ClassScoreCtrl classScoreCtrl = GetObserver<ClassScoreCtrl>();
 
         LoginModal loginModal = Modals.instance.GetModal<LoginModal>();
         loginCtrl.SetUp(loginModal, _socketManager);
         hostRoomCtrl.SetUp(Modals.instance.GetModal<HostRoomModal>(), _socketManager);
         monitorCtrl.SetUp(_socketManager);
         userInfoCtrl.SetUp(_socketManager, Modals.instance.GetModal<UserInfoModal>());
+        classScoreCtrl.SetUp(Modals.instance.GetModal<ClassInfoModal>());
         //hostRoomCtrl.Process();
         loginCtrl.ProcessLogin();
     }

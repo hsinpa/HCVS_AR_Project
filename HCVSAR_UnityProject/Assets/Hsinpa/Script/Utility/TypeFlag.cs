@@ -116,5 +116,20 @@ public class TypeFlag
 
             //public string[] students;
         }
+
+        [System.Serializable]
+        public struct ClassScoreHolderType {
+            public ClassScoreType[] participant_count;
+            public ClassScoreType[] average_score;
+        }
+
+        [System.Serializable]
+        public struct ClassScoreType
+        {
+            public string mission_id;
+            public float main_value;
+        }
+
+
     }
 }

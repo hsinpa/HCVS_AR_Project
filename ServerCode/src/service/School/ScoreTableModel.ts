@@ -46,12 +46,15 @@ export default class ScoreTableModel {
         let participant_count = await this.GetPerticipantCount(class_id);
         let average_score = await this.GetClassAverageScore(class_id);
 
+        let participantCountResult = JSON.parse(participant_count.result);
+        let averageScoreResult = JSON.parse(average_score.result);
+
         if (participant_count.status && average_score.status) {
             data.status = true;
-            data.result = {
-                participant_count : participant_count.result,
-                average_score : average_score.result
-            }
+            data.result = JSON.stringify({
+                participant_count : participantCountResult,
+                average_score : averageScoreResult
+            });
 
             return data;
         }

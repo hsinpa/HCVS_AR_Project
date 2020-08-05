@@ -25,12 +25,9 @@ namespace Expect.View
         [SerializeField]
         private BarChart barChart;
 
-
         public void SetTitle(string titleText) {
             title.text = titleText;
         }
-
-
 
         private void Awake()
         {
@@ -40,8 +37,40 @@ namespace Expect.View
             });
         }
 
+        public void SetAxisLabel(List<string> axis_label) {
+            barChart.AxisConfig.HorizontalAxisConfig.ValueFormatterConfig.CustomValues.Clear();
 
+            barChart.AxisConfig.HorizontalAxisConfig.ValueFormatterConfig.CustomValues = axis_label;
+        }
 
+        public void SetChartData(string key, Color barColor, TypeFlag.SocketDataType.ClassScoreType[] scoreArray) {
 
+            if (scoreArray == null) return;
+
+            BarDataSet set = new BarDataSet();
+            set.Title = key;
+
+            int scoreLen = scoreArray.Length;
+
+            for (int i = 0; i < scoreLen; i++) {
+                set.AddEntry(new BarEntry(i, scoreArray[i].main_value));
+            }
+
+            set.BarColors.Add(barColor);
+
+            barChart.GetChartData().DataSets.Add(set);
+
+            barChart.SetDirty();
+        }
+
+        public void ResetContent()
+        {
+            var chartData = barChart.GetChartData();
+            if (chartData != null)
+            {
+                chartData.Clear();
+                barChart.SetDirty();
+            }
+        }
     }
 }

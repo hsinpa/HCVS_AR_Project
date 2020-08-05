@@ -369,7 +369,7 @@ MonoBehaviour:
   canvasGroup: {fileID: 342868148}
   titleText: {fileID: 845444691866342763}
   contentText: {fileID: 8577635703496950680}
-  dropDownMenu: {fileID: 7207123059726158577}
+  _dropDownMenu: {fileID: 7207123059726158577}
   decorateImage: {fileID: 845444692542761623}
 --- !u!225 &342868148
 CanvasGroup:
@@ -777,7 +777,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.9251864}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -8.483887, y: 14.362999}
+  m_AnchoredPosition: {x: -8.483887, y: 14.362923}
   m_SizeDelta: {x: 170.8653, y: 151.72815}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &845444692542761616
@@ -925,7 +925,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -7.499939, y: -0.5}
+  m_AnchoredPosition: {x: -7.5, y: -0.5}
   m_SizeDelta: {x: -35, y: -13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3695586574879175178
@@ -1377,7 +1377,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.15847513}
   m_AnchorMax: {x: 1, y: 0.344}
-  m_AnchoredPosition: {x: 0, y: -2.0000305}
+  m_AnchoredPosition: {x: 0, y: -2.0000153}
   m_SizeDelta: {x: -153.89758, y: -10.733055}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1411558189042128017

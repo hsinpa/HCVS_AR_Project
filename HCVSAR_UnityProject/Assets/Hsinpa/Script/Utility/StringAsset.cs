@@ -1,5 +1,7 @@
 ﻿
 
+using UnityEngine;
+
 namespace Expect.StaticAsset {
     public class StringAsset
     {
@@ -31,8 +33,14 @@ namespace Expect.StaticAsset {
         }
 
         public class ClassInfo {
+            public const string Title = "班級資料\n{0}";
+
             public const string Participant = "闖關人數";
             public const string AverageScore = "平均得點";
+
+            public readonly static Color32 ParticipantColor = new Color32(142, 233, 230, 255);
+            public readonly static Color32 AvgSCoreColor = new Color32(237, 241, 122, 255);
+
         }
 
         public class Domain {
