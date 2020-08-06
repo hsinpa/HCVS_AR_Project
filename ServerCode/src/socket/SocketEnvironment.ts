@@ -155,7 +155,6 @@ class SocketEnvironment {
 
             this.rooms.set(room_id, room);
         }
-
     }
 
 }

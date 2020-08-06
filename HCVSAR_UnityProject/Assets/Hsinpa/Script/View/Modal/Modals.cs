@@ -65,7 +65,12 @@ namespace Hsinpa.View
                 }
             }
 
-            openModals.Add(targetModal as T);
+            int modalIndex = openModals.FindIndex(x => x.GetType() == typeof(T));
+
+            if (modalIndex < 0) {
+                openModals.Add(targetModal as T);
+            }
+
             currentModals = targetModal as T;
 
             background.enabled = (hasBackground);

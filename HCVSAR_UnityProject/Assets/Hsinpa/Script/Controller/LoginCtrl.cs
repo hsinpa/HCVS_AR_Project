@@ -47,13 +47,14 @@ namespace Hsinpa.Controller {
             bool matchUserID = ValidInputText(user_id);
             bool matchPassword = ValidInputText(password);
 
-
+            //Check Account ID Format
             if (!matchUserID) {
                 _loginModal.SetWarningMsg(StringAsset.Login.UserIDInputError);
                 uiButton.enabled = true;
                 return;
             }
 
+            //Teacher : Check Password format
             if (type == TypeFlag.UserType.Teacher && !matchPassword) {
                 _loginModal.SetWarningMsg(StringAsset.Login.PasswordInputError);
                 uiButton.enabled = true;
@@ -81,8 +82,11 @@ namespace Hsinpa.Controller {
                     NextStage(type);
 
                     uiButton.enabled = true;
+                } , () => {
+                    _loginModal.SetWarningMsg(StringAsset.Login.ServerDataError);
 
-                } , null));
+                    uiButton.enabled = true;
+                }));
         }
 
         private void UpdateSocketUserInfo(TypeFlag.UserType type, TypeFlag.SocketDataType.LoginDatabaseType loginInfo) {

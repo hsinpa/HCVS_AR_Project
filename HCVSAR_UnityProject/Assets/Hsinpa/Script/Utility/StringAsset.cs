@@ -12,8 +12,7 @@ namespace Expect.StaticAsset {
 
             public const string UserIDInputError = "帳號格式錯誤 : 字數6-20";
             public const string PasswordInputError = "密碼格式錯誤 : 字數6-20";
-
-
+            public const string ServerDataError = "帳號密碼不符合: 查無此筆資料";
         }
 
         public class UserInfo
