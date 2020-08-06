@@ -43,14 +43,18 @@ namespace Hsinpa.View
         private DateTime startTime = DateTime.MinValue;
         private DateTime endTime = DateTime.MinValue;
 
-        private System.Action<MonitorItemPrefabView> studentItemClickEvent;
+        private System.Action<MonitorItemPrefabView> OnStudentItemClickEvent;
+        private System.Action OnTimeUpEvent;
 
         public void SetUp(OnBottomBtnClick onGameStartBtnClickEvent, OnBottomBtnClick onTerminateBtnClickEvent,
-            OnBottomBtnClick onMoreInfoBtnClickEvent, System.Action<MonitorItemPrefabView> studentItemClickEvent) {
+            OnBottomBtnClick onMoreInfoBtnClickEvent, System.Action<MonitorItemPrefabView> studentItemClickEvent,
+            System.Action OnTimeUpEvent
+            ) {
             GameStartBtn.onClick.AddListener(() => { onGameStartBtnClickEvent(GameStartBtn); });
             GameTerminateBtn.onClick.AddListener(() => { onTerminateBtnClickEvent(GameTerminateBtn); });
             MoreInfoBtn.onClick.AddListener(() => { onMoreInfoBtnClickEvent(MoreInfoBtn); });
-            this.studentItemClickEvent = studentItemClickEvent;
+            this.OnStudentItemClickEvent = studentItemClickEvent;
+            this.OnTimeUpEvent = OnTimeUpEvent;
         }
 
         public void SetContent(string titleText, List<TypeFlag.SocketDataType.StudentDatabaseType>allStudentData) {
@@ -87,7 +91,7 @@ namespace Hsinpa.View
 
                 prefabView.SetNameAndID(allStudentData[i]);
 
-                prefabView.SetClickEvent(this.studentItemClickEvent);
+                prefabView.SetClickEvent(this.OnStudentItemClickEvent);
 
                 studentItemDict.Add(allStudentData[i].id, prefabView);
             }
@@ -132,6 +136,14 @@ namespace Hsinpa.View
             TimeSpan t = endTime - DateTime.UtcNow;
 
             TimerText.text = string.Format("{0}:{1}", t.Minutes, t.Seconds);
+
+            if (t.Seconds < 0) {
+                Debug.Log("Teacher : Time up");
+
+                if (OnTimeUpEvent != null) OnTimeUpEvent();
+
+                endTime = DateTime.MinValue;
+            }
         }
     
         

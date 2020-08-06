@@ -91,10 +91,10 @@ class SocketEnvironment {
     }
 
     /**
-     * Execute by Teacher
+     * Execute by Teacher, stop the game, and inform student where to rally
      *
      * @param {string} room_id
-     * @param {string} location_id
+     * @param {string} location_id If not list, use the last location_id as default
      * @memberof SocketEnvironment
      */
     RoomDismiss(room_id : string, location_id = "K") {
@@ -147,8 +147,8 @@ class SocketEnvironment {
         if (this.rooms.has(room_id)) {
             let room = this.rooms.get(room_id);
 
-            let endExtendSec = 40;
-            let endDateMiliSecond = new Date(start_time + endExtendSec * 60000);
+            let endExtendMinute = 40;
+            let endDateMiliSecond = new Date(start_time + endExtendMinute * 60000);
     
             room.start_time = start_time;
             room.end_time = endDateMiliSecond.getTime();

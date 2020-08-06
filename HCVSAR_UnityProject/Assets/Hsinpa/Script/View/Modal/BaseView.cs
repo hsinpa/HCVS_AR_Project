@@ -17,5 +17,6 @@ namespace Hsinpa.View {
             }
         }
 
+        public bool isShow => canvasGroup.alpha == 1;
     }
 }

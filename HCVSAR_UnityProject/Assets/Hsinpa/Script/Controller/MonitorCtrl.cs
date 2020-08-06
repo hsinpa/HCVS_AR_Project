@@ -51,7 +51,7 @@ namespace Hsinpa.Controller
             _socketIOManager.socket.On(TypeFlag.SocketEvent.RefreshUserStatus, OnRefreshUserStatusEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
 
-            _monitorView.SetUp(OnGameStartBtnClickEvent, OnTerminateBtnClickEvent, OnMoreInfoBtnClickEvent, OnStudentObjClick);
+            _monitorView.SetUp(OnGameStartBtnClickEvent, OnTerminateBtnClickEvent, OnMoreInfoBtnClickEvent, OnStudentObjClick, OnTimeUp);
         }
 
         private void PrepareStudentData(TypeFlag.SocketDataType.ClassroomDatabaseType selectedRoomData) {
@@ -104,12 +104,76 @@ namespace Hsinpa.Controller
 
         private void OnTerminateBtnClickEvent(Button btn)
         {
+            var buttonTypes = new DialogueModal.ButtonType[] { DialogueModal.ButtonType.Accept, DialogueModal.ButtonType.Cancel};
+
+            ShowTerminateModal(btn, StringAsset.UserInfo.GameTerminateDesc, buttonTypes);
+        }
+
+        private void OnMoreInfoBtnClickEvent(Button btn)
+        {
+            MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowClassScore, selectedRoomData);
+        }
+
+        private void OnStudentObjClick(MonitorItemPrefabView studentItem) {
+
+            MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowUserInfo, studentItem.studentDatabaseType, studentItem.isOnline);
+
+        }
+
+        private void OnTimeUp() {
+            var buttonTypes = new DialogueModal.ButtonType[] { DialogueModal.ButtonType.Accept };
+
+            ShowTerminateModal(null, StringAsset.UserInfo.TimeUpTerminateDesc, buttonTypes);
+        }
+
+        #endregion
+
+        #region Socket Section
+        private void OnUserJoinEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
+        {
+            if (args.Length > 0)
+            {
+                var userComp = JsonUtility.FromJson<TypeFlag.SocketDataType.UserComponentType>(args[0].ToString());
+                if (_monitorView.isShow) _monitorView.SetUserConnectionType(true, userComp.user_id);
+            }
+        }
+
+        private void OnUesrLeaveEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
+        {
+            if (args.Length > 0) {
+                var userComp = JsonUtility.FromJson<TypeFlag.SocketDataType.UserComponentType>(args[0].ToString());
+                if (_monitorView.isShow) _monitorView.SetUserConnectionType(false, userComp.user_id);
+            }
+        }
+
+        private void OnRefreshUserStatusEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
+        {
+            if (args.Length > 0)
+            {
+                var userComps = JsonHelper.FromJson<TypeFlag.SocketDataType.UserComponentType>(args[0].ToString());
+                if (_monitorView.isShow) _monitorView.SyncUserStateByArray(userComps);
+            }
+        }
+
+        private void OnGameStartSocketEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
+        {
+            if (args.Length > 0)
+            {
+
+                var roomComps = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
+
+                if (_monitorView.isShow) _monitorView.SetTimerAndGameStart(roomComps.end_time);
+            }
+        }
+        #endregion
+
+        private void ShowTerminateModal(Button btn, string terminateContentText, DialogueModal.ButtonType[] buttonTypes) {
             var dialogueModal = Modals.instance.OpenModal<DialogueModal>();
             dialogueModal.DecorateSideImage(TerminateStartSprite);
 
             MissionItemSObj missionItemSObj = MainApp.Instance.database.MissionItemSObj;
 
-            dialogueModal.SetDialogue(StringAsset.UserInfo.GameTerminateTitle, StringAsset.UserInfo.GameTerminateDesc,
+            dialogueModal.SetDialogue(StringAsset.UserInfo.GameTerminateTitle, terminateContentText,
                 new DialogueModal.ButtonType[] { DialogueModal.ButtonType.Accept, DialogueModal.ButtonType.Cancel },
                 (x) =>
                 {
@@ -125,65 +189,14 @@ namespace Hsinpa.Controller
 
                         _socketIOManager.socket.Emit(TypeFlag.SocketEvent.TerminateGame, jsonString);
 
-                        btn.interactable = false;
+                        if (btn != null)
+                            btn.interactable = false;
                     }
                 }
             );
 
             dialogueModal.SetDropDown(missionItemSObj.missionArray.Select(x => x.mission_name).ToArray());
         }
-
-        private void OnMoreInfoBtnClickEvent(Button btn)
-        {
-            MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowClassScore, selectedRoomData);
-        }
-
-        private void OnStudentObjClick(MonitorItemPrefabView studentItem) {
-
-            MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowUserInfo, studentItem.studentDatabaseType, studentItem.isOnline);
-
-        }
-
-        #endregion
-
-        #region Socket Section
-        private void OnUserJoinEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
-        {
-            if (args.Length > 0)
-            {
-                var userComp = JsonUtility.FromJson<TypeFlag.SocketDataType.UserComponentType>(args[0].ToString());
-                _monitorView.SetUserConnectionType(true, userComp.user_id);
-            }
-        }
-
-        private void OnUesrLeaveEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
-        {
-            if (args.Length > 0) {
-                var userComp = JsonUtility.FromJson<TypeFlag.SocketDataType.UserComponentType>(args[0].ToString());
-                _monitorView.SetUserConnectionType(false, userComp.user_id);
-            }
-        }
-
-        private void OnRefreshUserStatusEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
-        {
-            if (args.Length > 0)
-            {
-                var userComps = JsonHelper.FromJson<TypeFlag.SocketDataType.UserComponentType>(args[0].ToString());
-                _monitorView.SyncUserStateByArray(userComps);
-            }
-        }
-
-        private void OnGameStartSocketEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
-        {
-            if (args.Length > 0)
-            {
-
-                var roomComps = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
-
-                _monitorView.SetTimerAndGameStart(roomComps.end_time);
-            }
-        }
-        #endregion
 
     }
 }

@@ -30,6 +30,8 @@ namespace Expect.StaticAsset {
 
             public const string GameTerminateTitle = "結束遊戲";
             public const string GameTerminateDesc = "所有同學請到以下地點集合";
+
+            public const string TimeUpTerminateDesc = "遊戲時間已達<color=#eb4f3b>40分鐘</color>, 請同學到以下地點集合";
         }
 
         public class ClassInfo {

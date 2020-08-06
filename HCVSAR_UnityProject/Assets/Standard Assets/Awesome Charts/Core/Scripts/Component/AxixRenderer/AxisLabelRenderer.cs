@@ -107,12 +107,18 @@ namespace AwesomeCharts {
             AxisLabelRendererExtry entry,
             Vector2 rendererSize) {
 
-            label.SetLabelColor (config.LabelColor);
-            label.SetLabelTextSize (config.LabelSize);
-            label.SetLabelTextAlignment (GetLabelAlignment (entry));
-            label.SetLabelText (entry.Text);
-            label.GetComponent<RectTransform> ().pivot = GetLabelPivot (entry);
-            label.transform.localPosition = CreateLabelPositionForEntry (entry, rendererSize, config.LabelMargin);
+                label.SetLabelColor(config.LabelColor);
+                label.SetLabelTextSize(config.LabelSize);
+                label.SetLabelTextAlignment(GetLabelAlignment(entry));
+                label.SetLabelText(entry.Text);
+                label.GetComponent<RectTransform>().pivot = GetLabelPivot(entry);
+
+
+                var entryPos = CreateLabelPositionForEntry(entry, rendererSize, config.LabelMargin);
+
+                if (!float.IsNaN(entryPos.x)) {
+                    label.transform.localPosition = entryPos;
+                }
         }
 
         private Vector2 CreateLabelPositionForEntry (AxisLabelRendererExtry entry, Vector2 rendererSize, float margin) {

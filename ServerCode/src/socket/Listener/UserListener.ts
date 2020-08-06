@@ -7,7 +7,6 @@ export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketI
 
 //#region Teacher Section
     socket.on(TeacherSocketEvent.CreateRoom, function (data : string) {
-        //TODO : Should force all student joined room
         let parseData : TeacherCreateMsgRoomType = JSON.parse(data);
         let isSucess = socektEnv.CreateRoom(parseData.user_id, parseData.room_id, socket.id);
 
@@ -45,11 +44,6 @@ export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketI
 
         socketServer.to(parseData.room_id).emit(TeacherSocketEvent.StartGame, JSON.stringify(roomComp));
     });
-
-    socket.on(TeacherSocketEvent.Rally, function (data : TeacherCommonType) {
-        //TODO: Don't know what is rally
-        socket.to(data.room_id).emit(TeacherSocketEvent.Rally);
-    });
 //#endregion
 
 //#region Student Section
@@ -62,10 +56,7 @@ export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketI
 
         let userComp = socektEnv.UpdateUserLoginInfo(socket.id, parseData.user_name, parseData.user_id, parseData.room_id, parseData.userType);
 
-        console.log(userComp);
-
         if (userComp && socektEnv.CheckIfRoomAvailable(userComp)) {
-            console.log("socektEnv.CheckIfRoomAvailable");
 
             socket.join(userComp.room_id);
 

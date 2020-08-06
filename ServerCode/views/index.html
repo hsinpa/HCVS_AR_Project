@@ -81,10 +81,15 @@ formDom.addEventListener("submit", (e) => {
     .then(data => {
       console.log('Success login:', data);
 
-      user_id = data["user_id"];
-      
-      UpdateUserData(data);
-      FindAllRoom();
+      if (data.status) {
+        let dataResult = JSON.parse(data.result);
+
+        user_id = dataResult["user_id"];
+
+        UpdateUserData(dataResult);
+        FindAllRoom();
+
+      }
     });
   });
 //#endregion
@@ -92,6 +97,8 @@ formDom.addEventListener("submit", (e) => {
 //#region Others
 
 function UpdateUserData(data) {
+  console.log(data);
+
   socket.emit("event@update_userInfo", JSON.stringify({
     userType : accountType,
     user_id : data.user_id,

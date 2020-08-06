@@ -185,9 +185,18 @@ namespace AwesomeCharts {
 
         private void ClearEditModeObjects() {
             int children = transform.childCount;
-            for (int i = 0; i < children; i++) {
-                DestroyImmediate(transform.GetChild(0).gameObject);
+
+            try
+            {
+                for (int i = 0; i < children; i++)
+                {
+                    DestroyImmediate(transform.GetChild(0).gameObject);
+                }
             }
+            catch {
+                
+            }
+
             legendEntryViews.Clear();
         }
 
