@@ -1,5 +1,9 @@
 const sql = require('mssql');
+
+import {createConnection} from 'mysql2/promise';
+
 import {DatabaseResultType} from '../Utility/Flag/TypeFlag';
+import { ppid } from 'process';
 
 export default class Database {
     config = {};
@@ -9,37 +13,30 @@ export default class Database {
             user : envFile.DATABASE_USER,
             password : envFile.DATABASE_PASSWORD,
             database : envFile.DATABASE_NAME,
-            server : envFile.DATABASE_SERVER,
-            options : {
-              enableArithAbort : true
-            }
+            host : envFile.DATABASE_SERVER
         }
     }
 
-    async PrepareAndExecuteQuery(p_query : string, p_params : any) {
-
-    }
-
-    async ExecuteQuery(p_query : string) : Promise<DatabaseResultType> {
+    async PrepareAndExecuteQuery(p_query : string, p_params : any[] = []) {
         let pool;
-
         let dataResult : DatabaseResultType = {
             status : false,
             result : {}
         };
 
         try {
-            pool = await sql.connect(this.config);
-            const { recordset } = await sql.query(p_query);
-            dataResult.result = JSON.stringify (recordset);
-            dataResult.status = true;
-        } catch(err) {
+            pool = await createConnection(this.config);
+            let [rows, fields] = await pool.execute(p_query, p_params);
 
-            //Insert Error to result
+            dataResult.result = JSON.stringify(rows);
+            dataResult.status = true;
+
+        } catch (err) {
             dataResult.result = err;
         } finally {
             if (pool != null)
-                await pool.close();
+                await pool.end();
+
             return dataResult;
         }
     }

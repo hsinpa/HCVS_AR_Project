@@ -11,9 +11,9 @@ export default class ScoreTableModel {
     async GetStudentScores(student_id : string) {
         let query = `SELECT student_id, mission_id, score 
                     FROM ScoreTable
-                    WHERE student_id='${student_id}'
+                    WHERE student_id=?
                     ORDER BY score DESC`;
-        return await this._database.ExecuteQuery(query);
+        return await this._database.PrepareAndExecuteQuery(query, [student_id]);
     }
 
     async GetPerticipantCount(class_id : string) {
@@ -22,10 +22,10 @@ export default class ScoreTableModel {
         FROM ScoreTable
         LEFT JOIN Student
         ON student_id = Student.id
-        WHERE Student.class_id = '${class_id}'
+        WHERE Student.class_id = ?
         GROUP BY mission_id`;
 
-        return await this._database.ExecuteQuery(query);
+        return await this._database.PrepareAndExecuteQuery(query, [class_id]);
     }
 
     async GetClassAverageScore(class_id : string) {
@@ -34,10 +34,10 @@ export default class ScoreTableModel {
         FROM ScoreTable
         LEFT JOIN Student
         ON student_id = Student.id
-        WHERE Student.class_id = '${class_id}'
+        WHERE Student.class_id = ?
         GROUP BY mission_id`;
 
-        return await this._database.ExecuteQuery(query);
+        return await this._database.PrepareAndExecuteQuery(query, [class_id]);
     }
 
     async GetClassScoreInfo(class_id : string) {

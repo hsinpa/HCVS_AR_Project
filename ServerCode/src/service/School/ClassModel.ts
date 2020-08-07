@@ -9,9 +9,10 @@ export default class ClassModel {
     }
 
     async GetAllAvailableClass() {
-        let query = `SELECT TOP 80 class_name, class_id, year 
+        let query = `SELECT class_name, class_id, year 
                     FROM ClassRoom
-                    ORDER BY year DESC`;
-        return (await this._database.ExecuteQuery(query));
+                    ORDER BY year DESC Limit 80`;
+
+        return (await this._database.PrepareAndExecuteQuery(query));
     }
 }

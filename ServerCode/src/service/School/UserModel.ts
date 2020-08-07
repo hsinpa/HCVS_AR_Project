@@ -24,11 +24,11 @@ export default class LoginModel {
     
     async TeacherLogin(account: string, password : string) : Promise<DatabaseResultType> {
 
-        let q = `SELECT id, account_name, account_type, isValid 
+        let q = `SELECT id, account_name,  
                 FROM Teacher 
-                WHERE email='${account}' AND id='${password}'`;
+                WHERE id=? AND password=?`;
 
-        let r = await this._database.ExecuteQuery(q);
+        let r = await this._database.PrepareAndExecuteQuery(q, [account, password]);
         let s : DatabaseResultType= {
             status : false,
             result : {}
@@ -47,9 +47,9 @@ export default class LoginModel {
     async StudentLogin(account: string) {
         let q = `SELECT id, student_name, seat, class_id 
                 FROM Student 
-                WHERE id='${account}'`;
+                WHERE id=?`;
 
-        let r = await this._database.ExecuteQuery(q);
+        let r = await this._database.PrepareAndExecuteQuery(q, [account]);
         let s : DatabaseResultType= {
             status : false,
             result : {}
@@ -73,9 +73,9 @@ export default class LoginModel {
     async GetAllStudentInClass(classroom_id:string, year : number) {
         let query = `SELECT id, year, semester, student_name, seat, class_id 
                     FROM Student
-                    WHERE year = ${year} AND class_id = '${classroom_id}'`;
+                    WHERE year =? AND class_id = ?`;
 
-        return await(this._database.ExecuteQuery(query));
+        return await(this._database.PrepareAndExecuteQuery(query, [year, classroom_id]));
     }
 
 }
