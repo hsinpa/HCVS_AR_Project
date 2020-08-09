@@ -39,6 +39,8 @@ namespace Hsinpa.Controller
             switch (p_event) {
                 case GeneralFlag.ObeserverEvent.ShowHostRoomUI:
                     userDataInfo = (TypeFlag.SocketDataType.LoginDatabaseType) p_objects[0];
+
+                    Debug.Log(GeneralFlag.ObeserverEvent.ShowHostRoomUI);
                     Process();
                     break;
             }
@@ -92,7 +94,7 @@ namespace Hsinpa.Controller
                 var HostResult = JsonUtility.FromJson<TypeFlag.SocketDataType.GeneralDatabaseType>(args[0].ToString());
 
                 if (HostResult.status) {
-                    MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowMonitorUI, selectedRoomData);
+                    MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowMonitorUI, userDataInfo, selectedRoomData);
                     Modals.instance.CloseAll();
                     Debug.Log("Show Teacher Navigation Screen");
                 }

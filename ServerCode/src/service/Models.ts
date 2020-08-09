@@ -12,8 +12,11 @@ export default class Models {
 
     constructor(envFile : NodeJS.ProcessEnv) {
         this.Database = new Database(envFile);
-        this.UserModel = new UserModel(this.Database);
         this.ClassModel = new ClassModel(this.Database);
+        this.UserModel = new UserModel(this.Database);
         this.ScoreTableModel = new ScoreTableModel(this.Database);
+
+        this.ClassModel.AppendModels(this.UserModel, this.ScoreTableModel);
+        this.UserModel.AppendModels( this.ClassModel);
     }
 }

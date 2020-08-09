@@ -26,15 +26,19 @@ namespace Hsinpa.Controller
         private Sprite TerminateStartSprite;
 
         private TypeFlag.SocketDataType.ClassroomDatabaseType selectedRoomData;
+        private TypeFlag.SocketDataType.LoginDatabaseType userDataInfo;
+
         private List<TypeFlag.SocketDataType.StudentDatabaseType> allStudentData;
         private SocketIOManager _socketIOManager;
+        private MissionItemSObj _missionItemSObj;
 
         public override void OnNotify(string p_event, params object[] p_objects)
         {
             switch (p_event)
             {
                 case GeneralFlag.ObeserverEvent.ShowMonitorUI:
-                    selectedRoomData = (TypeFlag.SocketDataType.ClassroomDatabaseType)p_objects[0];
+                    userDataInfo = (TypeFlag.SocketDataType.LoginDatabaseType)p_objects[0];
+                    selectedRoomData = (TypeFlag.SocketDataType.ClassroomDatabaseType) p_objects[1];
 
                     _monitorView.Show(true);
 
@@ -50,14 +54,18 @@ namespace Hsinpa.Controller
             _socketIOManager.socket.On(TypeFlag.SocketEvent.UserLeaved, OnUesrLeaveEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.RefreshUserStatus, OnRefreshUserStatusEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
+            _missionItemSObj = MainApp.Instance.database.MissionItemSObj;
 
-            _monitorView.SetUp(OnGameStartBtnClickEvent, OnTerminateBtnClickEvent, OnMoreInfoBtnClickEvent, OnStudentObjClick, OnTimeUp);
+            _monitorView.SetUp(OnGameStartBtnClickEvent, OnTerminateBtnClickEvent, OnMoreInfoBtnClickEvent, 
+                            OnLogoutClick, OnStudentObjClick, OnTimeUp);
         }
 
         private void PrepareStudentData(TypeFlag.SocketDataType.ClassroomDatabaseType selectedRoomData) {
             string getStudentURI = string.Format(StringAsset.API.GetAllStudentByID, selectedRoomData.class_id, selectedRoomData.year);
 
             _monitorView.ResetContent();
+
+            Debug.Log(getStudentURI);
 
             StartCoroutine(
             APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(getStudentURI), UnityWebRequest.kHttpVerbGET, null, (string json) => {
@@ -89,7 +97,6 @@ namespace Hsinpa.Controller
                 new DialogueModal.ButtonType[] { DialogueModal.ButtonType.Accept, DialogueModal.ButtonType.Cancel },
                 (x) =>
                 {
-
                     Modals.instance.Close();
 
                     if (x == DialogueModal.ButtonType.Accept) {
@@ -109,15 +116,38 @@ namespace Hsinpa.Controller
             ShowTerminateModal(btn, StringAsset.UserInfo.GameTerminateDesc, buttonTypes);
         }
 
+        private void OnLogoutClick(Button btn)
+        {
+            var dialogueModal = Modals.instance.OpenModal<DialogueModal>();
+
+            dialogueModal.DecorateSideImage(null);
+
+            dialogueModal.SetDialogue(StringAsset.UserInfo.TeacherLeaveTitle, StringAsset.UserInfo.TeacherLeaveDesc,
+                new DialogueModal.ButtonType[] { DialogueModal.ButtonType.Accept, DialogueModal.ButtonType.Cancel }, (x) =>
+                {
+                    if (x == DialogueModal.ButtonType.Accept)
+                    {
+                        _monitorView.Show(false);
+                        _monitorView.ResetContent();
+
+                        EmitTerminateEvent(selectedRoomData.class_id, _missionItemSObj.defaultMission.mission_id);
+
+                        MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowHostRoomUI, userDataInfo);
+                    }
+                }
+            );
+
+            //MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowUserInfo, studentItem.studentDatabaseType, studentItem.isOnline);
+        }
+
+
         private void OnMoreInfoBtnClickEvent(Button btn)
         {
             MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowClassScore, selectedRoomData);
         }
 
         private void OnStudentObjClick(MonitorItemPrefabView studentItem) {
-
             MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowUserInfo, studentItem.studentDatabaseType, studentItem.isOnline);
-
         }
 
         private void OnTimeUp() {
@@ -165,6 +195,14 @@ namespace Hsinpa.Controller
                 if (_monitorView.isShow) _monitorView.SetTimerAndGameStart(roomComps.end_time);
             }
         }
+
+        private void EmitTerminateEvent(string class_id, string location_id) {
+            string jsonString = string.Format("{{\"room_id\" : \"{0}\", \"location_id\" : \"{1}\"}}",
+                                                class_id, location_id);
+
+            _socketIOManager.socket.Emit(TypeFlag.SocketEvent.TerminateGame, jsonString);
+
+        }
         #endregion
 
         private void ShowTerminateModal(Button btn, string terminateContentText, DialogueModal.ButtonType[] buttonTypes) {
@@ -177,17 +215,14 @@ namespace Hsinpa.Controller
                 new DialogueModal.ButtonType[] { DialogueModal.ButtonType.Accept, DialogueModal.ButtonType.Cancel },
                 (x) =>
                 {
-                    Modals.instance.Close();
-
                     if (x == DialogueModal.ButtonType.Accept)
                     {
                         int dropDownIndex = dialogueModal.dropDownMenu.value;
                         string location_id = missionItemSObj.missionArray[dropDownIndex].mission_id;
 
-                        string jsonString = string.Format("{{\"room_id\" : \"{0}\", \"location_id\" : \"{1}\"}}",
-                                                            selectedRoomData.class_id, location_id);
+                        EmitTerminateEvent(selectedRoomData.class_id, location_id);
 
-                        _socketIOManager.socket.Emit(TypeFlag.SocketEvent.TerminateGame, jsonString);
+                        _monitorView.ResetTime();
 
                         if (btn != null)
                             btn.interactable = false;
@@ -197,6 +232,8 @@ namespace Hsinpa.Controller
 
             dialogueModal.SetDropDown(missionItemSObj.missionArray.Select(x => x.mission_name).ToArray());
         }
+
+
 
     }
 }

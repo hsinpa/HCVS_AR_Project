@@ -4,25 +4,32 @@ using Expect.StaticAsset;
 using UnityEngine;
 using UnityEngine.UI;
 using Hsinpa.View;
+using Utility;
+using System.Linq;
 
 namespace Expect.View
 {
     public class LoginModal : Modal
     {
+
+        public enum Tab {Student, Teacher, Register}
+
         #region Inspector
+
         [Header("Tab")]
-        [SerializeField]
-        Button StudentTab;
 
         [SerializeField]
-        Button TeacherTab;
+        Transform tabs;
+
+        LoginTabComponent[] _tabComponents;
+        public List<LoginTabComponent> tabComponents => _tabComponents.ToList();
 
         [Header("InputField")]
         [SerializeField]
-        LoginInputComponent userIDInput;
+        Transform inputGroups;
 
         [SerializeField]
-        LoginInputComponent passwordInput;
+        GameObject inputComponentPrefab;
 
         [Header("Button")]
         [SerializeField]
@@ -36,48 +43,74 @@ namespace Expect.View
         #endregion
 
         #region Parameter
-        private TypeFlag.UserType _currentTab;
-        private System.Action<Button, TypeFlag.UserType, string, string> _loginEvent;
+        private Tab _currentTab;
+        private System.Action<Button, Tab, List<LoginInputComponent>> _userLoginEvent;
+        private System.Action _guestLoginEvent;
+        private System.Action<Button, List<LoginInputComponent>> _registerEvent;
+
+        private Dictionary<Tab, List<InputGroupStruct>> InputLookupTable;
+        private List<LoginInputComponent> inputComponents = new List<LoginInputComponent>();
+
         #endregion
 
         private void Start()
         {
+            _tabComponents = tabs.GetComponentsInChildren<LoginTabComponent>();
+            InputLookupTable = GenerateInputTable();
+
             RegisterTabEvent();
             RegisterButtonEvent();
 
-            SetTabEvent(StudentTab, TypeFlag.UserType.Student, StringAsset.Login.StudentInputLabel);
+            SwitchTab(Tab.Student);
         }
 
-        public void SetUp(System.Action<Button, TypeFlag.UserType, string, string> loginEvent) {
-            this._loginEvent = loginEvent;
+        public void SetUp(System.Action<Button, Tab, List<LoginInputComponent>> UserLoginEvent, System.Action GuestLoginEvent, 
+                        System.Action<Button, List<LoginInputComponent>> RegisterEvent) {
+            this._userLoginEvent = UserLoginEvent;
+            this._guestLoginEvent = GuestLoginEvent;
+            this._registerEvent = RegisterEvent;
+        }
+
+        public void SwitchTab(Tab tab) {
+            int tabIndex = tabComponents.FindIndex(x => x.tabType == tab);
+            if (tabIndex < 0) return;
+
+            SetTabEvent(_tabComponents[tabIndex].tabButton, tab, InputLookupTable[tab]);
+
         }
 
         private void RegisterTabEvent()
         {
-            passwordInput.SetTitle(StringAsset.Login.PasswordInputLabel);
+            int tabCount = _tabComponents.Length;
 
-            StudentTab.onClick.AddListener(() =>
-            {
-                SetTabEvent(StudentTab, TypeFlag.UserType.Student, StringAsset.Login.StudentInputLabel);
-            });
+            for (int i = 0; i < tabCount; i++) {
+                int index = i;
 
-            TeacherTab.onClick.AddListener(() =>
-            {
-                SetTabEvent(TeacherTab, TypeFlag.UserType.Teacher, StringAsset.Login.TeacherInputLabel);
-            });
+                _tabComponents[i].tabButton.onClick.RemoveAllListeners();
+                _tabComponents[i].tabButton.onClick.AddListener(() =>
+                {
+                    if (InputLookupTable.TryGetValue(_tabComponents[index].tabType, out var inputs)) {
+                        SetTabEvent(_tabComponents[index].tabButton, _tabComponents[index].tabType, inputs);
+                    }
+                });
+            }
         }
 
         private void RegisterButtonEvent() {
             loginBtn.onClick.AddListener(() =>
             {
-                if (this._loginEvent != null)
-                    this._loginEvent(loginBtn, _currentTab, userIDInput._inputField.text, passwordInput._inputField.text);
+                if (_currentTab == Tab.Register)
+                {
+                    this._registerEvent(loginBtn, inputComponents);
+                }
+                else {
+                    this._userLoginEvent(loginBtn, _currentTab, inputComponents);
+                }
             });
 
             guestBtn.onClick.AddListener(() =>
             {
-                if (this._loginEvent != null)
-                    this._loginEvent(guestBtn, TypeFlag.UserType.Guest, "","");
+                this._guestLoginEvent();
             });
         }
 
@@ -86,15 +119,23 @@ namespace Expect.View
             warningMsg.gameObject.SetActive(!string.IsNullOrEmpty(message));
         }
 
-        private void SetTabEvent(Button tab, TypeFlag.UserType usertype, string userIDLabel)
+        private void SetTabEvent(Button tab, Tab tabType, List<InputGroupStruct> inputGroupStructs)
         {
-            SetWarningMsg(null);
-            passwordInput.gameObject.SetActive(usertype == TypeFlag.UserType.Teacher);
-            passwordInput.Erase();
-            userIDInput.Erase();
-            userIDInput.SetTitle(userIDLabel);
-            _currentTab = usertype;
+            inputComponents.Clear();
+            UtilityMethod.ClearChildObject(inputGroups);
 
+            int structCount = inputGroupStructs.Count;
+
+            for (int i = 0; i < structCount; i++) {
+                var inputGameObject = UtilityMethod.CreateObjectToParent(inputGroups, inputComponentPrefab).GetComponent<LoginInputComponent>();
+                inputGameObject.Erase();
+                inputGameObject.name = inputGroupStructs[i].label;
+                inputGameObject.SetTitle(inputGroupStructs[i].label, inputGroupStructs[i].isHash);
+
+                inputComponents.Add(inputGameObject);
+            }
+
+            _currentTab = tabType;
             HighlightTab(tab);
         }
 
@@ -106,6 +147,48 @@ namespace Expect.View
             }
 
             onClickTab.targetGraphic.color = Color.gray;
+        }
+
+        private Dictionary<Tab, List<InputGroupStruct>> GenerateInputTable() {
+            var lookuptable = new Dictionary<Tab, List<InputGroupStruct>>();
+
+            lookuptable.Add(Tab.Student, new List<InputGroupStruct> {
+                new InputGroupStruct(StringAsset.Login.AccountInputLabel)
+            });
+
+            lookuptable.Add(Tab.Teacher, new List<InputGroupStruct> {
+                new InputGroupStruct(StringAsset.Login.AccountInputLabel),
+                new InputGroupStruct(StringAsset.Login.PasswordInputLabel, true)
+            });
+
+            lookuptable.Add(Tab.Register, new List<InputGroupStruct> {
+                new InputGroupStruct(StringAsset.Login.AccountInputLabel),
+                new InputGroupStruct(StringAsset.Login.StudentNameInputLabel),
+                new InputGroupStruct(StringAsset.Login.ClassIDInputLabel)
+            });
+
+            return lookuptable;
+        }
+
+        public string GetValueFromInputCompArray(string key, List<LoginInputComponent> inputArray) {
+            if (string.IsNullOrEmpty(key) || inputArray == null) return "";
+
+            int index = inputArray.FindIndex(x => x.name == key);
+
+            if (index < 0) return "";
+
+            return inputArray[index]._inputField.text;
+        }
+
+
+        private struct InputGroupStruct {
+            public string label;
+            public bool isHash;
+
+            public InputGroupStruct(string label, bool isHash = false) {
+                this.label = label;
+                this.isHash = isHash;
+            }
         }
     }
 }

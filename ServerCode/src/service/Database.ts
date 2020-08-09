@@ -1,7 +1,4 @@
-const sql = require('mssql');
-
 import {createConnection} from 'mysql2/promise';
-
 import {DatabaseResultType} from '../Utility/Flag/TypeFlag';
 import { ppid } from 'process';
 

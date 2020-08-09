@@ -40,6 +40,19 @@ export default class ScoreTableModel {
         return await this._database.PrepareAndExecuteQuery(query, [class_id]);
     }
 
+    async GetClassRankingScore(class_id : string) {
+        let query = `
+        SELECT SUM(IFNULL(score,0)) as total_score, Student.id as student_id, student_name
+        FROM Student
+        LEFT JOIN ScoreTable
+        ON ScoreTable.student_id = Student.id
+        WHERE Student.class_id = ?
+        GROUP BY Student.id
+        ORDER By total_score DESC`;
+
+        return await this._database.PrepareAndExecuteQuery(query, [class_id]);
+    }
+
     async GetClassScoreInfo(class_id : string) {
         let data : DatabaseResultType = {status : false};
 
@@ -60,6 +73,12 @@ export default class ScoreTableModel {
         }
 
         return data;
+    }
+
+    async ResetTable() {
+        let query = `TRUNCATE TABLE ScoreTable`;
+
+        return await(this._database.PrepareAndExecuteQuery(query));
     }
 
 }

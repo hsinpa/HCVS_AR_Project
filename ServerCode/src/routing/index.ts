@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as Router from 'koa-router';
 import Models from '../service/Models';
 
+
 module.exports =  (router : Router, rootPath:string, model : Models) => {
   router.get('/', async function (ctx:any, next:any) {
     ctx.state = {
@@ -11,15 +12,15 @@ module.exports =  (router : Router, rootPath:string, model : Models) => {
     await ctx.render('index', {title: "HSINPA"});
   });
 
-  router.post('/login', async function (ctx:any, next:any) {
-    ctx.body = await model.UserModel.Login(ctx.request.body['type'], ctx.request.body['account'], ctx.request.body['password']);
+  router.get('/upload_info_parser', async function (ctx:any, next:any) {
+
+    await ctx.render('class_info_parser');
   });
 
   //#region Teacher Http Request
   router.get('/getAllStudentByID/:class_id/:year', async function (ctx:any, next:any) {
     ctx.body = await model.UserModel.GetAllStudentInClass(ctx.params.class_id, ctx.params.year);
   });
-
 
   router.get('/getAllClassInfo', async function (ctx:any, next:any) {
     ctx.body = await model.ClassModel.GetAllAvailableClass();
@@ -35,6 +36,26 @@ module.exports =  (router : Router, rootPath:string, model : Models) => {
 router.get('/getStudentScore/:student_id', async function (ctx:any, next:any) {
   ctx.body = await model.ScoreTableModel.GetStudentScores(ctx.params.student_id);
 });
+
+router.get('/getStudentRank/:class_id', async function (ctx:any, next:any) {
+  ctx.body = await model.ScoreTableModel.GetClassRankingScore(ctx.params.class_id);
+});
+
+router.post('/upload_class_info', async function (ctx:any, next:any) {
+  await model.ClassModel.ParseClassInfoCsv(ctx.request.body.csvfile);
+
+  ctx.body = "";
+});
 //#endregion
 
+//#region User Relate 
+
+router.post('/login', async function (ctx:any, next:any) {
+  ctx.body = await model.UserModel.Login(ctx.request.body['type'], ctx.request.body['account'], ctx.request.body['password']);
+});
+
+router.post('/register', async function (ctx:any, next:any) {
+  ctx.body = await model.UserModel.Register(ctx.request.body['account'], ctx.request.body['name'], ctx.request.body['class_id']);
+});
+//#endregion
 }

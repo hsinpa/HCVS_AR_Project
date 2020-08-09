@@ -1,4 +1,5 @@
 ﻿using Hsinpa.View;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,9 @@ namespace Expect.View
         private Dropdown YearSelection;
 
         [SerializeField]
+        private Dropdown GradeSelection;
+
+        [SerializeField]
         private Dropdown ClassSelection;
 
         [SerializeField]
@@ -21,8 +25,9 @@ namespace Expect.View
 
         private List<TypeFlag.SocketDataType.ClassroomDatabaseType> classroomDataSet;
         private List<string> FilterYearList = new List<string>();
-        private List<TypeFlag.SocketDataType.ClassroomDatabaseType> FilterDatabaseList;
+        private List<string> FilterGradeList = new List<string>();
 
+        private List<TypeFlag.SocketDataType.ClassroomDatabaseType> FilterDatabaseList;
 
         private System.Action<TypeFlag.SocketDataType.ClassroomDatabaseType> OnHostRoomEvent;
 
@@ -30,9 +35,12 @@ namespace Expect.View
             this.OnHostRoomEvent = OnHostRoomEvent;
             YearSelection.onValueChanged.RemoveAllListeners();
             ClassSelection.onValueChanged.RemoveAllListeners();
+            GradeSelection.onValueChanged.RemoveAllListeners();
+
             ConfirnBtn.onClick.RemoveAllListeners();
 
-            YearSelection.onValueChanged.AddListener(OnYearSelectionChange);
+            YearSelection.onValueChanged.AddListener(OnYearGradeSelectionChange);
+            GradeSelection.onValueChanged.AddListener(OnYearGradeSelectionChange);
             ClassSelection.onValueChanged.AddListener(OnClassSelectionChange);
 
             ConfirnBtn.onClick.AddListener(OnHostRoomBtnClick);
@@ -44,11 +52,15 @@ namespace Expect.View
             this.classroomDataSet = classroomDataSet;
 
             FilterYearList = classroomDataSet.GroupBy(test => test.year).Select(grp => grp.First().year.ToString()).ToList();
+            FilterGradeList = classroomDataSet.GroupBy(test => test.grade).Select(grp => grp.First().grade.ToString()).ToList();
 
             YearSelection.ClearOptions();
             YearSelection.AddOptions(FilterYearList);
 
-            OnYearSelectionChange(0);
+            GradeSelection.ClearOptions();
+            GradeSelection.AddOptions(FilterGradeList);
+
+            OnYearGradeSelectionChange(0);
             OnClassSelectionChange(0);
         }
 
@@ -58,11 +70,11 @@ namespace Expect.View
             ConfirnBtn.interactable = false;
         }
 
-        private void OnYearSelectionChange(int index) {
+        private void OnYearGradeSelectionChange(int index) {
             if (index < 0 || FilterYearList.Count <= 0) return;
 
-            int selectYear = int.Parse(FilterYearList[index]);
-            FilterDatabaseList = classroomDataSet.FindAll(x => x.year == selectYear);
+            FilterDatabaseList = FindFilterClassList();
+
             var classIDArray = FilterDatabaseList.Select(x => new UnityEngine.UI.Dropdown.OptionData(x.class_name)).ToList();
 
             ClassSelection.ClearOptions();
@@ -73,6 +85,22 @@ namespace Expect.View
             if (index < 0) return;
 
             ConfirnBtn.interactable = (index >= 0 && FilterYearList.Count >= 0);
+        }
+
+        private List<TypeFlag.SocketDataType.ClassroomDatabaseType> FindFilterClassList() {
+            List<TypeFlag.SocketDataType.ClassroomDatabaseType> dataTypeList = new List<TypeFlag.SocketDataType.ClassroomDatabaseType>();
+            try
+            {
+                int selectYear = int.Parse(FilterYearList[YearSelection.value]);
+                int selectGrade = int.Parse(FilterGradeList[GradeSelection.value]);
+
+                dataTypeList = classroomDataSet.FindAll(x => x.year == selectYear && x.grade == selectGrade);
+            }
+            catch {
+                Debug.LogWarning("FindFilterClassList Error");   
+            }
+
+            return dataTypeList;
         }
 
         private void OnHostRoomBtnClick() {

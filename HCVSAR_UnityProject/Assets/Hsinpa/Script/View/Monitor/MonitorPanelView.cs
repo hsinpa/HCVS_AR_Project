@@ -30,6 +30,9 @@ namespace Hsinpa.View
         [SerializeField]
         private Button MoreInfoBtn;
 
+        [SerializeField]
+        private Button LogoutBtn;
+
         [Header("Other")]
         [SerializeField]
         private Text ClassTitleTxt;
@@ -47,12 +50,15 @@ namespace Hsinpa.View
         private System.Action OnTimeUpEvent;
 
         public void SetUp(OnBottomBtnClick onGameStartBtnClickEvent, OnBottomBtnClick onTerminateBtnClickEvent,
-            OnBottomBtnClick onMoreInfoBtnClickEvent, System.Action<MonitorItemPrefabView> studentItemClickEvent,
+            OnBottomBtnClick onMoreInfoBtnClickEvent, OnBottomBtnClick onLogoutClickEvent, System.Action<MonitorItemPrefabView> studentItemClickEvent,
             System.Action OnTimeUpEvent
             ) {
+
             GameStartBtn.onClick.AddListener(() => { onGameStartBtnClickEvent(GameStartBtn); });
             GameTerminateBtn.onClick.AddListener(() => { onTerminateBtnClickEvent(GameTerminateBtn); });
             MoreInfoBtn.onClick.AddListener(() => { onMoreInfoBtnClickEvent(MoreInfoBtn); });
+            LogoutBtn.onClick.AddListener(() => { onLogoutClickEvent(LogoutBtn); });
+
             this.OnStudentItemClickEvent = studentItemClickEvent;
             this.OnTimeUpEvent = OnTimeUpEvent;
         }
@@ -122,7 +128,10 @@ namespace Hsinpa.View
         public void ResetContent() {
             UtilityMethod.ClearChildObject(StudentContainer);
             studentItemDict.Clear();
+            ResetTime();
+        }
 
+        public void ResetTime() {
             startTime = DateTime.MinValue;
             endTime = DateTime.MinValue;
 

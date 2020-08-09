@@ -5,7 +5,7 @@ using UnityEngine;
 public class GeneralFlag
 {
     public class Regex {
-        public const string UniversalSyntaxRex = @"[0-9a-zA-Z@,-_+]{6,30}";
+        public const string UniversalSyntaxRex = @"^.{2,20}$";
     }
 
     public class ObeserverEvent {

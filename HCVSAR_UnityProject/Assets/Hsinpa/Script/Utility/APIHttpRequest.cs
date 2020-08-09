@@ -67,9 +67,12 @@ public class APIHttpRequest
                 Debug.Log(DatabaseResult.result);
 
                 if (DatabaseResult.status && !string.IsNullOrEmpty(DatabaseResult.result))
+                {
                     if (success_callback != null) success_callback(DatabaseResult.result);
-                else
+                }
+                else {
                     if (fail_callback != null) fail_callback();
+                }
             }
             catch {
                 if (fail_callback != null) fail_callback();

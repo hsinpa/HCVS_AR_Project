@@ -83,3 +83,12 @@ export interface TerminateEventType {
     location_id: string,
     room_id : string
 }
+
+export const ClassCSVKey = {
+    id : "序號",
+    year : "學年",
+    semester : "學期",
+    class_id : "班級代碼",
+    class_name : "班級名稱",
+    grade : "年級"
+}

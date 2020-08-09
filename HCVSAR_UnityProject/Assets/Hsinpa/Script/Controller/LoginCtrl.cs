@@ -17,11 +17,13 @@ namespace Hsinpa.Controller {
         private SocketIOManager _socketIOManager;
         private TypeFlag.SocketDataType.LoginDatabaseType userDataInfo;
 
+        public System.Action<TypeFlag.SocketDataType.LoginDatabaseType> OnLoginEvent;
+
         public void SetUp(LoginModal loginModal, SocketIOManager socketIOManager) {
             _loginModal = loginModal;
             _socketIOManager = socketIOManager;
 
-            _loginModal.SetUp(OnLoginEvent);
+            _loginModal.SetUp(OnLoginClickEvent, OnGuestClickEvent, OnRegisterClickEvent);
         }
 
         public void ProcessLogin() {
@@ -34,40 +36,52 @@ namespace Hsinpa.Controller {
 
             return match.Success;
         }
+        #region OnLogin Button Events
+        private void OnRegisterClickEvent(Button uiButton, List<LoginInputComponent> inputComponents)
+        {
+            uiButton.enabled = false;
+            if (!HandleInputsValidation(inputComponents))
+            {
+                uiButton.enabled = true;
+                return;
+            }
 
-        private void OnLoginEvent(Button uiButton, TypeFlag.UserType type, string user_id, string password) {
+            var registerDataStruct = new TypeFlag.SocketDataType.RegisterDataStruct();
+            registerDataStruct.account = _loginModal.GetValueFromInputCompArray(StringAsset.Login.AccountInputLabel, inputComponents);
+            registerDataStruct.name = _loginModal.GetValueFromInputCompArray(StringAsset.Login.StudentNameInputLabel, inputComponents);
+            registerDataStruct.class_id = _loginModal.GetValueFromInputCompArray(StringAsset.Login.ClassIDInputLabel, inputComponents);
+
+            StartCoroutine(APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(StringAsset.API.Register), UnityWebRequest.kHttpVerbPOST, JsonUtility.ToJson(registerDataStruct),
+            (string rawData) => {
+                _loginModal.SwitchTab(LoginModal.Tab.Student);
+
+                uiButton.enabled = true;
+            }, () => {
+                _loginModal.SetWarningMsg(StringAsset.Login.ServerRegisterError);
+
+                uiButton.enabled = true;
+            }));
+        }
+
+        private void OnGuestClickEvent() {
+
+        }
+
+        private void OnLoginClickEvent(Button uiButton, LoginModal.Tab type, List<LoginInputComponent> inputComponents) {
             uiButton.enabled = false;
 
-            if (type == TypeFlag.UserType.Guest) {
-                uiButton.enabled = true;
-                NextStage(type);
-                return;
-            }
-
-            bool matchUserID = ValidInputText(user_id);
-            bool matchPassword = ValidInputText(password);
-
-            //Check Account ID Format
-            if (!matchUserID) {
-                _loginModal.SetWarningMsg(StringAsset.Login.UserIDInputError);
+            if (!HandleInputsValidation(inputComponents)) {
                 uiButton.enabled = true;
                 return;
             }
 
-            //Teacher : Check Password format
-            if (type == TypeFlag.UserType.Teacher && !matchPassword) {
-                _loginModal.SetWarningMsg(StringAsset.Login.PasswordInputError);
-                uiButton.enabled = true;
-                return;
-            }
-
-            _loginModal.SetWarningMsg(null);
 
             //If all validation pass
             var loginDataStruct = new TypeFlag.SocketDataType.LoginDataStruct();
-            loginDataStruct.account = user_id;
-            loginDataStruct.password = password;
-            loginDataStruct.type = type;
+            loginDataStruct.account = _loginModal.GetValueFromInputCompArray(StringAsset.Login.AccountInputLabel, inputComponents);
+            loginDataStruct.password = _loginModal.GetValueFromInputCompArray(StringAsset.Login.PasswordInputLabel, inputComponents);
+
+            loginDataStruct.type = (type == LoginModal.Tab.Student) ? TypeFlag.UserType.Student : TypeFlag.UserType.Teacher;
             
             Debug.Log(JsonUtility.ToJson(loginDataStruct));
 
@@ -77,16 +91,35 @@ namespace Hsinpa.Controller {
                     userDataInfo = JsonUtility.FromJson<TypeFlag.SocketDataType.LoginDatabaseType>(rawData);
 
                     //Modals.instance.Close();
-                    UpdateSocketUserInfo(type, userDataInfo);
+                    UpdateSocketUserInfo(loginDataStruct.type, userDataInfo);
 
-                    NextStage(type);
+                    NextStage(loginDataStruct.type);
 
                     uiButton.enabled = true;
                 } , () => {
-                    _loginModal.SetWarningMsg(StringAsset.Login.ServerDataError);
+                    _loginModal.SetWarningMsg(StringAsset.Login.ServerLoginError);
 
                     uiButton.enabled = true;
                 }));
+        }
+        #endregion
+
+        private bool HandleInputsValidation(List<LoginInputComponent> inputComponents) {
+            int inputCount = inputComponents.Count;
+            for (int i = 0; i < inputCount; i++)
+            {
+                bool isValid = ValidInputText(inputComponents[i]._inputField.text);
+
+                if (!isValid)
+                {
+                    _loginModal.SetWarningMsg((inputComponents[i].isHash) ? StringAsset.Login.PasswordInputError : StringAsset.Login.UserIDInputError);
+                    return false;
+                }
+            }
+
+            _loginModal.SetWarningMsg(null);
+
+            return true;
         }
 
         private void UpdateSocketUserInfo(TypeFlag.UserType type, TypeFlag.SocketDataType.LoginDatabaseType loginInfo) {
@@ -102,6 +135,9 @@ namespace Hsinpa.Controller {
         }
 
         private void NextStage(TypeFlag.UserType type) {
+
+            userDataInfo.userType = type;
+
             switch (type) {
                 case TypeFlag.UserType.Guest:
                     Debug.Log("To Guest Stage");
@@ -118,6 +154,9 @@ namespace Hsinpa.Controller {
 
                     break;
             }
+
+            if (OnLoginEvent != null)
+                OnLoginEvent(userDataInfo);
         }
     }
 }

@@ -43,6 +43,8 @@ public class TypeFlag
             public string user_id;
             public string room_id;
             public string seat;
+
+            public TypeFlag.UserType userType;
         }
 
         [System.Serializable]
@@ -51,6 +53,14 @@ public class TypeFlag
             public TypeFlag.UserType type;
             public string account;
             public string password;
+        }
+
+        [System.Serializable]
+        public struct RegisterDataStruct
+        {
+            public string account;
+            public string name;
+            public string class_id;
         }
 
         [System.Serializable]
@@ -65,6 +75,7 @@ public class TypeFlag
         {
             public string class_name;
             public string class_id;
+            public int grade;
             public int year;
         }
 

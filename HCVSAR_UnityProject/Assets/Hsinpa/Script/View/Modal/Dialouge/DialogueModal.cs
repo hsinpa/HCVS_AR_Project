@@ -69,9 +69,9 @@ namespace Expect.View
 
                 DialogueButtonObj.SetBtnEvent((ButtonType type) =>
                 {
-                    btnEvent(type);
-
                     Modals.instance.Close();
+
+                    btnEvent(type);
                 });
             }
         }

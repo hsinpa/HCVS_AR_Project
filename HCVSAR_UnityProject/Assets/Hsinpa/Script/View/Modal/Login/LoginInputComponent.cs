@@ -11,9 +11,16 @@ namespace Expect.View {
 
         public InputField _inputField;
 
-        public void SetTitle(string titleString) {
+        [HideInInspector]
+        public bool isHash;
+
+        public void SetTitle(string titleString, bool isHash = false) {
+            this.isHash = isHash;
+
             if (titleTxt != null)
                 titleTxt.text = titleString;
+
+            _inputField.contentType = (isHash) ? InputField.ContentType.Password : InputField.ContentType.Standard;
         }
 
         public void Erase() {
