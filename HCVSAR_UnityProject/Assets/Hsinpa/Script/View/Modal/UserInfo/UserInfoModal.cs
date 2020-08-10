@@ -1,5 +1,6 @@
 ﻿using Expect.StaticAsset;
 using Hsinpa.View;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,9 @@ namespace Expect.View
     {
         [SerializeField]
         private Button CloseButton;
+
+        [SerializeField]
+        private Button KickButton;
 
         [SerializeField]
         private Text TotalScoreText;
@@ -30,6 +34,8 @@ namespace Expect.View
 
         private TypeFlag.UserType userType;
 
+        private System.Action<TypeFlag.SocketDataType.StudentDatabaseType> OnKickStudentEvent;
+
         private void Awake()
         {
             CloseButton.onClick.AddListener(() =>
@@ -38,7 +44,14 @@ namespace Expect.View
             });
         }
 
-        public void SetUserInfo(TypeFlag.SocketDataType.StudentDatabaseType studentObj, bool hasConnection) {
+        public void SetUserInfo(System.Action<TypeFlag.SocketDataType.StudentDatabaseType> OnKickStudentEvent,
+                                TypeFlag.SocketDataType.StudentDatabaseType studentObj, bool hasConnection) {
+
+            this.OnKickStudentEvent = OnKickStudentEvent;
+            KickButton.onClick.RemoveAllListeners();
+            KickButton.onClick.AddListener(()=> { if (this.OnKickStudentEvent != null) this.OnKickStudentEvent(studentObj); });
+            KickButton.gameObject.SetActive(false);
+
             ResetContent();
 
             UserInfoText.text = GetUserInfoText(studentObj, hasConnection);
@@ -46,6 +59,9 @@ namespace Expect.View
 
         public void SetContent(TypeFlag.SocketDataType.UserScoreType[] scoreArray, TypeFlag.UserType userType) {
             this.userType = userType;
+
+            KickButton.gameObject.SetActive(this.userType == TypeFlag.UserType.Teacher);
+
             TotalScoreText.text = CalculateAccompishPercent(scoreArray);
 
             GenerateScoreBoard(scoreArray);
@@ -61,8 +77,8 @@ namespace Expect.View
             return formString;
         }
 
-        private int CalculateScore(TypeFlag.SocketDataType.UserScoreType[] scoreArray) {
-            return scoreArray.Sum(x => x.score);
+        private float CalculateScore(TypeFlag.SocketDataType.UserScoreType[] scoreArray) {
+            return (float)Math.Round(scoreArray.Sum(x => x.score) / 100f, 2);
         }
 
         private string CalculateAccompishPercent(TypeFlag.SocketDataType.UserScoreType[] scoreArray)

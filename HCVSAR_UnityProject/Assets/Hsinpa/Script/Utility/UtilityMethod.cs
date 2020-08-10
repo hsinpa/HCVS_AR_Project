@@ -117,5 +117,6 @@ namespace Utility {
 		    return (T) System.Enum.Parse(typeof(T), value, true);
 		}
 
+
 	}
 }

@@ -42,7 +42,7 @@ namespace Hsinpa.Controller
 
             var modal = Modals.instance.OpenModal<UserInfoModal>();
 
-            modal.SetUserInfo(studentObj, isConnect);
+            modal.SetUserInfo(OnKickUserEvent, studentObj, isConnect);
 
             StartCoroutine(
                 APIHttpRequest.NativeCurl(uri, UnityWebRequest.kHttpVerbGET, null, (string json) =>
@@ -57,6 +57,19 @@ namespace Hsinpa.Controller
             );
         }
 
+        private void OnKickUserEvent(TypeFlag.SocketDataType.StudentDatabaseType studentDataType) {
+
+            var userDataType = new TypeFlag.SocketDataType.UserComponentType();
+            userDataType.room_id = studentDataType.class_id;
+            userDataType.type = TypeFlag.UserType.Student;
+            userDataType.user_id = studentDataType.id;
+            userDataType.name = studentDataType.student_name;
+            userDataType.socket_id = "";
+
+            _socketIOManager.Emit(TypeFlag.SocketEvent.KickFromGame, JsonUtility.ToJson(userDataType));
+
+            Modals.instance.Close();
+        }
 
     }
 }

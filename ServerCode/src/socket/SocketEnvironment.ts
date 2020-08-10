@@ -69,25 +69,33 @@ class SocketEnvironment {
         let userComp = this.users.get(socketID);
 
         //Remove student from classroom
-        if (this.rooms.has(userComp.room_id) && userComp.room_id) {
-            let room = this.rooms.get(userComp.room_id);
-
-
-            //Teacher has leave the room, remove everyone inside
-            if (userComp.type ==  UserStatus.Teacher && room.host_id == userComp.user_id) {
-
-                this.RoomDismiss(room.room_id);
-
-            } else {
-                let studentIndex = room.students.indexOf(socketID);
-                room.students = room.students.splice(studentIndex,1);
-                this.rooms.set(userComp.room_id, room);
-            }
-        }
+        this.LeaveRoom(userComp.user_id, userComp.room_id, userComp.type);
 
         this.userSocketTable.delete(userComp.user_id);
         this.users.delete(socketID);
         return userComp;
+    }
+
+    LeaveRoom(user_id : string, room_id : string, type : UserStatus) : boolean {
+        if (!this.userSocketTable.has(user_id)) return false;
+        let socketID = this.userSocketTable.get(user_id);
+
+        if (this.rooms.has(room_id) && room_id) {
+            let room = this.rooms.get(room_id);
+
+            //Teacher has leave the room, remove everyone inside
+            if (type ==  UserStatus.Teacher && room.host_id == user_id) {
+
+                this.RoomDismiss(room.room_id);
+            } else {
+                let studentIndex = room.students.indexOf(socketID);
+                room.students = room.students.splice(studentIndex,1);
+                this.rooms.set(room_id, room);
+            }
+            return true;
+        }
+
+        return false;
     }
 
     /**

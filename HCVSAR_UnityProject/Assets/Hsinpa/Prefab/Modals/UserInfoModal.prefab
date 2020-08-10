@@ -506,6 +506,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 5459843122782232742}
   CloseButton: {fileID: 494566719114325262}
+  KickButton: {fileID: 9012209512897763592}
   TotalScoreText: {fileID: 1920573008}
   UserInfoText: {fileID: 3331522754447376741}
   AchievementHolder: {fileID: 323199765308516939}
@@ -706,7 +707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9245283, g: 0.28745258, b: 0.24857599, a: 1}
+  m_Color: {r: 0.8301887, g: 0.29519278, b: 0.26237094, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
