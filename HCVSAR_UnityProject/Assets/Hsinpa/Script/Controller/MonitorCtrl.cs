@@ -54,6 +54,8 @@ namespace Hsinpa.Controller
             _socketIOManager.socket.On(TypeFlag.SocketEvent.UserLeaved, OnUesrLeaveEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.RefreshUserStatus, OnRefreshUserStatusEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.KickFromGame, OnKickFromGameEvent);
+
             _missionItemSObj = MainApp.Instance.database.MissionItemSObj;
 
             _monitorView.SetUp(OnGameStartBtnClickEvent, OnTerminateBtnClickEvent, OnMoreInfoBtnClickEvent, 
@@ -193,6 +195,15 @@ namespace Hsinpa.Controller
                 var roomComps = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
 
                 if (_monitorView.isShow) _monitorView.SetTimerAndGameStart(roomComps.end_time);
+            }
+        }
+
+        //For test purpose, since teacher can ignore this message
+        private void OnKickFromGameEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
+        {
+            if (args.Length > 0)
+            {
+                Debug.Log(args[0].ToString());
             }
         }
 

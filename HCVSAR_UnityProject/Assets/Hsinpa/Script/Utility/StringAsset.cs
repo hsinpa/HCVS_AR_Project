@@ -68,7 +68,7 @@ namespace Expect.StaticAsset {
 
         public static string GetFullAPIUri(string apiUrl)
         {
-            return Domain.TestServer + apiUrl;
+            return Domain.LocalHost + apiUrl;
         }
 
     }

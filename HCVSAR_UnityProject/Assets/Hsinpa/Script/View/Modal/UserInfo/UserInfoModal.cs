@@ -51,6 +51,7 @@ namespace Expect.View
             KickButton.onClick.RemoveAllListeners();
             KickButton.onClick.AddListener(()=> { if (this.OnKickStudentEvent != null) this.OnKickStudentEvent(studentObj); });
             KickButton.gameObject.SetActive(false);
+            KickButton.interactable = hasConnection;
 
             ResetContent();
 
