@@ -46,6 +46,14 @@ router.post('/upload_class_info', async function (ctx:any, next:any) {
 
   ctx.body = "";
 });
+
+router.post('/insert_student_record', async function (ctx:any, next:any) {
+  ctx.body = await model.ScoreTableModel.InsertStudentScore(
+    ctx.request.body['student_id'], ctx.request.body['mission_id'], ctx.request.body['score']
+  );
+});
+
+
 //#endregion
 
 //#region User Relate 

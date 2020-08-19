@@ -22,6 +22,8 @@ public class TypeFlag
         {
             public string mission_id;
             public string mission_name;
+            public int total_score;
+            public bool hide; //From Display
         }
     }
 

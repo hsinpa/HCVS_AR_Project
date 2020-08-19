@@ -63,7 +63,7 @@ namespace Expect.View
 
             KickButton.gameObject.SetActive(this.userType == TypeFlag.UserType.Teacher);
 
-            TotalScoreText.text = CalculateAccompishPercent(scoreArray);
+            TotalScoreText.text = CalculateScore(scoreArray) + "%";
 
             GenerateScoreBoard(scoreArray);
         }
@@ -82,11 +82,9 @@ namespace Expect.View
             return (float)Math.Round(scoreArray.Sum(x => x.score) / 100f, 2);
         }
 
-        private string CalculateAccompishPercent(TypeFlag.SocketDataType.UserScoreType[] scoreArray)
+        private float CalculateAccompishPercent(TypeFlag.SocketDataType.UserScoreType[] scoreArray)
         {
-            float a_percent = (((float)scoreArray.Length) / missionItemSObj.missionArray.Length) * 100;
-
-            return a_percent + "%";
+           return (((float)scoreArray.Length) / missionItemSObj.missionArray.Length) * 100;
         }
 
         private void GenerateScoreBoard(TypeFlag.SocketDataType.UserScoreType[] scoreArray) {
@@ -100,6 +98,9 @@ namespace Expect.View
 
             for (int i = 0; i < missionLength; i++)
             {
+                //Hide extra mission info from user
+                if (missionItemSObj.missionArray[i].hide) continue;
+
                 AchievementItemView a_item = Utility.UtilityMethod.CreateObjectToParent(AchievementHolder, AchievementPrefab).GetComponent<AchievementItemView>();
 
                 a_item.hashed = (userType != TypeFlag.UserType.Teacher);

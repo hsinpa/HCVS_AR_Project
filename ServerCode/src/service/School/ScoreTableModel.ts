@@ -53,6 +53,27 @@ export default class ScoreTableModel {
         return await this._database.PrepareAndExecuteQuery(query, [class_id]);
     }
 
+    async InsertStudentScore(student_id : string, mission_id:string, score : number) {
+        //Check record existence, override if exist
+        let isRecordExist = await this.CheckIfScoreExist(student_id, mission_id);
+
+        //Parameter order matters
+        let update_query = `UPDATE ScoreTable Set score = ? WHERE student_id = ? AND mission_id = ?`;
+        let insert_query = `INSERT INTO ScoreTable (score, student_id, mission_id) VALUES (?, ?, ?);`;
+
+        let query = (isRecordExist) ? update_query : insert_query;
+
+        return await this._database.PrepareAndExecuteQuery(query, [score, student_id, mission_id]);
+    }
+
+    async CheckIfScoreExist(student_id : string, mission_id : string) : Promise<boolean> {
+        let query = `SELECT * FROM ScoreTable WHERE student_id = ? AND mission_id = ?;`;
+        let count_r = await this._database.PrepareAndExecuteQuery(query, [student_id, mission_id]);
+        let jsonParse = JSON.parse(count_r.result);
+
+        return count_r.status && jsonParse.length;
+    }
+
     async GetClassScoreInfo(class_id : string) {
         let data : DatabaseResultType = {status : false};
 

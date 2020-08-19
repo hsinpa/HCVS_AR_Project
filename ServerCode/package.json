@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prod": "./node_modules/.bin/pm2 start ./dist/index.js --name 'GameMultiServer'",
+    "prod_restart": "./node_modules/.bin/pm2 restart 'GameMultiServer'",
     "dev": "./node_modules/.bin/nodemon --use_strict ./dist/index.js"
   },
   "keywords": [],
