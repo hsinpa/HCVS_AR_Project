@@ -23,8 +23,10 @@ namespace Hsinpa.Controller {
             _loginModal = loginModal;
             _socketIOManager = socketIOManager;
 
+
             _loginModal.SetUp(OnLoginClickEvent, OnGuestClickEvent, OnRegisterClickEvent);
         }
+
 
         public void ProcessLogin() {
             Modals.instance.OpenModal<LoginModal>();
