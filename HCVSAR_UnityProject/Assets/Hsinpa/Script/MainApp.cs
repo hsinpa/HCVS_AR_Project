@@ -27,9 +27,17 @@ public class MainApp : Singleton<MainApp>
         _socketManager = new SocketIOManager();
         subject = new Subject();
 
+        //_socketManager += GetStudentInfo();
+        //observers += GetStudentInfo();
+
         RegisterAllController(subject);
 
         Init();
+    }
+
+    public void GetStudentInfo()
+    {
+
     }
 
     public void Notify(string entity, params object[] objects)
