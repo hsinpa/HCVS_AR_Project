@@ -8,12 +8,15 @@ using System.Linq;
 
 public class UserInfoView : MonoBehaviour
 {
+    [Header("Text")]
     [SerializeField]
     private Text UserInfoText;
 
     [SerializeField]
     private Text TotalScoreText;
 
+    [Header("MissionInfo")]
+    [SerializeField]
     public Transform missionContainer;
     public Transform missionInfo;
 
