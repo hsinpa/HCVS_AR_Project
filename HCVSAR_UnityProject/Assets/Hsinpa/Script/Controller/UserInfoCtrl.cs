@@ -34,8 +34,6 @@ namespace Hsinpa.Controller
         {
             _socketIOManager = socketIOManager;
             _userInfoModal = userInfoModal;
-
-            var GeneralDatabaseType = JsonUtility.FromJson<TypeFlag.SocketDataType.GeneralDatabaseType>("asdfasdf");
         }
 
         public void ShowUserInfo(TypeFlag.SocketDataType.StudentDatabaseType studentObj, bool isConnect, TypeFlag.UserType ownerType) {

@@ -14,7 +14,7 @@ public class MainApp : Singleton<MainApp>
 
     private Subject subject;
 
-    SocketIOManager _socketManager;
+    public SocketIOManager _socketManager;
 
     private Observer[] observers = new Observer[0];
 

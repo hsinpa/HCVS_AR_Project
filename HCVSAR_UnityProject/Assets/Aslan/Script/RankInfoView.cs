@@ -8,7 +8,7 @@ using System.Linq;
 
 public class RankInfoView : MonoBehaviour
 {
-    [Header("Selections")]
+        
     [SerializeField]
     private Dropdown ClassDeptSelection;
 

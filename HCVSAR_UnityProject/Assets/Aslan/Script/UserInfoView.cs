@@ -108,7 +108,7 @@ public class UserInfoView : MonoBehaviour
                     student_id = allStudentData[2].id;
                     student_name = allStudentData[2].student_name;
                     PrepareScoreData(student_id); // put id
-    }
+                }
             }, null));
     }
 

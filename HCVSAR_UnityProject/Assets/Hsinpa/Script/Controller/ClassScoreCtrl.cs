@@ -49,7 +49,7 @@ namespace Hsinpa.Controller {
 
                 var classScoreHolder = JsonUtility.FromJson<TypeFlag.SocketDataType.ClassScoreHolderType>(json);
 
-                classInfoModal.SetTitle( string.Format(StringAsset.ClassInfo.Title, selectedRoomData.class_name));
+                classInfoModal.SetTitle(string.Format(StringAsset.ClassInfo.Title, selectedRoomData.class_name));
 
                 _ = PrepareOverallChartData(classInfoModal, classScoreHolder);
 
