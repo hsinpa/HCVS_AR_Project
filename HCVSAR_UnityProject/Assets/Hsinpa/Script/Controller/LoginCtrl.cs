@@ -17,7 +17,7 @@ namespace Hsinpa.Controller {
         private SocketIOManager _socketIOManager;
         private TypeFlag.SocketDataType.LoginDatabaseType userDataInfo;
 
-        public System.Action<TypeFlag.SocketDataType.LoginDatabaseType> OnLoginEvent;
+        public System.Action<TypeFlag.SocketDataType.LoginDatabaseType, SocketIOManager> OnLoginEvent;
 
         public void SetUp(LoginModal loginModal, SocketIOManager socketIOManager) {
             _loginModal = loginModal;
@@ -158,7 +158,7 @@ namespace Hsinpa.Controller {
             }
 
             if (OnLoginEvent != null)
-                OnLoginEvent(userDataInfo);
+                OnLoginEvent(userDataInfo, _socketIOManager);
         }
     }
 }
