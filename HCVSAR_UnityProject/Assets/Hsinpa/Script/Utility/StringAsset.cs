@@ -58,6 +58,17 @@ namespace Expect.StaticAsset {
             public const string teacherPhone = "老師電話：";
         }
 
+        public class BagObjectInfo
+        {
+            public const string mail = "不知道是誰遺落的信件，要送去學校門口的樣子";
+            public const string map1 = "不知道誰遺落的信件，收件人的欄位上寫著海軍子弟學校收，";
+            public const string map2 = "如果是緊急的信件就麻煩了，快點幫他送到收件人地址上的位置吧！";
+
+            public const string mailDetail = "不Detail口的樣子";
+            public const string map1Detail = "不知Detail收件人的欄位上寫著海軍子弟學校收，";
+            public const string map2Detail = "如果是緊急的信件就麻煩Detail地址上的位置吧！";
+        }
+
         public class Domain {
             public const string LocalHost = "http://localhost:8020/";
             public const string TestServer = "http://34.82.74.32:81/";
