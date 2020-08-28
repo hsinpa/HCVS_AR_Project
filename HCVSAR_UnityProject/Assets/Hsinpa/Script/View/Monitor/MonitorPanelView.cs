@@ -74,14 +74,20 @@ namespace Hsinpa.View
             RenderStudentInfoToScrollView(this.allStudentData);
         }
 
-        public void SetUserConnectionType(bool isConnect, string user_id) {
-            if (allStudentData == null || string.IsNullOrEmpty(user_id)) return;
+        public void SetUserConnectionType(bool isConnect, TypeFlag.SocketDataType.UserComponentType userComp) {
+            if (allStudentData == null || string.IsNullOrEmpty(userComp.user_id)) return;
 
-            var findStudentIndex = allStudentData.FindIndex(x => x.id == user_id);
+            var findStudentIndex = allStudentData.FindIndex(x => x.id == userComp.user_id);
 
-            if (findStudentIndex >= 0 && findStudentIndex < allStudentData.Count) {
+            if (findStudentIndex >= 0 && findStudentIndex < allStudentData.Count)
+            {
                 var itemObj = StudentContainer.GetChild(findStudentIndex).GetComponent<MonitorItemPrefabView>();
                 itemObj.ChangeStatus(isConnect);
+            }
+            else {
+                //New Student, that is not record
+                var studentType = CreateStudentDatabaseType(userComp.user_id, userComp.room_id, userComp.name);
+                AddSingleStudent(studentType, isConnect:true);
             }
         }
 
@@ -91,16 +97,29 @@ namespace Hsinpa.View
             ResetContent();
 
             for (int i = 0; i < studentCount; i++) {
-                GameObject studentObj = UtilityMethod.CreateObjectToParent(StudentContainer, StudentItemPrefab);
-
-                MonitorItemPrefabView prefabView = studentObj.GetComponent<MonitorItemPrefabView>();
-
-                prefabView.SetNameAndID(allStudentData[i]);
-
-                prefabView.SetClickEvent(this.OnStudentItemClickEvent);
-
-                studentItemDict.Add(allStudentData[i].id, prefabView);
+                AddSingleStudent(allStudentData[i], isConnect:false);
             }
+        }
+
+        public void AddSingleStudent(TypeFlag.SocketDataType.StudentDatabaseType studentDataType, bool isConnect) {
+            MonitorItemPrefabView prefabView;
+
+            if (studentItemDict.TryGetValue(studentDataType.id, out MonitorItemPrefabView prefab))
+            {
+                prefabView = prefab;
+            }
+            else {
+                GameObject studentObj = UtilityMethod.CreateObjectToParent(StudentContainer, StudentItemPrefab);
+                prefabView = studentObj.GetComponent<MonitorItemPrefabView>();
+            }
+
+            prefabView.SetNameAndID(studentDataType);
+
+            prefabView.SetClickEvent(this.OnStudentItemClickEvent);
+
+            prefabView.ChangeStatus(isConnect);
+
+            studentItemDict.Add(studentDataType.id, prefabView);
         }
 
         public void SyncUserStateByArray(TypeFlag.SocketDataType.UserComponentType[] userCompList) {
@@ -154,8 +173,16 @@ namespace Hsinpa.View
                 endTime = DateTime.MinValue;
             }
         }
-    
-        
+
+        private TypeFlag.SocketDataType.StudentDatabaseType CreateStudentDatabaseType(string id, string class_id, string name) {
+            var student_type = new TypeFlag.SocketDataType.StudentDatabaseType();
+
+            student_type.id = id;
+            student_type.student_name = name;
+            student_type.class_id = class_id;
+
+            return student_type;
+        }       
     
     }
 }

@@ -166,7 +166,7 @@ namespace Hsinpa.Controller
             if (args.Length > 0)
             {
                 var userComp = JsonUtility.FromJson<TypeFlag.SocketDataType.UserComponentType>(args[0].ToString());
-                if (_monitorView.isShow) _monitorView.SetUserConnectionType(true, userComp.user_id);
+                if (_monitorView.isShow) _monitorView.SetUserConnectionType(true, userComp);
             }
         }
 
@@ -174,7 +174,7 @@ namespace Hsinpa.Controller
         {
             if (args.Length > 0) {
                 var userComp = JsonUtility.FromJson<TypeFlag.SocketDataType.UserComponentType>(args[0].ToString());
-                if (_monitorView.isShow) _monitorView.SetUserConnectionType(false, userComp.user_id);
+                if (_monitorView.isShow) _monitorView.SetUserConnectionType(false, userComp);
             }
         }
 
