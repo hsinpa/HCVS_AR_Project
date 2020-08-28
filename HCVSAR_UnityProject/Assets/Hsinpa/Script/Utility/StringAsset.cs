@@ -49,6 +49,15 @@ namespace Expect.StaticAsset {
 
         }
 
+        public class ConnectTeacherInfo
+        {
+            public const string school = "高雄市立海青高直工商職業學校";
+            public const string add = "813009 高雄市左營區左營大路1號";
+            public const string teacherName = "課堂老師：曾敏泰 老師";
+            public const string schoolPhone = "學校電話：";
+            public const string teacherPhone = "老師電話：";
+        }
+
         public class Domain {
             public const string LocalHost = "http://localhost:8020/";
             public const string TestServer = "http://34.82.74.32:81/";
@@ -63,6 +72,7 @@ namespace Expect.StaticAsset {
             public const string GetAllStudentByID = "getAllStudentByID/{0}/{1}";
             public const string GetStudentScore = "getStudentScore/{0}";
             public const string GetClassScore = "getClassScoreInfo/{0}";
+            public const string GetStudentRank = "getStudentRank/{0}";
 
         }
 
