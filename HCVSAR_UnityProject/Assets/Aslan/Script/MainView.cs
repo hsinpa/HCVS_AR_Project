@@ -1,7 +1,9 @@
 ﻿using System.Collections;
+using Hsinpa.Controller;
+using Hsinpa.Socket;
+using Hsinpa.Model;
 using System.Collections.Generic;
 using UnityEngine;
-using Hsinpa.Socket;
 using UnityEngine.UI;
 using Expect.StaticAsset;
 using UnityEngine.Networking;
@@ -16,9 +18,6 @@ public class MainView : MonoBehaviour
     [SerializeField]
     private Button[] missionsButtons;
 
-    [SerializeField]
-    private Button GameStartBtn;
-
     [Header("Mission Info")]
     [SerializeField]
     private Text missionInfo;
@@ -30,20 +29,26 @@ public class MainView : MonoBehaviour
     [Header("Timer Text")]
     [SerializeField]
     private Text TimerText;
+    private Text ScoreText;
 
     private string participant = StringAsset.ClassInfo.Participant;
     private string averageScore = StringAsset.ClassInfo.AverageScore;
-
-    private SocketIOManager _socketIOManager;
 
     private DateTime startTime = DateTime.MinValue;
     private DateTime endTime = DateTime.MinValue;
 
     private System.Action OnTimeUpEvent;
+    private TypeFlag.InGameType.MissionType[] missionArray;
+    private Dictionary<string, TypeFlag.InGameType.MissionType> missionLookupTable;
+    //private StudentDataSave studentData; // replace bt SimpleDatabase
+
+    // test
+    private MissionItemSObj missionItemSObj;
 
     void Start()
     {
         Setup();
+        //PrepareScoreData(loginData.user_id);
     }
 
     private void Update()
@@ -66,22 +71,36 @@ public class MainView : MonoBehaviour
 
     private void Setup()
     {
-        _socketIOManager = MainApp.Instance._socketManager;
-       // _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
-        GameStartBtn.onClick.AddListener(() => SetTimerAndGameStart(DateTimeOffset.UtcNow.AddSeconds(40).ToUnixTimeMilliseconds()));
         MissionsClick();
-    }
-/*
-    private void OnGameStartSocketEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
-    {
-        if (args.Length > 0)
-        {
-            var roomComps = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
+        TryRegisterOnLoginEvent();
 
-            GameStartBtn.onClick.AddListener(() => SetTimerAndGameStart(40));//roomComps.end_time));
-        }
+        missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
+        missionLookupTable = MainApp.Instance.database.MissionShortNameObj.MissionTable;
     }
-*/
+
+    void TryRegisterOnLoginEvent()
+    {
+        var loginCtrl = MainApp.Instance.GetObserver<LoginCtrl>();
+        loginCtrl.OnLoginEvent += OnReceiveLoginEvent;
+    }
+
+    private void OnReceiveLoginEvent(TypeFlag.SocketDataType.LoginDatabaseType loginType, SocketIOManager _socketIOManager)
+    {
+        _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
+
+        /*
+        // save student data to SimpleDatabase
+        studentData.username = loginType.username;
+        studentData.user_id = loginType.user_id;
+        studentData.room_id = loginType.room_id;
+        studentData.userType = loginType.userType;
+        */
+        Debug.Log("loginType.room_id" + loginType.room_id);
+        //Debug.Log("studentData.username" + studentData.username);
+        Debug.Log("missionItemSObj " + missionItemSObj.missionArray[0].total_score);
+        
+    }
+
     private void MissionsClick()
     {
 
@@ -91,6 +110,14 @@ public class MainView : MonoBehaviour
             missionsButtons[closureIndex].onClick.AddListener(() => ShowMissionInfo(closureIndex));
         }
 
+    }
+
+    private void OnGameStartSocketEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
+    {
+        if (args.Length > 0)
+        {
+            var roomComps = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
+        }
     }
 
     public void SetTimerAndGameStart(long endTimestamp)

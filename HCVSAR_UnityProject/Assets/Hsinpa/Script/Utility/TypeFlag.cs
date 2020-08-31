@@ -143,6 +143,20 @@ public class TypeFlag
             public float main_value;
         }
 
+        [System.Serializable]
+        public struct StudentType
+        {
+            public string student_id;
+            public string mission_id;
+            public int score;
+        }
 
+        [System.Serializable]
+        public struct StudentRankType
+        {
+            public string total_score;
+            public string student_id;
+            public string student_name;
+        }
     }
 }

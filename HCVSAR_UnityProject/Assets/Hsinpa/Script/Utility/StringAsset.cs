@@ -71,7 +71,7 @@ namespace Expect.StaticAsset {
 
         public class Domain {
             public const string LocalHost = "http://localhost:8020/";
-            public const string TestServer = "http://34.82.74.32:81/";
+            public const string TestServer = "http://ec2-52-88-40-169.us-west-2.compute.amazonaws.com:84/";
         }
 
         public class API {

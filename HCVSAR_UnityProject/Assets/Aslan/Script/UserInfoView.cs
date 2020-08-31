@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Linq;
+using Hsinpa.Model;
 
 public class UserInfoView : MonoBehaviour
 {
@@ -20,19 +21,18 @@ public class UserInfoView : MonoBehaviour
     public Transform missionContainer;
     public Transform missionInfo;
 
-    private TypeFlag.UserType userType;
+    [Header("Status")]
+    [SerializeField]
+    public Image status;
+    public Sprite statusOn;
+    public Sprite statusOff;
 
-    [System.Serializable]
-    public struct StudentType
-    {
-        public string student_id;
-        public string mission_id;
-        public int score;
-    }
+    private TypeFlag.UserType userType;
 
     private TypeFlag.SocketDataType.LoginDatabaseType loginData;
     private List<TypeFlag.SocketDataType.StudentDatabaseType> allStudentData;
-    private List<StudentType> studentData;
+    private List<TypeFlag.SocketDataType.StudentType> studentData;
+    //private StudentDataSave studentDataSave;
 
     private bool isConnection;
     private string student_id;
@@ -41,22 +41,17 @@ public class UserInfoView : MonoBehaviour
     void Start()
     {
         PrepareStudentData();
-        //PrepareScoreData(loginData.user_id);
     }
 
-    void TryRegisterOnLoginEvent()
-    {
-        //var loginCtrl = MainApp.Instance.GetObserver<LoginCtrl>();
-
-    }
-
-    private void GetStudentInfoText(List<StudentType> studentData)
+    private void GetStudentInfoText(List<TypeFlag.SocketDataType.StudentType> studentData)
     {
         UserInfoText.text = string.Format("{0}, {1}\n{2}", student_name, student_id, isConnection);
         MissionInfo(studentData);
+        isConnection = true ? status.sprite = statusOn : status.sprite = statusOff;
+
     }
 
-    private void MissionInfo(List<StudentType> studentData)
+    private void MissionInfo(List<TypeFlag.SocketDataType.StudentType> studentData)
     {
         float height = 60f;
         int totalScore = 0;
@@ -123,7 +118,7 @@ public class UserInfoView : MonoBehaviour
                     return;
                 }
 
-                var tempStudentData = JsonHelper.FromJson<StudentType>(json);
+                var tempStudentData = JsonHelper.FromJson<TypeFlag.SocketDataType.StudentType>(json);
 
                 if (tempStudentData != null)
                 {
