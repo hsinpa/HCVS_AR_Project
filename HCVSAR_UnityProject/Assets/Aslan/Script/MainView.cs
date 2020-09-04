@@ -1,7 +1,9 @@
 ﻿using System.Collections;
+using Hsinpa.Controller;
+using Hsinpa.Socket;
+using Hsinpa.Model;
 using System.Collections.Generic;
 using UnityEngine;
-using Hsinpa.Socket;
 using UnityEngine.UI;
 using Expect.StaticAsset;
 using UnityEngine.Networking;
@@ -10,14 +12,13 @@ using System.Linq;
 using System;
 using BestHTTP.SocketIO;
 
-public class MainView : MonoBehaviour
+public class MainView : Singleton<MainView>//MonoBehaviour
 {
+    protected MainView() { } // guarantee this will be always a singleton only - can't use the constructor!
+
     [Header("Buttons")]
     [SerializeField]
     private Button[] missionsButtons;
-
-    [SerializeField]
-    private Button GameStartBtn;
 
     [Header("Mission Info")]
     [SerializeField]
@@ -27,25 +28,29 @@ public class MainView : MonoBehaviour
     [SerializeField]
     private GameObject infoView;
 
-    [Header("Timer Text")]
+    [Header("Text")]
     [SerializeField]
     private Text TimerText;
+    [SerializeField]
+    private Text TotalScoreText;
 
     private string participant = StringAsset.ClassInfo.Participant;
     private string averageScore = StringAsset.ClassInfo.AverageScore;
 
-    private SocketIOManager _socketIOManager;
+    public string totalScoreString;
+    public List<TypeFlag.SocketDataType.StudentType> studentData;
+    public TypeFlag.SocketDataType.LoginDatabaseType loginData;
 
     private DateTime startTime = DateTime.MinValue;
     private DateTime endTime = DateTime.MinValue;
-
-    private System.Action OnTimeUpEvent;
+    //private System.Action OnTimeUpEvent;
 
     void Start()
     {
         Setup();
     }
 
+    /*
     private void Update()
     {
         if (endTime == DateTime.MinValue) return;
@@ -63,25 +68,30 @@ public class MainView : MonoBehaviour
             endTime = DateTime.MinValue;
         }
     }
+    */
 
     private void Setup()
     {
-        _socketIOManager = MainApp.Instance._socketManager;
-       // _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
-        GameStartBtn.onClick.AddListener(() => SetTimerAndGameStart(DateTimeOffset.UtcNow.AddSeconds(40).ToUnixTimeMilliseconds()));
-        MissionsClick();
+        TryRegisterOnLoginEvent();
     }
-/*
-    private void OnGameStartSocketEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
-    {
-        if (args.Length > 0)
-        {
-            var roomComps = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
 
-            GameStartBtn.onClick.AddListener(() => SetTimerAndGameStart(40));//roomComps.end_time));
-        }
+    void TryRegisterOnLoginEvent()
+    {
+        var loginCtrl = MainApp.Instance.GetObserver<LoginCtrl>();
+        loginCtrl.OnLoginEvent += OnReceiveLoginEvent;
     }
-*/
+
+    private void OnReceiveLoginEvent(TypeFlag.SocketDataType.LoginDatabaseType loginType, SocketIOManager _socketIOManager)
+    {
+        if (loginType.user_id == null) return;
+
+        _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
+
+        loginData = loginType;
+        MissionsClick();
+        PrepareScoreData();
+    }
+
     private void MissionsClick()
     {
 
@@ -93,23 +103,29 @@ public class MainView : MonoBehaviour
 
     }
 
-    public void SetTimerAndGameStart(long endTimestamp)
+    private void GetTotalScore(List<TypeFlag.SocketDataType.StudentType> studentData)
     {
-        startTime = DateTime.UtcNow;
-        endTime = DateTimeOffset.FromUnixTimeMilliseconds(endTimestamp).DateTime;
-    }
+        int totalScore = 0;
+        for (int i = 0; i < studentData.Count; i++)
+        {
+            totalScore += studentData[i].score;
+        }
 
-    public void ResetTime()
-    {
-        startTime = DateTime.MinValue;
-        endTime = DateTime.MinValue;
-
-        TimerText.text = "00:00";
+        if (totalScore < 10)
+        {
+            totalScoreString = "0" + totalScore.ToString();
+            TotalScoreText.text = totalScoreString;
+        }
+        else
+        {
+            totalScoreString = totalScore.ToString();
+            TotalScoreText.text = totalScoreString;
+        }
     }
 
     private void ShowMissionInfo(int index)
     {
-        ShowClassScore("57838582", index);
+        ShowClassScore(loginData.room_id, index);
         infoView.SetActive(true);
 
         Debug.Log("index " + index);
@@ -139,11 +155,50 @@ public class MainView : MonoBehaviour
         ArrayList missionViewInfo = new ArrayList();
         var participant = data.participant_count.ToList();
         var average = data.average_score.ToList();
-        Debug.Log("missionViewInfo2 " + average[0].main_value + ", index " + index);
 
         missionViewInfo.Add(participant[index].main_value);
         missionViewInfo.Add(average[index].main_value);
 
         return missionViewInfo;
+    }
+
+    // Time Sock Event
+    private void OnGameStartSocketEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
+    {
+        if (args.Length > 0)
+        {
+
+            var roomComps = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
+            SetTimerAndGameStart(roomComps.end_time);
+        }
+    }
+
+    public void SetTimerAndGameStart(long endTimestamp)
+    {
+        startTime = DateTime.UtcNow;
+        endTime = DateTimeOffset.FromUnixTimeMilliseconds(endTimestamp).DateTime;
+    }
+
+    // UserInfo Score Data
+    public void PrepareScoreData()
+    {
+        string getStudentURI = string.Format(StringAsset.API.GetStudentScore, loginData.user_id);
+
+        StartCoroutine(
+            APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(getStudentURI), UnityWebRequest.kHttpVerbGET, null, (string json) => {
+                if (string.IsNullOrEmpty(json))
+                {
+                    return;
+                }
+
+                var tempStudentData = JsonHelper.FromJson<TypeFlag.SocketDataType.StudentType>(json);
+
+                if (tempStudentData != null)
+                {
+                    studentData = tempStudentData.ToList();
+                    GetTotalScore(studentData);
+                }
+                
+            }, null));
     }
 }

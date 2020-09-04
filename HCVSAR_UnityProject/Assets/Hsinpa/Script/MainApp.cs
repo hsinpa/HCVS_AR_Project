@@ -22,22 +22,25 @@ public class MainApp : Singleton<MainApp>
     private SimpleDatabase _database;
     public SimpleDatabase database => _database;
 
+    [SerializeField]
+    private GameObject StudentView;
+    [SerializeField]
+    private GameObject sockAppView;
+
     private void Start()
     {
         _socketManager = new SocketIOManager();
         subject = new Subject();
-
-        //_socketManager += GetStudentInfo();
-        //observers += GetStudentInfo();
 
         RegisterAllController(subject);
 
         Init();
     }
 
-    public void GetStudentInfo()
+    public void SwitchToStudentView()
     {
-
+        sockAppView.SetActive(false);
+        StudentView.GetComponent<CanvasGroup>().alpha = 1;
     }
 
     public void Notify(string entity, params object[] objects)

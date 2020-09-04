@@ -69,6 +69,66 @@ namespace Expect.StaticAsset {
             public const string map2Detail = "如果是緊急的信件就麻煩Detail地址上的位置吧！";
         }
 
+        public class MissionsSituation
+        {
+            public class One
+            {
+                public const string s1 = "樂咖和玩家看到了前方有一群人湊上前去觀看";
+            }
+        }
+
+        public class MissionsDialog
+        {
+            public class Person
+            {
+                public const string dog = "樂咖";
+                public const string people = "村民";
+            }
+
+            public class One
+            {
+                public const string d1 = "你們在做什麼啊？為什麼要拉倒城牆呢？";
+                public const string d2 = "因為日本海軍要擴大營區，所以要把清朝的城牆拆除。\n我們就被召集來出力了！你沒事的話快來幫忙吧！";
+
+                public const string history1 = "各位同學今天看到的城牆跟城門，道光五年（1825）由清朝官府動員民間捐款興建的，是台灣當時第一座石頭城，至今已經快兩百歲了呢！";
+                public const string history2 = "由於清朝沒什麼錢，所以是直接從柴山上面採珊瑚礁岩，也就是俗稱的咾咕石來蓋城牆城門拱則是用來自福建的花崗岩。";
+                public const string history3 = "整座城有東（鳳儀）、西（奠海）、南（啟文）、北（拱辰）四個城門，上有三川脊式城樓，城門間有東、西、南、北四座砲台。";
+                public const string history4 = "還有排水的水關等設計，在當年可說是相當先進呢！";
+            }
+        }
+
+        public class MissionsQustion
+        {
+            public class One
+            {
+                public const string qustion = "請問為什麼好端端清代城牆跟城門要被日本人拆除呢？";
+            }
+
+            public class Three
+            {
+                public const string qustion = "你們猜猜廣濟宮是拜什麼神明的呢？";
+            }
+        }
+
+        public class MissionsAnswer
+        {
+            public class One
+            {
+                public const string ans1 = "城牆跟城門年久失修有倒塌疑慮";
+                public const string ans2 = "因為隨著日本海軍軍區擴大，土地不夠";
+                public const string ans3 = "城門跟城牆擋住日本人參拜天皇的方位";
+                public const string ans4 = "因為風水問題被拆除";
+            }
+
+            public class Three
+            {
+                public const string ans1 = "保生大帝";
+                public const string ans2 = "三山國王";
+                public const string ans3 = "觀音佛祖";
+                public const string ans4 = "媽祖";
+            }
+        }
+
         public class Domain {
             public const string LocalHost = "http://localhost:8020/";
             public const string TestServer = "http://ec2-52-88-40-169.us-west-2.compute.amazonaws.com:84/";
@@ -85,6 +145,7 @@ namespace Expect.StaticAsset {
             public const string GetClassScore = "getClassScoreInfo/{0}";
             public const string GetStudentRank = "getStudentRank/{0}";
 
+            public const string PostStudentScore = "Insert_student_record";
         }
 
         public static string GetFullAPIUri(string apiUrl)

@@ -21,7 +21,6 @@ public class BagPanel : MonoBehaviour
     [Header("Transform")]
     [SerializeField]
     public Transform Container;
-    public Transform Object;
     public Transform Info;
 
     [Header("Detail Info")]
@@ -47,30 +46,30 @@ public class BagPanel : MonoBehaviour
             int closureIndex = i;
             eventButtons[closureIndex].onClick.AddListener(() => AddListener(closureIndex));
         }
+        
     }
 
     private void AddListener(int index)
     {
-        height += 170f;
+        height += 220f;
 
-        Transform objectTransform = Instantiate(Object, Container);
         Transform infoTransform = Instantiate(Info, Container);
-        RectTransform objectRectTransform = objectTransform.GetComponent<RectTransform>();
         RectTransform infoRectTransform = infoTransform.GetComponent<RectTransform>();
 
-        infoRectTransform.anchoredPosition = new Vector2(0, -height);
-        objectRectTransform.anchoredPosition = new Vector2(0, -height);
-        
-        objectTransform.Find("Image").GetComponent<Image>().sprite = eventImage[index];
-        infoTransform.Find("Text").GetComponent<Text>().text = objectInfo[index];
+        infoRectTransform.anchoredPosition = new Vector2(0, 220f - height);
 
-        objectTransform.Find("Button").GetComponent<Button>().onClick.AddListener(() => AddInfoListener(index));
+        infoTransform.Find("Text").GetComponent<Text>().text = objectInfo[index];
+        infoTransform.Find("Button").GetComponent<Image>().sprite = eventImage[index];
+        infoTransform.Find("Button").GetComponent<Button>().onClick.AddListener(() => AddInfoListener(index));
+
+        infoTransform.gameObject.SetActive(true);
     }
 
     private void AddInfoListener(int index)
     {
         Debug.Log("AddInfoListener" + index);
         detailObject.sprite = detailInfoImage[index];
+        detailObject.SetNativeSize();
         detailTxt.text = detailInfo[index];
         detailGameObject.SetActive(true);
     }

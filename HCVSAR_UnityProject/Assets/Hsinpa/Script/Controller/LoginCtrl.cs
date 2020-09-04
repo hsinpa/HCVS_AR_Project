@@ -147,6 +147,9 @@ namespace Hsinpa.Controller {
 
                 case TypeFlag.UserType.Student:
                     Debug.Log("To Guest Student");
+
+                    MainApp.Instance.SwitchToStudentView();
+
                     break;
 
                 case TypeFlag.UserType.Teacher:
