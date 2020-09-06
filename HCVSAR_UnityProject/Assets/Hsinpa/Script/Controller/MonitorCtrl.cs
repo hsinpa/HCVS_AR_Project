@@ -82,7 +82,7 @@ namespace Hsinpa.Controller
                 {
                     allStudentData = tempStudentData.ToList();
 
-                    string fullRoomName = string.Format("{0}年, {1}", selectedRoomData.year, selectedRoomData.class_name);
+                    string fullRoomName = string.Format("{0}年, {1}\nID: {2}", selectedRoomData.year, selectedRoomData.class_name, selectedRoomData.class_id);
                     _monitorView.SetContent(fullRoomName, allStudentData);
 
                     _socketIOManager.Emit(TypeFlag.SocketEvent.RefreshUserStatus);

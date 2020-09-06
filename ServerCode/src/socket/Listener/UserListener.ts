@@ -68,6 +68,12 @@ export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketI
             socket.join(userComp.room_id);
 
             socket.to(userComp.room_id).emit(UniversalSocketEvent.UserJoined, JSON.stringify(userComp));
+            
+            let roomComp = socektEnv.rooms.get(userComp.room_id);
+            roomComp.students = [];
+            //If student is join after "game start", push this event
+            if (roomComp.end_time > 0)
+                socket.emit(TeacherSocketEvent.StartGame, JSON.stringify(roomComp));
         }
     });
 //#endregion

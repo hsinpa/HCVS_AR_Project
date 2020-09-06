@@ -22,11 +22,6 @@ public class MainApp : Singleton<MainApp>
     private SimpleDatabase _database;
     public SimpleDatabase database => _database;
 
-    [SerializeField]
-    private GameObject StudentView;
-    [SerializeField]
-    private GameObject sockAppView;
-
     private void Start()
     {
         _socketManager = new SocketIOManager();
@@ -35,14 +30,6 @@ public class MainApp : Singleton<MainApp>
         RegisterAllController(subject);
 
         Init();
-    }
-
-    public void SwitchToStudentView()
-    {
-        sockAppView.GetComponent<CanvasGroup>().alpha = 0;
-        sockAppView.GetComponent<CanvasGroup>().interactable = false;
-        sockAppView.GetComponent<CanvasGroup>().blocksRaycasts = false;
-        StudentView.GetComponent<CanvasGroup>().alpha = 1;
     }
 
     public void Notify(string entity, params object[] objects)

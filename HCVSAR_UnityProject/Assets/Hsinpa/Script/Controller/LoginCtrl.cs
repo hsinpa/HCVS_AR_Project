@@ -137,8 +137,9 @@ namespace Hsinpa.Controller {
         }
 
         private void NextStage(TypeFlag.UserType type) {
-
             userDataInfo.userType = type;
+
+            Modals.instance.Close();
 
             switch (type) {
                 case TypeFlag.UserType.Guest:
@@ -147,8 +148,6 @@ namespace Hsinpa.Controller {
 
                 case TypeFlag.UserType.Student:
                     Debug.Log("To Guest Student");
-
-                    MainApp.Instance.SwitchToStudentView();
 
                     break;
 

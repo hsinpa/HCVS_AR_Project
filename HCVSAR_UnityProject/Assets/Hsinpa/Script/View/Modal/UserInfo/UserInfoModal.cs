@@ -79,7 +79,7 @@ namespace Expect.View
         }
 
         private float CalculateScore(TypeFlag.SocketDataType.UserScoreType[] scoreArray) {
-            return (float)Math.Round(scoreArray.Sum(x => x.score) / 100f, 2);
+            return scoreArray.Sum(x => x.score);
         }
 
         private float CalculateAccompishPercent(TypeFlag.SocketDataType.UserScoreType[] scoreArray)
