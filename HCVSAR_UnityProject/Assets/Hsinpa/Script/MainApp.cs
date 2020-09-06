@@ -39,7 +39,9 @@ public class MainApp : Singleton<MainApp>
 
     public void SwitchToStudentView()
     {
-        sockAppView.SetActive(false);
+        sockAppView.GetComponent<CanvasGroup>().alpha = 0;
+        sockAppView.GetComponent<CanvasGroup>().interactable = false;
+        sockAppView.GetComponent<CanvasGroup>().blocksRaycasts = false;
         StudentView.GetComponent<CanvasGroup>().alpha = 1;
     }
 

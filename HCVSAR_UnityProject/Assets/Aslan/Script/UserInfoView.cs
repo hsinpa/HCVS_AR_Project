@@ -53,7 +53,7 @@ public class UserInfoView : MonoBehaviour
         missionLookupTable = MainApp.Instance.database.MissionShortNameObj.MissionTable;
     }
 
-    private void GetStudentInfoText(List<TypeFlag.SocketDataType.StudentType> studentData)
+    public void GetStudentInfoText(List<TypeFlag.SocketDataType.StudentType> studentData)
     {
         MissionArraySetUp();
         

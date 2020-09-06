@@ -42,14 +42,14 @@ public class MissionView_1 : MonoBehaviour
     private string qustion = StringAsset.MissionsQustion.One.qustion;
     private string[] answers = { StringAsset.MissionsAnswer.One.ans1, StringAsset.MissionsAnswer.One.ans2,
                                  StringAsset.MissionsAnswer.One.ans3, StringAsset.MissionsAnswer.One.ans4};
-    /*
+    
     public enum ConvercestionType
     {
         Dialog_talk1, Dialog_talk2, History
     }
     
     ConvercestionType convercestionType;
-    */
+    
 
     private void MissionArraySetUp()
     {
@@ -133,7 +133,7 @@ public class MissionView_1 : MonoBehaviour
         /*
         switch (clickCount)
         {
-            case (int)ConvercestionType.Dialog_talk1:
+            case clickCount == (int)conv.Dialog_talk1:
                 Debug.Log("clickCount2: " + clickCount);
                 situationMissionView.Show(false);
                 dialogMissionView.Show(true);
@@ -153,7 +153,7 @@ public class MissionView_1 : MonoBehaviour
     {
         fingerClick.boxCollider.enabled = false;
         fingerClick.Click -= ClickCount;
-        Debug.Log("Finish111");
+        
         dialogMissionView.Show(false);
         questionMissionView.Show(true);
         questionMissionView.QuestionView(qustion, answers);

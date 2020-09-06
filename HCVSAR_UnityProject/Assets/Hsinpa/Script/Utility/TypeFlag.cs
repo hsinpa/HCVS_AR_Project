@@ -158,5 +158,12 @@ public class TypeFlag
             public string mission_id;
             public int score;
         }
+
+        [System.Serializable]
+        public struct TerminateGameType
+        {
+            public string room_id;
+            public string location_id;
+        }
     }
 }
