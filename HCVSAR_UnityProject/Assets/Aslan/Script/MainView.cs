@@ -55,6 +55,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private DateTime startTime = DateTime.MinValue;
     private DateTime endTime = DateTime.MinValue;
     private System.Action OnTimeUpEvent;
+    private SocketIOManager _socketIOManager;
 
     void Start()
     {
@@ -93,18 +94,19 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
     }
 
-    private void OnReceiveLoginEvent(TypeFlag.SocketDataType.LoginDatabaseType loginType, SocketIOManager _socketIOManager)
+    private void OnReceiveLoginEvent(TypeFlag.SocketDataType.LoginDatabaseType loginType, SocketIOManager socketIOManager)
     {
         if (loginType.user_id == null) return;
-
-        _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
-        _socketIOManager.socket.On(TypeFlag.SocketEvent.TerminateGame, OnTerminateEvent);
-
         loginData = loginType;
 
-        MissionsClick();
-        PrepareScoreData(loginData.user_id); //prepare total score
-        PrepareClassScore(loginData.room_id);
+        if (_socketIOManager == null) {
+            _socketIOManager = socketIOManager;
+
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.TerminateGame, OnTerminateEvent);
+        }
+
+        StarGame(); //use for no teacher
     }
 
     public void PrepareClassScore(string class_id)
@@ -180,15 +182,27 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         EndLocationText.text = location;
     }
 
-    // Time Sock Event
+    // Start Sock Event
     private void OnGameStartSocketEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
     {
         if (args.Length > 0)
         {
-
             var roomComps = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
             SetTimerAndGameStart(roomComps.end_time);
         }
+
+        //StarGame();  //use for Listen teacher
+    }
+
+    private void StarGame()
+    {
+        this.GetComponent<CanvasGroup>().interactable = true;
+        this.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        EndView.alpha = 0;
+
+        MissionsClick();
+        PrepareScoreData(loginData.user_id);
+        PrepareClassScore(loginData.room_id);
     }
 
     public void SetTimerAndGameStart(long endTimestamp)
@@ -238,9 +252,10 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             totalScoreString = totalScore.ToString();
             TotalScoreText.text = totalScoreString;
         }
+        Debug.Log("=============================totalScoreString" + totalScoreString);
     }
 
-
+    
     // Refresh Score Data
     public string RefreshScore(string id)
     {
@@ -269,17 +284,21 @@ public class MainView : Singleton<MainView>//MonoBehaviour
                     if (totalScore < 10)
                     {
                         totalScoreString = "0" + totalScore.ToString();
+                        Debug.Log("1totalScoreString" + totalScoreString);
                     }
                     else
                     {
                         totalScoreString = totalScore.ToString();
+                        Debug.Log("2totalScoreString" + totalScoreString);
                     }
 
                     totalscore = totalScoreString;
+                    Debug.Log("============================= 1totalScoreString" + totalScoreString);
                 }
 
             }, null));
 
         return totalscore;
     }
+    
 }

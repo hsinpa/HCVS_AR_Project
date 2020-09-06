@@ -51,12 +51,12 @@ public class BagPanel : MonoBehaviour
 
     private void AddListener(int index)
     {
-        height += 220f;
+        height += 80f;
 
         Transform infoTransform = Instantiate(Info, Container);
         RectTransform infoRectTransform = infoTransform.GetComponent<RectTransform>();
 
-        infoRectTransform.anchoredPosition = new Vector2(0, 220f - height);
+        infoRectTransform.anchoredPosition = new Vector2(0, 90 - height);
 
         infoTransform.Find("Text").GetComponent<Text>().text = objectInfo[index];
         infoTransform.Find("Button").GetComponent<Image>().sprite = eventImage[index];
@@ -69,7 +69,7 @@ public class BagPanel : MonoBehaviour
     {
         Debug.Log("AddInfoListener" + index);
         detailObject.sprite = detailInfoImage[index];
-        detailObject.SetNativeSize();
+        //detailObject.SetNativeSize();
         detailTxt.text = detailInfo[index];
         detailGameObject.SetActive(true);
     }

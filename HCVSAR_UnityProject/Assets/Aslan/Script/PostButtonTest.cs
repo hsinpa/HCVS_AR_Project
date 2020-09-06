@@ -44,43 +44,27 @@ public class PostButtonTest : MonoBehaviour
         studentScoreData.mission_id = Mission_id.ToString();
         studentScoreData.score = Score;
 
-        StartCoroutine(PostScore(studentScoreData));
-        MainView.Instance.RefreshScore(user_id);
+        string jsonString = JsonUtility.ToJson(studentScoreData);
+
+        StartCoroutine(
+            APIHttpRequest.NativeCurl((StringAsset.GetFullAPIUri(StringAsset.API.PostStudentScore)), UnityWebRequest.kHttpVerbPOST, jsonString, (string success) => {
+                Debug.Log("POST Success");
+                MainView.Instance.RefreshScore(studentScoreData.student_id);
+                RefreshScoreData();
+            }, () => {
+                //TODO: ADD Mission ID
+                Debug.Log("Error: POST Fail");
+            }));
+
+        //StartCoroutine(PostScore(studentScoreData));
+        //MainView.Instance.RefreshScore(user_id);
         //MainView.Instance.PrepareScoreData(user_id);
+        //RefreshScoreData();
     }
 
-    public static IEnumerator PostScore(TypeFlag.SocketDataType.StudentType formData)
+    private void RefreshScoreData()
     {
-        string url = StringAsset.GetFullAPIUri(StringAsset.API.PostStudentScore);
-        string jsonString = JsonUtility.ToJson(formData);
-        Debug.Log("studentScoreData.mission_id " + formData.mission_id);
-
-        Debug.Log("url: " + url);
-        UnityWebRequest webPost = UnityWebRequest.Post(url, jsonString);
-
-
-        if (jsonString != null)
-        {
-            webPost.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(jsonString));
-            webPost.method = UnityWebRequest.kHttpVerbPOST;
-            webPost.uploadHandler.contentType = "application/json";
-        }
-        
-        yield return webPost.SendWebRequest();
-
-        if (webPost.isNetworkError || webPost.isHttpError)
-        {
-            Debug.Log("webPost.error " + webPost.error);
-        }
-        else
-        {
-            Debug.Log("Form upload complete!");            
-        }
-    }
-
-    private string RefreshScoreData1(string id)
-    {
-        string getStudentURI = string.Format(StringAsset.API.GetStudentScore, id);
+        string getStudentURI = string.Format(StringAsset.API.GetStudentScore, user_id);
         string totalscore = "";
 
         StartCoroutine(
@@ -112,10 +96,11 @@ public class PostButtonTest : MonoBehaviour
                     }
 
                     totalscore = totalScoreString;
+                    Debug.Log("============================= 2totalScoreString" + totalScoreString);
                 }
 
             }, null));
 
-        return totalscore;
+        //return totalscore;
     }
 }
