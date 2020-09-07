@@ -59,7 +59,7 @@ public class UserInfoView : MonoBehaviour
         
         if (studentData == null) return;
 
-        float height = 28f;
+        float height = 20f;
         string score;
 
         isConnection = true;

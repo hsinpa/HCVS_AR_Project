@@ -56,6 +56,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private DateTime endTime = DateTime.MinValue;
     private System.Action OnTimeUpEvent;
     private SocketIOManager _socketIOManager;
+    private UserInfoView userInfo;
 
     void Start()
     {
@@ -252,53 +253,9 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             totalScoreString = totalScore.ToString();
             TotalScoreText.text = totalScoreString;
         }
+        
+        userInfo.GetStudentInfoText(studentData);
         Debug.Log("=============================totalScoreString" + totalScoreString);
-    }
-
-    
-    // Refresh Score Data
-    public string RefreshScore(string id)
-    {
-        string getStudentURI = string.Format(StringAsset.API.GetStudentScore, id);
-        string totalscore = "";
-
-        StartCoroutine(
-            APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(getStudentURI), UnityWebRequest.kHttpVerbGET, null, (string json) => {
-                if (string.IsNullOrEmpty(json))
-                {
-                    return;
-                }
-
-                var tempStudentData = JsonHelper.FromJson<TypeFlag.SocketDataType.StudentType>(json);
-
-                if (tempStudentData != null)
-                {
-                    studentData = tempStudentData.ToList();
-
-                    int totalScore = 0;
-                    for (int i = 0; i < studentData.Count; i++)
-                    {
-                        totalScore += studentData[i].score;
-                    }
-
-                    if (totalScore < 10)
-                    {
-                        totalScoreString = "0" + totalScore.ToString();
-                        Debug.Log("1totalScoreString" + totalScoreString);
-                    }
-                    else
-                    {
-                        totalScoreString = totalScore.ToString();
-                        Debug.Log("2totalScoreString" + totalScoreString);
-                    }
-
-                    totalscore = totalScoreString;
-                    Debug.Log("============================= 1totalScoreString" + totalScoreString);
-                }
-
-            }, null));
-
-        return totalscore;
     }
     
 }

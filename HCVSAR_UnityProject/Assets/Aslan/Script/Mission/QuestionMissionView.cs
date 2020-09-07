@@ -19,8 +19,6 @@ namespace Expect.View
         [SerializeField]
         private Button[] SelectButtons;
         [SerializeField]
-        private Button postButton;
-        [SerializeField]
         private Button confirmButton;
 
         [Header("Select Sprite")]
@@ -38,30 +36,28 @@ namespace Expect.View
 
         private string[] Answers = { StringAsset.MissionsAnswer.Three.ans1, StringAsset.MissionsAnswer.Three.ans2,
                                  StringAsset.MissionsAnswer.Three.ans3, StringAsset.MissionsAnswer.Three.ans4};
-        int currentSelectIndex;
-        int wrongSelectIndex = -1;
-        int correctAnswer = 1;
-        int missionScore;
-        bool isSelectOnce;
+        private TypeFlag.SocketDataType.LoginDatabaseType loginData;
+        private int currentSelectIndex;
+        private int wrongSelectIndex = -1;
+        private int correctAnswer = 1;
+        private int missionScore;
+        private bool isSelectOnce;
 
         private TypeFlag.SocketDataType.StudentType studentScoreData = new TypeFlag.SocketDataType.StudentType();
 
-        /*
-        private void Start()
+        public void QuestionView(string question, string[] answer, string mission_id)
         {
-            var q = StringAsset.MissionsQustion.Three.q1;
-            QuestionView(q);
-        }
-        */
-        public void QuestionView(string question, string[] answer)
-        {
+            loginData = MainView.Instance.loginData;
+            studentScoreData.student_id = loginData.user_id;
+            studentScoreData.mission_id = mission_id;
+
             Questions.text = question;
             AnswerText(answer);
         }
 
         private void AnswerText(string[] answer)
         {
-            float height = 80f;
+            float height = 40f;
 
             for (int i = 0; i < answer.Length; i++)
             {
@@ -119,16 +115,18 @@ namespace Expect.View
             if (currentSelectIndex == correctAnswer && isSelectOnce == false)
             {
                 missionScore = 15;
-                ShowCorrectOption();
-                Debug.Log("Correct!!!  Get Score: " + missionScore);
                 PostScore(missionScore);
+                ShowCorrectOption();
+
+                Debug.Log("Correct!!!  Get Score: " + missionScore);
             }
             else if (currentSelectIndex == correctAnswer && isSelectOnce)
             {
                 missionScore = 10;
-                ShowCorrectOption();
-                Debug.Log("Correct!!!  Get Score: " + missionScore);
                 PostScore(missionScore);
+                ShowCorrectOption();
+
+                Debug.Log("Correct!!!  Get Score: " + missionScore);
             }
             else if (currentSelectIndex != correctAnswer && isSelectOnce == false)
             {
@@ -136,57 +134,33 @@ namespace Expect.View
                 wrongSelectIndex = currentSelectIndex;
                 SelectButtons[currentSelectIndex].image.sprite = SelectFalse;
                 SelectButtons[currentSelectIndex].interactable = false;
+
                 Debug.Log("Wrong Once!!!");
             }
             else
             {
+                missionScore = 0;
+                PostScore(missionScore);
                 ShowCorrectOption();
                 Debug.Log("Wrong!!!!!!!");
             }
 
         }
 
-        //TODO: enter student_id, mission
         private void PostScore(int score)
         {
-            studentScoreData.student_id = "763462";
-            studentScoreData.mission_id = "D";
             studentScoreData.score = score;
 
-            postButton.onClick.AddListener(delegate { PostScoreListener(studentScoreData); });
-        }
+            string jsonString = JsonUtility.ToJson(studentScoreData);
 
-        private void PostScoreListener(TypeFlag.SocketDataType.StudentType data)
-        {
-            StartCoroutine(PostScore(data));
-        }
-
-        public static IEnumerator PostScore(TypeFlag.SocketDataType.StudentType formData)
-        {
-            string url = StringAsset.GetFullAPIUri(StringAsset.API.PostStudentScore);
-            string jsonString = JsonUtility.ToJson(formData);
-
-            Debug.Log("url: " + url);
-            UnityWebRequest webPost = UnityWebRequest.Post(url, jsonString);
-
-
-            if (jsonString != null)
-            {
-                webPost.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(jsonString));
-                webPost.method = UnityWebRequest.kHttpVerbPOST;
-                webPost.uploadHandler.contentType = "application/json";
-            }
-
-            yield return webPost.SendWebRequest();
-
-            if (webPost.isNetworkError || webPost.isHttpError)
-            {
-                Debug.Log("webPost.error " + webPost.error);
-            }
-            else
-            {
-                Debug.Log("Form upload complete!");
-            }
+            StartCoroutine(
+            APIHttpRequest.NativeCurl((StringAsset.GetFullAPIUri(StringAsset.API.PostStudentScore)), UnityWebRequest.kHttpVerbPOST, jsonString, (string success) => {
+                Debug.Log("POST Success");
+                MainView.Instance.PrepareScoreData(studentScoreData.student_id);
+            }, () => {
+                //TODO: ADD Mission ID
+                Debug.Log("Error: POST Fail, Fail Mission: " + studentScoreData.mission_id);
+            }));
         }
 
     }

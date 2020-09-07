@@ -156,7 +156,7 @@ public class MissionView_1 : MonoBehaviour
         
         dialogMissionView.Show(false);
         questionMissionView.Show(true);
-        questionMissionView.QuestionView(qustion, answers);
+        questionMissionView.QuestionView(qustion, answers, "A");
     }
 
 }

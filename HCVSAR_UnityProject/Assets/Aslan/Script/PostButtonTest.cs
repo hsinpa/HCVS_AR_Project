@@ -49,58 +49,10 @@ public class PostButtonTest : MonoBehaviour
         StartCoroutine(
             APIHttpRequest.NativeCurl((StringAsset.GetFullAPIUri(StringAsset.API.PostStudentScore)), UnityWebRequest.kHttpVerbPOST, jsonString, (string success) => {
                 Debug.Log("POST Success");
-                MainView.Instance.RefreshScore(studentScoreData.student_id);
-                RefreshScoreData();
+                MainView.Instance.PrepareScoreData(studentScoreData.student_id); 
             }, () => {
                 //TODO: ADD Mission ID
                 Debug.Log("Error: POST Fail");
             }));
-
-        //StartCoroutine(PostScore(studentScoreData));
-        //MainView.Instance.RefreshScore(user_id);
-        //MainView.Instance.PrepareScoreData(user_id);
-        //RefreshScoreData();
-    }
-
-    private void RefreshScoreData()
-    {
-        string getStudentURI = string.Format(StringAsset.API.GetStudentScore, user_id);
-        string totalscore = "";
-
-        StartCoroutine(
-            APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(getStudentURI), UnityWebRequest.kHttpVerbGET, null, (string json) => {
-                if (string.IsNullOrEmpty(json))
-                {
-                    return;
-                }
-
-                var tempStudentData = JsonHelper.FromJson<TypeFlag.SocketDataType.StudentType>(json);
-
-                if (tempStudentData != null)
-                {
-                    studentData = tempStudentData.ToList();
-
-                    int totalScore = 0;
-                    for (int i = 0; i < studentData.Count; i++)
-                    {
-                        totalScore += studentData[i].score;
-                    }
-
-                    if (totalScore < 10)
-                    {
-                        totalScoreString = "0" + totalScore.ToString();
-                    }
-                    else
-                    {
-                        totalScoreString = totalScore.ToString();
-                    }
-
-                    totalscore = totalScoreString;
-                    Debug.Log("============================= 2totalScoreString" + totalScoreString);
-                }
-
-            }, null));
-
-        //return totalscore;
     }
 }
