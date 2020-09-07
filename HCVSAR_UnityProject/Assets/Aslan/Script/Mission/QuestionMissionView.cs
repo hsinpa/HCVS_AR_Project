@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Networking;
-using Expect.StaticAsset;
-using System.Text;
 using Hsinpa.View;
+
 
 namespace Expect.View
 {
@@ -33,26 +31,18 @@ namespace Expect.View
         [SerializeField]
         public Transform container;
         public Transform selectAnswer;
-
-        private string[] Answers = { StringAsset.MissionsAnswer.Three.ans1, StringAsset.MissionsAnswer.Three.ans2,
-                                 StringAsset.MissionsAnswer.Three.ans3, StringAsset.MissionsAnswer.Three.ans4};
-        private TypeFlag.SocketDataType.LoginDatabaseType loginData;
+        
         private int currentSelectIndex;
         private int wrongSelectIndex = -1;
-        private int correctAnswer = 1;
+        private int _correctAnswer;
         private int missionScore;
         private bool isSelectOnce;
 
-        private TypeFlag.SocketDataType.StudentType studentScoreData = new TypeFlag.SocketDataType.StudentType();
-
-        public void QuestionView(string question, string[] answer, string mission_id)
+        public void QuestionView(string question, string[] answer,int correctAnswer)
         {
-            loginData = MainView.Instance.loginData;
-            studentScoreData.student_id = loginData.user_id;
-            studentScoreData.mission_id = mission_id;
-
             Questions.text = question;
             AnswerText(answer);
+            _correctAnswer = correctAnswer;
         }
 
         private void AnswerText(string[] answer)
@@ -106,29 +96,29 @@ namespace Expect.View
                 b.interactable = false;
             }
 
-            SelectButtons[correctAnswer].interactable = true;
-            SelectButtons[correctAnswer].image.sprite = SelectTrue;
+            SelectButtons[_correctAnswer].interactable = true;
+            SelectButtons[_correctAnswer].image.sprite = SelectTrue;
         }
 
         private void Confirm()
         {
-            if (currentSelectIndex == correctAnswer && isSelectOnce == false)
+            if (currentSelectIndex == _correctAnswer && isSelectOnce == false)
             {
                 missionScore = 15;
-                PostScore(missionScore);
+                MissionView_1.Instance.PostScore(missionScore, true);
                 ShowCorrectOption();
 
                 Debug.Log("Correct!!!  Get Score: " + missionScore);
             }
-            else if (currentSelectIndex == correctAnswer && isSelectOnce)
+            else if (currentSelectIndex == _correctAnswer && isSelectOnce)
             {
                 missionScore = 10;
-                PostScore(missionScore);
+                MissionView_1.Instance.PostScore(missionScore, true);
                 ShowCorrectOption();
 
                 Debug.Log("Correct!!!  Get Score: " + missionScore);
             }
-            else if (currentSelectIndex != correctAnswer && isSelectOnce == false)
+            else if (currentSelectIndex != _correctAnswer && isSelectOnce == false)
             {
                 isSelectOnce = true;
                 wrongSelectIndex = currentSelectIndex;
@@ -140,28 +130,14 @@ namespace Expect.View
             else
             {
                 missionScore = 0;
-                PostScore(missionScore);
+                MissionView_1.Instance.PostScore(missionScore, false);
                 ShowCorrectOption();
                 Debug.Log("Wrong!!!!!!!");
             }
 
         }
 
-        private void PostScore(int score)
-        {
-            studentScoreData.score = score;
-
-            string jsonString = JsonUtility.ToJson(studentScoreData);
-
-            StartCoroutine(
-            APIHttpRequest.NativeCurl((StringAsset.GetFullAPIUri(StringAsset.API.PostStudentScore)), UnityWebRequest.kHttpVerbPOST, jsonString, (string success) => {
-                Debug.Log("POST Success");
-                MainView.Instance.PrepareScoreData(studentScoreData.student_id);
-            }, () => {
-                //TODO: ADD Mission ID
-                Debug.Log("Error: POST Fail, Fail Mission: " + studentScoreData.mission_id);
-            }));
-        }
+        
 
     }
 }

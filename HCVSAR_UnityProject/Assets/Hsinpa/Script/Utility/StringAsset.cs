@@ -102,6 +102,8 @@ namespace Expect.StaticAsset {
             public class One
             {
                 public const string qustion = "請問為什麼好端端清代城牆跟城門要被日本人拆除呢？";
+                public const string correct = "恭喜你答對了！正確答案為因為隨著日本海軍軍區擴大，土地不夠。所以現在需要將部分城牆做拆除。";
+                public const string fault = "不對喔！正確答案是因為隨著日本海軍軍區擴大，土地不夠。所以現在需要將部分城牆做拆除。";
             }
 
             public class Three
@@ -126,6 +128,14 @@ namespace Expect.StaticAsset {
                 public const string ans2 = "三山國王";
                 public const string ans3 = "觀音佛祖";
                 public const string ans4 = "媽祖";
+            }
+        }
+
+        public class MissionsEnd
+        {
+            public class End
+            {
+                public const string message = "獲得得{0}能量，快點搜集更多能量吧！";
             }
         }
 

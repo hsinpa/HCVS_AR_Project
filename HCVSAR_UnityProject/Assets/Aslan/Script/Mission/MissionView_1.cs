@@ -4,10 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using Expect.View;
 using Expect.StaticAsset;
+using UnityEngine.Networking;
 
 
-public class MissionView_1 : MonoBehaviour
+public class MissionView_1 : Singleton<MissionView_1>
 {
+    protected MissionView_1() { } // guarantee this will be always a singleton only - can't use the constructor!
+
     [SerializeField]
     private Button mission_1;
     [SerializeField]
@@ -23,12 +26,16 @@ public class MissionView_1 : MonoBehaviour
     DialogMissionView dialogMissionView;
     [SerializeField]
     QuestionMissionView questionMissionView;
+    [SerializeField]
+    EndMissionView endMissionView;
 
     FingerClickEvent fingerClick;
 
     private TypeFlag.InGameType.MissionType[] missionArray;
-
-    int clickCount;
+    private TypeFlag.SocketDataType.LoginDatabaseType loginData;
+    private TypeFlag.SocketDataType.StudentType studentScoreData = new TypeFlag.SocketDataType.StudentType();
+    private int clickCount;
+    private bool isTimeUp;
 
     // Message
     string situationMessage = StringAsset.MissionsSituation.One.s1;
@@ -42,7 +49,11 @@ public class MissionView_1 : MonoBehaviour
     private string qustion = StringAsset.MissionsQustion.One.qustion;
     private string[] answers = { StringAsset.MissionsAnswer.One.ans1, StringAsset.MissionsAnswer.One.ans2,
                                  StringAsset.MissionsAnswer.One.ans3, StringAsset.MissionsAnswer.One.ans4};
-    
+    private string correctMessage = StringAsset.MissionsQustion.One.correct;
+    private string faultMessage = StringAsset.MissionsQustion.One.fault;
+
+    private string endMessage = StringAsset.MissionsEnd.End.message;
+
     public enum ConvercestionType
     {
         Dialog_talk1, Dialog_talk2, History
@@ -58,6 +69,9 @@ public class MissionView_1 : MonoBehaviour
 
     private void Awake()
     {
+        loginData = MainView.Instance.loginData;
+        studentScoreData.student_id = loginData.user_id;
+
         MissionArraySetUp();
         fingerClick = situationMissionView.GetComponentInParent<FingerClickEvent>();
     }
@@ -65,6 +79,10 @@ public class MissionView_1 : MonoBehaviour
     private void Start()
     {
         mission_1.onClick.AddListener(MissionStart);
+    }
+
+    private void Update()
+    {
         
     }
 
@@ -76,7 +94,7 @@ public class MissionView_1 : MonoBehaviour
         enterMissionView.OnDisable += Disable;
     }
 
-    // TODO: ibeacon find other mission
+    // TODO: ibeacon find other mission after 10 second
     void Disable()
     {
         Debug.Log("other thing");
@@ -129,34 +147,67 @@ public class MissionView_1 : MonoBehaviour
             Debug.Log("Finish");
             Qusteion();
         }
-
-        /*
-        switch (clickCount)
-        {
-            case clickCount == (int)conv.Dialog_talk1:
-                Debug.Log("clickCount2: " + clickCount);
-                situationMissionView.Show(false);
-                dialogMissionView.Show(true);
-                dialogMissionView.DialogView(dogName, dogMessage, dog);
-                break;
-            case (int)ConvercestionType.Dialog_talk2:
-                dialogMissionView.DialogView(peopleName, peopleMessage, person);
-                break;
-            case (int)ConvercestionType.History:
-                dialogMissionView.DialogView(dogName, historyMessage[0], dog);
-                break;
-        }
-        */
     }
 
-    void Qusteion()
+    private void Qusteion()
     {
         fingerClick.boxCollider.enabled = false;
         fingerClick.Click -= ClickCount;
-        
+        clickCount = 0; // initial
+
         dialogMissionView.Show(false);
         questionMissionView.Show(true);
-        questionMissionView.QuestionView(qustion, answers, "A");
+
+        questionMissionView.QuestionView(qustion, answers, 1);
     }
 
+    public void PostScore(int score, bool answerResult)
+    {
+        studentScoreData.mission_id = "A";
+        studentScoreData.score = score;
+
+        string jsonString = JsonUtility.ToJson(studentScoreData);
+
+        StartCoroutine(
+        APIHttpRequest.NativeCurl((StringAsset.GetFullAPIUri(StringAsset.API.PostStudentScore)), UnityWebRequest.kHttpVerbPOST, jsonString, (string success) => {
+            Debug.Log("POST Success");
+            MainView.Instance.PrepareScoreData(studentScoreData.student_id);
+        }, () => {
+                //TODO: ADD Mission ID
+                Debug.Log("Error: POST Fail, Fail Mission: " + studentScoreData.mission_id);
+        }));
+
+        StartCoroutine(AnswerPauser(answerResult, score));
+    }
+
+
+    public IEnumerator AnswerPauser(bool result, int score)
+    {
+        yield return new WaitForSeconds(3);
+
+        questionMissionView.Show(false);
+        dialogMissionView.Show(true);
+
+        if (result)
+        {
+            dialogMissionView.DialogView(dogName, correctMessage, dog);
+        }
+        else
+        {
+            dialogMissionView.DialogView(dogName, faultMessage, dog);
+        }
+
+        yield return new WaitForSeconds(5);
+
+        dialogMissionView.Show(false);
+        endMissionView.Show(true);
+        endMissionView.EndMission(score);
+        endMissionView.OnEnable += LeaveMission;
+    }
+
+    private void LeaveMission()
+    {
+        endMissionView.Show(false);
+        Debug.Log("Mission 1 Leave");
+    }
 }

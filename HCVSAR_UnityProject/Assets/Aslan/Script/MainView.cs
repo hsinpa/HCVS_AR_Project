@@ -79,9 +79,25 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             if (OnTimeUpEvent != null) OnTimeUpEvent();
 
             endTime = DateTime.MinValue;
+            this.GetComponent<CanvasGroup>().interactable = false;
         }
+
+        
     }
-    
+
+    public bool CountDown(double addTime)
+    {
+        DateTime timeUp = DateTime.UtcNow.AddMinutes(addTime);
+        TimeSpan t = timeUp - DateTime.UtcNow;
+
+        if (t.Seconds < 0)
+        {
+            Debug.Log("Time Up");
+            return true;
+        }
+        return false;
+    }
+
 
     public void Setup()
     {
