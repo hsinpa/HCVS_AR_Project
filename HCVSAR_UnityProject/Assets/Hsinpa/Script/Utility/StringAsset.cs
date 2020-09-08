@@ -73,7 +73,22 @@ namespace Expect.StaticAsset {
         {
             public class One
             {
-                public const string s1 = "樂咖和玩家看到了前方有一群人湊上前去觀看";
+                public const string s1 = "樂咖和玩家看到了前方有一群人湊上前去觀看。";
+            }
+
+            public class TWO
+            {
+                public const string s1 = "樂咖和玩家看到了前方有一群人湊上前去觀看。";
+            }
+
+            public class Three
+            {
+                public const string s1 = "樂咖和玩家順著增測儀走到了定點，看到了很多人在拜拜。";
+            }
+
+            public class Six
+            {
+                public const string s1 = "狗狗依著指針來到了建築物附近。";
             }
         }
 
@@ -83,6 +98,7 @@ namespace Expect.StaticAsset {
             {
                 public const string dog = "樂咖";
                 public const string people = "村民";
+                public const string NPC_1 = "路人";
             }
 
             public class One
@@ -95,6 +111,31 @@ namespace Expect.StaticAsset {
                 public const string history3 = "整座城有東（鳳儀）、西（奠海）、南（啟文）、北（拱辰）四個城門，上有三川脊式城樓，城門間有東、西、南、北四座砲台。";
                 public const string history4 = "還有排水的水關等設計，在當年可說是相當先進呢！";
             }
+
+            public class TWO
+            {
+                public const string d1 = "哇 這裡好多人！是什麼活動呢？\n我們上前去看看吧？";
+
+                public const string history1 = "喔～原來是中華民國總統蔣中正的夫人宋美齡來訪啊！";
+                public const string history2 = "她可是｢中華婦女反共抗俄聯合會」，簡稱｢婦聯會」的主任委員喔，台灣各地很多眷村當年都是｢婦聯會」出錢幫忙蓋的呢！";
+                public const string history3 = "對當時左營地區海軍軍眷照顧也不餘遺力喔，他們在參觀完海軍子弟學校後待會要前往對面的海強幼稚園繼續訪視喔！";
+            }
+
+            public class Three
+            {
+                public const string history1 = "海青工商的校地大部分是為在以前鳳山舊城的城內喔，大門口左前方是西門遺址，後門是南門。";
+                public const string history2 = "2014年校園曾經有考古挖掘，我有看到地底下有挖到清代文化層跟建築的地面呢。";
+                public const string history3 = "根據我敏銳的嗅覺判斷，這可能是清代廣濟宮的一部份喔！";
+            }
+
+            public class Six
+            {
+                public const string d1 = "你好，我有事情要找安世琪校長，據說校長室是一間北方宮殿建築風格，您知道在哪裡嗎？";
+
+                public const string history1 = "今日的校史室可說是現在海青工商校園內最老的建築物喔，";
+                public const string history2 = "實際建造時間大概在於1961年左右，今天也六十歲了呢，以前它是全校最高的建築物，二樓是校長室，可以鳥瞰全校園喔！";
+                public const string history3 = "遠遠看是不是有點像紫禁城呢？";
+            }
         }
 
         public class MissionsQustion
@@ -106,9 +147,27 @@ namespace Expect.StaticAsset {
                 public const string fault = "不對喔！正確答案是因為隨著日本海軍軍區擴大，土地不夠。所以現在需要將部分城牆做拆除。";
             }
 
+            public class TWO
+            {
+                public const string qustion = "為什麼1950年代左營會有這麼多眷村呢？";
+                public const string correct = "恭喜你答對了！正確答案為因左營是海軍的大本營大批軍眷入住。所以1950年代開始了在左營的眷村文化。";
+                public const string fault = "不對喔！正確答案為因左營是海軍的大本營大批軍眷入住。所以1950年代開始了在左營的眷村文化。";
+            }
+
             public class Three
             {
                 public const string qustion = "你們猜猜廣濟宮是拜什麼神明的呢？";
+                public const string correct = "恭喜你答對了！正確答案三山國王。";
+                public const string fault = "不對喔！正確答案為三山國王。";
+            }
+
+            public class Six
+            {
+                public const string qustion = "學生要尋找的，北方建築是哪一個呢？";
+                public const string correct_1 = "應該是這棟建築物喔。";
+                public const string correct_2 = "喔喔！謝謝您。\n這是一點小心意，希望你可以收下。";
+                public const string fault_1 = "好像不是噎...好吧，我再去問問其他人。";
+                public const string fault_2 = "阿！前方這棟建築物就是他在找的建築物啊！真是糊塗了！";
             }
         }
 
@@ -122,12 +181,28 @@ namespace Expect.StaticAsset {
                 public const string ans4 = "因為風水問題被拆除";
             }
 
+            public class TWO
+            {
+                public const string ans1 = "左營地靈人傑大家都想搬來這住";
+                public const string ans2 = "因左營是海軍的大本營大批軍眷入住";
+                public const string ans3 = "左營地價便宜房屋買得起";
+                public const string ans4 = "因為鄰近高鐵方便去各地玩";
+            }
+
             public class Three
             {
                 public const string ans1 = "保生大帝";
                 public const string ans2 = "三山國王";
                 public const string ans3 = "觀音佛祖";
                 public const string ans4 = "媽祖";
+            }
+
+            public class Six
+            {
+                public const string ans1 = "校史室";
+                public const string ans2 = "紫禁城";
+                public const string ans3 = "北港朝天宮";
+                public const string ans4 = "教學大樓";
             }
         }
 

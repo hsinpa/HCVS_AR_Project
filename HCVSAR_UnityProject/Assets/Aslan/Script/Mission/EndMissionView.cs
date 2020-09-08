@@ -20,9 +20,9 @@ namespace Expect.View
         public delegate void OnBottomBtnClick();
         public event OnBottomBtnClick OnEnable;
 
-        public void EndMission(int score)
+        public void EndMission(int score, string endMessage)
         {
-            message.text = string.Format(StringAsset.MissionsEnd.End.message, score);
+            message.text = string.Format(endMessage, score);
             scoreText.text = score.ToString();
 
             LeaveButton.onClick.AddListener(() => OnEnable());

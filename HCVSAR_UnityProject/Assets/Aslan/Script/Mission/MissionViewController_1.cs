@@ -4,13 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using Expect.View;
 using Expect.StaticAsset;
-using UnityEngine.Networking;
 
-
-public class MissionView_1 : Singleton<MissionView_1>
+public class MissionViewController_1 : MonoBehaviour
 {
-    protected MissionView_1() { } // guarantee this will be always a singleton only - can't use the constructor!
-
     [SerializeField]
     private Button mission_1;
     [SerializeField]
@@ -35,7 +31,6 @@ public class MissionView_1 : Singleton<MissionView_1>
     private TypeFlag.SocketDataType.LoginDatabaseType loginData;
     private TypeFlag.SocketDataType.StudentType studentScoreData = new TypeFlag.SocketDataType.StudentType();
     private int clickCount;
-    private bool isTimeUp;
 
     // Message
     string situationMessage = StringAsset.MissionsSituation.One.s1;
@@ -53,13 +48,6 @@ public class MissionView_1 : Singleton<MissionView_1>
     private string faultMessage = StringAsset.MissionsQustion.One.fault;
 
     private string endMessage = StringAsset.MissionsEnd.End.message;
-
-    public enum ConvercestionType
-    {
-        Dialog_talk1, Dialog_talk2, History
-    }
-    
-    ConvercestionType convercestionType;
     
 
     private void MissionArraySetUp()
@@ -71,6 +59,7 @@ public class MissionView_1 : Singleton<MissionView_1>
     {
         loginData = MainView.Instance.loginData;
         studentScoreData.student_id = loginData.user_id;
+        studentScoreData.mission_id = "A";
 
         MissionArraySetUp();
         fingerClick = situationMissionView.GetComponentInParent<FingerClickEvent>();
@@ -79,11 +68,6 @@ public class MissionView_1 : Singleton<MissionView_1>
     private void Start()
     {
         mission_1.onClick.AddListener(MissionStart);
-    }
-
-    private void Update()
-    {
-        
     }
 
     private void MissionStart()
@@ -116,9 +100,8 @@ public class MissionView_1 : Singleton<MissionView_1>
     void ClickCount()
     {
         clickCount++;
-        Debug.Log("clickCount: " + clickCount);
         Convercestion();
-        
+        Debug.Log("clickCount: " + clickCount);
     }
 
     void Convercestion()
@@ -156,38 +139,22 @@ public class MissionView_1 : Singleton<MissionView_1>
         clickCount = 0; // initial
 
         dialogMissionView.Show(false);
+
         questionMissionView.Show(true);
-
-        questionMissionView.QuestionView(qustion, answers, 1);
+        questionMissionView.QuestionView(qustion, answers, 1, studentScoreData); // score is null
+        questionMissionView.buttonClick += QuestionReult;
     }
 
-    public void PostScore(int score, bool answerResult)
+    private void QuestionReult()
     {
-        studentScoreData.mission_id = "A";
-        studentScoreData.score = score;
+        var result = PostScoreEvent.Instance.answerResult;
+        int score = PostScoreEvent.Instance.score;
 
-        string jsonString = JsonUtility.ToJson(studentScoreData);
-
-        StartCoroutine(
-        APIHttpRequest.NativeCurl((StringAsset.GetFullAPIUri(StringAsset.API.PostStudentScore)), UnityWebRequest.kHttpVerbPOST, jsonString, (string success) => {
-            Debug.Log("POST Success");
-            MainView.Instance.PrepareScoreData(studentScoreData.student_id);
-        }, () => {
-                //TODO: ADD Mission ID
-                Debug.Log("Error: POST Fail, Fail Mission: " + studentScoreData.mission_id);
-        }));
-
-        StartCoroutine(AnswerPauser(answerResult, score));
-    }
-
-
-    public IEnumerator AnswerPauser(bool result, int score)
-    {
-        yield return new WaitForSeconds(3);
+        Debug.Log("result " + result + " score " + score);
 
         questionMissionView.Show(false);
         dialogMissionView.Show(true);
-
+        
         if (result)
         {
             dialogMissionView.DialogView(dogName, correctMessage, dog);
@@ -197,11 +164,16 @@ public class MissionView_1 : Singleton<MissionView_1>
             dialogMissionView.DialogView(dogName, faultMessage, dog);
         }
 
+        StartCoroutine(EndPauser(score));
+    }
+
+    public IEnumerator EndPauser(int score)
+    {
         yield return new WaitForSeconds(5);
 
         dialogMissionView.Show(false);
         endMissionView.Show(true);
-        endMissionView.EndMission(score);
+        endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveMission;
     }
 

@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Hsinpa.View;
 
-
 namespace Expect.View
 {
     public class QuestionMissionView : BaseView
@@ -17,7 +16,9 @@ namespace Expect.View
         [SerializeField]
         private Button[] SelectButtons;
         [SerializeField]
-        private Button confirmButton;
+        private GameObject confirmButton;
+        [SerializeField]
+        private GameObject nextButton;
 
         [Header("Select Sprite")]
         [SerializeField]
@@ -31,21 +32,24 @@ namespace Expect.View
         [SerializeField]
         public Transform container;
         public Transform selectAnswer;
-        
+
+        public delegate void OnButtonClick();
+        public event OnButtonClick buttonClick;
+
         private int currentSelectIndex;
         private int wrongSelectIndex = -1;
         private int _correctAnswer;
         private int missionScore;
         private bool isSelectOnce;
 
-        public void QuestionView(string question, string[] answer,int correctAnswer)
+        public void QuestionView(string question, string[] answer,int correctAnswer, TypeFlag.SocketDataType.StudentType studentScoreData)
         {
             Questions.text = question;
-            AnswerText(answer);
+            AnswerText(answer, studentScoreData);
             _correctAnswer = correctAnswer;
         }
 
-        private void AnswerText(string[] answer)
+        private void AnswerText(string[] answer, TypeFlag.SocketDataType.StudentType studentScoreData)
         {
             float height = 40f;
 
@@ -60,10 +64,10 @@ namespace Expect.View
                 selectTransform.gameObject.SetActive(true);
             }
 
-            SelectButton();
+            SelectButton(studentScoreData);
         }
 
-        private void SelectButton()
+        private void SelectButton(TypeFlag.SocketDataType.StudentType studentScoreData)
         {
             for (int i = 0; i < SelectButtons.Length; i++)
             {
@@ -71,14 +75,15 @@ namespace Expect.View
                 SelectButtons[index].onClick.AddListener(() => AddSelectListener(index));
             }
 
-            confirmButton.onClick.AddListener(Confirm);
+            confirmButton.GetComponent<Button>().onClick.AddListener(() => Confirm(studentScoreData));
+            nextButton.GetComponent<Button>().onClick.AddListener(() => buttonClick());
         }
 
         private void AddSelectListener(int index)
         {
             ClearOption();
             currentSelectIndex = index;
-            confirmButton.interactable = true;
+            confirmButton.GetComponent<Button>().interactable = true;
             SelectButtons[index].image.sprite = SelectTrue;
             if (wrongSelectIndex >= 0) { SelectButtons[wrongSelectIndex].image.sprite = SelectFalse; }
         }
@@ -100,12 +105,15 @@ namespace Expect.View
             SelectButtons[_correctAnswer].image.sprite = SelectTrue;
         }
 
-        private void Confirm()
+        private void Confirm(TypeFlag.SocketDataType.StudentType studentScoreData)
         {
             if (currentSelectIndex == _correctAnswer && isSelectOnce == false)
             {
                 missionScore = 15;
-                MissionView_1.Instance.PostScore(missionScore, true);
+                studentScoreData.score = missionScore;
+                confirmButton.SetActive(false);
+                nextButton.SetActive(true);
+                PostScoreEvent.Instance.PostScore(studentScoreData, true);
                 ShowCorrectOption();
 
                 Debug.Log("Correct!!!  Get Score: " + missionScore);
@@ -113,7 +121,10 @@ namespace Expect.View
             else if (currentSelectIndex == _correctAnswer && isSelectOnce)
             {
                 missionScore = 10;
-                MissionView_1.Instance.PostScore(missionScore, true);
+                studentScoreData.score = missionScore;
+                confirmButton.SetActive(false);
+                nextButton.SetActive(true);
+                PostScoreEvent.Instance.PostScore(studentScoreData, true);
                 ShowCorrectOption();
 
                 Debug.Log("Correct!!!  Get Score: " + missionScore);
@@ -130,7 +141,10 @@ namespace Expect.View
             else
             {
                 missionScore = 0;
-                MissionView_1.Instance.PostScore(missionScore, false);
+                studentScoreData.score = missionScore;
+                confirmButton.SetActive(false);
+                nextButton.SetActive(true);
+                PostScoreEvent.Instance.PostScore(studentScoreData, false);
                 ShowCorrectOption();
                 Debug.Log("Wrong!!!!!!!");
             }

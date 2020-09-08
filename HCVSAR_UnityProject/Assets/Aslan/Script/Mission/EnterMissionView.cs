@@ -18,9 +18,9 @@ namespace Expect.View
         [SerializeField]
         private Button LeaveButton;
 
-        public delegate void OnBottomBtnClick();
-        public event OnBottomBtnClick OnEnable;
-        public event OnBottomBtnClick OnDisable;
+        public delegate void OnButtonClick();
+        public event OnButtonClick OnEnable;
+        public event OnButtonClick OnDisable;
 
         public void EnterMission(string missionTitle, string missionName)
         {

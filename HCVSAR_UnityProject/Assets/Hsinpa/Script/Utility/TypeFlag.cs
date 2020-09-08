@@ -16,6 +16,10 @@ public class TypeFlag
         public const string KickFromGame = "event@kick_from_game";
     }
 
+    public class PostScoreEvent {
+        public const string PostEvent = "PostScore";
+    }
+
     public class InGameType {
         [System.Serializable]
         public struct MissionType
