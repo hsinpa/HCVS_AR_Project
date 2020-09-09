@@ -89,6 +89,7 @@ namespace Expect.StaticAsset {
             public class Six
             {
                 public const string s1 = "狗狗依著指針來到了建築物附近。";
+                public const string fault = "路人已經走遠。";
             }
         }
 
@@ -131,6 +132,10 @@ namespace Expect.StaticAsset {
             public class Six
             {
                 public const string d1 = "你好，我有事情要找安世琪校長，據說校長室是一間北方宮殿建築風格，您知道在哪裡嗎？";
+                public const string correct_1 = "應該是這棟建築物喔。";
+                public const string correct_2 = "喔喔！謝謝您。\n這是一點小心意，希望你可以收下。";
+                public const string fault_1 = "好像不是噎...好吧，我再去問問其他人。";
+                public const string fault_2 = "阿！前方這棟建築物就是他在找的建築物啊！真是糊塗了！";
 
                 public const string history1 = "今日的校史室可說是現在海青工商校園內最老的建築物喔，";
                 public const string history2 = "實際建造時間大概在於1961年左右，今天也六十歲了呢，以前它是全校最高的建築物，二樓是校長室，可以鳥瞰全校園喔！";
@@ -164,10 +169,6 @@ namespace Expect.StaticAsset {
             public class Six
             {
                 public const string qustion = "學生要尋找的，北方建築是哪一個呢？";
-                public const string correct_1 = "應該是這棟建築物喔。";
-                public const string correct_2 = "喔喔！謝謝您。\n這是一點小心意，希望你可以收下。";
-                public const string fault_1 = "好像不是噎...好吧，我再去問問其他人。";
-                public const string fault_2 = "阿！前方這棟建築物就是他在找的建築物啊！真是糊塗了！";
             }
         }
 

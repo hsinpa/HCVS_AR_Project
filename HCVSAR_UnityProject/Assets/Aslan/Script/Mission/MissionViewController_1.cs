@@ -181,5 +181,8 @@ public class MissionViewController_1 : MonoBehaviour
     {
         endMissionView.Show(false);
         Debug.Log("Mission 1 Leave");
+
+        endMissionView.OnEnable -= LeaveMission;
+        questionMissionView.buttonClick -= QuestionReult;
     }
 }
