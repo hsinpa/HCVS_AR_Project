@@ -49,6 +49,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     public List<TypeFlag.SocketDataType.StudentType> studentData;
     [HideInInspector]
     public TypeFlag.SocketDataType.LoginDatabaseType loginData;
+    public TypeFlag.SocketDataType.StudentType studentScoreData;
 
     private TypeFlag.SocketDataType.ClassScoreHolderType classScore;
 
@@ -216,6 +217,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         this.GetComponent<CanvasGroup>().interactable = true;
         this.GetComponent<CanvasGroup>().blocksRaycasts = true;
         EndView.alpha = 0;
+
+        studentScoreData.student_id = loginData.user_id;
 
         MissionsClick();
         PrepareScoreData(loginData.user_id);

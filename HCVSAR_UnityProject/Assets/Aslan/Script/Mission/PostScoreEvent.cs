@@ -7,24 +7,22 @@ using System.Collections.Generic;
 
 public class PostScoreEvent : Singleton<PostScoreEvent>
 {
-    public TypeFlag.SocketDataType.StudentType studentScoreData;
-    public int score;
-    public bool answerResult;
+    public TypeFlag.SocketDataType.StudentType studentScoreData = MainView.Instance.studentScoreData;
 
-    public void PostScore(TypeFlag.SocketDataType.StudentType data, bool result)
+    public void PostScore(int score)
     {
-        studentScoreData = data;
-        score = data.score;
-        answerResult = result;
+        studentScoreData.score = score;
 
-        string jsonString = JsonUtility.ToJson(data);
+        string jsonString = JsonUtility.ToJson(studentScoreData);
+        string log = string.Format("id: {0}, user: {1}, score: {2}", studentScoreData.mission_id, studentScoreData.student_id, studentScoreData.score);
 
         StartCoroutine(
         APIHttpRequest.NativeCurl((StringAsset.GetFullAPIUri(StringAsset.API.PostStudentScore)), UnityWebRequest.kHttpVerbPOST, jsonString, (string success) => {
-            Debug.Log("POST Success");
+            
+            Debug.Log("PSOT Success: " + log);
         }, () => {
             //TODO: ADD Mission ID
-            Debug.Log("Error: POST Fail, Fail Mission: " + data.mission_id);
+            Debug.Log("Error: POST Fail, Fail Mission: " + log);
         }));
     }
 }

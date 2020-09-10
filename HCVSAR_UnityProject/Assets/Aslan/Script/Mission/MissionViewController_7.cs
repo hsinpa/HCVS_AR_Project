@@ -5,10 +5,8 @@ using UnityEngine.UI;
 using Expect.View;
 using Expect.StaticAsset;
 
-public class MissionViewController_2 : MonoBehaviour
+public class MissionViewController_7 : MonoBehaviour
 {
-    [SerializeField]
-    private Button mission_2;
     [SerializeField]
     private Sprite dog;
 
@@ -22,67 +20,67 @@ public class MissionViewController_2 : MonoBehaviour
     QuestionMissionView questionMissionView;
     [SerializeField]
     EndMissionView endMissionView;
-
+    [SerializeField]
     FingerClickEvent fingerClick;
 
-    private TypeFlag.InGameType.MissionType[] missionArray;
-    private TypeFlag.SocketDataType.LoginDatabaseType loginData;
-    private TypeFlag.SocketDataType.StudentType studentScoreData = new TypeFlag.SocketDataType.StudentType();
     private int clickCount;
 
     // Message
-    string situationMessage = StringAsset.MissionsSituation.TWO.s1;
+    string situationMessage = StringAsset.MissionsSituation.SEVEN.s1;
     string dogName = StringAsset.MissionsDialog.Person.dog;
-    string dogMessage = StringAsset.MissionsDialog.TWO.d1;
-    string[] historyMessage = { StringAsset.MissionsDialog.TWO.history1, StringAsset.MissionsDialog.TWO.history2, StringAsset.MissionsDialog.TWO.history3 };
+    string dogMessage = StringAsset.MissionsDialog.SEVEN.d1;
+    string[] historyMessage = { StringAsset.MissionsDialog.SEVEN.history1, StringAsset.MissionsDialog.SEVEN.history2, StringAsset.MissionsDialog.SEVEN.history3 };
 
-    private string qustion = StringAsset.MissionsQustion.TWO.qustion;
-    private string[] answers = { StringAsset.MissionsAnswer.TWO.ans1, StringAsset.MissionsAnswer.TWO.ans2,
-                                 StringAsset.MissionsAnswer.TWO.ans3, StringAsset.MissionsAnswer.TWO.ans4};
-    private string correctMessage = StringAsset.MissionsQustion.TWO.correct;
-    private string faultMessage = StringAsset.MissionsQustion.TWO.fault;
+    private string qustion = StringAsset.MissionsQustion.SEVEN.qustion;
+    private string[] answers = { StringAsset.MissionsAnswer.SEVEN.ans1, StringAsset.MissionsAnswer.SEVEN.ans2,
+                                 StringAsset.MissionsAnswer.SEVEN.ans3, StringAsset.MissionsAnswer.SEVEN.ans4};
+    private string correctMessage = StringAsset.MissionsQustion.SEVEN.correct;
+    private string faultMessage = StringAsset.MissionsQustion.SEVEN.fault;
 
     private string endMessage = StringAsset.MissionsEnd.End.message;
-
-
-    private void MissionArraySetUp()
+    /*
+    public void Init()
     {
-        missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
+        enterMissionView = enterMissionView.GetComponent<EnterMissionView>();
+        situationMissionView = situationMissionView.GetComponent<SituationMissionView>();
+        dialogMissionView = dialogMissionView.GetComponent<DialogMissionView>();
+        fingerClick = fingerClick.GetComponent<FingerClickEvent>();
+    }*/
+
+    private void InitFingerClick()
+    {
+        fingerClick.boxCollider.enabled = false;
+        fingerClick.Click -= ClickCount;
+        clickCount = -1; // initial
     }
 
-    private void Awake()
+    public void MissionStart(int missionNumber)
     {
-        loginData = MainView.Instance.loginData;
-        studentScoreData.student_id = loginData.user_id;
-        studentScoreData.mission_id = "B";
+        TypeFlag.InGameType.MissionType[] missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
 
-        MissionArraySetUp();
-        fingerClick = situationMissionView.GetComponentInParent<FingerClickEvent>();
-    }
-
-    private void Start()
-    {
-        mission_2.onClick.AddListener(MissionStart);
-    }
-
-    private void MissionStart()
-    {
         enterMissionView.Show(true);
-        enterMissionView.EnterMission(missionArray[1].mission_name, missionArray[1].mission_name);
+        enterMissionView.EnterMission(missionArray[missionNumber].mission_name, missionArray[missionNumber].mission_name);
         enterMissionView.OnEnable += StarEnable;
         enterMissionView.OnDisable += Disable;
+
+        MainView.Instance.studentScoreData.mission_id = missionArray[missionNumber].mission_id;
     }
 
     // TODO: ibeacon find other mission after 10 second
     private void Disable()
     {
+        enterMissionView.Show(false);
+        enterMissionView.RemoveListeners();
+        //enterMissionView.OnEnable -= StarEnable;
+        //enterMissionView.OnDisable -= Disable;
         Debug.Log("other thing");
     }
 
     private void StarEnable()
     {
-        enterMissionView.OnEnable -= StarEnable;
-        enterMissionView.OnDisable -= Disable;
+        enterMissionView.RemoveListeners();
+        //enterMissionView.OnEnable -= StarEnable;
+        //enterMissionView.OnDisable -= Disable;
         enterMissionView.Show(false);
 
         situationMissionView.Show(true);
@@ -126,28 +124,23 @@ public class MissionViewController_2 : MonoBehaviour
 
     private void Qusteion()
     {
-        fingerClick.boxCollider.enabled = false;
-        fingerClick.Click -= ClickCount;
-        clickCount = 0; // initial
+        InitFingerClick();
 
         dialogMissionView.Show(false);
         questionMissionView.Show(true);
 
-        questionMissionView.QuestionView(qustion, answers, 1, studentScoreData);
+        questionMissionView.QuestionView(qustion, answers, 1);
         questionMissionView.buttonClick += QuestionReult;
     }
 
     private void QuestionReult()
     {
-        var result = PostScoreEvent.Instance.answerResult;
-        int score = PostScoreEvent.Instance.score;
-
-        Debug.Log("result " + result + " score " + score);
+        int score = MainView.Instance.studentScoreData.score;
 
         questionMissionView.Show(false);
         dialogMissionView.Show(true);
 
-        if (result)
+        if (score > 0)
         {
             dialogMissionView.DialogView(dogName, correctMessage, dog);
         }
@@ -172,9 +165,11 @@ public class MissionViewController_2 : MonoBehaviour
     private void LeaveMission()
     {
         endMissionView.Show(false);
-        Debug.Log("Mission 2 Leave");
+        InitFingerClick();
 
         endMissionView.OnEnable -= LeaveMission;
         questionMissionView.buttonClick -= QuestionReult;
+
+        Debug.Log("Mission 7 Leave");
     }
 }

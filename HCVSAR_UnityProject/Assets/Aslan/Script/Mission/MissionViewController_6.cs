@@ -133,7 +133,7 @@ public class MissionViewController_6 : MonoBehaviour
         dialogMissionView.Show(false);
         questionMissionView.Show(true);
 
-        questionMissionView.QuestionView(qustion, answers, 0, studentScoreData);
+        questionMissionView.QuestionView(qustion, answers, 0);
         questionMissionView.buttonClick += OpenClickEvent;
     }
 
@@ -151,11 +151,10 @@ public class MissionViewController_6 : MonoBehaviour
     {
         clickCount++;
 
-        var result = PostScoreEvent.Instance.answerResult;
-        int score = PostScoreEvent.Instance.score;
+        int score = MainView.Instance.studentScoreData.score;
         int number;  
 
-        if (result)
+        if (score > 0)
         {
             number = 2;
             Debug.Log("clickCount: " + clickCount);

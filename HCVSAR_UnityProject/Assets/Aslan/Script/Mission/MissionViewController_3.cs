@@ -125,21 +125,18 @@ public class MissionViewController_3 : MonoBehaviour
         dialogMissionView.Show(false);
         questionMissionView.Show(true);
 
-        questionMissionView.QuestionView(qustion, answers, 1, studentScoreData);
+        questionMissionView.QuestionView(qustion, answers, 1);
         questionMissionView.buttonClick += QuestionReult;
     }
 
     private void QuestionReult()
     {
-        var result = PostScoreEvent.Instance.answerResult;
-        int score = PostScoreEvent.Instance.score;
-
-        Debug.Log("result " + result + " score " + score);
+        int score = MainView.Instance.studentScoreData.score;
 
         questionMissionView.Show(false);
         dialogMissionView.Show(true);
 
-        if (result)
+        if (score > 0)
         {
             dialogMissionView.DialogView(dogName, correctMessage, dog);
         }

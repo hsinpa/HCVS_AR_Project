@@ -76,7 +76,7 @@ namespace Expect.StaticAsset {
                 public const string s1 = "樂咖和玩家看到了前方有一群人湊上前去觀看。";
             }
 
-            public class TWO
+            public class SEVEN
             {
                 public const string s1 = "樂咖和玩家看到了前方有一群人湊上前去觀看。";
             }
@@ -113,7 +113,7 @@ namespace Expect.StaticAsset {
                 public const string history4 = "還有排水的水關等設計，在當年可說是相當先進呢！";
             }
 
-            public class TWO
+            public class SEVEN
             {
                 public const string d1 = "哇 這裡好多人！是什麼活動呢？\n我們上前去看看吧？";
 
@@ -152,7 +152,7 @@ namespace Expect.StaticAsset {
                 public const string fault = "不對喔！正確答案是因為隨著日本海軍軍區擴大，土地不夠。所以現在需要將部分城牆做拆除。";
             }
 
-            public class TWO
+            public class SEVEN
             {
                 public const string qustion = "為什麼1950年代左營會有這麼多眷村呢？";
                 public const string correct = "恭喜你答對了！正確答案為因左營是海軍的大本營大批軍眷入住。所以1950年代開始了在左營的眷村文化。";
@@ -182,7 +182,7 @@ namespace Expect.StaticAsset {
                 public const string ans4 = "因為風水問題被拆除";
             }
 
-            public class TWO
+            public class SEVEN
             {
                 public const string ans1 = "左營地靈人傑大家都想搬來這住";
                 public const string ans2 = "因左營是海軍的大本營大批軍眷入住";

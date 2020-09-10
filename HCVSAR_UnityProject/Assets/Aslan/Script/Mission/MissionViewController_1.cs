@@ -8,8 +8,6 @@ using Expect.StaticAsset;
 public class MissionViewController_1 : MonoBehaviour
 {
     [SerializeField]
-    private Button mission_1;
-    [SerializeField]
     private Sprite dog;
     [SerializeField]
     private Sprite person;
@@ -24,12 +22,9 @@ public class MissionViewController_1 : MonoBehaviour
     QuestionMissionView questionMissionView;
     [SerializeField]
     EndMissionView endMissionView;
-
+    [SerializeField]
     FingerClickEvent fingerClick;
-
-    private TypeFlag.InGameType.MissionType[] missionArray;
-    private TypeFlag.SocketDataType.LoginDatabaseType loginData;
-    private TypeFlag.SocketDataType.StudentType studentScoreData = new TypeFlag.SocketDataType.StudentType();
+    
     private int clickCount;
 
     // Message
@@ -48,46 +43,44 @@ public class MissionViewController_1 : MonoBehaviour
     private string faultMessage = StringAsset.MissionsQustion.One.fault;
 
     private string endMessage = StringAsset.MissionsEnd.End.message;
-    
-
-    private void MissionArraySetUp()
+    /*
+    public void Init()
     {
-        missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
+        enterMissionView = enterMissionView.GetComponent<EnterMissionView>();
+        situationMissionView = situationMissionView.GetComponent<SituationMissionView>();
+        dialogMissionView = dialogMissionView.GetComponent<DialogMissionView>();
+        fingerClick = fingerClick.GetComponent<FingerClickEvent>();
+    }
+    */
+
+    private void InitFingerClick()
+    {
+        fingerClick.boxCollider.enabled = false;
+        fingerClick.Click -= ClickCount;
+        clickCount = -1; // initial
     }
 
-    private void Awake()
+    public void MissionStart(int missionNumber)
     {
-        loginData = MainView.Instance.loginData;
-        studentScoreData.student_id = loginData.user_id;
-        studentScoreData.mission_id = "A";
+        TypeFlag.InGameType.MissionType[] missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
+        MainView.Instance.studentScoreData.mission_id = missionArray[missionNumber].mission_id;
 
-        MissionArraySetUp();
-        fingerClick = situationMissionView.GetComponentInParent<FingerClickEvent>();
-    }
-
-    private void Start()
-    {
-        mission_1.onClick.AddListener(MissionStart);
-    }
-
-    private void MissionStart()
-    {
         enterMissionView.Show(true);
-        enterMissionView.EnterMission(missionArray[0].mission_name, missionArray[0].mission_name);
+        enterMissionView.EnterMission(missionArray[missionNumber].mission_name, missionArray[missionNumber].mission_name);
         enterMissionView.OnEnable += StarEnable;
         enterMissionView.OnDisable += Disable;
     }
 
     // TODO: ibeacon find other mission after 10 second
-    void Disable()
+    private void Disable()
     {
+        enterMissionView.Show(false);
+        enterMissionView.RemoveListeners();
         Debug.Log("other thing");
     }
 
     void StarEnable()
     {
-        enterMissionView.OnEnable -= StarEnable;
-        enterMissionView.OnDisable -= Disable;
         enterMissionView.Show(false);
 
         situationMissionView.Show(true);
@@ -128,34 +121,28 @@ public class MissionViewController_1 : MonoBehaviour
         if (clickCount == historyMessage.Length+3)
         {
             Debug.Log("Finish");
+            InitFingerClick();
             Qusteion();
         }
     }
 
     private void Qusteion()
     {
-        fingerClick.boxCollider.enabled = false;
-        fingerClick.Click -= ClickCount;
-        clickCount = 0; // initial
-
         dialogMissionView.Show(false);
 
         questionMissionView.Show(true);
-        questionMissionView.QuestionView(qustion, answers, 1, studentScoreData); // score is null
+        questionMissionView.QuestionView(qustion, answers, 1); // score is null
         questionMissionView.buttonClick += QuestionReult;
     }
 
     private void QuestionReult()
     {
-        var result = PostScoreEvent.Instance.answerResult;
-        int score = PostScoreEvent.Instance.score;
-
-        Debug.Log("result " + result + " score " + score);
+        int score = MainView.Instance.studentScoreData.score;
 
         questionMissionView.Show(false);
         dialogMissionView.Show(true);
         
-        if (result)
+        if (score > 0)
         {
             dialogMissionView.DialogView(dogName, correctMessage, dog);
         }
@@ -180,9 +167,11 @@ public class MissionViewController_1 : MonoBehaviour
     private void LeaveMission()
     {
         endMissionView.Show(false);
-        Debug.Log("Mission 1 Leave");
 
+        InitFingerClick();
         endMissionView.OnEnable -= LeaveMission;
         questionMissionView.buttonClick -= QuestionReult;
+
+        Debug.Log("Mission 1 Leave");
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Hsinpa.View;
+using UnityEngine.Events;
 
 namespace Expect.View
 {
@@ -29,6 +30,12 @@ namespace Expect.View
 
             EnterButton.onClick.AddListener(() => OnEnable());
             LeaveButton.onClick.AddListener(() => OnDisable());
+        }
+
+        public void RemoveListeners()
+        {
+            EnterButton.onClick.RemoveAllListeners();
+            LeaveButton.onClick.RemoveAllListeners();
         }
     }
 }

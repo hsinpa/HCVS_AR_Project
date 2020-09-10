@@ -42,14 +42,19 @@ namespace Expect.View
         private int missionScore;
         private bool isSelectOnce;
 
-        public void QuestionView(string question, string[] answer,int correctAnswer, TypeFlag.SocketDataType.StudentType studentScoreData)
+        public void QuestionView(string question, string[] answer,int correctAnswer)
         {
             Questions.text = question;
-            AnswerText(answer, studentScoreData);
+            AnswerText(answer);
             _correctAnswer = correctAnswer;
         }
 
-        private void AnswerText(string[] answer, TypeFlag.SocketDataType.StudentType studentScoreData)
+        public void RemoveListeners()
+        {
+            
+        }
+
+        private void AnswerText(string[] answer)
         {
             float height = 40f;
 
@@ -64,10 +69,10 @@ namespace Expect.View
                 selectTransform.gameObject.SetActive(true);
             }
 
-            SelectButton(studentScoreData);
+            SelectButton();
         }
 
-        private void SelectButton(TypeFlag.SocketDataType.StudentType studentScoreData)
+        private void SelectButton()
         {
             for (int i = 0; i < SelectButtons.Length; i++)
             {
@@ -75,7 +80,7 @@ namespace Expect.View
                 SelectButtons[index].onClick.AddListener(() => AddSelectListener(index));
             }
 
-            confirmButton.GetComponent<Button>().onClick.AddListener(() => Confirm(studentScoreData));
+            confirmButton.GetComponent<Button>().onClick.AddListener(() => Confirm());
             nextButton.GetComponent<Button>().onClick.AddListener(() => buttonClick());
         }
 
@@ -105,15 +110,17 @@ namespace Expect.View
             SelectButtons[_correctAnswer].image.sprite = SelectTrue;
         }
 
-        private void Confirm(TypeFlag.SocketDataType.StudentType studentScoreData)
+        private void Confirm()
         {
             if (currentSelectIndex == _correctAnswer && isSelectOnce == false)
             {
                 missionScore = 15;
-                studentScoreData.score = missionScore;
+                MainView.Instance.studentScoreData.score = missionScore;
+                PostScoreEvent.Instance.PostScore(missionScore);
+
                 confirmButton.SetActive(false);
                 nextButton.SetActive(true);
-                PostScoreEvent.Instance.PostScore(studentScoreData, true);
+                
                 ShowCorrectOption();
 
                 Debug.Log("Correct!!!  Get Score: " + missionScore);
@@ -121,10 +128,12 @@ namespace Expect.View
             else if (currentSelectIndex == _correctAnswer && isSelectOnce)
             {
                 missionScore = 10;
-                studentScoreData.score = missionScore;
+                MainView.Instance.studentScoreData.score = missionScore;
+                PostScoreEvent.Instance.PostScore(missionScore);
+
                 confirmButton.SetActive(false);
                 nextButton.SetActive(true);
-                PostScoreEvent.Instance.PostScore(studentScoreData, true);
+                
                 ShowCorrectOption();
 
                 Debug.Log("Correct!!!  Get Score: " + missionScore);
@@ -141,10 +150,12 @@ namespace Expect.View
             else
             {
                 missionScore = 0;
-                studentScoreData.score = missionScore;
+                MainView.Instance.studentScoreData.score = missionScore;
+                PostScoreEvent.Instance.PostScore(missionScore);
+
                 confirmButton.SetActive(false);
                 nextButton.SetActive(true);
-                PostScoreEvent.Instance.PostScore(studentScoreData, false);
+                
                 ShowCorrectOption();
                 Debug.Log("Wrong!!!!!!!");
             }
