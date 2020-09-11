@@ -35,23 +35,29 @@ namespace Expect.View
 
         public delegate void OnButtonClick();
         public event OnButtonClick buttonClick;
-
-        private int currentSelectIndex;
+        private bool isSelectOnce;
+        private int currentSelectIndex = -1;
         private int wrongSelectIndex = -1;
         private int _correctAnswer;
-        private int missionScore;
-        private bool isSelectOnce;
+
+        private List<Transform> selectTransformList = new List<Transform>();
 
         public void QuestionView(string question, string[] answer,int correctAnswer)
         {
+            Init();
+
             Questions.text = question;
             AnswerText(answer);
             _correctAnswer = correctAnswer;
         }
 
-        public void RemoveListeners()
+        public void Init()
         {
-            
+            currentSelectIndex = -1;
+            wrongSelectIndex = -1;
+            isSelectOnce = false;
+
+            ResetButtonAndSelect();
         }
 
         private void AnswerText(string[] answer)
@@ -66,6 +72,7 @@ namespace Expect.View
                 selectRectTransform.anchoredPosition = new Vector2(0, -height * i);
                 selectTransform.Find("Answer").GetComponent<Text>().text = answer[i];
 
+                selectTransformList.Add(selectTransform);
                 selectTransform.gameObject.SetActive(true);
             }
 
@@ -97,7 +104,19 @@ namespace Expect.View
         {
             foreach (Button b in SelectButtons) { b.image.sprite = SelectDefault; }
         }
+        
+        private void ResetButtonAndSelect()
+        {
+            foreach (var t in selectTransformList) { Destroy(t.gameObject); }
+            foreach (var t in selectTransformList) { Destroy(t.GetChild(0).gameObject); }
 
+            foreach (Button b in SelectButtons) { b.image.sprite = SelectDefault; }
+            foreach (Button b in SelectButtons) { b.interactable = true; }
+
+            confirmButton.SetActive(true);
+            nextButton.SetActive(false);
+        }
+        
         private void ShowCorrectOption()
         {
             foreach (Button b in SelectButtons)
@@ -112,6 +131,8 @@ namespace Expect.View
 
         private void Confirm()
         {
+            int missionScore;
+
             if (currentSelectIndex == _correctAnswer && isSelectOnce == false)
             {
                 missionScore = 15;

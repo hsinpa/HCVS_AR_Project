@@ -15,7 +15,6 @@ public class SampleCode : MonoBehaviour
 
     void StartMission0()
     {
-        //MissionsController.Instance.mission_1.Init();
         MissionsController.Instance.mission_1.MissionStart(0);
     }
 
