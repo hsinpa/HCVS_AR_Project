@@ -52,7 +52,7 @@ export default class LoginModel {
     }
 
     async StudentLogin(account: string) {
-        let q = `SELECT id, student_name, seat, class_id 
+        let q = `SELECT id, student_name, class_id 
                 FROM Student 
                 WHERE id=?`;
 
