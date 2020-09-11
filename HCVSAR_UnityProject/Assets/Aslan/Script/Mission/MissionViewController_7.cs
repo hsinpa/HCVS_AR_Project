@@ -26,61 +26,39 @@ public class MissionViewController_7 : MonoBehaviour
     private int clickCount;
 
     // Message
-    string situationMessage = StringAsset.MissionsSituation.SEVEN.s1;
-    string dogName = StringAsset.MissionsDialog.Person.dog;
-    string dogMessage = StringAsset.MissionsDialog.SEVEN.d1;
-    string[] historyMessage = { StringAsset.MissionsDialog.SEVEN.history1, StringAsset.MissionsDialog.SEVEN.history2, StringAsset.MissionsDialog.SEVEN.history3 };
+    private string situationMessage = StringAsset.MissionsSituation.SEVEN.s1;
+    private string dogName = StringAsset.MissionsDialog.Person.dog;
+    private string dogMessage = StringAsset.MissionsDialog.SEVEN.d1;
+    private string[] historyMessage = { StringAsset.MissionsDialog.SEVEN.history1, StringAsset.MissionsDialog.SEVEN.history2, StringAsset.MissionsDialog.SEVEN.history3 };
 
     private string qustion = StringAsset.MissionsQustion.SEVEN.qustion;
     private string[] answers = { StringAsset.MissionsAnswer.SEVEN.ans1, StringAsset.MissionsAnswer.SEVEN.ans2,
                                  StringAsset.MissionsAnswer.SEVEN.ans3, StringAsset.MissionsAnswer.SEVEN.ans4};
     private string correctMessage = StringAsset.MissionsQustion.SEVEN.correct;
     private string faultMessage = StringAsset.MissionsQustion.SEVEN.fault;
-
     private string endMessage = StringAsset.MissionsEnd.End.message;
-    /*
-    public void Init()
-    {
-        enterMissionView = enterMissionView.GetComponent<EnterMissionView>();
-        situationMissionView = situationMissionView.GetComponent<SituationMissionView>();
-        dialogMissionView = dialogMissionView.GetComponent<DialogMissionView>();
-        fingerClick = fingerClick.GetComponent<FingerClickEvent>();
-    }*/
-
-    private void InitFingerClick()
-    {
-        fingerClick.boxCollider.enabled = false;
-        fingerClick.Click -= ClickCount;
-        clickCount = -1; // initial
-    }
 
     public void MissionStart(int missionNumber)
     {
         TypeFlag.InGameType.MissionType[] missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
+        MainView.Instance.studentScoreData.mission_id = missionArray[missionNumber].mission_id;
 
         enterMissionView.Show(true);
         enterMissionView.EnterMission(missionArray[missionNumber].mission_name, missionArray[missionNumber].mission_name);
         enterMissionView.OnEnable += StarEnable;
         enterMissionView.OnDisable += Disable;
-
-        MainView.Instance.studentScoreData.mission_id = missionArray[missionNumber].mission_id;
     }
 
     // TODO: ibeacon find other mission after 10 second
-    private void Disable()
+    public void Disable()
     {
         enterMissionView.Show(false);
         enterMissionView.RemoveListeners();
-        //enterMissionView.OnEnable -= StarEnable;
-        //enterMissionView.OnDisable -= Disable;
         Debug.Log("other thing");
     }
 
     private void StarEnable()
     {
-        enterMissionView.RemoveListeners();
-        //enterMissionView.OnEnable -= StarEnable;
-        //enterMissionView.OnDisable -= Disable;
         enterMissionView.Show(false);
 
         situationMissionView.Show(true);
@@ -166,10 +144,32 @@ public class MissionViewController_7 : MonoBehaviour
     {
         endMissionView.Show(false);
         InitFingerClick();
-
-        endMissionView.OnEnable -= LeaveMission;
-        questionMissionView.buttonClick -= QuestionReult;
+        RemoveAllListeners();
+        RemoveAllEvent();
 
         Debug.Log("Mission 7 Leave");
+    }
+
+    private void RemoveAllListeners()
+    {
+        endMissionView.RemoveListeners();
+        questionMissionView.RemoveListeners();
+        enterMissionView.RemoveListeners();
+    }
+
+    private void RemoveAllEvent()
+    {
+        fingerClick.Click -= ClickCount;
+        enterMissionView.OnEnable -= StarEnable;
+        enterMissionView.OnDisable -= Disable;
+        endMissionView.OnEnable -= LeaveMission;
+        questionMissionView.buttonClick -= QuestionReult;
+    }
+
+    private void InitFingerClick()
+    {
+        fingerClick.boxCollider.enabled = false;
+        fingerClick.Click -= ClickCount;
+        clickCount = -1; // initial
     }
 }

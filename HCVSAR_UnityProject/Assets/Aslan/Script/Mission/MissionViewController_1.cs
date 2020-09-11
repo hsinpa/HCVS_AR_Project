@@ -41,24 +41,7 @@ public class MissionViewController_1 : MonoBehaviour
                                  StringAsset.MissionsAnswer.One.ans3, StringAsset.MissionsAnswer.One.ans4};
     private string correctMessage = StringAsset.MissionsQustion.One.correct;
     private string faultMessage = StringAsset.MissionsQustion.One.fault;
-
     private string endMessage = StringAsset.MissionsEnd.End.message;
-    /*
-    public void Init()
-    {
-        enterMissionView = enterMissionView.GetComponent<EnterMissionView>();
-        situationMissionView = situationMissionView.GetComponent<SituationMissionView>();
-        dialogMissionView = dialogMissionView.GetComponent<DialogMissionView>();
-        fingerClick = fingerClick.GetComponent<FingerClickEvent>();
-    }
-    */
-
-    private void InitFingerClick()
-    {
-        fingerClick.boxCollider.enabled = false;
-        fingerClick.Click -= ClickCount;
-        clickCount = -1; // initial
-    }
 
     public void MissionStart(int missionNumber)
     {
@@ -72,7 +55,7 @@ public class MissionViewController_1 : MonoBehaviour
     }
 
     // TODO: ibeacon find other mission after 10 second
-    private void Disable()
+    public void Disable()
     {
         enterMissionView.Show(false);
         enterMissionView.RemoveListeners();
@@ -169,9 +152,32 @@ public class MissionViewController_1 : MonoBehaviour
         endMissionView.Show(false);
 
         InitFingerClick();
-        endMissionView.OnEnable -= LeaveMission;
-        questionMissionView.buttonClick -= QuestionReult;
+        RemoveAllListeners();
+        RemoveAllEvent();
 
         Debug.Log("Mission 1 Leave");
+    }
+
+    private void RemoveAllListeners()
+    {
+        endMissionView.RemoveListeners();
+        questionMissionView.RemoveListeners();
+        enterMissionView.RemoveListeners();
+    }
+
+    private void RemoveAllEvent()
+    {
+        fingerClick.Click -= ClickCount;
+        enterMissionView.OnEnable -= StarEnable;
+        enterMissionView.OnDisable -= Disable;
+        endMissionView.OnEnable -= LeaveMission;
+        questionMissionView.buttonClick -= QuestionReult;
+    }
+
+    private void InitFingerClick()
+    {
+        fingerClick.boxCollider.enabled = false;
+        fingerClick.Click -= ClickCount;
+        clickCount = -1; // initial
     }
 }

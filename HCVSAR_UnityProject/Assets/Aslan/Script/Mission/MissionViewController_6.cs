@@ -8,8 +8,6 @@ using Expect.StaticAsset;
 public class MissionViewController_6 : MonoBehaviour
 {
     [SerializeField]
-    private Button mission_6;
-    [SerializeField]
     private Sprite dog;
     [SerializeField]
     private Sprite npc;
@@ -24,12 +22,9 @@ public class MissionViewController_6 : MonoBehaviour
     QuestionMissionView questionMissionView;
     [SerializeField]
     EndMissionView endMissionView;
-
+    [SerializeField]
     FingerClickEvent fingerClick;
 
-    private TypeFlag.InGameType.MissionType[] missionArray;
-    private TypeFlag.SocketDataType.LoginDatabaseType loginData;
-    private TypeFlag.SocketDataType.StudentType studentScoreData = new TypeFlag.SocketDataType.StudentType();
     private int clickCount;
 
     // Message
@@ -50,34 +45,15 @@ public class MissionViewController_6 : MonoBehaviour
     private string faultMessage_1 = StringAsset.MissionsDialog.Six.fault_1;
     private string faultMessage_2 = StringAsset.MissionsDialog.Six.fault_2;
     private string faultMessage_3 = StringAsset.MissionsSituation.Six.fault;
-
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
-
-    private void MissionArraySetUp()
+    public void MissionStart(int missionNumber)
     {
-        missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
-    }
+        TypeFlag.InGameType.MissionType[] missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
+        MainView.Instance.studentScoreData.mission_id = missionArray[missionNumber].mission_id;
 
-    private void Awake()
-    {
-        loginData = MainView.Instance.loginData;
-        studentScoreData.student_id = loginData.user_id;
-        studentScoreData.mission_id = "F";
-
-        MissionArraySetUp();
-        fingerClick = situationMissionView.GetComponentInParent<FingerClickEvent>();
-    }
-
-    private void Start()
-    {
-        mission_6.onClick.AddListener(MissionStart);
-    }
-
-    private void MissionStart()
-    {
         enterMissionView.Show(true);
-        enterMissionView.EnterMission(missionArray[5].mission_name, missionArray[5].mission_name);
+        enterMissionView.EnterMission(missionArray[missionNumber].mission_name, missionArray[missionNumber].mission_name);
         enterMissionView.OnEnable += StarEnable;
         enterMissionView.OnDisable += Disable;
     }
@@ -85,6 +61,8 @@ public class MissionViewController_6 : MonoBehaviour
     // TODO: ibeacon find other mission after 10 second
     private void Disable()
     {
+        enterMissionView.Show(false);
+        enterMissionView.RemoveListeners();
         Debug.Log("other thing");
     }
 
@@ -126,9 +104,7 @@ public class MissionViewController_6 : MonoBehaviour
 
     private void Qusteion()
     {
-        fingerClick.boxCollider.enabled = false; // end fingerClick trigger
-        fingerClick.Click -= ClickCount;
-        clickCount = 0; // initial
+        InitFingerClick();
 
         dialogMissionView.Show(false);
         questionMissionView.Show(true);
@@ -221,13 +197,36 @@ public class MissionViewController_6 : MonoBehaviour
     private void LeaveEvent()
     {
         endMissionView.Show(false);
+
+        InitFingerClick();
+        RemoveAllEvent();
+        RemoveAllListeners();
+
         Debug.Log("Mission 6 Leave");
+    }
 
-        fingerClick.boxCollider.enabled = false; // end fingerClick trigger
+    private void RemoveAllListeners()
+    {
+        endMissionView.RemoveListeners();
+        questionMissionView.RemoveListeners();
+        enterMissionView.RemoveListeners();
+    }
+
+    private void RemoveAllEvent()
+    {
         fingerClick.Click -= ClickCount;
-        clickCount = 0; // initial
-
-        fingerClick.Click -= QuestionReult; // Add fingerClick event
+        enterMissionView.OnEnable -= StarEnable;
+        enterMissionView.OnDisable -= Disable;
         endMissionView.OnEnable -= LeaveEvent;
+        questionMissionView.buttonClick -= QuestionReult;
+    }
+
+    private void InitFingerClick()
+    {
+        fingerClick.boxCollider.enabled = false;
+        fingerClick.Click -= ClickCount;
+        clickCount = -1; // initial
     }
 }
+
+

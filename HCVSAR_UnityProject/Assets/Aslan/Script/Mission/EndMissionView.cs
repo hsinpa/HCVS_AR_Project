@@ -27,6 +27,11 @@ namespace Expect.View
 
             LeaveButton.onClick.AddListener(() => OnEnable());
         }
+
+        public void RemoveListeners()
+        {
+            LeaveButton.onClick.RemoveAllListeners();
+        }
     }
 }
 

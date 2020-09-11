@@ -42,6 +42,15 @@ namespace Expect.View
 
         private List<Transform> selectTransformList = new List<Transform>();
 
+        private void Init()
+        {
+            currentSelectIndex = -1;
+            wrongSelectIndex = -1;
+            isSelectOnce = false;
+
+            ResetButtonAndSelect();
+        }
+
         public void QuestionView(string question, string[] answer,int correctAnswer)
         {
             Init();
@@ -51,13 +60,9 @@ namespace Expect.View
             _correctAnswer = correctAnswer;
         }
 
-        public void Init()
+        public void RemoveListeners()
         {
-            currentSelectIndex = -1;
-            wrongSelectIndex = -1;
-            isSelectOnce = false;
-
-            ResetButtonAndSelect();
+            nextButton.GetComponent<Button>().onClick.RemoveAllListeners();
         }
 
         private void AnswerText(string[] answer)

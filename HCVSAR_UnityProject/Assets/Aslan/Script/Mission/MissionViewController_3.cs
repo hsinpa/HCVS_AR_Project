@@ -8,8 +8,6 @@ using Expect.StaticAsset;
 public class MissionViewController_3 : MonoBehaviour
 {
     [SerializeField]
-    private Button mission_3;
-    [SerializeField]
     private Sprite dog;
 
     [SerializeField]
@@ -22,52 +20,30 @@ public class MissionViewController_3 : MonoBehaviour
     QuestionMissionView questionMissionView;
     [SerializeField]
     EndMissionView endMissionView;
-
+    [SerializeField]
     FingerClickEvent fingerClick;
 
-    private TypeFlag.InGameType.MissionType[] missionArray;
-    private TypeFlag.SocketDataType.LoginDatabaseType loginData;
-    private TypeFlag.SocketDataType.StudentType studentScoreData = new TypeFlag.SocketDataType.StudentType();
     private int clickCount;
 
     // Message
-    string situationMessage = StringAsset.MissionsSituation.Three.s1;
-    string dogName = StringAsset.MissionsDialog.Person.dog;
-    string[] historyMessage = { StringAsset.MissionsDialog.Three.history1, StringAsset.MissionsDialog.Three.history2, StringAsset.MissionsDialog.Three.history3 };
+    private string situationMessage = StringAsset.MissionsSituation.Three.s1;
+    private string dogName = StringAsset.MissionsDialog.Person.dog;
+    private string[] historyMessage = { StringAsset.MissionsDialog.Three.history1, StringAsset.MissionsDialog.Three.history2, StringAsset.MissionsDialog.Three.history3 };
 
     private string qustion = StringAsset.MissionsQustion.Three.qustion;
     private string[] answers = { StringAsset.MissionsAnswer.Three.ans1, StringAsset.MissionsAnswer.Three.ans2,
                                  StringAsset.MissionsAnswer.Three.ans3, StringAsset.MissionsAnswer.Three.ans4};
     private string correctMessage = StringAsset.MissionsQustion.Three.correct;
     private string faultMessage = StringAsset.MissionsQustion.Three.fault;
-
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
-
-    private void MissionArraySetUp()
+    public void MissionStart(int missionNumber)
     {
-        missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
-    }
+        TypeFlag.InGameType.MissionType[] missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
+        MainView.Instance.studentScoreData.mission_id = missionArray[missionNumber].mission_id;
 
-    private void Awake()
-    {
-        loginData = MainView.Instance.loginData;
-        studentScoreData.student_id = loginData.user_id;
-        studentScoreData.mission_id = "C";
-
-        MissionArraySetUp();
-        fingerClick = situationMissionView.GetComponentInParent<FingerClickEvent>();
-    }
-
-    private void Start()
-    {
-        mission_3.onClick.AddListener(MissionStart);
-    }
-
-    private void MissionStart()
-    {
         enterMissionView.Show(true);
-        enterMissionView.EnterMission(missionArray[2].mission_name, missionArray[2].mission_name);
+        enterMissionView.EnterMission(missionArray[missionNumber].mission_name, missionArray[missionNumber].mission_name);
         enterMissionView.OnEnable += StarEnable;
         enterMissionView.OnDisable += Disable;
     }
@@ -75,6 +51,8 @@ public class MissionViewController_3 : MonoBehaviour
     // TODO: ibeacon find other mission after 10 second
     private void Disable()
     {
+        enterMissionView.Show(false);
+        enterMissionView.RemoveListeners();
         Debug.Log("other thing");
     }
 
@@ -118,9 +96,7 @@ public class MissionViewController_3 : MonoBehaviour
 
     private void Qusteion()
     {
-        fingerClick.boxCollider.enabled = false;
-        fingerClick.Click -= ClickCount;
-        clickCount = 0; // initial
+        InitFingerClick();
 
         dialogMissionView.Show(false);
         questionMissionView.Show(true);
@@ -161,9 +137,33 @@ public class MissionViewController_3 : MonoBehaviour
     private void LeaveMission()
     {
         endMissionView.Show(false);
-        Debug.Log("Mission 3 Leave");
+        InitFingerClick();
+        RemoveAllListeners();
+        RemoveAllEvent();
 
+        Debug.Log("Mission 3 Leave");
+    }
+
+    private void RemoveAllListeners()
+    {
+        endMissionView.RemoveListeners();
+        questionMissionView.RemoveListeners();
+        enterMissionView.RemoveListeners();
+    }
+
+    private void RemoveAllEvent()
+    {
+        fingerClick.Click -= ClickCount;
+        enterMissionView.OnEnable -= StarEnable;
+        enterMissionView.OnDisable -= Disable;
         endMissionView.OnEnable -= LeaveMission;
         questionMissionView.buttonClick -= QuestionReult;
+    }
+
+    private void InitFingerClick()
+    {
+        fingerClick.boxCollider.enabled = false;
+        fingerClick.Click -= ClickCount;
+        clickCount = -1; // initial
     }
 }
