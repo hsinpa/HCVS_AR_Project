@@ -1,0 +1,17 @@
+{
+    "name": "AwesomeChartEditor",
+    "references": [
+        "GUID:89a56ef00b5ff4e2682309272431d47b"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
