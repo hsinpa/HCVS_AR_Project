@@ -37,7 +37,7 @@ public class MissionViewController_4 : MonoBehaviour
     private string correctMessage_2 = StringAsset.MissionsDialog.Four.correct_2;
     private string faultMessage_1 = StringAsset.MissionsDialog.Four.fault_1;
 
-    private string[] historyMessage = { StringAsset.MissionsDialog.Four.history1, StringAsset.MissionsDialog.Four.history2, StringAsset.MissionsDialog.Four.history3};
+    private string[] historyMessage = { StringAsset.MissionsDialog.Four.history1, StringAsset.MissionsDialog.Four.history2,StringAsset.MissionsDialog.Four.history3};
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
     [HideInInspector]
