@@ -38,6 +38,11 @@ public class MissionViewController_7 : MonoBehaviour
     private string faultMessage = StringAsset.MissionsQustion.SEVEN.fault;
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
+    [HideInInspector]
+    public bool isEnterMission;
+    public GameObject hideBG;
+    public GameObject video;
+
     public void MissionStart(int missionNumber)
     {
         TypeFlag.InGameType.MissionType[] missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
@@ -52,6 +57,8 @@ public class MissionViewController_7 : MonoBehaviour
     // TODO: ibeacon find other mission after 10 second
     public void Disable()
     {
+        isEnterMission = false;
+
         enterMissionView.Show(false);
         enterMissionView.RemoveListeners();
         Debug.Log("other thing");
@@ -59,6 +66,11 @@ public class MissionViewController_7 : MonoBehaviour
 
     private void StarEnable()
     {
+        isEnterMission = true;
+        hideBG.SetActive(false);
+        video.SetActive(true);
+        JoeMain.Main.Start360Video(0);
+
         enterMissionView.Show(false);
 
         situationMissionView.Show(true);
@@ -71,7 +83,12 @@ public class MissionViewController_7 : MonoBehaviour
     void ClickCount()
     {
         clickCount++;
-        Convercestion();
+
+        if (clickCount >= 0)
+        {
+            Convercestion();
+        }
+
         Debug.Log("clickCount: " + clickCount);
     }
 
@@ -87,10 +104,15 @@ public class MissionViewController_7 : MonoBehaviour
             dialogMissionView.DialogView(dogName, dogMessage, dog);
         }
 
+        if (clickCount == number)
+        {
+            JoeMain.Main.Play360Video();
+        }
+
         if (clickCount >= number && clickCount < historyMessage.Length + number)
         {
-            Debug.Log("clickCount3: " + clickCount);
             dialogMissionView.DialogView(dogName, historyMessage[clickCount - number], dog);
+            Debug.Log("clickCount3: " + clickCount);
         }
 
         if (clickCount == historyMessage.Length + number)
@@ -147,6 +169,8 @@ public class MissionViewController_7 : MonoBehaviour
         RemoveAllListeners();
         RemoveAllEvent();
 
+        hideBG.SetActive(true);
+        video.SetActive(false);
         Debug.Log("Mission 7 Leave");
     }
 
@@ -170,6 +194,6 @@ public class MissionViewController_7 : MonoBehaviour
     {
         fingerClick.boxCollider.enabled = false;
         fingerClick.Click -= ClickCount;
-        clickCount = -1; // initial
+        clickCount = 0; // initial
     }
 }
