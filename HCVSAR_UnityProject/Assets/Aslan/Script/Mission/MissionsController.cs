@@ -7,9 +7,10 @@ public class MissionsController : Singleton<MissionsController>
 {
     protected MissionsController() { } // guarantee this will be always a singleton only - can't use the constructor!
 
-    public MissionViewController_1 mission_1;
-    public MissionViewController_3 mission_3;
-    public MissionViewController_6 mission_6;
+    public MissionViewController_0 mission_0;
+    public MissionViewController_2 mission_2;
+    public MissionViewController_4 mission_4;
+    public MissionViewController_5 mission_5;
     public MissionViewController_7 mission_7;
 
     EnterMissionView enterMissionView;
@@ -23,9 +24,10 @@ public class MissionsController : Singleton<MissionsController>
 
     private void InitController()
     {
-        mission_1 = mission_1.GetComponent<MissionViewController_1>();
-        mission_3 = mission_3.GetComponent<MissionViewController_3>();
-        mission_6 = mission_3.GetComponent<MissionViewController_6>();
+        mission_0 = mission_0.GetComponent<MissionViewController_0>();
+        mission_2 = mission_2.GetComponent<MissionViewController_2>();
+        mission_4 = mission_4.GetComponent<MissionViewController_4>();
+        mission_5 = mission_5.GetComponent<MissionViewController_5>();
         mission_7 = mission_7.GetComponent<MissionViewController_7>();
     }
 

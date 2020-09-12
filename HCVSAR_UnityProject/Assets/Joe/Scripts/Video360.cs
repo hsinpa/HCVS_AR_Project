@@ -5,12 +5,13 @@ using UnityEngine.Video;
 using UnityEngine.UI;
 using RemptyTool.ES_MessageSystem;
 
-[RequireComponent(typeof(ES_MessageSystem))]
+
 public class Video360 : MonoBehaviour
 {
     // Start is called before the first frame update
+    public Video360[] video360s;
     public VideoPlayer vp;
-    public VideoTime[] videoTimes;
+    //public VideoTime[] videoTimes;
     int nowItem;
     public Text text;
     private ES_MessageSystem msgSys;
@@ -24,17 +25,7 @@ public class Video360 : MonoBehaviour
 
     void Update()
     {
-        if (nowItem<videoTimes.Length&&vp.clockTime>videoTimes[nowItem].time)
-        {
-            //paint();
-            
-            msgSys.SetText(videoTimes[nowItem].text);
-            nowItem++;
-        }
-        if (msgSys.IsCompleted == false)
-        {
-            text.text = msgSys.text;
-        }
+     
     }
     public void UI_rePlayVideo()
     {
@@ -43,7 +34,7 @@ public class Video360 : MonoBehaviour
     }
     public void paint()
     {
-        text.text = videoTimes[nowItem].text;
+       // text.text = videoTimes[nowItem].text;
     }
     private void OnGUI()
     {
@@ -51,10 +42,5 @@ public class Video360 : MonoBehaviour
        
     }
 
-    [System.Serializable]
-    public class VideoTime
-    {
-        public double time;
-        public string text;
-    }
+    
 }
