@@ -11,6 +11,7 @@ public class MissionsController : Singleton<MissionsController>
     public MissionViewController_2 mission_2;
     public MissionViewController_4 mission_4;
     public MissionViewController_5 mission_5;
+    public MissionViewController_6 mission_6;
     public MissionViewController_7 mission_7;
 
     EnterMissionView enterMissionView;
@@ -28,6 +29,7 @@ public class MissionsController : Singleton<MissionsController>
         mission_2 = mission_2.GetComponent<MissionViewController_2>();
         mission_4 = mission_4.GetComponent<MissionViewController_4>();
         mission_5 = mission_5.GetComponent<MissionViewController_5>();
+        mission_6 = mission_6.GetComponent<MissionViewController_6>();
         mission_7 = mission_7.GetComponent<MissionViewController_7>();
     }
 

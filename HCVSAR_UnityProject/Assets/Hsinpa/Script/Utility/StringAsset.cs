@@ -166,7 +166,7 @@ namespace Expect.StaticAsset {
                 public const string history1 = "摳尼基挖！挖搭係挖兒玉源太郎壘斯！";
                 public const string history2 = "我是日本時代台灣第四任總督，也是任期第二長的總督，我可是當了八年呢！";
                 public const string history3 = "雖然我常常不在台灣，有時候跑去日本，有時候跑去東北打日俄戰爭，但好險我有個好幫手，也就是民政長官後藤新平，協助我完成許多台灣基礎建設。";
-                public const string history4 = " 1903為了紀念我就職五週年，由高雄好野人陳中和出錢幫我在柴山上立塑像，可惜戰爭打完我就不建了\n剩下的基座在1957年由安世琪校長搬到海青校園內。";
+                public const string history4 = "1903為了紀念我就職五週年，由高雄好野人陳中和出錢幫我在柴山上立塑像，可惜戰爭打完就不建了\n剩下的基座在1957年由安世琪校長搬到海青校園內。";
             }
 
             public class SEVEN
