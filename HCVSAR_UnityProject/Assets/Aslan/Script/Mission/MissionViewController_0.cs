@@ -28,19 +28,19 @@ public class MissionViewController_0 : MonoBehaviour
     private int clickCount;
 
     // Message
-    private string situationMessage = StringAsset.MissionsSituation.One.s1;
+    private string situationMessage = StringAsset.MissionsSituation.Zero.s1;
     private string dogName = StringAsset.MissionsDialog.Person.dog;
     private string peopleName = StringAsset.MissionsDialog.Person.NPC_1;
-    private string dogMessage = StringAsset.MissionsDialog.One.d1;
-    private string peopleMessage = StringAsset.MissionsDialog.One.d2;
-    private string[] historyMessage = { StringAsset.MissionsDialog.One.history1, StringAsset.MissionsDialog.One.history2,
-                                 StringAsset.MissionsDialog.One.history3, StringAsset.MissionsDialog.One.history4};
+    private string dogMessage = StringAsset.MissionsDialog.Zero.d1;
+    private string peopleMessage = StringAsset.MissionsDialog.Zero.d2;
+    private string[] historyMessage = { StringAsset.MissionsDialog.Zero.history1, StringAsset.MissionsDialog.Zero.history2,
+                                 StringAsset.MissionsDialog.Zero.history3, StringAsset.MissionsDialog.Zero.history4};
 
-    private string qustion = StringAsset.MissionsQustion.One.qustion;
-    private string[] answers = { StringAsset.MissionsAnswer.One.ans1, StringAsset.MissionsAnswer.One.ans2,
-                                 StringAsset.MissionsAnswer.One.ans3, StringAsset.MissionsAnswer.One.ans4};
-    private string correctMessage = StringAsset.MissionsQustion.One.correct;
-    private string faultMessage = StringAsset.MissionsQustion.One.fault;
+    private string qustion = StringAsset.MissionsQustion.Zero.qustion;
+    private string[] answers = { StringAsset.MissionsAnswer.Zero.ans1, StringAsset.MissionsAnswer.Zero.ans2,
+                                 StringAsset.MissionsAnswer.Zero.ans3, StringAsset.MissionsAnswer.Zero.ans4};
+    private string correctMessage = StringAsset.MissionsQustion.Zero.correct;
+    private string faultMessage = StringAsset.MissionsQustion.Zero.fault;
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
     [HideInInspector]
