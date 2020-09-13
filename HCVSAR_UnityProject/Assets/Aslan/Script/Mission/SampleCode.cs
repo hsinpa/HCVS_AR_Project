@@ -15,6 +15,8 @@ public class SampleCode : MonoBehaviour
         button[3].onClick.AddListener(StartMission5);
         button[4].onClick.AddListener(StartMission6);
         button[5].onClick.AddListener(StartMission7);
+        button[6].onClick.AddListener(StartMission8);
+        button[7].onClick.AddListener(StartMission9);
     }
 
     void StartMission0()
@@ -45,5 +47,15 @@ public class SampleCode : MonoBehaviour
     void StartMission7()
     {
         MissionsController.Instance.mission_7.MissionStart(7);
+    }
+
+    void StartMission8()
+    {
+        MissionsController.Instance.mission_8.MissionStart(8);
+    }
+
+    void StartMission9()
+    {
+        MissionsController.Instance.mission_9.MissionStart(9);
     }
 }

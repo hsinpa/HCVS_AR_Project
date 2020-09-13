@@ -71,7 +71,7 @@ namespace Expect.StaticAsset {
 
         public class MissionsSituation
         {
-            public class One
+            public class Zero
             {
                 public const string s1 = "樂咖和玩家看到了前方有一群人湊上前去觀看。";
             }
@@ -108,9 +108,10 @@ namespace Expect.StaticAsset {
                 public const string NPC_3 = "學生";
                 public const string NPC_4 = "老人";
                 public const string NPC_5 = "兒玉源太郎";
+                public const string NPC_6 = "警衛";
             }
 
-            public class One
+            public class Zero
             {
                 public const string d1 = "你們在做什麼啊？為什麼要拉倒城牆呢？";
                 public const string d2 = "因為日本海軍要擴大營區，所以要把清朝的城牆拆除。\n我們就被召集來出力了！你沒事的話快來幫忙吧！";
@@ -119,6 +120,18 @@ namespace Expect.StaticAsset {
                 public const string history2 = "由於清朝沒什麼錢，所以是直接從柴山上面採珊瑚礁岩，也就是俗稱的咾咕石來蓋城牆城門拱則是用來自福建的花崗岩。";
                 public const string history3 = "整座城有東（鳳儀）、西（奠海）、南（啟文）、北（拱辰）四個城門，上有三川脊式城樓，城門間有東、西、南、北四座砲台。";
                 public const string history4 = "還有排水的水關等設計，在當年可說是相當先進呢！";
+            }
+
+            public class One
+            {
+                public const string d1 = "你好我在路上撿到了這封信，請問是送到這裡嗎？";
+                public const string correct_1 = "哎呀！這是相當重要的信件呢，今天都在等這封信！真是太感謝你了。\n這裡沒有什麼厲害的東西，不然這個給你吧。";
+                public const string fault_1 = "這上面寫的是海軍子弟學校收，這裡是高雄市立海青工商的校門口喔，是不是有什麼事情搞錯了呢？";
+                public const string fault_2 = "原來如此啊！\n那這封信我應該…\n阿！信件不見了啊！";
+
+                public const string history1 = "海青工商的地址是：｢高雄市左營區左營大路1號」，為什麼大門口明明在必勝路，地址卻寫左營大路勒？";
+                public const string history2 = "因為海青以前舊校門位於左營大路旁，校門設計者是首任校長安世琪，\n他參考了帕德嫩神殿山牆的概念以及希臘雅典的柱頭設計，完成了這座美輪美奐的大門。";
+                public const string history3 = "可惜後來為了交通安全考量，將校門遷移至今必勝路位置，舊校門就被拆除了。";
             }
 
             public class Two
@@ -169,19 +182,46 @@ namespace Expect.StaticAsset {
                 public const string history4 = "1903為了紀念我就職五週年，由高雄好野人陳中和出錢幫我在柴山上立塑像，可惜戰爭打完就不建了\n剩下的基座在1957年由安世琪校長搬到海青校園內。";
             }
 
-            public class SEVEN
+            public class Seven
             {
-                public const string d1 = "哇 這裡好多人！是什麼活動呢？\n我們上前去看看吧？";
+                public const string d1 = "真的是好壯闊的城牆啊！\n咦地上這是什麼東西！我們上前去看看吧？哇 這裡好多人！是什麼活動呢？\n我們上前去看看吧？";
 
                 public const string history1 = "喔～原來是中華民國總統蔣中正的夫人宋美齡來訪啊！";
                 public const string history2 = "她可是｢中華婦女反共抗俄聯合會」，簡稱｢婦聯會」的主任委員喔，台灣各地很多眷村當年都是｢婦聯會」出錢幫忙蓋的呢！";
                 public const string history3 = "對當時左營地區海軍軍眷照顧也不餘遺力喔，他們在參觀完海軍子弟學校後待會要前往對面的海強幼稚園繼續訪視喔！";
             }
+
+            public class Eight
+            {
+                public const string d1 = "真的是好壯闊的城牆啊！\n咦地上這是什麼東西！我們上前去看看吧？";
+                public const string d2 = "不知道是哪裡的地圖，而且他破損了，我先幫你把他收到包包裡喔！";
+
+                public const string history1 = "海青工商對面這塊土地，在三千年以前住著一群史前文化人，到清朝統治時曾有官衙署建築群。";
+                public const string history2 = "到了日本時期又出租給日本人開墾當果園，二次大戰期間被海軍省徵收做為左營軍港擴建用地。";
+                public const string history3 = "戰爭結束1949年後曾有很長一段時間被當眷村，當年學校對面就是早餐街，我沒事就會晃過去討點東西吃呢！";
+                public const string history4 = "後來2013年眷村拆除發現地底下跟地上都有很多歷史遺跡，所以就成為全台第一座歷史遺址公園預定地囉！";
+            }
+
+            public class Nine
+            {
+                public const string d1 = "我們終於到了飛船的地方了！\n這些城門們可以完整地繞一個圓啊！";
+
+                public const string history1 = "各位同學看到的是鳳山舊城南門，是目前唯一一座被復原城門樓的城門喔。";
+                public const string history2 = "雖然城門樓在民國時候重建時樣子蓋錯了，不過大家還是可以想像一下啦，這座城門會陪伴大家三年喔！";
+            }
+
+            public class Map
+            {
+                public const string d1 = "難道說！";
+                public const string d2 = "原來如此，這張地圖是這個地方城牆的地圖，而我們的正前方是城牆啊！";
+                public const string map1 = "這裡的城牆後期將被拆除，改成眷村，而最後眷村也會被拆除，變成其他設施吧。\n謝謝你幫我找回了失去的部分，非常謝謝你。";
+                public const string map2 = "獲得隱藏手作ＡＲ戰鬥機模型";
+            }
         }
 
         public class MissionsQustion
         {
-            public class One
+            public class Zero
             {
                 public const string qustion = "請問為什麼好端端清代城牆跟城門要被日本人拆除呢？";
                 public const string correct = "恭喜你答對了！正確答案為因為隨著日本海軍軍區擴大，土地不夠。所以現在需要將部分城牆做拆除。";
@@ -210,7 +250,7 @@ namespace Expect.StaticAsset {
 
         public class MissionsAnswer
         {
-            public class One
+            public class Zero
             {
                 public const string ans1 = "城牆跟城門年久失修有倒塌疑慮";
                 public const string ans2 = "因為隨著日本海軍軍區擴大，土地不夠";

@@ -13,6 +13,8 @@ public class MissionsController : Singleton<MissionsController>
     public MissionViewController_5 mission_5;
     public MissionViewController_6 mission_6;
     public MissionViewController_7 mission_7;
+    public MissionViewController_8 mission_8;
+    public MissionViewController_9 mission_9;
 
     EnterMissionView enterMissionView;
     QuestionMissionView questionMissionView;
@@ -31,6 +33,8 @@ public class MissionsController : Singleton<MissionsController>
         mission_5 = mission_5.GetComponent<MissionViewController_5>();
         mission_6 = mission_6.GetComponent<MissionViewController_6>();
         mission_7 = mission_7.GetComponent<MissionViewController_7>();
+        mission_8 = mission_8.GetComponent<MissionViewController_8>();
+        mission_9 = mission_9.GetComponent<MissionViewController_9>();
     }
 
     // MARK: If Dont use Delete
