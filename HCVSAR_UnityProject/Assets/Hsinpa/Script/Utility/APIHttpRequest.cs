@@ -55,6 +55,7 @@ public class APIHttpRequest
 
             if (webRequest.isNetworkError) {
                 if (fail_callback != null) fail_callback();
+                Debug.Log("Web  Error " + webRequest.error);
 
                 yield break;
             }
@@ -76,6 +77,7 @@ public class APIHttpRequest
             }
             catch {
                 if (fail_callback != null) fail_callback();
+                Debug.Log("Web  Error " + webRequest.error);
             }
         }
     }
