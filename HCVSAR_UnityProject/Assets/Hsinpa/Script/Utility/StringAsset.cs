@@ -61,12 +61,12 @@ namespace Expect.StaticAsset {
         public class BagObjectInfo
         {
             public const string mail = "不知道是誰遺落的信件，要送去學校門口的樣子";
-            public const string map1 = "不知道誰遺落的信件，收件人的欄位上寫著海軍子弟學校收，";
-            public const string map2 = "如果是緊急的信件就麻煩了，快點幫他送到收件人地址上的位置吧！";
+            public const string map1 = "一張神秘地圖";
+            public const string map2 = "一張神秘地圖";
 
-            public const string mailDetail = "不Detail口的樣子";
-            public const string map1Detail = "不知Detail收件人的欄位上寫著海軍子弟學校收，";
-            public const string map2Detail = "如果是緊急的信件就麻煩Detail地址上的位置吧！";
+            public const string mailDetail = "不知道誰遺落的信件，上面寫著海軍子弟學校收，如果是重要信件就糟糕了！幫他送過去吧！";
+            public const string map1Detail = "一張神秘地圖";
+            public const string map2Detail = "一張神秘地圖";
         }
 
         public class MissionsSituation
@@ -95,6 +95,12 @@ namespace Expect.StaticAsset {
             public class SEVEN
             {
                 public const string s1 = "樂咖和玩家看到了前方有一群人湊上前去觀看。";
+            }
+
+            public class Tool
+            {
+                public const string m1 = "拾獲信件一封";
+                public const string m2 = "您拾獲一張神秘地圖的缺角";
             }
         }
 
@@ -125,6 +131,8 @@ namespace Expect.StaticAsset {
             public class One
             {
                 public const string d1 = "你好我在路上撿到了這封信，請問是送到這裡嗎？";
+                public const string d2 = "等等！這是什麼！";
+                public const string d3 = "是一封信件呢！我先幫你收到包包裡喔！";
                 public const string correct_1 = "哎呀！這是相當重要的信件呢，今天都在等這封信！真是太感謝你了。\n這裡沒有什麼厲害的東西，不然這個給你吧。";
                 public const string fault_1 = "這上面寫的是海軍子弟學校收，這裡是高雄市立海青工商的校門口喔，是不是有什麼事情搞錯了呢？";
                 public const string fault_2 = "原來如此啊！\n那這封信我應該…\n阿！信件不見了啊！";

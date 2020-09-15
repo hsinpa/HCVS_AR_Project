@@ -98,8 +98,6 @@ public class MissionViewController_4 : MonoBehaviour
 
     void Convercestion()
     {
-        //int number = 5;
-
         if (clickCount == 1)
         {
             Debug.Log("clickCount1: " + clickCount);

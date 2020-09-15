@@ -208,7 +208,7 @@ public class MissionViewController_6 : MonoBehaviour
 
         hideBG.SetActive(true);
         JoeMain.Main.CloseARGame(3);
-        Debug.Log("Mission 4 Leave");
+        Debug.Log("Mission 6 Leave");
     }
 
     private void RemoveAllListeners()
