@@ -14,4 +14,8 @@ public class GeneralFlag
         public const string ShowUserInfo = "event@show_user_info";
         public const string ShowClassScore = "event@show_class_score";
     }
+
+    public class GoogleDocVar {
+        public const string Version = "Version";
+    }
 }
