@@ -11,6 +11,8 @@ public class MissionViewController_5 : MonoBehaviour
     private Sprite dog;
     [SerializeField]
     private Sprite npc;
+    //[SerializeField]
+    //private Sprite mail;
 
     [SerializeField]
     EnterMissionView enterMissionView;
@@ -32,7 +34,9 @@ public class MissionViewController_5 : MonoBehaviour
     string dogName = StringAsset.MissionsDialog.Person.dog;
     string npcName = StringAsset.MissionsDialog.Person.NPC_1;
     string npcMessage_1 = StringAsset.MissionsDialog.Five.d1;
-
+    private string dogMessage3 = StringAsset.MissionsDialog.One.d2;
+    //private string dogMessage4 = StringAsset.MissionsDialog.One.d3;
+    //private string toolMessage = StringAsset.MissionsSituation.Tool.m1;
 
     string[] historyMessage = { StringAsset.MissionsDialog.Five.history1, StringAsset.MissionsDialog.Five.history2, StringAsset.MissionsDialog.Five.history3 };
 
@@ -51,6 +55,7 @@ public class MissionViewController_5 : MonoBehaviour
     public bool isEnterMission;
     public GameObject hideBG;
     public GameObject video;
+    public GameObject toolView;
 
     public void MissionStart(int missionNumber)
     {
@@ -225,9 +230,23 @@ public class MissionViewController_5 : MonoBehaviour
 
         hideBG.SetActive(true);
         video.SetActive(false);
-        Debug.Log("Mission 6 Leave");
+        Debug.Log("Mission 5 Leave");
+
+        StartCoroutine(GetMail());
     }
 
+    public IEnumerator GetMail()
+    {
+        yield return new WaitForSeconds(2);
+
+        dialogMissionView.Show(true);
+        dialogMissionView.DialogView(dogName, dogMessage3, dog);
+
+        yield return new WaitForSeconds(2);
+        Debug.Log("Mail");
+        dialogMissionView.Show(false);
+        toolView.SetActive(true);
+    }
     private void RemoveAllListeners()
     {
         endMissionView.RemoveListeners();

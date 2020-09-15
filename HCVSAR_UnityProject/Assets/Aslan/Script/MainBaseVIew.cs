@@ -9,14 +9,14 @@ public class MainBaseVIew : MonoBehaviour
     protected CanvasGroup canvasGroup;
 
 
-    public virtual void ShowOtherPanel()
+    public virtual void ShowPanel()
     {
         this.GetComponent<Image>().enabled = true;
         canvasGroup.blocksRaycasts = false;
         canvasGroup.interactable = false;
     }
 
-    public virtual void ShowMainPanel()
+    public virtual void ClosePanel()
     {
         this.GetComponent<Image>().enabled = false;
         canvasGroup.blocksRaycasts = true;
