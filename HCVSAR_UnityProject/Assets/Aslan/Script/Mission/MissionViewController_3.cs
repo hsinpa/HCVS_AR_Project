@@ -9,6 +9,8 @@ public class MissionViewController_3 : MonoBehaviour
 {
     [SerializeField]
     private Sprite dog;
+    [SerializeField]
+    private Sprite pic;
 
     [SerializeField]
     private SituationMissionView situationMissionView;
@@ -31,6 +33,7 @@ public class MissionViewController_3 : MonoBehaviour
     private bool isSuccess;
 
     public GameObject game04;
+    public Image picture;
     public Button seccess;
     public Button fail;
 
@@ -92,6 +95,8 @@ public class MissionViewController_3 : MonoBehaviour
     {
         if (clickCount >= 1)
         {
+            picture.enabled = true;
+            picture.sprite = pic;
             StarHistory(1);
         }
     }
@@ -113,6 +118,7 @@ public class MissionViewController_3 : MonoBehaviour
     {
         int score = success ? 5 : 0;
         dialogMissionView.Show(false);
+        picture.enabled = false;
 
         if (success)
         {

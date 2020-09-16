@@ -114,7 +114,7 @@ public class MissionViewController_6 : MonoBehaviour
     {
         InitFingerClick();
         dialogMissionView.Show(false);
-        JoeMain.Main.PlayGame(3);
+        JoeMain.Main.PlayARGame(3);
 
         success.onClick.AddListener(SuccessClick);
         fail.onClick.AddListener(FailClick);

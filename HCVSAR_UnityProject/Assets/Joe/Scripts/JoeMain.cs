@@ -70,6 +70,11 @@ public class JoeMain : MonoBehaviour
         games[number].SetActive(true);
     }
 
+    public void CloseGame(int number)
+    {
+        games[number].SetActive(false);
+    }
+
     public void PlayARGame(int number)
     {
         games[number].SetActive(true);
