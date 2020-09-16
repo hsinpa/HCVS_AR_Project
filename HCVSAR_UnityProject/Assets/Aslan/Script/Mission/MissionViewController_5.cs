@@ -237,7 +237,7 @@ public class MissionViewController_5 : MonoBehaviour
 
     public IEnumerator GetMail()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
 
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(dogName, dogMessage3, dog);
