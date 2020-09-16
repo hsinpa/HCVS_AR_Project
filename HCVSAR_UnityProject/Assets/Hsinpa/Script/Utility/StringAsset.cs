@@ -81,6 +81,11 @@ namespace Expect.StaticAsset {
                 public const string s1 = "樂咖和玩家順著增測儀走到了定點，看到了很多人在拜拜。";
             }
 
+            public class Three
+            {
+                public const string s1 = "一段時間後，砲火的聲響漸漸退去，樂卡與玩家們離開防空洞，回到戶外。";
+            }
+
             public class Four
             {
                 public const string s1 = "樂咖和玩家路過校園，看到在煩惱的學生們。";
@@ -147,6 +152,16 @@ namespace Expect.StaticAsset {
                 public const string history1 = "海青工商的校地大部分是為在以前鳳山舊城的城內喔，大門口左前方是西門遺址，後門是南門。";
                 public const string history2 = "2014年校園曾經有考古挖掘，我有看到地底下有挖到清代文化層跟建築的地面呢。";
                 public const string history3 = "根據我敏銳的嗅覺判斷，這可能是清代廣濟宮的一部份喔！";
+            }
+
+            public class Three
+            {
+                public const string correct_1 = "這裡也有能量！太好了！";
+                public const string fault_1 = "阿阿阿阿阿阿，快逃啊！";
+
+                public const string history1 = "各位同學這個防空洞啊，是二次大戰後期「震洋特攻隊」為了躲避美軍轟炸而蓋的防空洞。";
+                public const string history2 = "都蓋在大樹下面來躲避美軍偵察，而「震洋特攻隊」任務就是等待有一天美軍要登陸台灣的時候，駕著快艇跟炸藥跟美軍軍艦同歸於盡！";
+                public const string history3 = "原本海青工商裡面有六座這樣子的防空洞，但現在只剩下這一座了！";
             }
 
             public class Four
