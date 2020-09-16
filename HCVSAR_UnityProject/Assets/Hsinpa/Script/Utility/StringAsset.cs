@@ -114,6 +114,7 @@ namespace Expect.StaticAsset {
             public class Person
             {
                 public const string dog = "樂咖";
+                public const string map = "地圖";
                 public const string NPC_1 = "村民";
                 public const string NPC_2 = "路人";
                 public const string NPC_3 = "學生";
