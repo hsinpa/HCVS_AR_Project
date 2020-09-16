@@ -47,6 +47,12 @@ public class MissionViewController_0 : MonoBehaviour
     public bool isEnterMission;
     public GameObject hideBG;
     public GameObject video;
+    public GameObject enterGame;
+    public GameObject game00;
+    public Button enter;
+    public Button leave;
+    public Button success;
+    public Button fail;
 
     public void MissionStart(int missionNumber)
     {
@@ -159,14 +165,46 @@ public class MissionViewController_0 : MonoBehaviour
             dialogMissionView.DialogView(dogName, faultMessage, dog);
         }
 
-        StartCoroutine(EndPauser(score));
+        StartCoroutine(EnterGameView());
     }
 
-    public IEnumerator EndPauser(int score)
+    public IEnumerator EnterGameView()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(1);
 
         dialogMissionView.Show(false);
+        enterGame.SetActive(true);
+        enter.onClick.AddListener(EnterGame);
+        leave.onClick.AddListener(LeaveGame);
+    }
+
+    private void EnterGame()
+    {
+        enterGame.SetActive(false);
+        game00.SetActive(true);
+        success.onClick.AddListener(SuccessGame);
+        fail.onClick.AddListener(LeaveGame);
+    }
+
+    private void SuccessGame()
+    {
+        int score = MainView.Instance.studentScoreData.score + 5;
+        PostScoreEvent.Instance.PostScore(score);
+
+        EndNoGameView(score);
+    }
+
+    private void LeaveGame()
+    {
+        int score = MainView.Instance.studentScoreData.score;
+
+        game00.SetActive(false);
+        enterGame.SetActive(false);
+        EndNoGameView(score);
+    }
+
+    private void EndNoGameView(int score)
+    {
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveMission;
@@ -182,7 +220,7 @@ public class MissionViewController_0 : MonoBehaviour
 
         hideBG.SetActive(true);
         video.SetActive(false);
-        Debug.Log("Mission 1 Leave");
+        Debug.Log("Mission 0 Leave");
     }
 
     private void RemoveAllListeners()
@@ -190,6 +228,10 @@ public class MissionViewController_0 : MonoBehaviour
         endMissionView.RemoveListeners();
         questionMissionView.RemoveListeners();
         enterMissionView.RemoveListeners();
+        enter.onClick.RemoveAllListeners();
+        leave.onClick.RemoveAllListeners();
+        success.onClick.RemoveAllListeners();
+        fail.onClick.RemoveAllListeners();
     }
 
     private void RemoveAllEvent()
