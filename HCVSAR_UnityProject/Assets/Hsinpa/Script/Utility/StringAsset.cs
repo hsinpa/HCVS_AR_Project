@@ -63,10 +63,12 @@ namespace Expect.StaticAsset {
             public const string mail = "不知道是誰遺落的信件，要送去學校門口的樣子";
             public const string map1 = "一張神秘地圖";
             public const string map2 = "一張神秘地圖";
+            public const string mapAll = "地方城牆地圖";
 
             public const string mailDetail = "不知道誰遺落的信件，上面寫著海軍子弟學校收，如果是重要信件就糟糕了！幫他送過去吧！";
             public const string map1Detail = "一張神秘地圖";
             public const string map2Detail = "一張神秘地圖";
+            public const string mapAlDetail = "一張完整的地圖，上面記載了這塊土地上曾經出現過的鳳山舊城城牆的位置，分別有東門、西門、南門、北門。\n有些城牆在後期已經被拆除了，真是歷史悠久又珍貴的一張地圖啊！";
         }
 
         public class MissionsSituation

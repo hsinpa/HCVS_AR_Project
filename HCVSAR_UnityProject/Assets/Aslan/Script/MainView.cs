@@ -51,6 +51,10 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private float maxHealth = 100;
     private float currentHealth = 0;
 
+    [Header("Ibeacon")]
+    [SerializeField]
+    private GameObject ibeacon;
+
     [Header("Canvas Group")]
     [SerializeField]
     private CanvasGroup EndView;
@@ -228,14 +232,19 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
     private void StarGame()
     {
+        // UI
         this.GetComponent<CanvasGroup>().interactable = true;
         this.GetComponent<CanvasGroup>().blocksRaycasts = true;
         EndView.alpha = 0;
-
+        // id
         studentScoreData.student_id = loginData.user_id;
+
+        // ibeacon open
+        ibeacon.SetActive(true);
 
         MissionsClick();
         MainButtonClick();
+
         PrepareScoreData(loginData.user_id);
         PrepareClassScore(loginData.room_id);
     }
