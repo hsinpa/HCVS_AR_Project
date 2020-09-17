@@ -56,4 +56,4 @@ MonoBehaviour:
   - mission_id: MAP_BONUS
     mission_name: "\u7372\u5F97\u5730\u5716"
     total_score: 15
-    hide: 1
+    hide: 0

@@ -29,6 +29,7 @@ public class MissionViewController_8 : MonoBehaviour
     public bool isEnterMission;
     public GameObject hideBG;
     public GameObject video;
+    public GameObject toolView;
 
     public void MissionStart(int missionNumber)
     {
@@ -99,17 +100,39 @@ public class MissionViewController_8 : MonoBehaviour
 
         if (clickCount == historyCount + 1)
         {
-            // TODO: Get Map
-            dialogMissionView.DialogView(dogName, dogMessage2, dog);
-            Debug.Log("Get Map");
+            dialogMissionView.Show(false);
+            toolView.SetActive(true);
         }
 
         // TODO: map1 / map2
         if (clickCount == historyCount + 2)
         {
             Debug.Log("Get Map2");
+            LeaveEvent();
             dialogMissionView.DialogView(dogName, dogMessage2, dog);
         }
+    }
+
+    private void LeaveEvent()
+    {
+        InitFingerClick();
+        RemoveAllEvent();
+        RemoveAllListeners();
+
+        hideBG.SetActive(true);
+        video.SetActive(false);
+    }
+
+    private void RemoveAllListeners()
+    {
+        enterMissionView.RemoveListeners();
+    }
+
+    private void RemoveAllEvent()
+    {
+        fingerClick.Click -= ClickCount;
+        enterMissionView.OnEnable -= StarEnable;
+        enterMissionView.OnDisable -= Disable;
     }
 
     private void InitFingerClick()

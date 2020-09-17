@@ -15,11 +15,11 @@ MonoBehaviour:
   missionArray:
   - mission_id: A
     mission_name: "\u5357\u57CE\u7246\u6BB5"
-    total_score: 0
+    total_score: 1
     hide: 0
   - mission_id: B
     mission_name: "\u820A\u6821\u9580\u53E3"
-    total_score: 0
+    total_score: 9
     hide: 0
   - mission_id: C
     mission_name: "\u5EE3\u6FDF\u5BAE"
@@ -27,15 +27,15 @@ MonoBehaviour:
     hide: 0
   - mission_id: D
     mission_name: "\u9632\u7A7A\u58D5"
-    total_score: 0
+    total_score: 20
     hide: 0
   - mission_id: E
     mission_name: "\u7562\u696D\u5408\u7167"
-    total_score: 0
+    total_score: 1
     hide: 0
   - mission_id: F
     mission_name: "\u6821\u53F2\u5BA4"
-    total_score: 0
+    total_score: 15
     hide: 0
   - mission_id: G
     mission_name: "\u5152\u7389\u6E90\u592A\u90CE"
@@ -47,7 +47,7 @@ MonoBehaviour:
     hide: 0
   - mission_id: J
     mission_name: "\u897F\u81EA\u52A9\u65B0\u6751"
-    total_score: 0
+    total_score: 3
     hide: 0
   - mission_id: K
     mission_name: "\u820A\u57CE\u5357\u9580"

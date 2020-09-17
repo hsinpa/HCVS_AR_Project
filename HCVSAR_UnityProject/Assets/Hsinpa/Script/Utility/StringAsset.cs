@@ -61,12 +61,14 @@ namespace Expect.StaticAsset {
         public class BagObjectInfo
         {
             public const string mail = "不知道是誰遺落的信件，要送去學校門口的樣子";
-            public const string map1 = "不知道誰遺落的信件，收件人的欄位上寫著海軍子弟學校收，";
-            public const string map2 = "如果是緊急的信件就麻煩了，快點幫他送到收件人地址上的位置吧！";
+            public const string map1 = "一張神秘地圖";
+            public const string map2 = "一張神秘地圖";
+            public const string mapAll = "地方城牆地圖";
 
-            public const string mailDetail = "不Detail口的樣子";
-            public const string map1Detail = "不知Detail收件人的欄位上寫著海軍子弟學校收，";
-            public const string map2Detail = "如果是緊急的信件就麻煩Detail地址上的位置吧！";
+            public const string mailDetail = "不知道誰遺落的信件，上面寫著海軍子弟學校收，如果是重要信件就糟糕了！幫他送過去吧！";
+            public const string map1Detail = "一張神秘地圖";
+            public const string map2Detail = "一張神秘地圖";
+            public const string mapAlDetail = "一張完整的地圖，上面記載了這塊土地上曾經出現過的鳳山舊城城牆的位置，分別有東門、西門、南門、北門。\n有些城牆在後期已經被拆除了，真是歷史悠久又珍貴的一張地圖啊！";
         }
 
         public class MissionsSituation
@@ -79,6 +81,11 @@ namespace Expect.StaticAsset {
             public class Two
             {
                 public const string s1 = "樂咖和玩家順著增測儀走到了定點，看到了很多人在拜拜。";
+            }
+
+            public class Three
+            {
+                public const string s1 = "一段時間後，砲火的聲響漸漸退去，樂卡與玩家們離開防空洞，回到戶外。";
             }
 
             public class Four
@@ -96,6 +103,12 @@ namespace Expect.StaticAsset {
             {
                 public const string s1 = "樂咖和玩家看到了前方有一群人湊上前去觀看。";
             }
+
+            public class Tool
+            {
+                public const string m1 = "拾獲信件一封";
+                public const string m2 = "您拾獲一張神秘地圖的缺角";
+            }
         }
 
         public class MissionsDialog
@@ -103,6 +116,7 @@ namespace Expect.StaticAsset {
             public class Person
             {
                 public const string dog = "樂咖";
+                public const string map = "地圖";
                 public const string NPC_1 = "村民";
                 public const string NPC_2 = "路人";
                 public const string NPC_3 = "學生";
@@ -125,6 +139,8 @@ namespace Expect.StaticAsset {
             public class One
             {
                 public const string d1 = "你好我在路上撿到了這封信，請問是送到這裡嗎？";
+                public const string d2 = "等等！這是什麼！";
+                public const string d3 = "是一封信件呢！我先幫你收到包包裡喔！";
                 public const string correct_1 = "哎呀！這是相當重要的信件呢，今天都在等這封信！真是太感謝你了。\n這裡沒有什麼厲害的東西，不然這個給你吧。";
                 public const string fault_1 = "這上面寫的是海軍子弟學校收，這裡是高雄市立海青工商的校門口喔，是不是有什麼事情搞錯了呢？";
                 public const string fault_2 = "原來如此啊！\n那這封信我應該…\n阿！信件不見了啊！";
@@ -139,6 +155,16 @@ namespace Expect.StaticAsset {
                 public const string history1 = "海青工商的校地大部分是為在以前鳳山舊城的城內喔，大門口左前方是西門遺址，後門是南門。";
                 public const string history2 = "2014年校園曾經有考古挖掘，我有看到地底下有挖到清代文化層跟建築的地面呢。";
                 public const string history3 = "根據我敏銳的嗅覺判斷，這可能是清代廣濟宮的一部份喔！";
+            }
+
+            public class Three
+            {
+                public const string correct_1 = "這裡也有能量！太好了！";
+                public const string fault_1 = "阿阿阿阿阿阿，快逃啊！";
+
+                public const string history1 = "各位同學這個防空洞啊，是二次大戰後期「震洋特攻隊」為了躲避美軍轟炸而蓋的防空洞。";
+                public const string history2 = "都蓋在大樹下面來躲避美軍偵察，而「震洋特攻隊」任務就是等待有一天美軍要登陸台灣的時候，駕著快艇跟炸藥跟美軍軍艦同歸於盡！";
+                public const string history3 = "原本海青工商裡面有六座這樣子的防空洞，但現在只剩下這一座了！";
             }
 
             public class Four
