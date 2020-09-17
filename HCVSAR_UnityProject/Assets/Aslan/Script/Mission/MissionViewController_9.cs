@@ -48,6 +48,7 @@ public class MissionViewController_9 : MonoBehaviour
 
         enterMissionView.Show(false);
         enterMissionView.RemoveListeners();
+        
         Debug.Log("other thing");
     }
 

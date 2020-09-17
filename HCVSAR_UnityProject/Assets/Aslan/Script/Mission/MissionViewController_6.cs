@@ -114,7 +114,7 @@ public class MissionViewController_6 : MonoBehaviour
     {
         InitFingerClick();
         dialogMissionView.Show(false);
-        JoeMain.Main.PlayGame(3);
+        JoeMain.Main.PlayARGame(3);
 
         success.onClick.AddListener(SuccessClick);
         fail.onClick.AddListener(FailClick);
@@ -208,7 +208,7 @@ public class MissionViewController_6 : MonoBehaviour
 
         hideBG.SetActive(true);
         JoeMain.Main.CloseARGame(3);
-        Debug.Log("Mission 4 Leave");
+        Debug.Log("Mission 6 Leave");
     }
 
     private void RemoveAllListeners()

@@ -9,6 +9,7 @@ public class MissionViewController_1 : MonoBehaviour
 {
     public Button success;
     public Button fail;
+    public GameObject mailInfo;
     public CanvasGroup mainCanvas;
 
     [HideInInspector]
@@ -22,6 +23,8 @@ public class MissionViewController_1 : MonoBehaviour
     private DialogMissionView dialogMissionView;
     [SerializeField]
     private EndMissionView endMissionView;
+    [SerializeField]
+    private BagPanel bagPanel;
     [SerializeField]
     private FingerClickEvent fingerClick;
 
@@ -49,6 +52,10 @@ public class MissionViewController_1 : MonoBehaviour
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += Count; // Add fingerClick event
         isSuccess = true;
+
+        bagPanel.Show(false);
+        dialogMissionView.Show(true);
+        dialogMissionView.DialogView(dogName, dogMessage1, dog);
     }
 
     private void FailClick()
@@ -56,6 +63,10 @@ public class MissionViewController_1 : MonoBehaviour
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += Count; // Add fingerClick event
         isSuccess = false;
+
+        bagPanel.Show(false);
+        dialogMissionView.Show(true);
+        dialogMissionView.DialogView(dogName, dogMessage1, dog);
     }
 
     private void Count()
@@ -74,18 +85,12 @@ public class MissionViewController_1 : MonoBehaviour
     {
         if (clickCount == 1)
         {
-            dialogMissionView.Show(true);
-            dialogMissionView.DialogView(dogName, dogMessage1, dog);
-        }
-
-        if (clickCount == 2)
-        {
             dialogMissionView.DialogView(policeName, correctMessage_1, police);
         }
 
-        if (clickCount >= 3)
+        if (clickCount >= 2)
         {
-            StarHistory(3);
+            StarHistory(2);
         }
     }
 
@@ -93,23 +98,17 @@ public class MissionViewController_1 : MonoBehaviour
     {
         if (clickCount == 1)
         {
-            dialogMissionView.Show(true);
-            dialogMissionView.DialogView(dogName, dogMessage1, dog);
+            dialogMissionView.DialogView(policeName, faultMessage_1, police);
         }
 
         if (clickCount == 2)
         {
-            dialogMissionView.DialogView(policeName, faultMessage_1, police);
-        }
-
-        if (clickCount == 3)
-        {
             dialogMissionView.DialogView(dogName, faultMessage_2, dog);
         }
 
-        if (clickCount >= 4)
+        if (clickCount >= 3)
         {
-            StarHistory(4);
+            StarHistory(3);
         }
     }
 
@@ -130,6 +129,7 @@ public class MissionViewController_1 : MonoBehaviour
     {
         int score = success ? 5 : 0;
 
+        mailInfo.SetActive(false);
         dialogMissionView.Show(false);
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);

@@ -36,18 +36,19 @@ public class Game01 : MonoBehaviour
             if (f > 0)
             {
                 f -= Time.deltaTime * 3;
+
+            }
+            if (OverTime > 0)
+            {
+                OverTime -= Time.deltaTime;
+                timeUI.text = OverTime.ToString();
+                strip.localScale = new Vector3(0 + (f / 10), 1, 1);
+            }
+            else
+            {
+                OverEvent.Invoke();
             }
         }
-        if (OverTime>0)
-        {
-            OverTime -= Time.deltaTime;
-            timeUI.text = OverTime.ToString();
-                strip.localScale =new Vector3(0 + (f / 10),1,1);
-        }
-        else
-        {
-
-            OverEvent.Invoke();
-        }
+        
     }
 }

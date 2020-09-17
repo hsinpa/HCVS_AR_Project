@@ -11,6 +11,8 @@ public class MissionViewController_4 : MonoBehaviour
     private Sprite dog;
     [SerializeField]
     private Sprite student;
+    [SerializeField]
+    private Sprite pic;
 
     [SerializeField]
     private EnterMissionView enterMissionView;
@@ -47,6 +49,7 @@ public class MissionViewController_4 : MonoBehaviour
     public Button success;
     public Button fail;
     private bool isSuccess;
+    public Image picture;
 
     public void MissionStart(int missionNumber)
     {
@@ -98,8 +101,6 @@ public class MissionViewController_4 : MonoBehaviour
 
     void Convercestion()
     {
-        //int number = 5;
-
         if (clickCount == 1)
         {
             Debug.Log("clickCount1: " + clickCount);
@@ -131,7 +132,7 @@ public class MissionViewController_4 : MonoBehaviour
     private void StarGame()
     {
         dialogMissionView.Show(false);
-        JoeMain.Main.PlayGame(2);        
+        JoeMain.Main.PlayARGame(2);        
 
         success.onClick.AddListener(SuccessClick);
         fail.onClick.AddListener(FailClick);
@@ -142,6 +143,10 @@ public class MissionViewController_4 : MonoBehaviour
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += Count; // Add fingerClick event
         isSuccess = true;
+
+        gameUI.SetActive(false);
+        dialogMissionView.Show(true);
+        dialogMissionView.DialogView(dogName, correctMessage_1, dog);
     }
 
     private void FailClick()
@@ -149,16 +154,20 @@ public class MissionViewController_4 : MonoBehaviour
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += Count; // Add fingerClick event
         isSuccess = false;
+
+        gameUI.SetActive(false);
+        dialogMissionView.Show(true);
+        dialogMissionView.DialogView(studentName, faultMessage_1, student);
     }
 
     private void Count()
     {
         clickCount++;
-
+        picture.enabled = true;
+        picture.sprite = pic;
+        
         if (clickCount >= 0)
         {
-            gameUI.SetActive(false);
-
             if (isSuccess) { GameSuccess(); }
             if (!isSuccess) { GameFail(); }
         }
@@ -166,34 +175,36 @@ public class MissionViewController_4 : MonoBehaviour
 
     private void GameSuccess()
     {
+        /*
         if (clickCount == 1)
         {
             dialogMissionView.Show(true);
             dialogMissionView.DialogView(dogName, correctMessage_1, dog);
         }
-
-        if (clickCount == 2)
-        {
-            dialogMissionView.DialogView(studentName, correctMessage_2, student);
-        }
-
-        if (clickCount >= 3)
-        {
-            StarHistory(3);
-        }
-    }
-
-    private void GameFail()
-    {
+        */
         if (clickCount == 1)
         {
-            dialogMissionView.Show(true);
-            dialogMissionView.DialogView(studentName, faultMessage_1, student);
+            dialogMissionView.DialogView(studentName, correctMessage_2, student);
         }
 
         if (clickCount >= 2)
         {
             StarHistory(2);
+        }
+    }
+
+    private void GameFail()
+    {
+        /*
+        if (clickCount == 1)
+        {
+            dialogMissionView.Show(true);
+            dialogMissionView.DialogView(studentName, faultMessage_1, student);
+        }
+        */
+        if (clickCount >= 1)
+        {
+            StarHistory(1);
         }
     }
 
@@ -214,6 +225,7 @@ public class MissionViewController_4 : MonoBehaviour
     {
         int score = success ? 5 : 0;
 
+        picture.enabled = false;
         dialogMissionView.Show(false);
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);

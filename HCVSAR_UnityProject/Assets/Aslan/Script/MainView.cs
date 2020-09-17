@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System;
 using BestHTTP.SocketIO;
+using Expect.View;
 
 public class MainView : Singleton<MainView>//MonoBehaviour
 {
@@ -19,15 +20,19 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [Header("Buttons")]
     [SerializeField]
     private Button[] missionsButtons;
+    [Header("Main Buttons")]
+    [SerializeField]
+    private Button user;
+    [SerializeField]
+    private Button bag;
+    [SerializeField]
+    private Button rank;
+    [SerializeField]
+    private Button connect;
 
     [Header("Mission Info")]
     [SerializeField]
     private Text missionInfo;
-
-    [Header("Info View")]
-    [SerializeField]
-    private GameObject infoView;
-
     [Header("Text")]
     [SerializeField]
     private Text TimerText;
@@ -36,9 +41,34 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [SerializeField]
     private Text EndLocationText;
 
+    [Header("Info View")]
+    [SerializeField]
+    private GameObject infoView;
+
+    [Header("Image")]
+    [SerializeField]
+    private Image healthBar;
+    private float maxHealth = 100;
+    private float currentHealth = 0;
+
+    [Header("Ibeacon")]
+    [SerializeField]
+    private GameObject ibeacon;
+
     [Header("Canvas Group")]
     [SerializeField]
     private CanvasGroup EndView;
+    [SerializeField]
+    private MainBaseVIew mainBaseVIew;
+
+    [SerializeField]
+    private BagPanel bagPanel;
+    [SerializeField]
+    private UserInfoView userInfoPanel;
+    [SerializeField]
+    private RankInfoView rankPanel;
+    [SerializeField]
+    private ConnectView connectPanel;
 
     private string participant = StringAsset.ClassInfo.Participant;
     private string averageScore = StringAsset.ClassInfo.AverageScore;
@@ -63,7 +93,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     {
         Setup();
     }
-
     
     private void Update()
     {
@@ -85,7 +114,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
         
     }
-
+    /*
     public bool CountDown(double addTime)
     {
         DateTime timeUp = DateTime.UtcNow.AddMinutes(addTime);
@@ -98,7 +127,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         }
         return false;
     }
-
+    */
 
     public void Setup()
     {
@@ -123,7 +152,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.TerminateGame, OnTerminateEvent);
         }
-
+        
         StarGame(); //use for no teacher
     }
 
@@ -136,17 +165,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         {
             classScore = JsonUtility.FromJson<TypeFlag.SocketDataType.ClassScoreHolderType>(json);
         }, null));
-    }
-
-    private void MissionsClick()
-    {
-
-        for (int i = 0; i < missionsButtons.Length; i++)
-        {
-            int closureIndex = i;
-            missionsButtons[closureIndex].onClick.AddListener(() => ShowMissionInfo(closureIndex));
-        }
-
     }
     
     private void ShowMissionInfo(int index)
@@ -214,13 +232,19 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
     private void StarGame()
     {
+        // UI
         this.GetComponent<CanvasGroup>().interactable = true;
         this.GetComponent<CanvasGroup>().blocksRaycasts = true;
         EndView.alpha = 0;
-
+        // id
         studentScoreData.student_id = loginData.user_id;
 
+        // ibeacon open
+        ibeacon.SetActive(true);
+
         MissionsClick();
+        MainButtonClick();
+
         PrepareScoreData(loginData.user_id);
         PrepareClassScore(loginData.room_id);
     }
@@ -257,10 +281,13 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private void GetTotalScore(List<TypeFlag.SocketDataType.StudentType> studentData)
     {
         int totalScore = 0;
+
         for (int i = 0; i < studentData.Count; i++)
         {
             totalScore += studentData[i].score;
         }
+
+        RefreshHealthBar(totalScore);
 
         if (totalScore < 10)
         {
@@ -274,7 +301,48 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         }
         
         userInfo.GetStudentInfoText(studentData);
+        
         Debug.Log("=============================totalScoreString" + totalScoreString);
     }
-    
+
+    private void RefreshHealthBar(int score)
+    {
+        currentHealth = score / maxHealth;
+        healthBar.fillAmount = currentHealth;
+    }
+
+    private void MissionsClick()
+    {
+        for (int i = 0; i < missionsButtons.Length; i++)
+        {
+            int closureIndex = i;
+            missionsButtons[closureIndex].onClick.AddListener(() => ShowMissionInfo(closureIndex));
+        }
+
+    }
+
+    private void MainButtonClick()
+    {
+        user.onClick.AddListener(() => {
+            mainBaseVIew.ShowPanel();
+            userInfoPanel.Show(true);
+            userInfoPanel.UserInfoStart();
+        });
+
+        bag.onClick.AddListener(() => {
+            bagPanel.Show(true);
+            mainBaseVIew.ShowPanel();
+        });
+
+        rank.onClick.AddListener(() => {
+            mainBaseVIew.ShowPanel();
+            rankPanel.Show(true);
+            rankPanel.RankInfoStart();
+        });
+
+        connect.onClick.AddListener(() => {
+            connectPanel.Show(true);
+            mainBaseVIew.ShowPanel();
+        });
+    }
 }

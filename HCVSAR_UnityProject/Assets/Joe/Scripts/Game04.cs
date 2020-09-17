@@ -29,6 +29,7 @@ public class Game04 : MonoBehaviour
         if (f < 2)
         {
             unityEvent.Invoke();
+            
         }
         else
         {
@@ -45,7 +46,6 @@ public class Game04 : MonoBehaviour
         }
         else
         {
-
             OverEvent.Invoke();
         }
     }

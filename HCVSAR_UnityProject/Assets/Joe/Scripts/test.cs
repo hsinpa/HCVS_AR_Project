@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using BestHTTP.SecureProtocol.Org.BouncyCastle.Asn1.X509;
+using System.Runtime.InteropServices;
 
 public class test : MonoBehaviour
 {
@@ -42,6 +44,7 @@ public class test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        testttt();
         //Debug.Log(example.mybeacons.Count);
         poss[0].text = box.position.x.ToString();
         poss[1].text = box.position.y.ToString();
@@ -106,6 +109,25 @@ public class test : MonoBehaviour
 
            
         }
+    }
+    public Transform p1t;
+    public Transform p2t;
+    public Transform p3t;
+    public Transform target;
+    public Transform target2;
+    public void testttt()
+    {
+        p1.X = p1t.position.x;
+        p1.Y = p1t.position.z;
+        p1.Distance = Vector3.Distance(target.position, p1t.position);
+        p2.X = p2t.position.x;
+        p2.Y = p2t.position.z;
+        p2.Distance = Vector3.Distance(target.position, p2t.position);
+        p3.X = p3t.position.x;
+        p3.Y = p3t.position.z;
+        p3.Distance = Vector3.Distance(target.position, p3t.position);
+        point = GetPiontByThree(p1, p2, p3);
+        target2.position = new Vector3(point.X, ct.position.y, point.Y);
     }
 
     public void setprint()

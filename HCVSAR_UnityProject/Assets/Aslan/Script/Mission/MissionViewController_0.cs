@@ -35,6 +35,7 @@ public class MissionViewController_0 : MonoBehaviour
     private string peopleMessage = StringAsset.MissionsDialog.Zero.d2;
     private string[] historyMessage = { StringAsset.MissionsDialog.Zero.history1, StringAsset.MissionsDialog.Zero.history2,
                                  StringAsset.MissionsDialog.Zero.history3, StringAsset.MissionsDialog.Zero.history4};
+    private string dogMessage3 = StringAsset.MissionsDialog.Eight.d2;
 
     private string qustion = StringAsset.MissionsQustion.Zero.qustion;
     private string[] answers = { StringAsset.MissionsAnswer.Zero.ans1, StringAsset.MissionsAnswer.Zero.ans2,
@@ -47,6 +48,12 @@ public class MissionViewController_0 : MonoBehaviour
     public bool isEnterMission;
     public GameObject hideBG;
     public GameObject video;
+    public GameObject enterGame;
+    public Button enter;
+    public Button leave;
+    public Button success;
+    public Button fail;
+    public GameObject toolView;
 
     public void MissionStart(int missionNumber)
     {
@@ -159,14 +166,47 @@ public class MissionViewController_0 : MonoBehaviour
             dialogMissionView.DialogView(dogName, faultMessage, dog);
         }
 
-        StartCoroutine(EndPauser(score));
+        StartCoroutine(EnterGameView());
     }
 
-    public IEnumerator EndPauser(int score)
+    public IEnumerator EnterGameView()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3);
 
         dialogMissionView.Show(false);
+        enterGame.SetActive(true);
+        enter.onClick.AddListener(EnterGame);
+        leave.onClick.AddListener(LeaveGame);
+    }
+
+    private void EnterGame()
+    {
+        enterGame.SetActive(false);
+        JoeMain.Main.PlayGame(0);
+        success.onClick.AddListener(SuccessGame);
+        fail.onClick.AddListener(LeaveGame);
+    }
+
+    private void SuccessGame()
+    {
+        int score = MainView.Instance.studentScoreData.score + 5;
+        PostScoreEvent.Instance.PostScore(score);
+        //JoeMain.Main.CloseGame(0);
+
+        EndNoGameView(score);
+    }
+
+    private void LeaveGame()
+    {
+        int score = MainView.Instance.studentScoreData.score;
+
+        //JoeMain.Main.CloseGame(0);
+        enterGame.SetActive(false);
+        EndNoGameView(score);
+    }
+
+    private void EndNoGameView(int score)
+    {
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveMission;
@@ -182,7 +222,22 @@ public class MissionViewController_0 : MonoBehaviour
 
         hideBG.SetActive(true);
         video.SetActive(false);
-        Debug.Log("Mission 1 Leave");
+        Debug.Log("Mission 0 Leave");
+
+        StartCoroutine(GetMap());
+    }
+
+    public IEnumerator GetMap()
+    {
+        yield return new WaitForSeconds(1);
+
+        dialogMissionView.Show(true);
+        dialogMissionView.DialogView(dogName, dogMessage3, dog);
+
+        yield return new WaitForSeconds(3);
+        Debug.Log("Map1");
+        dialogMissionView.Show(false);
+        toolView.SetActive(true);
     }
 
     private void RemoveAllListeners()
@@ -190,6 +245,10 @@ public class MissionViewController_0 : MonoBehaviour
         endMissionView.RemoveListeners();
         questionMissionView.RemoveListeners();
         enterMissionView.RemoveListeners();
+        enter.onClick.RemoveAllListeners();
+        leave.onClick.RemoveAllListeners();
+        success.onClick.RemoveAllListeners();
+        fail.onClick.RemoveAllListeners();
     }
 
     private void RemoveAllEvent()
