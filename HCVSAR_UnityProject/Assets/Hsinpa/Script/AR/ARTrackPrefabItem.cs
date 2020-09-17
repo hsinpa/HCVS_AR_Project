@@ -19,6 +19,9 @@ namespace Hsinpa.AR
             _ARTrackedImage = GetComponent<ARTrackedImage>();
             _ARZeroManager = GameObject.FindObjectOfType<ARZeroManager>();
 
+            Debug.Log("ARManager is " + (_ARZeroManager != null));
+            Debug.Log("_ARTrackedImage is " + (_ARTrackedImage.referenceImage.name));
+
             if (_ARZeroManager) {
                 _ARZeroManager.OnDataUpdate += (OnARDataUpdate);
                 _ARZeroManager.ForceUpdate();
@@ -36,8 +39,8 @@ namespace Hsinpa.AR
 
             ARDataSync.ARData data = aRDataSync.FindArData(_ARTrackedImage.referenceImage.name);
 
-            mainObject.transform.position = data.position;
-            mainObject.transform.rotation = data.rotation;
+            mainObject.transform.localPosition = data.position;
+            mainObject.transform.localRotation = data.rotation;
             mainObject.transform.localScale = data.scale;
         }
 
