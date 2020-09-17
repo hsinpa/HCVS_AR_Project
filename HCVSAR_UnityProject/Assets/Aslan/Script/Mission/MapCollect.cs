@@ -26,6 +26,8 @@ public class MapCollect : MonoBehaviour
     EndMissionView endMissionView;
     [SerializeField]
     FingerClickEvent fingerClick;
+    [SerializeField]
+    BagPanel bagPanel;
 
     // Message
     private string dogName = StringAsset.MissionsDialog.Person.dog;
@@ -41,7 +43,6 @@ public class MapCollect : MonoBehaviour
 
     public GameObject toolView;
 
-
     private void Start()
     {
         map1Button.onClick.AddListener(ClickMap1);
@@ -51,22 +52,22 @@ public class MapCollect : MonoBehaviour
     private void ClickMap1()
     {
         isCollectMap1 = true;
-
+        
         if (isCollectMap2) { StartCoroutine(GetAllMap()); }
     }
 
     private void ClickMap2()
     {
         isCollectMap2 = true;
-
-        if (isCollectMap1) { StartCoroutine(GetAllMap()); }
+        
+        if (isCollectMap1) {  StartCoroutine(GetAllMap()); }
             
     }
 
     public IEnumerator GetAllMap()
     {
         yield return new WaitForSeconds(1);
-
+        
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += ClickCount; // Add fingerClick event
 
@@ -92,19 +93,15 @@ public class MapCollect : MonoBehaviour
         {
             mapImage.sprite = mapSprite;
             mapImage.enabled = true;
-        }
-
-        if (clickCount == 3)
-        {
             dialogMissionView.DialogView(dogName, dogMessage2, dog);
         }
 
-        if (clickCount == 3)
+        if (clickCount == 2)
         {
             dialogMissionView.DialogView(mapName, mapessage1, map);
         }
 
-        if (clickCount == 4)
+        if (clickCount == 3)
         {
             mapImage.enabled = false;
             dialogMissionView.Show(false);
@@ -119,11 +116,21 @@ public class MapCollect : MonoBehaviour
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveEvent;
+
+        MainView.Instance.studentScoreData.mission_id = "D";
+        PostScoreEvent.Instance.PostScore(score); // TODO: pose Fail???
+
+        var id = MainView.Instance.studentScoreData.mission_id;
+        var user = MainView.Instance.studentScoreData.student_id;
+        Debug.Log("id: " + id + " user" + user);
     }
 
     private void LeaveEvent()
     {
         endMissionView.Show(false);
+
+        bagPanel.RemoveMapChip();
+        bagPanel.AddAllMapInfo();
 
         InitFingerClick();
         RemoveAllEvent();

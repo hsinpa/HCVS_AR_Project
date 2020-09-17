@@ -191,7 +191,7 @@ public class MissionViewController_0 : MonoBehaviour
     {
         int score = MainView.Instance.studentScoreData.score + 5;
         PostScoreEvent.Instance.PostScore(score);
-        JoeMain.Main.CloseGame(0);
+        //JoeMain.Main.CloseGame(0);
 
         EndNoGameView(score);
     }
@@ -200,7 +200,7 @@ public class MissionViewController_0 : MonoBehaviour
     {
         int score = MainView.Instance.studentScoreData.score;
 
-        JoeMain.Main.CloseGame(0);
+        //JoeMain.Main.CloseGame(0);
         enterGame.SetActive(false);
         EndNoGameView(score);
     }
@@ -235,7 +235,7 @@ public class MissionViewController_0 : MonoBehaviour
         dialogMissionView.DialogView(dogName, dogMessage3, dog);
 
         yield return new WaitForSeconds(3);
-        Debug.Log("Map");
+        Debug.Log("Map1");
         dialogMissionView.Show(false);
         toolView.SetActive(true);
     }
