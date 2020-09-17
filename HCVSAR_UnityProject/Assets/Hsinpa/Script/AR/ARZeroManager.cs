@@ -20,7 +20,7 @@ namespace Hsinpa.AR
             arImageManager = GetComponent<ARTrackedImageManager>();
             arDataSync = new ARDataSync();
             UpdateWebCSV();
-
+            
             if (GoogleSheetBtn != null)
                 GoogleSheetBtn.onClick.AddListener(() => { UpdateWebCSV(); });
         }
