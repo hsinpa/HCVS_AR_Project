@@ -31,10 +31,10 @@ namespace Hsinpa.AR
                 }
                 else
                 {
-                    Debug.Log(webRequest.downloadHandler.text);
                     CSVFile csvFile = new CSVFile(webRequest.downloadHandler.text);
 
                     int version = csvFile.Get<int>(0, GeneralFlag.GoogleDocVar.Version);
+                    Debug.Log("Version " + version);
 
                     if (version > _version) {
                         _version = version;
@@ -62,12 +62,18 @@ namespace Hsinpa.AR
                 string name = csvFile.Get<string>(i, "Name", "");
                 string position_str = csvFile.Get<string>(i, "Position", "");
                 string rotation_str = csvFile.Get<string>(i, "Rotation", "");
-                float scale = csvFile.Get<float>(i, "Scale", 1);
+                float scale = float.Parse(csvFile.Get<string>(i, "Scale", "0.1"));
 
                 aRData.name = name;
                 aRData.position = StrToVector(position_str);
                 aRData.rotation = Quaternion.Euler(StrToVector(rotation_str));
                 aRData.scale = new Vector3(scale, scale, scale);
+
+                Debug.Log("name " + name);
+                Debug.Log("position_str " + position_str);
+                Debug.Log("rotation_str " + rotation_str);
+                Debug.Log("scale " + scale);
+
 
                 if (arList.ContainsKey(name))
                     arList[name] = aRData;
