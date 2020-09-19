@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using Expect.StaticAsset;
 using UnityEngine.Networking;
 using System.Collections.Generic;
+using Expect.View;
 
 public class PostScoreEvent : Singleton<PostScoreEvent>
 {
@@ -18,8 +19,10 @@ public class PostScoreEvent : Singleton<PostScoreEvent>
 
         StartCoroutine(
         APIHttpRequest.NativeCurl((StringAsset.GetFullAPIUri(StringAsset.API.PostStudentScore)), UnityWebRequest.kHttpVerbPOST, jsonString, (string success) => {
-            
+
+            MainView.Instance.RefreshUserInfo();
             Debug.Log("PSOT Success: " + log);
+            
         }, () => {
             //TODO: ADD Mission ID
             Debug.Log("Error: POST Fail, Fail Mission: " + log);
