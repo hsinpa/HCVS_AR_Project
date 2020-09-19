@@ -256,7 +256,12 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     }
 
     // UserInfo Score Data
-    public void PrepareScoreData(string id)
+    public void RefreshUserInfo()
+    {
+        PrepareScoreData(loginData.user_id);
+    }
+
+    private void PrepareScoreData(string id)
     {
         string getStudentURI = string.Format(StringAsset.API.GetStudentScore, id);
 
