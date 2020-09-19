@@ -11,6 +11,9 @@ namespace Hsinpa.AR
         [SerializeField]
         private GameObject mainObject;
 
+        [SerializeField]
+        private Animator _animator;
+
         private ARTrackedImage _ARTrackedImage;
         private ARZeroManager _ARZeroManager;
 
@@ -21,6 +24,7 @@ namespace Hsinpa.AR
 
             if (_ARZeroManager) {
                 _ARZeroManager.OnDataUpdate += (OnARDataUpdate);
+                _ARZeroManager.OnTakeOffBtnEvent += OnTakeOffEvent;
                 _ARZeroManager.ForceUpdate();
             }
         }
@@ -36,15 +40,19 @@ namespace Hsinpa.AR
 
             ARDataSync.ARData data = aRDataSync.FindArData(_ARTrackedImage.referenceImage.name);
 
-            mainObject.transform.position = data.position;
-            mainObject.transform.rotation = data.rotation;
+            mainObject.transform.localPosition = data.position;
+            mainObject.transform.localRotation = data.rotation;
             mainObject.transform.localScale = data.scale;
+        }
+
+        private void OnTakeOffEvent() {
+            _animator.SetTrigger(GeneralFlag.ARZeroAnimator.TakeOff);
         }
 
         private void OnDestroy()
         {
             _ARZeroManager.OnDataUpdate -= (OnARDataUpdate);
+            _ARZeroManager.OnTakeOffBtnEvent -= OnTakeOffEvent;
         }
-
     }
 }

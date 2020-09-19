@@ -18,4 +18,8 @@ public class GeneralFlag
     public class GoogleDocVar {
         public const string Version = "Version";
     }
+
+    public class ARZeroAnimator {
+        public const string TakeOff = "anim_event@takeoff";
+    }
 }

@@ -12,7 +12,10 @@ namespace Hsinpa.AR
         ARTrackedImageManager arImageManager;
 
         public System.Action<ARDataSync> OnDataUpdate;
+        public System.Action OnTakeOffBtnEvent;
+
         public Button GoogleSheetBtn;
+        public Button TakeOffBtn;
 
         // Start is called before the first frame update
         void Start()
@@ -20,9 +23,12 @@ namespace Hsinpa.AR
             arImageManager = GetComponent<ARTrackedImageManager>();
             arDataSync = new ARDataSync();
             UpdateWebCSV();
-
+            
             if (GoogleSheetBtn != null)
                 GoogleSheetBtn.onClick.AddListener(() => { UpdateWebCSV(); });
+
+            if (TakeOffBtn != null)
+                TakeOffBtn.onClick.AddListener(() => { OnClickTakeOffBtnEvent(); });
         }
 
         public void ForceUpdate() {
@@ -32,6 +38,10 @@ namespace Hsinpa.AR
 
             if (OnDataUpdate != null)
                 OnDataUpdate(arDataSync);
+        }
+
+        private void OnClickTakeOffBtnEvent() {
+            if (OnTakeOffBtnEvent != null) OnTakeOffBtnEvent();
         }
 
         private void UpdateWebCSV() {
