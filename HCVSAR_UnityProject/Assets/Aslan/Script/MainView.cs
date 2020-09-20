@@ -299,8 +299,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             TotalScoreText.text = totalScoreString;
         }
         
-        userInfo.GetStudentInfoText(studentData);
-        
         Debug.Log("=============================totalScoreString" + totalScoreString);
     }
 
@@ -324,7 +322,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     public void RefreshStudentData()
     {
         PrepareScoreData(loginData.user_id);
-        Debug.Log("==========Refresh");
     }
 
     private void MainButtonClick()

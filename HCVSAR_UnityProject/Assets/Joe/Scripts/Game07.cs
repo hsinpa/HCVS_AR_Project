@@ -45,7 +45,6 @@ public class Game07 : MonoBehaviour
         else
         {
             OverEvent.Invoke();
-            PostScoreEvent.Instance.PostScore(0);
             ani.speed = 0;
         }
       
@@ -53,7 +52,6 @@ public class Game07 : MonoBehaviour
     void right()
     {
         unityEvent.Invoke();
-        PostScoreEvent.Instance.PostScore(1);
     }
     void Update()
     {
