@@ -40,7 +40,7 @@ namespace Expect.View
         private string student_id;
         private string student_name;
 
-        private void GetData()
+        public void GetData()
         {
             studentData = MainView.Instance.studentData;
             student_id = MainView.Instance.loginData.user_id;
@@ -53,7 +53,7 @@ namespace Expect.View
 
             GetStudentInfoText(studentData);
             SwitchPanelController();
-            //GetData();
+            
             Debug.Log("user info");
         }
 

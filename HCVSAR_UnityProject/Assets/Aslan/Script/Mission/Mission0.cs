@@ -153,9 +153,8 @@ public class Mission0 : ViewController
     private void SuccessGame()
     {
         int score = MainView.Instance.studentScoreData.score + 5;
-        PostScoreEvent.Instance.PostScore(score);
+        
         JoeMain.Main.CloseGame(0);
-
         EndNoGameView(score);
     }
 
@@ -173,6 +172,8 @@ public class Mission0 : ViewController
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveMission;
+
+        PostScoreEvent.Instance.PostScore(score);
     }
 
     private void LeaveMission()

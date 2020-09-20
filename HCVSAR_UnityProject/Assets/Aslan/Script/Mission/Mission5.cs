@@ -107,6 +107,8 @@ public class Mission5 : ViewController
         int score = MainView.Instance.studentScoreData.score;
         int number;
 
+        PostScoreEvent.Instance.PostScore(score);
+
         if (score > 0)
         {
             number = 2;
