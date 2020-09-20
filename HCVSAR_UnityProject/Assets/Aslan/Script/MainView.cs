@@ -255,12 +255,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         endTime = DateTimeOffset.FromUnixTimeMilliseconds(endTimestamp).DateTime;
     }
 
-    // UserInfo Score Data
-    public void RefreshUserInfo()
-    {
-        PrepareScoreData(loginData.user_id);
-    }
-
     private void PrepareScoreData(string id)
     {
         string getStudentURI = string.Format(StringAsset.API.GetStudentScore, id);
@@ -324,6 +318,13 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             missionsButtons[closureIndex].onClick.AddListener(() => ShowMissionInfo(closureIndex));
         }
 
+    }
+
+    // UserInfo Score Data
+    public void RefreshStudentData()
+    {
+        PrepareScoreData(loginData.user_id);
+        Debug.Log("==========Refresh");
     }
 
     private void MainButtonClick()

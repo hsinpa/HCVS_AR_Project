@@ -138,7 +138,8 @@ namespace Expect.View
         private void Confirm()
         {
             int missionScore;
-            
+            confirmButton.GetComponent<Button>().interactable = false;
+
             if (currentSelectIndex == _correctAnswer)
             {
                 missionScore = isSelectOnce ? 10 : 15;

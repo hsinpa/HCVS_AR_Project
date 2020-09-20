@@ -16,14 +16,12 @@ namespace Expect.View
         [SerializeField]
         private Image characterImage;
 
-
         public void DialogView(string name, string message, Sprite sprite)
         {
             nameText.text = name;
             messageText.text = message;
             characterImage.sprite = sprite;
         }
-
         
     }
 }

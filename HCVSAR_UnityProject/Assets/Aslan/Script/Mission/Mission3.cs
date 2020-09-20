@@ -105,7 +105,8 @@ public class Mission3 : ViewController
     {
         int score = success ? 5 : 0;
         dialogMissionView.Show(false);
-        picture.enabled = false;
+        //picture.enabled = false;
+        PostScoreEvent.Instance.PostScore(score);
 
         if (success)
         {
@@ -135,7 +136,7 @@ public class Mission3 : ViewController
     private void LeaveEvent()
     {
         endMissionView.Show(false);
-
+        picture.enabled = false;
         InitFingerClick();
         RemoveAllListeners();
         RemoveAllEvent();
@@ -153,6 +154,7 @@ public class Mission3 : ViewController
     {
         seccess.onClick.RemoveAllListeners();
         fail.onClick.RemoveAllListeners();
+        endMissionView.RemoveListeners();
     }
 
     private void InitFingerClick()

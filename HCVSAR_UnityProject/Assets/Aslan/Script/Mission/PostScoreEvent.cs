@@ -8,11 +8,11 @@ using Expect.View;
 
 public class PostScoreEvent : Singleton<PostScoreEvent>
 {
-    public TypeFlag.SocketDataType.StudentType studentScoreData = MainView.Instance.studentScoreData;
-
     public void PostScore(int score)
     {
+        TypeFlag.SocketDataType.StudentType studentScoreData = MainView.Instance.studentScoreData;
         studentScoreData.score = score;
+        Debug.Log("PSOT studentScoreData id: " + studentScoreData.mission_id);
 
         string jsonString = JsonUtility.ToJson(studentScoreData);
         string log = string.Format("id: {0}, user: {1}, score: {2}", studentScoreData.mission_id, studentScoreData.student_id, studentScoreData.score);
@@ -20,7 +20,8 @@ public class PostScoreEvent : Singleton<PostScoreEvent>
         StartCoroutine(
         APIHttpRequest.NativeCurl((StringAsset.GetFullAPIUri(StringAsset.API.PostStudentScore)), UnityWebRequest.kHttpVerbPOST, jsonString, (string success) => {
 
-            MainView.Instance.RefreshUserInfo();
+            MainView.Instance.studentScoreData = studentScoreData;
+            MainView.Instance.RefreshStudentData();
             Debug.Log("PSOT Success: " + log);
             
         }, () => {

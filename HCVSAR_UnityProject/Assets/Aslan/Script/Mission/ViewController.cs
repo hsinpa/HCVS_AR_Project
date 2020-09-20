@@ -18,7 +18,7 @@ public class ViewController : MonoBehaviour
 
     public virtual void Enable()
     {
-        Debug.Log("MainView.Instance.studentScoreData.mission_id  " + MainView.Instance.studentScoreData.mission_id);
+        Debug.Log("Enable mission_id  " + MainView.Instance.studentScoreData.mission_id);
         Debug.Log("enter");
     }
 }

@@ -159,6 +159,7 @@ public class Mission6 : ViewController
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveEvent;
+        PostScoreEvent.Instance.PostScore(score);
     }
 
     private void LeaveEvent()

@@ -77,6 +77,7 @@ public class Mission9 : ViewController
         dialogMissionView.Show(false);
         InitFingerClick();
         hideBG.SetActive(true);
+
         MissionsController.Instance.ReSetMissions();
         Debug.Log("Mission 9 Leave");
     }
