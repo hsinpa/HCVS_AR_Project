@@ -82,6 +82,7 @@ public class Mission5 : ViewController
     private void Qusteion()
     {
         InitFingerClick();
+        fingerClick.Click -= ClickCount;
 
         dialogMissionView.Show(false);
         questionMissionView.Show(true);
@@ -173,6 +174,9 @@ public class Mission5 : ViewController
 
     private void LeaveMission(int score)
     {
+        InitFingerClick();
+        fingerClick.Click -= QuestionReult;
+
         dialogMissionView.Show(false);
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);
@@ -215,16 +219,13 @@ public class Mission5 : ViewController
 
     private void RemoveAllEvent()
     {
-        fingerClick.Click -= ClickCount;
         endMissionView.OnEnable -= LeaveEvent;
-        questionMissionView.buttonClick -= QuestionReult;
         questionMissionView.buttonClick -= OpenClickEvent;
     }
 
     private void InitFingerClick()
     {
         fingerClick.boxCollider.enabled = false;
-        fingerClick.Click -= ClickCount;
         clickCount = 0; // initial
     }
 }
