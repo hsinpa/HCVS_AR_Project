@@ -22,7 +22,7 @@ public class MainApp : Singleton<MainApp>
     private SimpleDatabase _database;
     public SimpleDatabase database => _database;
 
-    private void Start()
+    private void Awake()
     {
         _socketManager = new SocketIOManager();
         subject = new Subject();
