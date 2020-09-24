@@ -27,8 +27,8 @@ public class JoeMain : MonoBehaviour
     void Start()
     {
         vp.Play();
-        
-        
+        example = GetComponent<Example>();
+
         msgSys = this.GetComponent<ES_MessageSystem>();
     }
     
@@ -79,13 +79,13 @@ public class JoeMain : MonoBehaviour
     public void PlayARGame(int number)
     {
         games[number].SetActive(true);
-        ARcamera.SetActive(true);
+        //ARcamera.SetActive(true);
     }
 
     public void CloseARGame(int number)
     {
         games[number].SetActive(false);
-        //ARcamera.SetActive(false);
+        ARcamera.SetActive(false);
     }
 
     // Update is called once per frame
@@ -103,55 +103,79 @@ public class JoeMain : MonoBehaviour
         {
             text.text = msgSys.text;
         }
+        UpdateIBeacon();
     }
-
+    bool CheckDistance = true;
+    public static bool AirRaid;
+    public static bool[] Missiont = new bool[13];
     private void UpdateIBeacon()
     {
-        foreach(Beacon beacon in example.mybeacons)
-        {
-            if (beacon.accuracy<2f) {
-                if (beacon.major == 0)
+        //MainView.Instance.studentScoreData
+        if (CheckDistance) {
+            foreach (Beacon beacon in example.mybeacons)
+            {
+                if (beacon.minor == 3&& beacon.accuracy > 5f)
+                {
+                    AirRaid = false;
+                }
+                if (beacon.accuracy < 5f&& beacon.major == 0)
                 {
                     switch (beacon.minor)
                     {
                         case 0:
-                            MissionsController.Instance.Missions(0);
+                            if(!Missiont[0])
+                                MissionsController.Instance.Missions(0);
                             break;
                         case 1:
-                            MissionsController.Instance.Missions(1);
+                            if (!Missiont[1])
+                                MissionsController.Instance.Missions(1);
                             break;
                         case 2:
-                            MissionsController.Instance.Missions(2);
+                            if (!Missiont[2])
+                                MissionsController.Instance.Missions(2);
                             break;
                         case 3:
-
-                            break;
+                            if (!Missiont[3])
+                                AirRaid = true;
+                                break;
                         case 4:
-                            MissionsController.Instance.Missions(4);
+                            if (!Missiont[4])
+                                MissionsController.Instance.Missions(4);
                             break;
                         case 5:
-                            MissionsController.Instance.Missions(5);
+                            if (!Missiont[5])
+                                MissionsController.Instance.Missions(5);
                             break;
                         case 6:
-                            MissionsController.Instance.Missions(6);
+                            if (!Missiont[6])
+                                MissionsController.Instance.Missions(6);
                             break;
                         case 7:
-                            MissionsController.Instance.Missions(7);
+                            if (!Missiont[7])
+                                MissionsController.Instance.Missions(7);
                             break;
                         case 8:
-                            MissionsController.Instance.Missions(8);
+                            if (!Missiont[8])
+                                MissionsController.Instance.Missions(8);
                             break;
                         case 9:
-                            MissionsController.Instance.Missions(9);
+                            if (!Missiont[9])
+                                MissionsController.Instance.Missions(9);
                             break;
                     }
+                    CheckDistance = false;
+                    Invoke("time30",30f);
                     break;
+
                 }
             }
         }
-        
     }
 
+    public void time30()
+    {
+        CheckDistance = true;
+    }
     public void UI_rePlayVideo()
     {
         text.text = "";

@@ -42,7 +42,7 @@ public class MissionsController : Singleton<MissionsController>
         MissionsObj[number].SetActive(true);
         viewControllers[number].Enable();
         viewControllers[number].isEnter = true;
-
+        JoeMain.Missiont[number] = true;
         CloseEnterView();
     }
 
@@ -59,6 +59,7 @@ public class MissionsController : Singleton<MissionsController>
     {
         TypeFlag.InGameType.MissionType[] missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
         MainView.Instance.studentScoreData.mission_id = missionArray[missionNumber].mission_id;
+        
         Debug.Log("MissionStart mission_id  " + MainView.Instance.studentScoreData.mission_id);
         if (missionNumber == 3) { EnterGame(missionNumber); }
 

@@ -27,6 +27,7 @@ public class Mission6 : ViewController
     public GameObject gameUI;
     public Button success;
     public Button fail;
+    public GameObject closeVideo; //TODO;Deltete
     private bool isSuccess;
 
     public override void Enable()
@@ -35,7 +36,7 @@ public class Mission6 : ViewController
 
         isEnterMission = true;
         hideBG.SetActive(false);
-        //JoeMain.Main.ControllerARCamera(true);
+        JoeMain.Main.ControllerARCamera(true);
 
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += ClickCount; // Add fingerClick event
@@ -77,6 +78,8 @@ public class Mission6 : ViewController
     {
         InitFingerClick();
         dialogMissionView.Show(false);
+
+        closeVideo.SetActive(false);
         JoeMain.Main.PlayARGame(3);
 
         success.onClick.AddListener(SuccessClick);
@@ -173,6 +176,7 @@ public class Mission6 : ViewController
         hideBG.SetActive(true);
         MissionsController.Instance.ReSetMissions();
 
+        closeVideo.SetActive(true);
         JoeMain.Main.CloseARGame(3);
         Debug.Log("Mission 6 Leave");
     }
