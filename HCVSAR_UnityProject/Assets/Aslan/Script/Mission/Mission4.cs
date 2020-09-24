@@ -42,7 +42,7 @@ public class Mission4 : ViewController
 
         isEnterMission = true;
         hideBG.SetActive(false);
-        //JoeMain.Main.ControllerARCamera(true);
+        JoeMain.Main.ControllerARCamera(true);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
