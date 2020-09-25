@@ -20,6 +20,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [Header("Buttons")]
     [SerializeField]
     private Button[] missionsButtons;
+
     [Header("Main Buttons")]
     [SerializeField]
     private Button user;
@@ -79,7 +80,10 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     public List<TypeFlag.SocketDataType.StudentType> studentData;
     [HideInInspector]
     public TypeFlag.SocketDataType.LoginDatabaseType loginData;
+    [HideInInspector]
+    public int missionNumber;
     public TypeFlag.SocketDataType.StudentType studentScoreData;
+    private TypeFlag.InGameType.MissionType[] guestMissionArray;
 
     private TypeFlag.SocketDataType.ClassScoreHolderType classScore;
 
@@ -87,7 +91,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private DateTime endTime = DateTime.MinValue;
     private System.Action OnTimeUpEvent;
     private SocketIOManager _socketIOManager;
-    private UserInfoView userInfo;
 
     void Start()
     {
@@ -104,7 +107,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
         if (t.Seconds < 0)
         {
-            Debug.Log("Teacher : Time up");
+            Debug.Log("Time up");
 
             if (OnTimeUpEvent != null) OnTimeUpEvent();
 
@@ -143,7 +146,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
     private void OnReceiveLoginEvent(TypeFlag.SocketDataType.LoginDatabaseType loginType, SocketIOManager socketIOManager)
     {
-        if (loginType.user_id == null) return;
+        if (loginType.user_id == null && loginType.userType == TypeFlag.UserType.Student) return;
         loginData = loginType;
 
         if (_socketIOManager == null) {
@@ -152,8 +155,21 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.TerminateGame, OnTerminateEvent);
         }
-        
-        StarGame(); //use for no teacher
+
+        if (loginType.userType == TypeFlag.UserType.Guest) { InitGuestMissionScore(); }
+        StarGame(loginType.userType); //use for no teacher
+    }
+
+    private void InitGuestMissionScore()
+    {
+        guestMissionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
+
+        for(int i = 0; i < 10; i++)
+        {
+            guestMissionArray[i].total_score = 0;
+        }
+
+        MainApp.Instance.database.MissionShortNameObj.missionArray = guestMissionArray;
     }
 
     public void PrepareClassScore(string class_id)
@@ -167,9 +183,28 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         }, null));
     }
     
-    private void ShowMissionInfo(int index)
+    private void ShowMissionInfo(int index, TypeFlag.UserType type)
     {
-        ShowClassScore(index);
+        switch (type)
+        {
+            case TypeFlag.UserType.Guest:
+                ShowGuestScore();
+                break;
+
+            case TypeFlag.UserType.Student:
+                ShowClassScore(index);
+                break;
+        }
+        
+    }
+
+    private void ShowGuestScore()
+    {
+        string participantValue = "- -";
+        string averageScoreVlaue = "- -";
+
+        missionInfo.text = string.Format("{0}: {1}\n{2}: {3}", participant, participantValue, averageScore, averageScoreVlaue);
+        infoView.SetActive(true);
     }
 
     private void ShowClassScore(int index)
@@ -227,17 +262,15 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             SetTimerAndGameStart(roomComps.end_time);
         }
 
-        //StarGame();  //use for Listen teacher
+        //StarGame(loginType.userType);  //use for Listen teacher
     }
 
-    private void StarGame()
+    private void StarGame(TypeFlag.UserType type)
     {
         // UI
         this.GetComponent<CanvasGroup>().interactable = true;
         this.GetComponent<CanvasGroup>().blocksRaycasts = true;
         EndView.alpha = 0;
-        // id
-        studentScoreData.student_id = loginData.user_id;
 
         // ibeacon open
         ibeacon.SetActive(true);
@@ -245,8 +278,23 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         MissionsClick();
         MainButtonClick();
 
-        PrepareScoreData(loginData.user_id);
-        PrepareClassScore(loginData.room_id);
+        switch (type)
+        {
+            case TypeFlag.UserType.Guest:
+                GuestTotalScore();
+                break;
+
+            case TypeFlag.UserType.Student:
+
+                // id
+                studentScoreData.student_id = loginData.user_id;
+
+                // get student data
+                PrepareScoreData(loginData.user_id);
+                PrepareClassScore(loginData.room_id);
+
+                break;
+        }
     }
 
     public void SetTimerAndGameStart(long endTimestamp)
@@ -271,13 +319,13 @@ public class MainView : Singleton<MainView>//MonoBehaviour
                 if (tempStudentData != null)
                 {
                     studentData = tempStudentData.ToList();
-                    GetTotalScore(studentData);
+                    StudentTotalScore(studentData);
                 }
                 
             }, null));
     }
 
-    private void GetTotalScore(List<TypeFlag.SocketDataType.StudentType> studentData)
+    private void StudentTotalScore(List<TypeFlag.SocketDataType.StudentType> studentData)
     {
         int totalScore = 0;
 
@@ -298,8 +346,29 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             totalScoreString = totalScore.ToString();
             TotalScoreText.text = totalScoreString;
         }
-        
-        Debug.Log("=============================totalScoreString" + totalScoreString);
+    }
+
+    public void GuestTotalScore()
+    {
+        int totalScore = 0;
+
+        for (int i = 0; i < 10; i++)
+        {
+            totalScore += guestMissionArray[i].total_score;
+        }
+
+        RefreshHealthBar(totalScore);
+
+        if (totalScore < 10)
+        {
+            totalScoreString = "0" + totalScore.ToString();
+            TotalScoreText.text = totalScoreString;
+        }
+        else
+        {
+            totalScoreString = totalScore.ToString();
+            TotalScoreText.text = totalScoreString;
+        }
     }
 
     private void RefreshHealthBar(int score)
@@ -313,7 +382,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         for (int i = 0; i < missionsButtons.Length; i++)
         {
             int closureIndex = i;
-            missionsButtons[closureIndex].onClick.AddListener(() => ShowMissionInfo(closureIndex));
+            missionsButtons[closureIndex].onClick.AddListener(() => ShowMissionInfo(closureIndex, loginData.userType));
         }
 
     }
@@ -329,7 +398,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         user.onClick.AddListener(() => {
             mainBaseVIew.ShowPanel();
             userInfoPanel.Show(true);
-            userInfoPanel.UserInfoStart();
+            userInfoPanel.UserInfoStart(loginData.userType);
         });
 
         bag.onClick.AddListener(() => {
@@ -346,6 +415,24 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         connect.onClick.AddListener(() => {
             connectPanel.Show(true);
             mainBaseVIew.ShowPanel();
+            connectPanel.ConnectStart();
         });
+    }
+
+    private void SwitchType()
+    {
+        TypeFlag.UserType type = loginData.userType;
+
+        switch (type)
+        {
+            case TypeFlag.UserType.Guest:
+                Debug.Log("To Guest Stage");
+                break;
+
+            case TypeFlag.UserType.Student:
+                Debug.Log("To Guest Student");
+
+                break;
+        }
     }
 }

@@ -71,7 +71,7 @@ public class Mission0 : ViewController
     void Convercestion()
     {
         int number = 3;
-        
+
         if (clickCount == 1)
         {
             Debug.Log("clickCount1: " + clickCount);
@@ -93,7 +93,7 @@ public class Mission0 : ViewController
         if (clickCount >= number && clickCount < historyMessage.Length + number)
         {
             dialogMissionView.DialogView(dogName, historyMessage[clickCount - number], dog);
-            Debug.Log("clickCount3: " + clickCount); 
+            Debug.Log("clickCount3: " + clickCount);
         }
 
         if (clickCount == historyMessage.Length + number)
@@ -135,7 +135,7 @@ public class Mission0 : ViewController
     public IEnumerator EnterGameView()
     {
         yield return new WaitForSeconds(3);
-        
+
         dialogMissionView.Show(false);
         enterGame.SetActive(true);
         enter.onClick.AddListener(EnterGame);
@@ -153,7 +153,7 @@ public class Mission0 : ViewController
     private void SuccessGame()
     {
         int score = MainView.Instance.studentScoreData.score + 5;
-        
+
         JoeMain.Main.CloseGame(0);
         EndNoGameView(score);
     }
@@ -173,7 +173,7 @@ public class Mission0 : ViewController
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveMission;
 
-        PostScoreEvent.Instance.PostScore(score);
+        PostScoreEvent.Instance.PostScore(score, MainView.Instance.loginData.userType);
     }
 
     private void LeaveMission()
@@ -194,7 +194,7 @@ public class Mission0 : ViewController
     public IEnumerator GetMap()
     {
         yield return new WaitForSeconds(1);
-        
+
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(dogName, dogMessage3, dog);
 

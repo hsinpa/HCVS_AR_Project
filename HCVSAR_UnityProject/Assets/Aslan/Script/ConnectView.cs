@@ -26,18 +26,10 @@ namespace Expect.View
         private string teacherName = StringAsset.ConnectTeacherInfo.teacherName;
         private string teacherPhone = StringAsset.ConnectTeacherInfo.teacherPhone;
 
-        void Start()
+        public void ConnectStart()
         {
             GetConnectInfo();
             SwitchPanelController();
-        }
-
-        private void SwitchPanelController()
-        {
-            close.onClick.AddListener(() => {
-                this.Show(false);
-                mainBaseVIew.ClosePanel();
-            });
         }
 
         private void GetConnectInfo()
@@ -51,5 +43,12 @@ namespace Expect.View
             Application.OpenURL(PhoneText);
         }
 
+        private void SwitchPanelController()
+        {
+            close.onClick.AddListener(() => {
+                this.Show(false);
+                mainBaseVIew.ClosePanel();
+            });
+        }
     }
 }
