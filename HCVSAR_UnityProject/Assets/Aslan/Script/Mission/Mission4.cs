@@ -180,7 +180,7 @@ public class Mission4 : ViewController
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveEvent;
 
-        PostScoreEvent.Instance.PostScore(score);
+        PostScoreEvent.Instance.PostScore(score, MainView.Instance.loginData.userType);
     }
 
     private void LeaveEvent()
@@ -192,7 +192,7 @@ public class Mission4 : ViewController
         InitFingerClick();
         RemoveAllEvent();
         RemoveAllListeners();
-        
+
         JoeMain.Main.CloseARGame(2);
         MissionsController.Instance.ReSetMissions();
         Debug.Log("Mission 4 Leave");

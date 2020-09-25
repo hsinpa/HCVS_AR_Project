@@ -108,7 +108,7 @@ public class Mission5 : ViewController
         int score = MainView.Instance.studentScoreData.score;
         int number;
 
-        PostScoreEvent.Instance.PostScore(score);
+        PostScoreEvent.Instance.PostScore(score, MainView.Instance.loginData.userType);
 
         if (score > 0)
         {
@@ -168,7 +168,7 @@ public class Mission5 : ViewController
                 Debug.Log("555Finish");
                 LeaveMission(score);
             }
-            
+
         }
     }
 
