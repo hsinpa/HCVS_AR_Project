@@ -66,7 +66,7 @@ namespace Hsinpa.Controller {
         }
 
         private void OnGuestClickEvent() {
-
+            NextStage(TypeFlag.UserType.Guest);
         }
 
         private void OnLoginClickEvent(Button uiButton, LoginModal.Tab type, List<LoginInputComponent> inputComponents) {
