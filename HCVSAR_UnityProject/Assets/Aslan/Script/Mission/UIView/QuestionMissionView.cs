@@ -47,13 +47,14 @@ namespace Expect.View
             currentSelectIndex = -1;
             wrongSelectIndex = -1;
             isSelectOnce = false;
-
+            Debug.Log("Init " + isSelectOnce);
             ResetButtonAndSelect();
         }
 
         public void QuestionView(string question, string[] answer,int correctAnswer)
         {
             Init();
+            RemoveAllListeners();
 
             Questions.text = question;
             AnswerText(answer);
@@ -137,58 +138,55 @@ namespace Expect.View
         private void Confirm()
         {
             int missionScore;
+            confirmButton.GetComponent<Button>().interactable = false;
 
-            if (currentSelectIndex == _correctAnswer && isSelectOnce == false)
+            if (currentSelectIndex == _correctAnswer)
             {
-                missionScore = 15;
+                missionScore = isSelectOnce ? 10 : 15;
+                
                 MainView.Instance.studentScoreData.score = missionScore;
                 PostScoreEvent.Instance.PostScore(missionScore);
 
                 confirmButton.SetActive(false);
                 nextButton.SetActive(true);
-                
+
                 ShowCorrectOption();
 
                 Debug.Log("Correct!!!  Get Score: " + missionScore);
             }
-            else if (currentSelectIndex == _correctAnswer && isSelectOnce)
+
+            if (currentSelectIndex != _correctAnswer)
             {
-                missionScore = 10;
-                MainView.Instance.studentScoreData.score = missionScore;
-                PostScoreEvent.Instance.PostScore(missionScore);
+                if (isSelectOnce)
+                {
+                    missionScore = 0;
+                    MainView.Instance.studentScoreData.score = missionScore;
+                    PostScoreEvent.Instance.PostScore(missionScore);
 
-                confirmButton.SetActive(false);
-                nextButton.SetActive(true);
-                
-                ShowCorrectOption();
+                    confirmButton.SetActive(false);
+                    nextButton.SetActive(true);
 
-                Debug.Log("Correct!!!  Get Score: " + missionScore);
+                    ShowCorrectOption();
+                    Debug.Log("Wrong!!!!!!!" + "isSelectOnce " + isSelectOnce);
+                }
+                else
+                {
+                    isSelectOnce = true;
+                    wrongSelectIndex = currentSelectIndex;
+                    SelectButtons[currentSelectIndex].image.sprite = SelectFalse;
+                    SelectButtons[currentSelectIndex].interactable = false;
+
+                    Debug.Log("Wrong Once!!!" + "isSelectOnce " + isSelectOnce);
+                }
             }
-            else if (currentSelectIndex != _correctAnswer && isSelectOnce == false)
-            {
-                isSelectOnce = true;
-                wrongSelectIndex = currentSelectIndex;
-                SelectButtons[currentSelectIndex].image.sprite = SelectFalse;
-                SelectButtons[currentSelectIndex].interactable = false;
-
-                Debug.Log("Wrong Once!!!");
-            }
-            else
-            {
-                missionScore = 0;
-                MainView.Instance.studentScoreData.score = missionScore;
-                PostScoreEvent.Instance.PostScore(missionScore);
-
-                confirmButton.SetActive(false);
-                nextButton.SetActive(true);
-                
-                ShowCorrectOption();
-                Debug.Log("Wrong!!!!!!!");
-            }
-
         }
 
-        
+        private void RemoveAllListeners()
+        {
+            foreach (var b in SelectButtons) { b.onClick.RemoveAllListeners(); }
+            confirmButton.GetComponent<Button>().onClick.RemoveAllListeners();
+            nextButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        }
 
     }
 }

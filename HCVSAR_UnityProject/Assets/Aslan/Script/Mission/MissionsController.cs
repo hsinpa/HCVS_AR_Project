@@ -1,49 +1,80 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Expect.View;
 
 public class MissionsController : Singleton<MissionsController>
 {
     protected MissionsController() { } // guarantee this will be always a singleton only - can't use the constructor!
 
-    public MissionViewController_0 mission_0;
-    public MissionViewController_2 mission_2;
-    public MissionViewController_3 mission_3;
-    public MissionViewController_4 mission_4;
-    public MissionViewController_5 mission_5;
-    public MissionViewController_6 mission_6;
-    public MissionViewController_7 mission_7;
-    public MissionViewController_8 mission_8;
-    public MissionViewController_9 mission_9;
+    public GameObject[] MissionsObj;
+    public ViewController[] viewControllers;
 
-    EnterMissionView enterMissionView;
-    QuestionMissionView questionMissionView;
-    EndMissionView endMissionView;
+    public EnterMissionView enterMissionView;
 
     private void Awake()
     {
         InitController();
+        ReSetMissions();
     }
 
     private void InitController()
     {
-        mission_0 = mission_0.GetComponent<MissionViewController_0>();
-        mission_2 = mission_2.GetComponent<MissionViewController_2>();
-        mission_3 = mission_3.GetComponent<MissionViewController_3>();
-        mission_4 = mission_4.GetComponent<MissionViewController_4>();
-        mission_5 = mission_5.GetComponent<MissionViewController_5>();
-        mission_6 = mission_6.GetComponent<MissionViewController_6>();
-        mission_7 = mission_7.GetComponent<MissionViewController_7>();
-        mission_8 = mission_8.GetComponent<MissionViewController_8>();
-        mission_9 = mission_9.GetComponent<MissionViewController_9>();
+        for (int i = 0; i < MissionsObj.Length; i++)
+        {
+            viewControllers[i] = MissionsObj[i].GetComponent<ViewController>();
+        }
+    }
+
+    public void ReSetMissions() { foreach (GameObject g in MissionsObj) { g.SetActive(false); } }
+
+    public void Missions(int number)
+    {
+        MissionStart(number);
+
+        if (number != 3)
+        { 
+            enterMissionView.EnterButton.onClick.AddListener(() => EnterGame(number));
+            enterMissionView.LeaveButton.onClick.AddListener(() => LeaveGame(number));
+        }
+    }
+
+    public void EnterGame(int number)
+    {
+        MissionsObj[number].SetActive(true);
+        viewControllers[number].Enable();
+        viewControllers[number].isEnter = true;
+        JoeMain.Missiont[number] = true;
+        CloseEnterView();
+    }
+
+    public void LeaveGame(int number)
+    {
+        viewControllers[number].isEnter = false;
+        ReSetMissions();
+        CloseEnterView();
+
+        Debug.Log("other thing");
+    }
+
+    public void MissionStart(int missionNumber)
+    {
+        TypeFlag.InGameType.MissionType[] missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
+        MainView.Instance.studentScoreData.mission_id = missionArray[missionNumber].mission_id;
+        
+        Debug.Log("MissionStart mission_id  " + MainView.Instance.studentScoreData.mission_id);
+        if (missionNumber == 3) { EnterGame(missionNumber); }
+
+        if (missionNumber != 3)
+        {
+            enterMissionView.Show(true);
+            enterMissionView.EnterMission(missionArray[missionNumber].mission_name, missionArray[missionNumber].mission_name);
+        }
+
     }
 
     // MARK: If Dont use Delete
-    public void RemoveAllListeners()
+    public void CloseEnterView()
     {
-        endMissionView.RemoveListeners();
-        questionMissionView.RemoveListeners();
+        enterMissionView.Show(false);
         enterMissionView.RemoveListeners();
     }
 }

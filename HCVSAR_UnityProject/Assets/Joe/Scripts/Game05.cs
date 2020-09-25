@@ -27,7 +27,6 @@ public class Game05 : MonoBehaviour
         {
             Debug.Log("blocked");
             unityEvent.Invoke();
-            PostScoreEvent.Instance.PostScore(1);
         }
         else if(v == 1 )
         {
@@ -37,7 +36,6 @@ public class Game05 : MonoBehaviour
         else
         {
             OverEvent.Invoke();
-            PostScoreEvent.Instance.PostScore(0);
         }
         RenderTexture rt = new RenderTexture(Camera.main.pixelWidth, Camera.main.pixelHeight, 0);
         Camera.main.targetTexture = rt;

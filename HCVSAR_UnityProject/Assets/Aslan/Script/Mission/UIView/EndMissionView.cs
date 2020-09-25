@@ -10,6 +10,9 @@ namespace Expect.View
     public class EndMissionView : BaseView
     {
         [SerializeField]
+        private MainBaseVIew mainBaseVIew;
+
+        [SerializeField]
         private Text message;
         [SerializeField]
         private Text scoreText;
@@ -22,6 +25,8 @@ namespace Expect.View
 
         public void EndMission(int score, string endMessage)
         {
+            mainBaseVIew.ShowPanel();
+
             message.text = string.Format(endMessage, score);
             scoreText.text = score.ToString();
 
@@ -30,6 +35,7 @@ namespace Expect.View
 
         public void RemoveListeners()
         {
+            mainBaseVIew.ClosePanel();
             LeaveButton.onClick.RemoveAllListeners();
         }
     }

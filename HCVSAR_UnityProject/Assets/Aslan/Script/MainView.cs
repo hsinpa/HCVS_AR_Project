@@ -255,8 +255,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         endTime = DateTimeOffset.FromUnixTimeMilliseconds(endTimestamp).DateTime;
     }
 
-    // UserInfo Score Data
-    public void PrepareScoreData(string id)
+    private void PrepareScoreData(string id)
     {
         string getStudentURI = string.Format(StringAsset.API.GetStudentScore, id);
 
@@ -300,8 +299,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             TotalScoreText.text = totalScoreString;
         }
         
-        userInfo.GetStudentInfoText(studentData);
-        
         Debug.Log("=============================totalScoreString" + totalScoreString);
     }
 
@@ -319,6 +316,12 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             missionsButtons[closureIndex].onClick.AddListener(() => ShowMissionInfo(closureIndex));
         }
 
+    }
+
+    // UserInfo Score Data
+    public void RefreshStudentData()
+    {
+        PrepareScoreData(loginData.user_id);
     }
 
     private void MainButtonClick()

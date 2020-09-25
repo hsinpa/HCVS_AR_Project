@@ -49,7 +49,7 @@ public class PostButtonTest : MonoBehaviour
         StartCoroutine(
             APIHttpRequest.NativeCurl((StringAsset.GetFullAPIUri(StringAsset.API.PostStudentScore)), UnityWebRequest.kHttpVerbPOST, jsonString, (string success) => {
                 Debug.Log("POST Success");
-                MainView.Instance.PrepareScoreData(studentScoreData.student_id); 
+                //MainView.Instance.PrepareScoreData(studentScoreData.student_id); 
             }, () => {
                 //TODO: ADD Mission ID
                 Debug.Log("Error: POST Fail");
