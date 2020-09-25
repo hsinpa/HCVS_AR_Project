@@ -301,7 +301,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 168.6, y: -93.4}
+  m_AnchoredPosition: {x: 168.59961, y: -93.3999}
   m_SizeDelta: {x: 289.21292, y: 129.8345}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1142970413
@@ -590,6 +590,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GoogleSheetBtn: {fileID: 1142970413}
+  TakeOffBtn: {fileID: 1565672849}
 --- !u!1 &1236125253
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,7 +659,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 2
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
