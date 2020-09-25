@@ -26,7 +26,8 @@ public class Game04 : MonoBehaviour
     void Update()
     {
         f = Vector3.Distance(Camera.main.transform.position, targer.position);
-        if (f < 2)
+       
+        if (JoeMain.AirRaid)
         {
             unityEvent.Invoke();
             

@@ -17,12 +17,6 @@ namespace Expect.View
         [SerializeField]
         private Dropdown ClassNameSelection;
 
-        /*
-        [Header("Button")]
-        [SerializeField]
-        private Button ConfirnBtn;
-        */
-
         [Header("RankInfo")]
         [SerializeField]
         public Transform rankContainer;
@@ -31,20 +25,12 @@ namespace Expect.View
         [Header("SiwtchPanel")]
         public Button close;
         public MainBaseVIew mainBaseVIew;
-        /*
-        [System.Serializable]
-        public struct StudentRankType
-        {
-            public int total_score;
-            public string student_id;
-            public string student_name;
-        }
-        */
-        //private StudentDataSave studentData;
+
         private List<TypeFlag.SocketDataType.ClassroomDatabaseType> classroomDataSet;
         private List<TypeFlag.SocketDataType.StudentRankType> studentRankData;
         private List<string> FilterClassDeptList = new List<string>();
         private List<string> FilterClassNameList = new List<string>();
+        private List<Transform> selectTransformList = new List<Transform>();
 
         private string class_id;
         private string student_id;
@@ -98,8 +84,8 @@ namespace Expect.View
 
         private void RankInfo(List<TypeFlag.SocketDataType.StudentRankType> studentRankData)
         {
-            float height = 100f;
-            float containHeight = 0f; ;
+            float height = 30f;
+            float containHeight = -50f; ;
             string rank;
 
             for (int i = 0; i < studentRankData.Count; i++)
@@ -120,7 +106,19 @@ namespace Expect.View
                 rankTransform.Find("name").GetComponent<Text>().text = studentRankData[i].student_name;
                 rankTransform.Find("number").GetComponent<Text>().text = studentRankData[i].student_id;
                 rankTransform.Find("score").GetComponent<Text>().text = studentRankData[i].total_score.ToString();
+
+                selectTransformList.Add(rankTransform);
                 rankTransform.gameObject.SetActive(true);
+            }
+        }
+
+        public void RemoveShowData()
+        {
+            if (selectTransformList.Count > 0)
+            {
+                foreach (var t in selectTransformList) { Destroy(t.gameObject); }
+                foreach (var t in selectTransformList) { Destroy(t.GetChild(0).gameObject); }
+                selectTransformList.Clear();
             }
         }
 
@@ -160,7 +158,7 @@ namespace Expect.View
                         {
                             FilterClassNameList = dept.Select(grp => grp.class_name.Substring(3, 1)).ToList();
                         //deptNameList = dept.Select(grp => grp.class_name).ToList();
-                        ClassNameSelection.ClearOptions();
+                            ClassNameSelection.ClearOptions();
                             ClassNameSelection.AddOptions(FilterClassNameList);
 
                             Debug.Log("****** dept" + dept.Count());

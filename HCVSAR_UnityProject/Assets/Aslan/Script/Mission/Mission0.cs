@@ -2,30 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Expect.View;
 using Expect.StaticAsset;
 
-public class MissionViewController_0 : MonoBehaviour
+public class Mission0 : ViewController
 {
     [SerializeField]
     private Sprite dog;
     [SerializeField]
     private Sprite person;
-
-    [SerializeField]
-    private EnterMissionView enterMissionView;
-    [SerializeField]
-    private SituationMissionView situationMissionView;
-    [SerializeField]
-    private DialogMissionView dialogMissionView;
-    [SerializeField]
-    private QuestionMissionView questionMissionView;
-    [SerializeField]
-    private EndMissionView endMissionView;
-    [SerializeField]
-    private FingerClickEvent fingerClick;
-
-    private int clickCount;
 
     // Message
     private string situationMessage = StringAsset.MissionsSituation.Zero.s1;
@@ -55,35 +39,14 @@ public class MissionViewController_0 : MonoBehaviour
     public Button fail;
     public GameObject toolView;
 
-    public void MissionStart(int missionNumber)
+    public override void Enable()
     {
-        TypeFlag.InGameType.MissionType[] missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
-        MainView.Instance.studentScoreData.mission_id = missionArray[missionNumber].mission_id;
+        base.Enable();
 
-        enterMissionView.Show(true);
-        enterMissionView.EnterMission(missionArray[missionNumber].mission_name, missionArray[missionNumber].mission_name);
-        enterMissionView.OnEnable += StarEnable;
-        enterMissionView.OnDisable += Disable;
-    }
-
-    // TODO: ibeacon find other mission after 10 second
-    public void Disable()
-    {
-        isEnterMission = false;
-
-        enterMissionView.Show(false);
-        enterMissionView.RemoveListeners();
-        Debug.Log("other thing");
-    }
-
-    void StarEnable()
-    {
         isEnterMission = true;
         hideBG.SetActive(false);
         video.SetActive(true);
         JoeMain.Main.Start360Video(0);
-
-        enterMissionView.Show(false);
 
         situationMissionView.Show(true);
         situationMissionView.Show(true);
@@ -97,7 +60,7 @@ public class MissionViewController_0 : MonoBehaviour
     {
         clickCount++;
 
-        if (clickCount >= 0)
+        if (clickCount > 0)
         {
             Convercestion();
         }
@@ -108,7 +71,7 @@ public class MissionViewController_0 : MonoBehaviour
     void Convercestion()
     {
         int number = 3;
-
+        
         if (clickCount == 1)
         {
             Debug.Log("clickCount1: " + clickCount);
@@ -130,7 +93,7 @@ public class MissionViewController_0 : MonoBehaviour
         if (clickCount >= number && clickCount < historyMessage.Length + number)
         {
             dialogMissionView.DialogView(dogName, historyMessage[clickCount - number], dog);
-            Debug.Log("clickCount3: " + clickCount);
+            Debug.Log("clickCount3: " + clickCount); 
         }
 
         if (clickCount == historyMessage.Length + number)
@@ -172,7 +135,7 @@ public class MissionViewController_0 : MonoBehaviour
     public IEnumerator EnterGameView()
     {
         yield return new WaitForSeconds(3);
-
+        
         dialogMissionView.Show(false);
         enterGame.SetActive(true);
         enter.onClick.AddListener(EnterGame);
@@ -190,9 +153,8 @@ public class MissionViewController_0 : MonoBehaviour
     private void SuccessGame()
     {
         int score = MainView.Instance.studentScoreData.score + 5;
-        PostScoreEvent.Instance.PostScore(score);
-        //JoeMain.Main.CloseGame(0);
-
+        
+        JoeMain.Main.CloseGame(0);
         EndNoGameView(score);
     }
 
@@ -200,7 +162,7 @@ public class MissionViewController_0 : MonoBehaviour
     {
         int score = MainView.Instance.studentScoreData.score;
 
-        //JoeMain.Main.CloseGame(0);
+        JoeMain.Main.CloseGame(0);
         enterGame.SetActive(false);
         EndNoGameView(score);
     }
@@ -210,6 +172,8 @@ public class MissionViewController_0 : MonoBehaviour
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveMission;
+
+        PostScoreEvent.Instance.PostScore(score);
     }
 
     private void LeaveMission()
@@ -230,7 +194,7 @@ public class MissionViewController_0 : MonoBehaviour
     public IEnumerator GetMap()
     {
         yield return new WaitForSeconds(1);
-
+        
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(dogName, dogMessage3, dog);
 
@@ -244,7 +208,6 @@ public class MissionViewController_0 : MonoBehaviour
     {
         endMissionView.RemoveListeners();
         questionMissionView.RemoveListeners();
-        enterMissionView.RemoveListeners();
         enter.onClick.RemoveAllListeners();
         leave.onClick.RemoveAllListeners();
         success.onClick.RemoveAllListeners();
@@ -254,8 +217,6 @@ public class MissionViewController_0 : MonoBehaviour
     private void RemoveAllEvent()
     {
         fingerClick.Click -= ClickCount;
-        enterMissionView.OnEnable -= StarEnable;
-        enterMissionView.OnDisable -= Disable;
         endMissionView.OnEnable -= LeaveMission;
         questionMissionView.buttonClick -= QuestionReult;
     }

@@ -35,12 +35,13 @@ namespace Expect.View
         private List<TypeFlag.SocketDataType.StudentType> studentData;
         private TypeFlag.InGameType.MissionType[] missionArray;
         private Dictionary<string, TypeFlag.InGameType.MissionType> missionLookupTable;
+        private List<Transform> selectTransformList = new List<Transform>();
 
         private bool isConnection;
         private string student_id;
         private string student_name;
 
-        private void GetData()
+        public void GetData()
         {
             studentData = MainView.Instance.studentData;
             student_id = MainView.Instance.loginData.user_id;
@@ -53,7 +54,7 @@ namespace Expect.View
 
             GetStudentInfoText(studentData);
             SwitchPanelController();
-            //GetData();
+            
             Debug.Log("user info");
         }
 
@@ -71,8 +72,8 @@ namespace Expect.View
             missionLookupTable = MainApp.Instance.database.MissionShortNameObj.MissionTable;
         }
 
-        public void GetStudentInfoText(List<TypeFlag.SocketDataType.StudentType> studentData)
-        {
+        private void GetStudentInfoText(List<TypeFlag.SocketDataType.StudentType> studentData)
+        {            
             MissionArraySetUp();
 
             if (studentData == null) return;
@@ -102,12 +103,14 @@ namespace Expect.View
                 }
 
                 if (missionArray[i].total_score < 10)
-                    score = "0" + missionArray[i].total_score;
+                    score = "0" + missionArray[i].total_score.ToString();
                 else
                     score = missionArray[i].total_score.ToString();
 
                 missionTransform.Find("id").GetComponent<Text>().text = missionArray[i].mission_name;
                 missionTransform.Find("score").GetComponent<Text>().text = score;
+
+                selectTransformList.Add(missionTransform);
                 missionTransform.gameObject.SetActive(true);
             }
 
@@ -115,6 +118,16 @@ namespace Expect.View
             isConnection = true ? status.sprite = statusOn : status.sprite = statusOff;
 
             UserInfoText.text = string.Format("{0},{1}\n{2}", student_name, student_id, isConnection);
+        }
+
+        public void RemoveShowData()
+        {
+            if (selectTransformList.Count > 0)
+            {
+                foreach (var t in selectTransformList) { Destroy(t.gameObject); }
+                foreach (var t in selectTransformList) { Destroy(t.GetChild(0).gameObject); }
+                selectTransformList.Clear();
+            }
         }
     }
 }
