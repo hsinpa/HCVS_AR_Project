@@ -60,6 +60,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainObject: {fileID: 3652576781293337922}
   _animator: {fileID: 3652576781293337925}
+  _meshRenderer: {fileID: 5419392037297257135}
+  _specialTex: {fileID: 2800000, guid: 1813884599f139c4f806a9f66653e4e9, type: 3}
+  _skintype_1: {fileID: 2800000, guid: 1813884599f139c4f806a9f66653e4e9, type: 3}
+  _skintype_2: {fileID: 2800000, guid: 1813884599f139c4f806a9f66653e4e9, type: 3}
 --- !u!1001 &6030129813104415773
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -189,6 +193,12 @@ Transform:
 --- !u!95 &3652576781293337925 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6998554407231088984, guid: 8cb79afb69951624ca4a51bb5816f0f8,
+    type: 3}
+  m_PrefabInstance: {fileID: 6030129813104415773}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &5419392037297257135 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1772974894833348274, guid: 8cb79afb69951624ca4a51bb5816f0f8,
     type: 3}
   m_PrefabInstance: {fileID: 6030129813104415773}
   m_PrefabAsset: {fileID: 0}
