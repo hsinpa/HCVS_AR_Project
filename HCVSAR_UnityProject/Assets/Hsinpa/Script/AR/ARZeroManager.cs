@@ -12,10 +12,18 @@ namespace Hsinpa.AR
         ARTrackedImageManager arImageManager;
 
         public System.Action<ARDataSync> OnDataUpdate;
+        public System.Action<int> OnSkinChangeClick;
         public System.Action OnTakeOffBtnEvent;
 
         public Button GoogleSheetBtn;
         public Button TakeOffBtn;
+
+        [Header("Skin Buttons")]
+        [SerializeField]
+        private Button normalSkin;
+
+        [SerializeField]
+        private Button specialSkin;
 
         // Start is called before the first frame update
         void Start()
@@ -29,6 +37,9 @@ namespace Hsinpa.AR
 
             if (TakeOffBtn != null)
                 TakeOffBtn.onClick.AddListener(() => { OnClickTakeOffBtnEvent(); });
+
+            SetSkinBtnEvent(index: 0, normalSkin);
+            SetSkinBtnEvent(index: 1, normalSkin);
         }
 
         public void ForceUpdate() {
@@ -49,5 +60,14 @@ namespace Hsinpa.AR
                 ForceUpdate();
             }));
         }
+
+        private void SetSkinBtnEvent(int index, Button skinBtn) {
+            skinBtn.onClick.AddListener(() =>
+            {
+                if (OnSkinChangeClick != null)
+                    OnSkinChangeClick(index);
+            });
+        }
+
     }
 }

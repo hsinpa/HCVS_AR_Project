@@ -19,7 +19,16 @@ public class GeneralFlag
         public const string Version = "Version";
     }
 
-    public class ARZeroAnimator {
-        public const string TakeOff = "anim_event@takeoff";
+    public class ARZero {
+        public const string TakeOff_Anim = "anim_event@takeoff";
+
+        public const string SpecialSkinObjName = "Skin_Extra_Reward";
+
+        public const string TrackImage_1 = "zero_maker_01";
+        public const string TrackImage_2 = "zero_maker_02";
+    }
+
+    public class PlayerPrefKey {
+        public const string ZeroJet_Skin = "HAS_AIRPLANE_SKIN";
     }
 }

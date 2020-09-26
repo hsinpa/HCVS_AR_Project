@@ -14,9 +14,32 @@ namespace Hsinpa.AR
         [SerializeField]
         private Animator _animator;
 
+        [SerializeField]
+        private Renderer _meshRenderer;
+
+        [SerializeField]
+        private Texture _specialTex;
+        [SerializeField]
+        private Texture _skintype_1;
+        [SerializeField]
+        private Texture _skintype_2;
+
+        private Texture _originalTex
+        {
+            get {
+                if (referenceImageName == GeneralFlag.ARZero.TrackImage_2)
+                    return _skintype_2;
+
+                return _skintype_1;
+            }
+        }
+
+
         private ARTrackedImage _ARTrackedImage;
         private ARZeroManager _ARZeroManager;
+        private string referenceImageName;
 
+        private const string MatTexName = "_MainTex";
         void Start()
         {
             _ARTrackedImage = GetComponent<ARTrackedImage>();
@@ -25,7 +48,10 @@ namespace Hsinpa.AR
             if (_ARZeroManager) {
                 _ARZeroManager.OnDataUpdate += (OnARDataUpdate);
                 _ARZeroManager.OnTakeOffBtnEvent += OnTakeOffEvent;
+                _ARZeroManager.OnSkinChangeClick += OnSkinChange;
                 _ARZeroManager.ForceUpdate();
+
+                referenceImageName = _ARTrackedImage.referenceImage.name;
             }
         }
 
@@ -46,12 +72,27 @@ namespace Hsinpa.AR
         }
 
         private void OnTakeOffEvent() {
-            _animator.SetTrigger(GeneralFlag.ARZeroAnimator.TakeOff);
+            _animator.SetTrigger(GeneralFlag.ARZero.TakeOff_Anim);
+        }
+
+        private void OnSkinChange(int p_skinIndex) {
+
+            //Original
+            if (p_skinIndex == 0) {
+                _meshRenderer.material.SetTexture(MatTexName, _originalTex);
+
+            }
+
+            //Special
+            if (p_skinIndex == 1) {
+                _meshRenderer.material.SetTexture(MatTexName, _specialTex);
+            }
         }
 
         private void OnDestroy()
         {
             _ARZeroManager.OnDataUpdate -= (OnARDataUpdate);
+            _ARZeroManager.OnSkinChangeClick -= OnSkinChange;
             _ARZeroManager.OnTakeOffBtnEvent -= OnTakeOffEvent;
         }
     }
