@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Aslan/Scenes/Main.unity
     guid: 2112234de5aac824ab86f507f37ba9a3
   m_configObjects:
-    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 4a4be0eda9c494f9db49cf48a5d26e97,
+    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: fa7a7d8ca0d844d4ea7ef2c5d49dff8e,
       type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: bbec5781a478f1048bc63822d968b899,
       type: 2}
