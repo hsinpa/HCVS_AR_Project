@@ -92,7 +92,7 @@ public class MissionViewController_0 : MonoBehaviour
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += ClickCount; // Add fingerClick event
     }
-    
+
     void ClickCount()
     {
         clickCount++;
@@ -190,7 +190,7 @@ public class MissionViewController_0 : MonoBehaviour
     private void SuccessGame()
     {
         int score = MainView.Instance.studentScoreData.score + 5;
-        PostScoreEvent.Instance.PostScore(score);
+        PostScoreEvent.Instance.PostScore(score, MainView.Instance.loginData.userType);
         //JoeMain.Main.CloseGame(0);
 
         EndNoGameView(score);
