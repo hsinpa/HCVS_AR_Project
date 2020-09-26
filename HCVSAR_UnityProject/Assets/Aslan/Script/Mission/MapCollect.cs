@@ -118,7 +118,7 @@ public class MapCollect : MonoBehaviour
         endMissionView.OnEnable += LeaveEvent;
 
         MainView.Instance.studentScoreData.mission_id = "MAP_BONUS";
-        PostScoreEvent.Instance.PostScore(score);
+        PostScoreEvent.Instance.PostScore(score, MainView.Instance.loginData.userType);
 
         var id = MainView.Instance.studentScoreData.mission_id;
         var user = MainView.Instance.studentScoreData.student_id;

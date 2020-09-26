@@ -122,7 +122,7 @@ public class Mission1 : ViewController
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveEvent;
-        PostScoreEvent.Instance.PostScore(score);
+        PostScoreEvent.Instance.PostScore(score, MainView.Instance.loginData.userType);
     }
 
     private void LeaveEvent()

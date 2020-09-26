@@ -51,7 +51,7 @@ namespace Expect.View
             ResetButtonAndSelect();
         }
 
-        public void QuestionView(string question, string[] answer,int correctAnswer)
+        public void QuestionView(string question, string[] answer, int correctAnswer)
         {
             Init();
             RemoveAllListeners();
@@ -110,7 +110,7 @@ namespace Expect.View
         {
             foreach (Button b in SelectButtons) { b.image.sprite = SelectDefault; }
         }
-        
+
         private void ResetButtonAndSelect()
         {
             foreach (var t in selectTransformList) { Destroy(t.gameObject); }
@@ -122,7 +122,7 @@ namespace Expect.View
             confirmButton.SetActive(true);
             nextButton.SetActive(false);
         }
-        
+
         private void ShowCorrectOption()
         {
             foreach (Button b in SelectButtons)
@@ -143,9 +143,9 @@ namespace Expect.View
             if (currentSelectIndex == _correctAnswer)
             {
                 missionScore = isSelectOnce ? 10 : 15;
-                
+
                 MainView.Instance.studentScoreData.score = missionScore;
-                PostScoreEvent.Instance.PostScore(missionScore);
+                PostScoreEvent.Instance.PostScore(missionScore, MainView.Instance.loginData.userType);
 
                 confirmButton.SetActive(false);
                 nextButton.SetActive(true);
@@ -161,7 +161,7 @@ namespace Expect.View
                 {
                     missionScore = 0;
                     MainView.Instance.studentScoreData.score = missionScore;
-                    PostScoreEvent.Instance.PostScore(missionScore);
+                    PostScoreEvent.Instance.PostScore(missionScore, MainView.Instance.loginData.userType);
 
                     confirmButton.SetActive(false);
                     nextButton.SetActive(true);
