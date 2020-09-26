@@ -53,14 +53,22 @@ public class MapCollect : MonoBehaviour
     {
         isCollectMap1 = true;
         
-        if (isCollectMap2) { StartCoroutine(GetAllMap()); }
+        if (isCollectMap2)
+        {
+            MissionsController.Instance.isEnter = true;
+            StartCoroutine(GetAllMap());
+        }
     }
 
     private void ClickMap2()
     {
         isCollectMap2 = true;
         
-        if (isCollectMap1) {  StartCoroutine(GetAllMap()); }
+        if (isCollectMap1)
+        {
+            MissionsController.Instance.isEnter = true;
+            StartCoroutine(GetAllMap());
+        }
             
     }
 
@@ -136,6 +144,7 @@ public class MapCollect : MonoBehaviour
         RemoveAllEvent();
         RemoveAllListeners();
 
+        MissionsController.Instance.ReSetMissions();
         Debug.Log("Map Leave");
     }
 

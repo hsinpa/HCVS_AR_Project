@@ -44,6 +44,8 @@ public class Mission1 : ViewController
         bagPanel.Show(false);
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(dogName, dogMessage1, dog);
+
+        MissionsController.Instance.ReSetMissions();
     }
 
     private void FailClick()
@@ -55,6 +57,8 @@ public class Mission1 : ViewController
         bagPanel.Show(false);
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(dogName, dogMessage1, dog);
+
+        MissionsController.Instance.ReSetMissions();
     }
 
     private void Count()
