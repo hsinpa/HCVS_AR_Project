@@ -29,7 +29,6 @@ public class Mission0 : ViewController
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
     [HideInInspector]
-    public bool isEnterMission;
     public GameObject hideBG;
     public GameObject video;
     public GameObject enterGame;
@@ -43,7 +42,6 @@ public class Mission0 : ViewController
     {
         base.Enable();
 
-        isEnterMission = true;
         hideBG.SetActive(false);
         video.SetActive(true);
         JoeMain.Main.Start360Video(0);
