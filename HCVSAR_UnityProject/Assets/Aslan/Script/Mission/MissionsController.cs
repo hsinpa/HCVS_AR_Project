@@ -10,6 +10,9 @@ public class MissionsController : Singleton<MissionsController>
 
     public EnterMissionView enterMissionView;
 
+    //[HideInInspector]
+    public bool isEnter;
+
     private void Awake()
     {
         InitController();
@@ -24,7 +27,11 @@ public class MissionsController : Singleton<MissionsController>
         }
     }
 
-    public void ReSetMissions() { foreach (GameObject g in MissionsObj) { g.SetActive(false); } }
+    public void ReSetMissions()
+    {
+        isEnter = false;
+        foreach (GameObject g in MissionsObj) { g.SetActive(false); }
+    }
 
     public void Missions(int number)
     {
@@ -43,6 +50,9 @@ public class MissionsController : Singleton<MissionsController>
         viewControllers[number].Enable();
         viewControllers[number].isEnter = true;
         JoeMain.Missiont[number] = true;
+
+        isEnter = true;
+
         CloseEnterView();
     }
 
@@ -52,7 +62,7 @@ public class MissionsController : Singleton<MissionsController>
         ReSetMissions();
         CloseEnterView();
 
-        Debug.Log("other thing");
+        isEnter = false;
     }
 
     public void MissionStart(int missionNumber)
