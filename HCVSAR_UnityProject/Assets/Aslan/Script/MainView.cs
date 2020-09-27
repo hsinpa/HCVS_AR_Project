@@ -38,6 +38,10 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [Header("Mission Info")]
     [SerializeField]
     private Text missionInfo;
+    [SerializeField]
+    private Image missionImage;
+    [SerializeField]
+    private Sprite[] missionSprite;
     [Header("Text")]
     [SerializeField]
     private Text TimerText;
@@ -199,7 +203,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         switch (type)
         {
             case TypeFlag.UserType.Guest:
-                ShowGuestScore();
+                ShowGuestScore(index);
                 break;
 
             case TypeFlag.UserType.Student:
@@ -209,12 +213,13 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         
     }
 
-    private void ShowGuestScore()
+    private void ShowGuestScore(int index)
     {
         string participantValue = "- -";
         string averageScoreVlaue = "- -";
 
         missionInfo.text = string.Format("{0}: {1}\n{2}: {3}", participant, participantValue, averageScore, averageScoreVlaue);
+        missionImage.sprite = missionSprite[index];
         infoView.SetActive(true);
     }
 
@@ -229,6 +234,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         var averageScoreVlaue = await Task.Run(() => PrepareAveragetValue(classScoreHolder, index));
 
         missionInfo.text = string.Format("{0}: {1}\n{2}: {3}", participant, participantValue, averageScore, averageScoreVlaue);
+        missionImage.sprite = missionSprite[index];
         infoView.SetActive(true);
     }
 
