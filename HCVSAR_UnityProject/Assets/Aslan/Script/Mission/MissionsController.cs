@@ -49,7 +49,6 @@ public class MissionsController : Singleton<MissionsController>
         MissionsObj[number].SetActive(true);
         viewControllers[number].Enable();
         viewControllers[number].isEnter = true;
-        JoeMain.Missiont[number] = true;
 
         isEnter = true;
 
@@ -61,8 +60,6 @@ public class MissionsController : Singleton<MissionsController>
         viewControllers[number].isEnter = false;
         ReSetMissions();
         CloseEnterView();
-
-        isEnter = false;
     }
 
     public void MissionStart(int missionNumber)
