@@ -11,7 +11,7 @@ public class Mission7 : ViewController
     private string situationMessage = StringAsset.MissionsSituation.SEVEN.s1;
     private string dogName = StringAsset.MissionsDialog.Person.dog;
     private string dogMessage = StringAsset.MissionsDialog.Seven.d1;
-    private string[] historyMessage = { StringAsset.MissionsDialog.Seven.history1, StringAsset.MissionsDialog.Seven.history2, StringAsset.MissionsDialog.Seven.history3 };
+    //private string[] historyMessage = { StringAsset.MissionsDialog.Seven.history1, StringAsset.MissionsDialog.Seven.history2, StringAsset.MissionsDialog.Seven.history3 };
 
     private string qustion = StringAsset.MissionsQustion.SEVEN.qustion;
     private string[] answers = { StringAsset.MissionsAnswer.SEVEN.ans1, StringAsset.MissionsAnswer.SEVEN.ans2,

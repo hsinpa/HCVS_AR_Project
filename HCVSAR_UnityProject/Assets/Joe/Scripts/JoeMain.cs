@@ -51,7 +51,8 @@ public class JoeMain : MonoBehaviour
         NowVideoData = VideoData[number];
         vp.clip = NowVideoData.clip;
         StartCoroutine(CoroutineTest());
-        currentMission = number+5;
+        currentMission = number;
+        UI_rePlayVideo();
 
         // dialog view
         name.text = number == 6 ? primeMinisterName : dogName;
@@ -64,7 +65,7 @@ public class JoeMain : MonoBehaviour
     IEnumerator CoroutineTest()
     {
         vp.Play();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         vp.Pause();
     }
     public void Play360Video()
@@ -75,15 +76,12 @@ public class JoeMain : MonoBehaviour
 
     public void Stop360Video()
     {
+        vp.clip = null;
+        NowVideoData.clip = null;
+
         vp.Stop();
         VideoPlane.SetActive(false);
         UI.SetActive(false);
-    }
-
-    public void Leave360Video()
-    {
-        vp.clip = null;
-        NowVideoData.clip = null;
     }
 
     public void ControllerARCamera(bool open)
