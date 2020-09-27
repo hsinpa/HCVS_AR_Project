@@ -20,6 +20,10 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [Header("Buttons")]
     [SerializeField]
     private Button[] missionsButtons;
+    [SerializeField]
+    private GameObject CameraButton;
+    [SerializeField]
+    private GameObject MainButtons;
 
     [Header("Main Buttons")]
     [SerializeField]
@@ -83,14 +87,15 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [HideInInspector]
     public int missionNumber;
     public TypeFlag.SocketDataType.StudentType studentScoreData;
-    private TypeFlag.InGameType.MissionType[] guestMissionArray;
 
+    private TypeFlag.InGameType.MissionType[] guestMissionArray;
     private TypeFlag.SocketDataType.ClassScoreHolderType classScore;
 
     private DateTime startTime = DateTime.MinValue;
     private DateTime endTime = DateTime.MinValue;
     private System.Action OnTimeUpEvent;
     private SocketIOManager _socketIOManager;
+    private bool isEndEvent;
 
     void Start()
     {
@@ -105,7 +110,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
         TimerText.text = string.Format("{0}:{1}", t.Minutes, t.Seconds);
 
-        if (t.Seconds < 0)
+        if (t.Seconds < 0 || isEndEvent)
         {
             Debug.Log("Time up");
 
@@ -141,7 +146,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     {
         var loginCtrl = MainApp.Instance.GetObserver<LoginCtrl>();
         loginCtrl.OnLoginEvent += OnReceiveLoginEvent;
-
+        SwitchLoginButton(false);
     }
 
     private void OnReceiveLoginEvent(TypeFlag.SocketDataType.LoginDatabaseType loginType, SocketIOManager socketIOManager)
@@ -170,6 +175,12 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         }
 
         MainApp.Instance.database.MissionShortNameObj.missionArray = guestMissionArray;
+    }
+
+    private void SwitchLoginButton(bool isLogin)
+    {
+        CameraButton.SetActive(!isLogin);
+        MainButtons.SetActive(isLogin);
     }
 
     public void PrepareClassScore(string class_id)
@@ -251,6 +262,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         this.GetComponent<CanvasGroup>().interactable = false;
         EndView.alpha = 1;
         EndLocationText.text = location;
+        isEndEvent = true;
     }
 
     // Start Sock Event
@@ -260,6 +272,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         {
             var roomComps = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
             SetTimerAndGameStart(roomComps.end_time);
+            isEndEvent = false;
         }
 
         //StarGame(loginType.userType);  //use for Listen teacher
@@ -274,6 +287,9 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
         // ibeacon open
         ibeacon.SetActive(true);
+
+        // switch button
+        SwitchLoginButton(true);
 
         MissionsClick();
         MainButtonClick();
@@ -320,6 +336,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
                 {
                     studentData = tempStudentData.ToList();
                     StudentTotalScore(studentData);
+                    GetAirplaneSkin(studentData); // ask airplane skin
                 }
                 
             }, null));
@@ -371,10 +388,24 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         }
     }
 
+    private void GetAirplaneSkin(List<TypeFlag.SocketDataType.StudentType> studentData)
+    {
+        string airplaneMark = "MAP_BONUS";
+        bool hasAirplane = studentData.Exists(d => d.mission_id == airplaneMark);
+        int getAirplane = hasAirplane ? 1 : 0;
+        PlayerPrefs.SetInt("HAS_AIRPLANE_SKIN", getAirplane);
+    }
+
     private void RefreshHealthBar(int score)
     {
         currentHealth = score / maxHealth;
         healthBar.fillAmount = currentHealth;
+    }
+
+    // UserInfo Score Data
+    public void RefreshStudentData()
+    {
+        PrepareScoreData(loginData.user_id);
     }
 
     private void MissionsClick()
@@ -385,13 +416,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             missionsButtons[closureIndex].onClick.AddListener(() => ShowMissionInfo(closureIndex, loginData.userType));
         }
 
-    }
-
-    // UserInfo Score Data
-    public void RefreshStudentData()
-    {
-        PrepareScoreData(loginData.user_id);
-    }
+    }    
 
     private void MainButtonClick()
     {
@@ -417,22 +442,5 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             mainBaseVIew.ShowPanel();
             connectPanel.ConnectStart();
         });
-    }
-
-    private void SwitchType()
-    {
-        TypeFlag.UserType type = loginData.userType;
-
-        switch (type)
-        {
-            case TypeFlag.UserType.Guest:
-                Debug.Log("To Guest Stage");
-                break;
-
-            case TypeFlag.UserType.Student:
-                Debug.Log("To Guest Student");
-
-                break;
-        }
     }
 }

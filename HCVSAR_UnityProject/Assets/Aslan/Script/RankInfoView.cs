@@ -11,14 +11,14 @@ namespace Expect.View
 {
     public class RankInfoView : BaseView
     {
+        [Header("Dropdown")]
         [SerializeField]
-        private Dropdown ClassDeptSelection;
+        private Dropdown DeptSelection;
 
         [SerializeField]
-        private Dropdown ClassNameSelection;
+        private Dropdown ClassSelection;
 
         [Header("RankInfo")]
-        [SerializeField]
         public Transform rankContainer;
         public Transform rankInfo;
 
@@ -26,14 +26,17 @@ namespace Expect.View
         public Button close;
         public MainBaseVIew mainBaseVIew;
 
-        private List<TypeFlag.SocketDataType.ClassroomDatabaseType> classroomDataSet;
+        [Header("searchButton")]
+        public Button searchButton;
+
         private List<TypeFlag.SocketDataType.StudentRankType> studentRankData;
-        private List<string> FilterClassDeptList = new List<string>();
-        private List<string> FilterClassNameList = new List<string>();
+        private List<string> FilterDeptList = new List<string>();
+        private List<string> FilterClassList = new List<string>();
         private List<Transform> selectTransformList = new List<Transform>();
 
         private string class_id;
         private string student_id;
+        private string searchDept;
 
         private void GetData()
         {
@@ -46,7 +49,7 @@ namespace Expect.View
             GetData();
 
             PrepareRankData(class_id);
-            GetClassRoomData1();
+            GetDropdownData();            
             SwitchPanelController();
         }
 
@@ -55,6 +58,7 @@ namespace Expect.View
             close.onClick.AddListener(() => {
                 this.Show(false);
                 mainBaseVIew.ClosePanel();
+                RemoveListeners();
             });
         }
 
@@ -85,7 +89,7 @@ namespace Expect.View
         private void RankInfo(List<TypeFlag.SocketDataType.StudentRankType> studentRankData)
         {
             float height = 30f;
-            float containHeight = -50f; ;
+            float containHeight = 10f; ;
             string rank;
 
             for (int i = 0; i < studentRankData.Count; i++)
@@ -112,6 +116,108 @@ namespace Expect.View
             }
         }
 
+        private void GetDropdownData()
+        {
+            StartCoroutine(
+            APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(StringAsset.API.GetAllClassInfo), UnityWebRequest.kHttpVerbGET, null, (string json) =>
+            {
+                var classArray = JsonHelper.FromJson<TypeFlag.SocketDataType.ClassroomDatabaseType>(json);
+
+                if (classArray != null) { PerpareDropDownList(classArray); }
+
+            }, null));
+        }
+
+        private void PerpareDropDownList(TypeFlag.SocketDataType.ClassroomDatabaseType[] classArray)
+        {
+            string deptIndex = "";
+            string classIndex = "";
+            string fullDeptName = "";
+
+            List<TypeFlag.SocketDataType.ClassroomDatabaseType> classroomDataSet = classArray.ToList();
+            FilterDeptList = classroomDataSet.GroupBy(c => c.class_name).Select(grp => grp.First().class_name.Substring(0, 3).ToString()).Distinct().ToList();
+
+            var FilterStudentDept = classroomDataSet.Where(c => c.class_id == class_id).ToList();
+
+            foreach (var dept in FilterStudentDept)
+            {
+                fullDeptName = dept.class_name;
+                deptIndex = fullDeptName.Substring(0, 3);
+                classIndex = fullDeptName.Substring(3, 1);
+            }
+
+            var filterDept = classroomDataSet.Where(c => c.class_name.Substring(0, 2) == fullDeptName.Substring(0, 2));
+            var classNameList = filterDept.Select(c => c.class_name.Substring(3, 1)).ToList();
+
+            ClassSelection.ClearOptions();
+            ClassSelection.AddOptions(classNameList);
+            ClassSelection.value = FilterDeptList.IndexOf(classIndex);
+
+            DeptSelection.ClearOptions();
+            DeptSelection.AddOptions(FilterDeptList);
+            DeptSelection.value = FilterDeptList.IndexOf(deptIndex);
+
+            DecorateSelectionView(classroomDataSet);
+        }
+
+        private void DecorateSelectionView(List<TypeFlag.SocketDataType.ClassroomDatabaseType> classroomDataSet)
+        {
+            if (classroomDataSet == null) return;
+
+            List<string> deptNameList = new List<string>();
+            var FilterClassDept = classroomDataSet.GroupBy(c => c.class_name.Substring(0, 3)).Distinct();
+
+            DeptSelection.onValueChanged.AddListener(delegate { OnDeptSelectChange(classroomDataSet); });
+            ClassSelection.onValueChanged.AddListener(OnClassSelectChange);
+            searchButton.onClick.AddListener(delegate { SearchClick(classroomDataSet); });
+        }
+
+        private void OnDeptSelectChange(List<TypeFlag.SocketDataType.ClassroomDatabaseType> classroomDataSet)
+        {
+            string DeptSelect = DeptSelection.options[DeptSelection.value].text;
+            var fullClassName = classroomDataSet.Where(c => c.class_name.Substring(0,3) == DeptSelect).ToList();
+
+            if (DeptSelect.Count() <= 0) return;
+
+            var filterDept = classroomDataSet.Where(c => c.class_name.Substring(0, 3) == DeptSelect.Substring(0, 3));
+            var classNameList = filterDept.Select(c => c.class_name.Substring(3, 1)).ToList();
+
+            searchDept = fullClassName[0].class_name;
+            Debug.Log("0searchDept: " + searchDept);
+
+            if (classNameList.Count == 1)
+            {
+                foreach (var f in filterDept) { searchDept = f.class_name; }
+            }
+
+            ClassSelection.ClearOptions();
+            ClassSelection.AddOptions(classNameList);
+        }
+
+        private void OnClassSelectChange(int index)
+        {
+            string ClassSelect = ClassSelection.options[ClassSelection.value].text;
+            string subSelect = searchDept.Substring(0, 3);
+
+            if (index < 0 || ClassSelect.Count() <= 0) return;
+
+            searchDept = subSelect + ClassSelect;
+        }
+
+        private void SearchClick(List<TypeFlag.SocketDataType.ClassroomDatabaseType> classroomDataSet)
+        {
+            if (searchDept == null) return;
+            RemoveShowData();
+
+            var selectClassDept = from c in classroomDataSet where c.class_name == searchDept select c;
+            
+            foreach (var s in selectClassDept) class_id = s.class_id;
+
+            if (class_id == null) return;
+
+            PrepareRankData(class_id);
+        }
+
         public void RemoveShowData()
         {
             if (selectTransformList.Count > 0)
@@ -122,257 +228,11 @@ namespace Expect.View
             }
         }
 
-
-        private void GetClassRoomData1()
+        private void RemoveListeners()
         {
-            StartCoroutine(
-            APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(StringAsset.API.GetAllClassInfo), UnityWebRequest.kHttpVerbGET, null, (string json) =>
-            {
-                var classArray = JsonHelper.FromJson<TypeFlag.SocketDataType.ClassroomDatabaseType>(json);
-
-                if (classArray != null)
-                {
-                    List<string> studentClass = new List<string>();
-                    string deptName = "";
-                    string className = "";
-
-                    classroomDataSet = classArray.ToList();
-
-                    FilterClassDeptList = classroomDataSet.GroupBy(c => c.class_name).Select(grp => grp.First().class_name.Substring(0, 3).ToString()).Distinct().ToList();
-                    FilterClassNameList = classroomDataSet.GroupBy(c => c.class_name).Select(grp => grp.First().class_name.Substring(3, 1).ToString()).Distinct().ToList();
-
-                    var FilterClassDept = classroomDataSet.GroupBy(c => c.class_name.Substring(0, 3)).Distinct();
-                    var FilterStudentDept = classroomDataSet.Where(c => c.class_id == class_id).ToList();
-
-                    foreach (var dept in FilterStudentDept)
-                    {
-                        string studentFullClassName = dept.class_name;
-                        deptName = studentFullClassName.Substring(0, 3);
-                        className = studentFullClassName.Substring(3, 1);
-                        Debug.Log("dept.class_name" + className);
-                    }
-
-                    foreach (var dept in FilterClassDept)
-                    {
-                        if (dept.Key.ToString() == deptName)
-                        {
-                            FilterClassNameList = dept.Select(grp => grp.class_name.Substring(3, 1)).ToList();
-                        //deptNameList = dept.Select(grp => grp.class_name).ToList();
-                            ClassNameSelection.ClearOptions();
-                            ClassNameSelection.AddOptions(FilterClassNameList);
-
-                            Debug.Log("****** dept" + dept.Count());
-                        }
-                    }
-
-                    ClassDeptSelection.ClearOptions();
-                    ClassDeptSelection.AddOptions(FilterClassDeptList);
-                    ClassDeptSelection.value = FilterClassDeptList.IndexOf(deptName);
-                /*
-                ClassNameSelection.ClearOptions();
-                ClassNameSelection.AddOptions(FilterClassNameList);
-                ClassNameSelection.value = FilterClassDeptList.IndexOf(className);*/
-                }
-
-            }, null));
-        }
-
-        private void DecorateSelectView(List<TypeFlag.SocketDataType.ClassroomDatabaseType> classroomDataSet)
-        {
-            if (classroomDataSet == null) return;
-
-            string ClassDeptSelect;
-
-
-            List<string> deptNameList = new List<string>();
-            var FilterClassDept = classroomDataSet.GroupBy(c => c.class_name.Substring(0, 3)).Distinct();
-
-            ClassDeptSelection.onValueChanged.AddListener((UnityEngine.Events.UnityAction<int>)delegate
-            {
-                ClassDeptSelect = ClassDeptSelection.options[ClassDeptSelection.value].text;
-
-                if (ClassDeptSelect.Count() <= 0) return;
-
-                foreach (var dept in FilterClassDept)
-                {
-                    if (dept.Key.ToString() == ClassDeptSelect)
-                    {
-                        FilterClassNameList = dept.Select(grp => grp.class_name.Substring(3, 1)).ToList();
-                        deptNameList = dept.Select(grp => grp.class_name).ToList();
-
-                    //if (dept.Count() <= 1)
-                    //{   
-
-                    //}
-
-                    ClassNameSelection.ClearOptions();
-                        ClassNameSelection.AddOptions(FilterClassNameList);
-
-                        Debug.Log("****** dept" + dept.Count());
-                    }
-                }
-
-                var selectClassDept = from c in classroomDataSet where c.class_name == ClassDeptSelect select c;
-
-                foreach (var s in selectClassDept)
-                {
-                    class_id = s.class_id;
-                //Debug.Log("=====v: " + s.class_id);
-                Debug.Log("=====select: " + s.class_id);
-                }
-
-                if (class_id == null) return;
-
-                PrepareRankData(class_id);
-            });
-
+            searchButton.onClick.RemoveAllListeners();
+            DeptSelection.onValueChanged.RemoveAllListeners();
+            ClassSelection.onValueChanged.RemoveAllListeners();
         }
     }
 }
-
-
-
-    /*
-    void DecorateClassName()
-    {
-        // Get All Class Room Data
-        StartCoroutine(
-            APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(StringAsset.API.GetAllClassInfo), UnityWebRequest.kHttpVerbGET, null, (string json) => {
-                if (string.IsNullOrEmpty(json))
-                {
-                    return;
-                }
-
-                var classArray = JsonHelper.FromJson<TypeFlag.SocketDataType.ClassroomDatabaseType>(json);
-
-                if (classArray != null)
-                {
-                    Debug.Log("studentFullClassName111");
-                    classroomDataSet = classArray.ToList();
-                    FilterClassDeptList = classroomDataSet.GroupBy(test => test.year).Select(grp => grp.First().year.ToString()).ToList();
-                    FilterClassNameList = classroomDataSet.GroupBy(c => c.class_name).Select(grp => grp.First().class_name.Substring(3, 2).ToString()).Distinct().ToList();
-
-                    List<string> studentDept = new List<string> { "vghv", "ytfiuhj"};
-                    
-                    var FilterStudentDept = classroomDataSet.Where(c => c.class_id == class_id).ToList();
-                    
-                    List<string> studentClass = new List<string>();
-                    string studentFullClassName = "";
-                    Debug.Log("studentFullClassName111");
-                    foreach (var dept in FilterStudentDept)
-                    {
-                        studentFullClassName = dept.class_name;
-                        Debug.Log("dept.class_name" + dept.class_name);
-                        studentDept.Add(studentFullClassName.Substring(0, 3));
-                        studentClass.Add(studentFullClassName.Substring(3, 2));
-                    }
-                    
-                    ClassDeptSelection.ClearOptions();
-                    ClassDeptSelection.AddOptions(FilterClassDeptList);
-
-                    ClassNameSelection.ClearOptions();
-                    ClassNameSelection.AddOptions(FilterClassDeptList);
-                }
-
-            }, null));
-
-    }
-*/
-/*
-    
-    //DecorateSelectView(classroomDataSet);
-    // DropDown
-    var StudentDept = classroomDataSet.Where(c => c.class_id == class_id).ToList();
-
-    FilterClassDeptList = classroomDataSet.GroupBy(c => c.class_name).Select(grp => grp.First().class_name.Substring(0, 3).ToString()).Distinct().ToList();
-
-    foreach (var d in StudentDept)
-    {
-        Debug.Log("class_id: " + d.class_id + " class_name" + d.class_name);
-        var selectClassDept = classroomDataSet.IndexOf(d);
-        Debug.Log("selectClassDept " + selectClassDept);
-        ClassDeptSelection.ClearOptions();
-        ClassDeptSelection.options[1].text = d.class_name;
-    }
-    */
-    //ClassDeptSelection.ClearOptions();
-    //ClassDeptSelection.AddOptions(FilterClassDeptList);
-
-    //foreach (var s in selectClassDept) { Debug.Log("s class_id: " + s.class_id + "s class_name" + s.class_name); }
-
-
-    
-    /*
-    private void DecorateSelectView(List<TypeFlag.SocketDataType.ClassroomDatabaseType> classroomDataSet)
-    {
-        if (classroomDataSet == null) return;
-
-        string ClassDeptSelect;
-
-        List<string> deptNameList = new List<string>();
-        var FilterClassDept = classroomDataSet.GroupBy(c => c.class_name.Substring(0, 3)).Distinct();
-
-        FilterClassDeptList = classroomDataSet.GroupBy(c => c.class_name).Select(grp => grp.First().class_name.Substring(0, 3).ToString()).Distinct().ToList();
-        //FilterClassNameList = classroomDataSet.GroupBy(c => c.class_name).Select(grp => grp.First().class_name.Substring(3, 1).ToString()).Distinct().ToList();
-
-        ClassDeptSelection.ClearOptions();
-        ClassDeptSelection.AddOptions(FilterClassDeptList);
-
-        ClassNameSelection.ClearOptions();
-        ClassNameSelection.AddOptions(FilterClassNameList);
-
-        ClassDeptSelection.onValueChanged.AddListener((UnityEngine.Events.UnityAction<int>)delegate
-        {
-            ClassDeptSelect = ClassDeptSelection.options[ClassDeptSelection.value].text;
-
-            if (ClassDeptSelect.Count() <= 0) return;
-
-            foreach (var dept in FilterClassDept)
-            {
-                if (dept.Key.ToString() == ClassDeptSelect)
-                {
-                    FilterClassNameList = dept.Select(grp => grp.class_name.Substring(3, 1)).ToList();
-                    deptNameList = dept.Select(grp => grp.class_name).ToList();
-
-                    ClassNameSelection.ClearOptions();
-                    ClassNameSelection.AddOptions(FilterClassNameList);
-
-                    Debug.Log("****** dept" + dept.Count());
-                }
-            }
-
-            var selectClassDept = from c in classroomDataSet where c.class_name == ClassDeptSelect select c;
-
-            foreach (var s in selectClassDept)
-            {
-                class_id = s.class_id;
-                Debug.Log("=====select: " + s.class_id);
-            }
-
-            if (class_id == null) return;
-
-            PrepareRankData(class_id);
-        });
-
-
-        ClassNameSelection.onValueChanged.AddListener((UnityEngine.Events.UnityAction<int>)delegate
-        {
-            string selectClass = deptNameList[ClassNameSelection.value];
-            
-            var selectClassName = from c in classroomDataSet where c.class_name == selectClass select c;
-            //if (ClassNamelect.Count() <= 0) return;
-
-            foreach (var s in selectClassName) {
-                class_id = s.class_id;
-                Debug.Log("v: " + s.class_id);
-            }
-
-            if (class_id == null) return;
-
-            // change 
-            PrepareRankData(class_id);
-
-        });
-    }
-    */
-
