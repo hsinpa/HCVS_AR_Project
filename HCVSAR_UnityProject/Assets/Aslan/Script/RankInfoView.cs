@@ -176,7 +176,6 @@ namespace Expect.View
         {
             string DeptSelect = DeptSelection.options[DeptSelection.value].text;
             var fullClassName = classroomDataSet.Where(c => c.class_name.Substring(0,3) == DeptSelect).ToList();
-            //searchDept = null;
 
             if (DeptSelect.Count() <= 0) return;
 
@@ -189,13 +188,10 @@ namespace Expect.View
             if (classNameList.Count == 1)
             {
                 foreach (var f in filterDept) { searchDept = f.class_name; }
-                Debug.Log("1searchDept: " + searchDept);
             }
 
             ClassSelection.ClearOptions();
             ClassSelection.AddOptions(classNameList);
-
-            Debug.Log("classNameList.Count: " + classNameList.Count);
         }
 
         private void OnClassSelectChange(int index)
@@ -206,7 +202,6 @@ namespace Expect.View
             if (index < 0 || ClassSelect.Count() <= 0) return;
 
             searchDept = subSelect + ClassSelect;
-            Debug.Log("2searchDept: " + searchDept);
         }
 
         private void SearchClick(List<TypeFlag.SocketDataType.ClassroomDatabaseType> classroomDataSet)
@@ -216,11 +211,7 @@ namespace Expect.View
 
             var selectClassDept = from c in classroomDataSet where c.class_name == searchDept select c;
             
-            foreach (var s in selectClassDept)
-            {
-                class_id = s.class_id;
-                Debug.Log("=====select: " + s.class_id);
-            }
+            foreach (var s in selectClassDept) class_id = s.class_id;
 
             if (class_id == null) return;
 
