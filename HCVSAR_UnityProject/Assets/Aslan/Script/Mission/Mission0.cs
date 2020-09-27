@@ -43,7 +43,7 @@ public class Mission0 : ViewController
         base.Enable();
 
         hideBG.SetActive(false);
-        video.SetActive(true);
+        
         JoeMain.Main.Start360Video(0);
 
         situationMissionView.Show(true);
@@ -72,22 +72,22 @@ public class Mission0 : ViewController
 
         if (clickCount == 1)
         {
-            Debug.Log("clickCount1: " + clickCount);
             situationMissionView.Show(false);
             dialogMissionView.Show(true);
             dialogMissionView.DialogView(dogName, dogMessage, dog);
         }
         if (clickCount == 2)
         {
-            Debug.Log("clickCount2: " + clickCount);
             dialogMissionView.DialogView(peopleName, peopleMessage, person);
         }
 
         if (clickCount == number)
         {
             JoeMain.Main.Play360Video();
+            dialogMissionView.Show(false);
+            InitFingerClick();
         }
-
+        /*
         if (clickCount >= number && clickCount < historyMessage.Length + number)
         {
             dialogMissionView.DialogView(dogName, historyMessage[clickCount - number], dog);
@@ -100,6 +100,14 @@ public class Mission0 : ViewController
             InitFingerClick();
             Qusteion();
         }
+        */
+    }
+
+    public override void NextAction()
+    {
+        Debug.Log("0 Finish");
+        video.SetActive(false);
+        Qusteion();
     }
 
     private void Qusteion()
@@ -183,7 +191,7 @@ public class Mission0 : ViewController
         RemoveAllEvent();
 
         hideBG.SetActive(true);
-        video.SetActive(false);
+        
         Debug.Log("Mission 0 Leave");
 
         StartCoroutine(GetMap());

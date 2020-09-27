@@ -5,22 +5,13 @@ using UnityEngine.Video;
 using UnityEngine.UI;
 public class JoeGM : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        example = GetComponent<Example>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     Example example;
+    public static JoeGM joeGM;
+    //public List<Beacon> beacons;
     bool CheckDistance = true;
     public static bool AirRaid;
 
-    public string[] missionName;
+    public string[] missionName ;
     int MinNumber = 0;
     double MinDistance = 100;
     int MissionNumber;
@@ -30,13 +21,41 @@ public class JoeGM : MonoBehaviour
     public Text logui;
     public List<LogArrayData> logArray = new List<LogArrayData>();
     string uist;
+    public List<IBCCC> mybeacons;
     [System.Serializable]
     public class LogArrayData
     {
         public string t;
         public int v;
     }
+    [System.Serializable]
+    public class IBCCC
+    {
+        public double accuracy;
+        public int major;
+        public int minor;
+    }
     bool tl = true;
+    private void Awake()
+    {
+        joeGM = this;
+        missionName = new string[] { "A", "B", "C", "D", "E", "F", "G","I","J","K","L","M"};
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+        //example = this;
+        example = GetComponent<Example>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //logUpd();
+        //UpdateIBeacon();
+        
+    }
+    
     public void textlog(string t)
     {
         tl = true;
@@ -68,40 +87,48 @@ public class JoeGM : MonoBehaviour
         uist = "";
         foreach (LogArrayData lad in logArray)
         {
-            uist = lad.t + "v" + lad.v + "/n" + uist;
+            uist = lad.t + "v" + lad.v + "\n" + uist;
 
         }
         logui.text = uist;
-        logUpd();
-        UpdateIBeacon();
+       
     }
-
-    private void UpdateIBeacon()
+    bool R = true;
+    
+    public void UpdateIBeacon()
     {
+        
         studentData = MainView.Instance.studentData;
         //textlog("01");
         //MainView.Instance.studentScoreData
         if (CheckDistance)
         {
-            //textlog("upuupupupupuupup");
+           
+            textlog("upuupupupupuupup"+ studentData.Count);
             MinDistance = 100;
-            for (int i = 0; i < example.mybeacons.Count; i++)
+            
+            try
             {
-                MissionNumber = example.mybeacons[i].major * 10 + example.mybeacons[i].minor;
-                b = true;
-                foreach (TypeFlag.SocketDataType.StudentType studentType in studentData)
+                for (int i = 0; i < example.mybeacons.Count; i++)
                 {
-                    if (studentType.mission_id == missionName[MissionNumber])
+
+                    MissionNumber = example.mybeacons[i].major * 10 + example.mybeacons[i].minor;
+                    if (MissionNumber >= missionName.Length)
                     {
-                        b = false;
-                        //textlog("MissionNumber" + MissionNumber);
-                        break;
+                        continue;
                     }
-                }
 
-                if (b == true)
-                {
+                    foreach (TypeFlag.SocketDataType.StudentType studentType in studentData)
+                    {
 
+                        if (studentType.mission_id == missionName[MissionNumber])
+                        {
+
+                            textlog("mission_id" + studentType.mission_id + MissionNumber);
+                            goto OverLoop;
+                        }
+
+                    }
 
                     if (MissionNumber == 3 && example.mybeacons[i].accuracy > 5f)
                     {
@@ -115,7 +142,7 @@ public class JoeGM : MonoBehaviour
                         {
                             MinDistance = example.mybeacons[i].accuracy;
                             MinNumber = MissionNumber;
-                            //textlog("MinNumber" + MinNumber+ "MinNumber");
+                            textlog("OVERMin" + MinNumber + "oVERMin");
                         }
 
 
@@ -129,12 +156,30 @@ public class JoeGM : MonoBehaviour
 
 
                     }
+
+
+                OverLoop:
+                    textlog("JampLoop");
                 }
             }
+            catch
+            {
+                textlog("ErrorLoop");
+            }
+
+            try
+            {
+                textlog("MinDistance" + MinDistance + "aaaNumber" + MinNumber);
+            }
+            catch
+            {
+                textlog("ErrorPrint");
+            }
+            
             if (MinDistance < 5)
             {
                 //textlog("MinDistance05" + MissionsController.Instance.MissionsObj.Length.ToString()) ;
-                textlog("aaaNumber" + MinNumber + "aaaNumber");
+                textlog("StartNumber" + MinNumber);
 
                 try
                 {
@@ -142,61 +187,59 @@ public class JoeGM : MonoBehaviour
                 }
                 catch
                 {
-                    textlog("eRROR22");
+                    textlog("ErrorLenght");
                 }
 
                 try
                 {
-                    textlog("MinDistance05" + MissionsController.Instance.viewControllers[MinNumber].isEnter);
+                    textlog("StartMission"+ MinNumber+ MissionsController.Instance.viewControllers[MinNumber].isEnter);
                 }
                 catch
                 {
-                    textlog("eRROR");
+                    textlog("ErrorEnter");
                 }
 
-                b = true;
+               
                 foreach (ViewController vc in MissionsController.Instance.viewControllers)
                 {
                     if (vc.isEnter == true)
                     {
-                        b = false;
+                        goto Missioning;
                     }
                 }
-                if (!MissionsController.Instance.viewControllers[MinNumber].isEnter && b)
+                TT = 0;
+                foreach (TypeFlag.SocketDataType.StudentType studentType in studentData)
                 {
-
-                    TT = 0;
-                    foreach (TypeFlag.SocketDataType.StudentType studentType in studentData)
+                    if (studentType.mission_id == missionName[0] || studentType.mission_id == missionName[2] || studentType.mission_id == missionName[6])
                     {
-                        if (studentType.mission_id == missionName[0] || studentType.mission_id == missionName[2] || studentType.mission_id == missionName[6])
-                        {
-                            TT++;
-                        }
-                        if (studentType.mission_id == missionName[3])
-                        {
-                            TT = 100;
-                        }
+                        TT++;
                     }
-                    if (TT != 0 && TT < 50)
+                    if (studentType.mission_id == missionName[3])
                     {
-                        if (TT == 1 && Random.Range(0, 1) == 0)
-                        {
-                            MissionsController.Instance.Missions(3);
-                        }
-                        else
-                        {
-                            MissionsController.Instance.Missions(MinNumber);
-                        }
+                        TT = 100;
+                    }
+                }
+                if (TT != 0 && TT < 50)
+                {
+                    if (TT == 1 && Random.Range(0, 1) == 0)
+                    {
+                        MissionsController.Instance.Missions(3);
                     }
                     else
                     {
                         MissionsController.Instance.Missions(MinNumber);
                     }
-
-
                 }
+                else
+                {
+                    MissionsController.Instance.Missions(MinNumber);
+                }
+               
                 CheckDistance = false;
                 Invoke("timeStop", 30f);
+            Missioning:
+                    textlog("Missioning");
+                
             }
         }
 

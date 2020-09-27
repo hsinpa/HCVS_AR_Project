@@ -24,12 +24,15 @@ public class Mission3 : ViewController
     public Image picture;
     public Button seccess;
     public Button fail;
+    public GameObject hideBG;
 
     public override void Enable()
     {
         base.Enable();
 
+        JoeMain.Main.Start360Video(2);
         JoeMain.Main.PlayGame(1);
+        hideBG.SetActive(false);
         seccess.onClick.AddListener(SuccessClick);
         fail.onClick.AddListener(FailClick);
     }
@@ -62,7 +65,6 @@ public class Mission3 : ViewController
 
         if (clickCount >= 0)
         {
-            //JoeMain.Main.Start360Video(3);
             if (isSuccess) { GameSuccess(); }
             if (!isSuccess) { GameFail(); }
         }
@@ -72,9 +74,8 @@ public class Mission3 : ViewController
     {
         if (clickCount >= 1)
         {
-            // TODO: play video
-            //JoeMain.Main.Play360Video();
-            StarHistory(1);
+            dialogMissionView.Show(false);
+            JoeMain.Main.Play360Video();
         }
     }
 
@@ -135,13 +136,15 @@ public class Mission3 : ViewController
 
     private void LeaveEvent()
     {
+        hideBG.SetActive(true);
         endMissionView.Show(false);
         picture.enabled = false;
         InitFingerClick();
         RemoveAllListeners();
         RemoveAllEvent();
+
         MissionsController.Instance.ReSetMissions();
-        //JoeMain.Main.CloseARGame(2);
+        JoeMain.Main.Stop360Video();
         Debug.Log("Mission 3 Leave");
     }
 
