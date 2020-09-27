@@ -52,6 +52,7 @@ namespace Hsinpa.AR
                 _ARZeroManager.ForceUpdate();
 
                 referenceImageName = _ARTrackedImage.referenceImage.name;
+                OnSkinChange(0);
             }
         }
 
