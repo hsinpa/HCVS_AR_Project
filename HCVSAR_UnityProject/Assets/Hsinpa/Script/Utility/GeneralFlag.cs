@@ -24,8 +24,8 @@ public class GeneralFlag
 
         public const string SpecialSkinObjName = "Skin_Extra_Reward";
 
-        public const string TrackImage_1 = "zero_maker_01";
-        public const string TrackImage_2 = "zero_maker_02";
+        public const string TrackImage_1 = "zero_maker_skin_01";
+        public const string TrackImage_2 = "zero_maker_skin_02";
     }
 
     public class PlayerPrefKey {
