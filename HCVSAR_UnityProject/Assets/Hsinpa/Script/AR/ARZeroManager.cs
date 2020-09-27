@@ -38,8 +38,10 @@ namespace Hsinpa.AR
             if (TakeOffBtn != null)
                 TakeOffBtn.onClick.AddListener(() => { OnClickTakeOffBtnEvent(); });
 
+
+            int hasSpecialSkin = PlayerPrefs.GetInt(GeneralFlag.PlayerPrefKey.ZeroJet_Skin, -1);
             SetSkinBtnEvent(index: 0, normalSkin);
-            SetSkinBtnEvent(index: 1, normalSkin);
+            SetSkinBtnEvent(index: hasSpecialSkin, normalSkin);
         }
 
         public void ForceUpdate() {
@@ -62,6 +64,14 @@ namespace Hsinpa.AR
         }
 
         private void SetSkinBtnEvent(int index, Button skinBtn) {
+
+            if (index < 0)
+            {
+                skinBtn.gameObject.SetActive(false);
+                return;
+            }
+                
+
             skinBtn.onClick.AddListener(() =>
             {
                 if (OnSkinChangeClick != null)
