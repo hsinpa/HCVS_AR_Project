@@ -31,8 +31,8 @@ public class Mission7 : ViewController
 
         isEnterMission = true;
         hideBG.SetActive(false);
-        video.SetActive(true);
-        JoeMain.Main.Start360Video(0);
+        
+        JoeMain.Main.Start360Video(2);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
@@ -49,44 +49,34 @@ public class Mission7 : ViewController
         {
             Convercestion();
         }
-
-        Debug.Log("7 clickCount: " + clickCount);
     }
 
     void Convercestion()
     {
-        int number = 2;
-
         if (clickCount == 1)
         {
-            Debug.Log("7 clickCount: " + clickCount);
             situationMissionView.Show(false);
             dialogMissionView.Show(true);
             dialogMissionView.DialogView(dogName, dogMessage, dog);
         }
-
-        if (clickCount == number)
+        
+        if (clickCount == 2)
         {
+            dialogMissionView.Show(false);
             JoeMain.Main.Play360Video();
+            InitFingerClick();
         }
+    }
 
-        if (clickCount >= number && clickCount < historyMessage.Length + number)
-        {
-            dialogMissionView.DialogView(dogName, historyMessage[clickCount - number], dog);
-            Debug.Log("7 clickCount: " + clickCount);
-        }
-
-        if (clickCount == historyMessage.Length + number)
-        {
-            Debug.Log("7 Finish");
-            Qusteion();
-        }
+    public override void NextAction()
+    {
+        Debug.Log("7 Finish");
+        video.SetActive(false);
+        Qusteion();
     }
 
     private void Qusteion()
     {
-        InitFingerClick();
-
         dialogMissionView.Show(false);
         questionMissionView.Show(true);
 
@@ -131,8 +121,9 @@ public class Mission7 : ViewController
         RemoveAllEvent();
 
         hideBG.SetActive(true);
-        video.SetActive(false);
+        
         MissionsController.Instance.ReSetMissions();
+        JoeMain.Main.Stop360Video();
 
         Debug.Log("Mission 7 Leave");
     }

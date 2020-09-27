@@ -4,22 +4,36 @@ using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.UI;
 using RemptyTool.ES_MessageSystem;
+using Expect.StaticAsset;
 
 [RequireComponent(typeof(ES_MessageSystem))]
 public class JoeMain : MonoBehaviour
 {
-    Example example;
+    [SerializeField]
+    private Sprite dog;
+    [SerializeField]
+    private Sprite primeMinister;
+    private string dogName = StringAsset.MissionsDialog.Person.dog;
+    private string primeMinisterName = StringAsset.MissionsDialog.Person.NPC_5;
+
+    public GameObject UI;
+    public Text text;
+    public Text name;
+    public Image image;
+
     public static JoeMain Main;
     public VideoData[] VideoData;
     public VideoData NowVideoData;
     public VideoPlayer vp;
     public GameObject VideoPlane;
-    int nowItem;
-    public Text text;
+    public int nowItem;
+    private int currentMission;
+    private bool isVideoEnd;
+    
     private ES_MessageSystem msgSys;
-    public GameObject UI;
     public GameObject[] games;
     public GameObject ARcamera;
+
     private void Awake()
     {
         Main = this;
@@ -27,7 +41,7 @@ public class JoeMain : MonoBehaviour
     void Start()
     {
         vp.Play();
-        example = GetComponent<Example>();
+        
 
         msgSys = this.GetComponent<ES_MessageSystem>();
     }
@@ -37,15 +51,20 @@ public class JoeMain : MonoBehaviour
         NowVideoData = VideoData[number];
         vp.clip = NowVideoData.clip;
         StartCoroutine(CoroutineTest());
-        
-        
+        currentMission = number+5;
+
+        // dialog view
+        name.text = number == 6 ? primeMinisterName : dogName;
+        image.sprite = number == 6 ? primeMinister : dog;
+
+        isVideoEnd = false;
         VideoPlane.SetActive(true);
         
     }
     IEnumerator CoroutineTest()
     {
         vp.Play();
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
         vp.Pause();
     }
     public void Play360Video()
@@ -61,9 +80,15 @@ public class JoeMain : MonoBehaviour
         UI.SetActive(false);
     }
 
+    public void Leave360Video()
+    {
+        vp.clip = null;
+        NowVideoData.clip = null;
+    }
+
     public void ControllerARCamera(bool open)
     {
-        ARcamera.SetActive(open);
+        //ARcamera.SetActive(open);
     }
 
     public void PlayGame(int number)
@@ -85,97 +110,44 @@ public class JoeMain : MonoBehaviour
     public void CloseARGame(int number)
     {
         games[number].SetActive(false);
-        ARcamera.SetActive(false);
+        //ARcamera.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = Camera.main.transform.position;
-        if (NowVideoData!=null&&nowItem < NowVideoData.videoTimes.Length && vp.clockTime > NowVideoData.videoTimes[nowItem].time)
-        {
-            //paint();
+        //textlog("MinNumber" + MinNumber + "MinNumber");
+        var currentTime = Mathf.FloorToInt((float)vp.clockTime);
+        var endTime = Mathf.FloorToInt((float)vp.length - 2);
 
-            msgSys.SetText(NowVideoData.videoTimes[nowItem].text);
-            nowItem++;
+        transform.position = Camera.main.transform.position;
+
+        if (NowVideoData == null) return;
+
+        if (nowItem < NowVideoData.videoTimes.Length)
+        {
+            if (vp.clockTime > NowVideoData.videoTimes[nowItem].time)
+            {
+                msgSys.SetText(NowVideoData.videoTimes[nowItem].text);
+                nowItem++;
+            }
         }
+
         if (msgSys.IsCompleted == false)
         {
             text.text = msgSys.text;
         }
-        UpdateIBeacon();
-    }
-    bool CheckDistance = true;
-    public static bool AirRaid;
-    public static bool[] Missiont = new bool[13];
-    private void UpdateIBeacon()
-    {
-        //MainView.Instance.studentScoreData
-        if (CheckDistance) {
-            foreach (Beacon beacon in example.mybeacons)
-            {
-                if (beacon.minor == 3&& beacon.accuracy > 5f)
-                {
-                    AirRaid = false;
-                }
-                if (beacon.accuracy < 5f&& beacon.major == 0)
-                {
-                    switch (beacon.minor)
-                    {
-                        case 0:
-                            if(!Missiont[0])
-                                MissionsController.Instance.Missions(0);
-                            break;
-                        case 1:
-                            if (!Missiont[1])
-                                MissionsController.Instance.Missions(1);
-                            break;
-                        case 2:
-                            if (!Missiont[2])
-                                MissionsController.Instance.Missions(2);
-                            break;
-                        case 3:
-                            if (!Missiont[3])
-                                AirRaid = true;
-                                break;
-                        case 4:
-                            if (!Missiont[4])
-                                MissionsController.Instance.Missions(4);
-                            break;
-                        case 5:
-                            if (!Missiont[5])
-                                MissionsController.Instance.Missions(5);
-                            break;
-                        case 6:
-                            if (!Missiont[6])
-                                MissionsController.Instance.Missions(6);
-                            break;
-                        case 7:
-                            if (!Missiont[7])
-                                MissionsController.Instance.Missions(7);
-                            break;
-                        case 8:
-                            if (!Missiont[8])
-                                MissionsController.Instance.Missions(8);
-                            break;
-                        case 9:
-                            if (!Missiont[9])
-                                MissionsController.Instance.Missions(9);
-                            break;
-                    }
-                    CheckDistance = false;
-                    Invoke("time30",30f);
-                    break;
-
-                }
-            }
+        
+        if (currentTime == endTime && !isVideoEnd)
+        {
+            isVideoEnd = true;
+            MissionsController.Instance.viewControllers[currentMission].NextAction();
         }
-    }
 
-    public void time30()
-    {
-        CheckDistance = true;
+        //textlog("MinDistance05" + MissionsController.Instance.viewControllers[MinNumber].isEnter);
+        //textlog("MissionNumber");
     }
+ 
     public void UI_rePlayVideo()
     {
         text.text = "";
@@ -185,6 +157,7 @@ public class JoeMain : MonoBehaviour
     {
         text.text = NowVideoData.videoTimes[nowItem].text;
     }
+    
     private void OnGUI()
     {
        // GUI.Label(new Rect(500, 100, 200, 40), "秒數 " + vp.clockTime);
