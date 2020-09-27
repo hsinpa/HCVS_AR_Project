@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Aslan/Scenes/Main.unity
     guid: 2112234de5aac824ab86f507f37ba9a3
+  - enabled: 1
+    path: Assets/Hsinpa/Scenes/ZeroJetARScan.unity
+    guid: 6d47c0a54c3f21148ac8f109287de81c
   m_configObjects:
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: fa7a7d8ca0d844d4ea7ef2c5d49dff8e,
       type: 2}
