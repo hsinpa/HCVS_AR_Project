@@ -133,10 +133,26 @@ public class JoeGM : MonoBehaviour
 
                     }
 
-                    if (MissionNumber == 3 && example.mybeacons[i].accuracy > 5f)
+                    if (example.mybeacons[i].accuracy > 5f)
                     {
-                        AirRaid = false;
+                        if (MissionNumber == 3)
+                        {
+                            AirRaid = false;
+                        }
+
+
+                        if (MissionNumber == 11)
+                        {
+                            RightBotton.SetActive(false);
+                        }
+
+                        if (MissionNumber == 12)
+                        {
+                            RightBotton.SetActive(false);
+                        }
                     }
+
+                   
 
                     if (example.mybeacons[i].accuracy < 5f)
                     {
@@ -149,7 +165,15 @@ public class JoeGM : MonoBehaviour
                         }
 
 
+                        if (MissionNumber == 11)
+                        {
+                            RightBotton.SetActive(true);
+                        }
 
+                        if (MissionNumber == 12)
+                        {
+                            RightBotton.SetActive(true);
+                        }
 
 
                         if (MissionNumber == 3)

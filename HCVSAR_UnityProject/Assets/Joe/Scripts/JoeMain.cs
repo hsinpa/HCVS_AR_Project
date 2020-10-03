@@ -108,7 +108,8 @@ public class JoeMain : MonoBehaviour
 
     public void ControllerARCamera(bool open)
     {
-        //ARcamera.SetActive(open);
+        ARcamera.SetActive(open);
+        VideoPlane.SetActive(!open);
     }
 
     public void PlayGame(int number)

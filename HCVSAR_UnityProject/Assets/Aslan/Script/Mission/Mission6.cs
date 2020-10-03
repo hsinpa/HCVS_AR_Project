@@ -38,6 +38,9 @@ public class Mission6 : ViewController
         hideBG.SetActive(false);
         JoeMain.Main.ControllerARCamera(true);
 
+        dialogMissionView.Show(true);
+        dialogMissionView.DialogView(oldPeopleName, oldPeopleMessage1, primeMinister);
+
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += ClickCount; // Add fingerClick event
     }
@@ -46,10 +49,7 @@ public class Mission6 : ViewController
     {
         clickCount++;
 
-        if (clickCount >= 0)
-        {
-            Convercestion();
-        }
+        if (clickCount >= 0) { Convercestion(); }
 
         Debug.Log("clickCount: " + clickCount);
     }
@@ -58,16 +58,10 @@ public class Mission6 : ViewController
     {
         if (clickCount == 1)
         {
-            Debug.Log("clickCount1: " + clickCount);
-            dialogMissionView.Show(true);
-            dialogMissionView.DialogView(oldPeopleName, oldPeopleMessage1, primeMinister);
-        }
-        if (clickCount == 2)
-        {
             Debug.Log("clickCount2: " + clickCount);
             dialogMissionView.DialogView(dogName, dogMessage1, dog);
         }
-        if (clickCount == 3)
+        if (clickCount == 2)
         {
             StarGame();
             Debug.Log("Game");

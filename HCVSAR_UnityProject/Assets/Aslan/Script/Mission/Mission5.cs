@@ -42,7 +42,7 @@ public class Mission5 : ViewController
         isEnter = true;
         hideBG.SetActive(false);
         video.SetActive(true);
-        JoeMain.Main.Start360Video(0);
+        //JoeMain.Main.Start360Video(0);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
@@ -122,7 +122,7 @@ public class Mission5 : ViewController
             if (clickCount == number)
             {
                 //TODO: video? model?
-                JoeMain.Main.Play360Video();
+                //JoeMain.Main.Play360Video();
             }
 
             if (clickCount >= number && clickCount < historyMessage.Length + number)

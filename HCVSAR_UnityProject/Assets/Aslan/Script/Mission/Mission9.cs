@@ -26,7 +26,7 @@ public class Mission9 : ViewController
         hideBG.SetActive(false);
         video.SetActive(true);
 
-        JoeMain.Main.Start360Video(0);
+        JoeMain.Main.ControllerARCamera(true);
 
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += ClickCount; // Add fingerClick event
@@ -48,9 +48,9 @@ public class Mission9 : ViewController
     {
         int historyCount = historyMessage.Length + 1;
 
-        if (clickCount == 0)
+        if (clickCount == 1)
         {
-            JoeMain.Main.Play360Video();
+            JoeMain.Main.PlayARGame(5);
         }
 
         if (clickCount >= 1 && clickCount < historyCount)
@@ -68,6 +68,7 @@ public class Mission9 : ViewController
         {
             //TODO: End Video
             leaveButton.SetActive(true);
+            dialogMissionView.Show(false);
             leaveButton.GetComponent<Button>().onClick.AddListener(LeaveEvent);
         }
     }
@@ -78,6 +79,7 @@ public class Mission9 : ViewController
         InitFingerClick();
         hideBG.SetActive(true);
 
+        JoeMain.Main.CloseARGame(5);
         MissionsController.Instance.ReSetMissions();
         Debug.Log("Mission 9 Leave");
     }

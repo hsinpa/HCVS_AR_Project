@@ -29,6 +29,8 @@ public class Mission1 : ViewController
     private string[] historyMessage = { StringAsset.MissionsDialog.One.history1, StringAsset.MissionsDialog.One.history2, StringAsset.MissionsDialog.One.history3 };
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
+    public GameObject hideBG;
+
     private void Start()
     {
         success.onClick.AddListener(SuccessClick);
@@ -106,6 +108,13 @@ public class Mission1 : ViewController
 
     private void StarHistory(int number)
     {
+        if(clickCount == number)
+        {
+            hideBG.SetActive(false);
+            JoeMain.Main.ControllerARCamera(true);
+            JoeMain.Main.PlayARGame(4);
+        }
+
         if (clickCount >= number && clickCount < historyMessage.Length + number)
         {
             dialogMissionView.DialogView(dogName, historyMessage[clickCount - number], dog);
@@ -132,12 +141,15 @@ public class Mission1 : ViewController
     private void LeaveEvent()
     {
         endMissionView.Show(false);
+        hideBG.SetActive(true);
 
         InitFingerClick();
         RemoveAllEvent();
         RemoveAllListeners();
 
         mainCanvas.interactable = true;
+
+        JoeMain.Main.CloseARGame(4);
         Debug.Log("Mission 1 Leave");
     }
 

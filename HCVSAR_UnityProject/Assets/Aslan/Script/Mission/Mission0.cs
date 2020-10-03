@@ -28,7 +28,6 @@ public class Mission0 : ViewController
     private string faultMessage = StringAsset.MissionsQustion.Zero.fault;
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
-    [HideInInspector]
     public GameObject hideBG;
     public GameObject video;
     public GameObject enterGame;
@@ -87,20 +86,6 @@ public class Mission0 : ViewController
             dialogMissionView.Show(false);
             InitFingerClick();
         }
-        /*
-        if (clickCount >= number && clickCount < historyMessage.Length + number)
-        {
-            dialogMissionView.DialogView(dogName, historyMessage[clickCount - number], dog);
-            Debug.Log("clickCount3: " + clickCount);
-        }
-
-        if (clickCount == historyMessage.Length + number)
-        {
-            Debug.Log("Finish");
-            InitFingerClick();
-            Qusteion();
-        }
-        */
     }
 
     public override void NextAction()
