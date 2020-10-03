@@ -467,6 +467,8 @@ internal class Example : MonoBehaviour {
 			}
 		}
 		DisplayOnBeaconFound();
+		JoeGM.joeGM.UpdateIBeacon();
+		JoeGM.joeGM.logUpd();
 	}
     int h = 0;
 

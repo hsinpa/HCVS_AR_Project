@@ -11,7 +11,7 @@ public class Mission2 : ViewController
     // Message
     private string situationMessage = StringAsset.MissionsSituation.Two.s1;
     private string dogName = StringAsset.MissionsDialog.Person.dog;
-    private string[] historyMessage = { StringAsset.MissionsDialog.Two.history1, StringAsset.MissionsDialog.Two.history2, StringAsset.MissionsDialog.Two.history3 };
+    //private string[] historyMessage = { StringAsset.MissionsDialog.Two.history1, StringAsset.MissionsDialog.Two.history2, StringAsset.MissionsDialog.Two.history3 };
 
     private string qustion = StringAsset.MissionsQustion.Two.qustion;
     private string[] answers = { StringAsset.MissionsAnswer.Two.ans1, StringAsset.MissionsAnswer.Two.ans2,
@@ -31,9 +31,8 @@ public class Mission2 : ViewController
 
         isEnterMission = true;
         hideBG.SetActive(false);
-        video.SetActive(true);
 
-        JoeMain.Main.Start360Video(0);
+        JoeMain.Main.Start360Video(1);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
@@ -53,34 +52,27 @@ public class Mission2 : ViewController
 
         Debug.Log("clickCount: " + clickCount);
     }
-
+    
     void Convercestion()
     {
-        int number = 1;
 
         if (clickCount == 1)
         {
             JoeMain.Main.Play360Video();
-        }
-
-        if (clickCount >= number && clickCount < historyMessage.Length + number)
-        {
             situationMissionView.Show(false);
-            dialogMissionView.Show(true);
-            dialogMissionView.DialogView(dogName, historyMessage[clickCount - number], dog);
+            InitFingerClick();
         }
+    }
 
-        if (clickCount == historyMessage.Length + number)
-        {
-            Debug.Log("Finish");
-            Qusteion();
-        }
+    public override void NextAction()
+    {
+        Debug.Log("2 Finish");
+        video.SetActive(false);
+        Qusteion();
     }
 
     private void Qusteion()
     {
-        InitFingerClick();
-
         dialogMissionView.Show(false);
         questionMissionView.Show(true);
 
@@ -121,13 +113,13 @@ public class Mission2 : ViewController
     {
         endMissionView.Show(false);
         hideBG.SetActive(true);
-        video.SetActive(false);
 
         InitFingerClick();
         RemoveAllListeners();
         RemoveAllEvent();
         MissionsController.Instance.ReSetMissions();
-        
+        JoeMain.Main.Stop360Video();
+
         Debug.Log("Mission 2 Leave");
     }
 

@@ -5,8 +5,9 @@ using UnityEngine.Video;
 [CreateAssetMenu(menuName = "Data/Create_VideoData ")]
 public class VideoData : ScriptableObject
 {
-    public VideoTime[] videoTimes;
     public VideoClip clip;
+    public VideoTime[] videoTimes;
+    
     // Start is called before the first frame update
     void v_Start()
     {

@@ -12,8 +12,8 @@ public class Mission8 : ViewController
     private string dogName = StringAsset.MissionsDialog.Person.dog;
     private string dogMessage1 = StringAsset.MissionsDialog.Eight.d1;
     private string dogMessage2 = StringAsset.MissionsDialog.Eight.d2;
-    private string[] historyMessage = { StringAsset.MissionsDialog.Eight.history1, StringAsset.MissionsDialog.Eight.history2,
-                                        StringAsset.MissionsDialog.Eight.history3, StringAsset.MissionsDialog.Eight.history4 };
+    //private string[] historyMessage = { StringAsset.MissionsDialog.Eight.history1, StringAsset.MissionsDialog.Eight.history2,
+                                       // StringAsset.MissionsDialog.Eight.history3, StringAsset.MissionsDialog.Eight.history4 };
 
     [HideInInspector]
     public bool isEnterMission;
@@ -28,8 +28,12 @@ public class Mission8 : ViewController
         isEnterMission = true;
         hideBG.SetActive(false);
         video.SetActive(true);
+        JoeMain.Main.StarAndPlay360Video(4);// Start360Video(4);
+    }
 
-        JoeMain.Main.Start360Video(0);
+    public override void NextAction()
+    {
+        Debug.Log("8 Finish");
 
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += ClickCount; // Add fingerClick event
@@ -41,54 +45,49 @@ public class Mission8 : ViewController
 
         if (clickCount >= 0)
         {
-            StarHistory();
+            EndMessage();
         }
 
         Debug.Log("8 clickCount: " + clickCount);
     }
 
-    private void StarHistory()
+    private void EndMessage()
     {
-        int historyCount = historyMessage.Length + 1;
 
-        if (clickCount == 0)
+        if (clickCount == 1)
         {
-            JoeMain.Main.Play360Video();
-        }
-
-        if (clickCount >= 1 && clickCount < historyCount)
-        {
+            video.SetActive(false);
             dialogMissionView.Show(true);
-            dialogMissionView.DialogView(dogName, historyMessage[clickCount - 1], dog);
-        }
-
-        if (clickCount == historyCount)
-        {
             dialogMissionView.DialogView(dogName, dogMessage1, dog);
         }
 
-        if (clickCount == historyCount + 1)
+        if (clickCount == 2)
         {
             dialogMissionView.Show(false);
             toolView.SetActive(true);
         }
 
-        // TODO: map1 / map2
-        if (clickCount == historyCount + 2)
+        if (clickCount == 3)
         {
-            Debug.Log("Get Map2");
-            LeaveEvent();
+            dialogMissionView.Show(true);
             dialogMissionView.DialogView(dogName, dogMessage2, dog);
+        }
+
+        if (clickCount == 4)
+        {
+            LeaveEvent();
         }
     }
 
     private void LeaveEvent()
     {
+        dialogMissionView.Show(false);
+        JoeMain.Main.Stop360Video();
+
         InitFingerClick();
         RemoveAllEvent();
 
         hideBG.SetActive(true);
-        video.SetActive(false);
 
         MissionsController.Instance.ReSetMissions();
     }
