@@ -15,9 +15,9 @@ EditorBuildSettings:
     path: Assets/Hsinpa/Scenes/ZeroJetARScan.unity
     guid: 6d47c0a54c3f21148ac8f109287de81c
   m_configObjects:
-    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: c6aa3971569e349abb176f06c49543ca,
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 6bbd17eb389a04f7a9c82f01e84fc874,
       type: 2}
-    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: fa7a7d8ca0d844d4ea7ef2c5d49dff8e,
+    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 9c125accd98b1401f8b40c053d70d8ce,
       type: 2}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: bbec5781a478f1048bc63822d968b899,
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 8ab13f66764b042b19e018714f307514,
       type: 2}
