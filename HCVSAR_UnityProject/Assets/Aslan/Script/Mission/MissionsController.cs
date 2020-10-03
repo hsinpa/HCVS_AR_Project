@@ -31,6 +31,7 @@ public class MissionsController : Singleton<MissionsController>
     {
         isEnter = false;
         foreach (GameObject g in MissionsObj) { g.SetActive(false); }
+        MissionsObj[1].SetActive(true);
     }
 
     public void Missions(int number)
