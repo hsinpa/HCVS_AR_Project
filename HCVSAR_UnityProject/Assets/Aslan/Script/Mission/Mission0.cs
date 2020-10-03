@@ -185,6 +185,7 @@ public class Mission0 : ViewController
     private void LeaveMission()
     {
         endMissionView.Show(false);
+        JoeMain.Main.Stop360Video();
 
         InitFingerClick();
         RemoveAllListeners();

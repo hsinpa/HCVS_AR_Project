@@ -27,7 +27,7 @@ public class JoeMain : MonoBehaviour
     public VideoPlayer vp;
     public GameObject VideoPlane;
     public int nowItem;
-    private int currentMission;
+    private int currentElement;
     private bool isVideoEnd;
     
     private ES_MessageSystem msgSys;
@@ -51,9 +51,10 @@ public class JoeMain : MonoBehaviour
         NowVideoData = VideoData[number];
         vp.clip = NowVideoData.clip;
         StartCoroutine(CoroutineTest());
-        currentMission = number;
         UI_rePlayVideo();
-
+        UI.SetActive(false);
+        currentElement = number;
+        
         // dialog view
         name.text = number == 6 ? primeMinisterName : dogName;
         image.sprite = number == 6 ? primeMinister : dog;
@@ -68,15 +69,36 @@ public class JoeMain : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         vp.Pause();
     }
+
+    public void StarAndPlay360Video(int number)
+    {
+        NowVideoData = VideoData[number];
+        vp.clip = NowVideoData.clip;
+        vp.Play();
+
+        UI_rePlayVideo();
+        UI.SetActive(true);
+
+        currentElement = number;
+        
+        // dialog view
+        name.text = number == 6 ? primeMinisterName : dogName;
+        image.sprite = number == 6 ? primeMinister : dog;
+
+        isVideoEnd = false;
+        VideoPlane.SetActive(true);
+
+    }
+
     public void Play360Video()
     {
         vp.Play();
-        UI.SetActive(true);
+        //UI.SetActive(true);
     }
 
     public void Stop360Video()
     {
-        vp.clip = null;
+        //vp.clip = null;
         NowVideoData.clip = null;
 
         vp.Stop();
@@ -126,6 +148,7 @@ public class JoeMain : MonoBehaviour
         {
             if (vp.clockTime > NowVideoData.videoTimes[nowItem].time)
             {
+                UI.SetActive(true);
                 msgSys.SetText(NowVideoData.videoTimes[nowItem].text);
                 nowItem++;
             }
@@ -139,7 +162,11 @@ public class JoeMain : MonoBehaviour
         if (currentTime == endTime && !isVideoEnd)
         {
             isVideoEnd = true;
-            MissionsController.Instance.viewControllers[currentMission].NextAction();
+            
+            if (currentElement == 1 || currentElement == 2) { currentElement += 1; }
+            else if (currentElement == 3 || currentElement == 4) { currentElement += 4; }
+            
+            MissionsController.Instance.viewControllers[currentElement].NextAction();
         }
 
         //textlog("MinDistance05" + MissionsController.Instance.viewControllers[MinNumber].isEnter);

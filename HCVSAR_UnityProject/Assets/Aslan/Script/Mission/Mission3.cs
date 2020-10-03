@@ -25,6 +25,7 @@ public class Mission3 : ViewController
     public Button seccess;
     public Button fail;
     public GameObject hideBG;
+    public GameObject video;
 
     public override void Enable()
     {
@@ -102,6 +103,13 @@ public class Mission3 : ViewController
         }
     }
 
+    public override void NextAction()
+    {
+        Debug.Log("3 Finish");
+        video.SetActive(false);
+        LeaveMission(isSuccess);
+    }
+
     private void LeaveMission(bool success)
     {
         int score = success ? 5 : 0;
@@ -125,7 +133,7 @@ public class Mission3 : ViewController
 
     public IEnumerator EndPause(int score)
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2.5f);
 
         situationMissionView.Show(false);
         endMissionView.Show(true);
