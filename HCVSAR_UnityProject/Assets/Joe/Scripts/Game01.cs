@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class Game01 : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class Game01 : MonoBehaviour
     public RectTransform strip;
     public UnityEvent unityEvent;
     public UnityEvent OverEvent;
+    public VideoPlayer vp;
+    public VideoClip vc;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,8 +31,12 @@ public class Game01 : MonoBehaviour
     }
     void Update()
     {
+        //transform.position = Camera.main.transform.position;
         if (f >= 10)
         {
+            vp.clip = vc;
+            vp.Play();
+            
             unityEvent.Invoke();
         }
         else

@@ -121,6 +121,7 @@ public class Mission5 : ViewController
 
             if (clickCount == number)
             {
+                //TODO: video? model?
                 JoeMain.Main.Play360Video();
             }
 

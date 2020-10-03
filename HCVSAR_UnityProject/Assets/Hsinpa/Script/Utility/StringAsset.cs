@@ -249,26 +249,26 @@ namespace Expect.StaticAsset {
         {
             public class Zero
             {
-                public const string qustion = "請問為什麼好端端清代城牆跟城門要被日本人拆除呢？";
+                public const string qustion = "Q:請問為什麼好端端清代城牆跟城門要被日本人拆除呢？";
                 public const string correct = "恭喜你答對了！正確答案為因為隨著日本海軍軍區擴大，土地不夠。所以現在需要將部分城牆做拆除。";
                 public const string fault = "不對喔！正確答案是因為隨著日本海軍軍區擴大，土地不夠。所以現在需要將部分城牆做拆除。";
             }
 
             public class Two
             {
-                public const string qustion = "你們猜猜廣濟宮是拜什麼神明的呢？";
+                public const string qustion = "Q:你們猜猜廣濟宮是拜什麼神明的呢？";
                 public const string correct = "恭喜你答對了！正確答案三山國王。";
                 public const string fault = "不對喔！正確答案為三山國王。";
             }
 
             public class Five
             {
-                public const string qustion = "學生要尋找的，北方建築是哪一個呢？";
+                public const string qustion = "Q:學生要尋找的，北方建築是哪一個呢？";
             }
 
             public class SEVEN
             {
-                public const string qustion = "為什麼1950年代左營會有這麼多眷村呢？";
+                public const string qustion = "Q:為什麼1950年代左營會有這麼多眷村呢？";
                 public const string correct = "恭喜你答對了！正確答案為因左營是海軍的大本營大批軍眷入住。所以1950年代開始了在左營的眷村文化。";
                 public const string fault = "不對喔！正確答案為因左營是海軍的大本營大批軍眷入住。所以1950年代開始了在左營的眷村文化。";
             }
