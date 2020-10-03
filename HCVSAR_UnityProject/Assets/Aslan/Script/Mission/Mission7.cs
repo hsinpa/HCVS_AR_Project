@@ -32,7 +32,7 @@ public class Mission7 : ViewController
         isEnterMission = true;
         hideBG.SetActive(false);
         
-        JoeMain.Main.Start360Video(2);
+        JoeMain.Main.Start360Video(3);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
