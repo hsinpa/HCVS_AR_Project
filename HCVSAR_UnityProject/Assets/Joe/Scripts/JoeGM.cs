@@ -22,6 +22,9 @@ public class JoeGM : MonoBehaviour
     public List<LogArrayData> logArray = new List<LogArrayData>();
     string uist;
     public List<IBCCC> mybeacons;
+
+    public GameObject RightBotton;
+    public GameObject FullBotton;
     [System.Serializable]
     public class LogArrayData
     {
