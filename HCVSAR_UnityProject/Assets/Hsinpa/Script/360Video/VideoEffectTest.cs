@@ -12,6 +12,7 @@ namespace Hsinpa.Video
 
         void Start()
         {
+            videoEffect.FaceVideoToCameraFront(Camera.main);
             videoEffect.SetCoverPercentAnim(0, 0.1f);
         }
 
