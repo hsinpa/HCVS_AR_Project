@@ -34,6 +34,7 @@ public class Game07 : MonoBehaviour
     }
     public void UI_Enter()
     {
+        
         //ani.speed = 0;
         if (Mathf.Abs(t.localPosition.x)<0.5)
         {
@@ -46,6 +47,8 @@ public class Game07 : MonoBehaviour
         {
             OverEvent.Invoke();
             ani.speed = 0;
+            ani.enabled = false;
+            t2.GetComponent<Rigidbody>().isKinematic = false;
         }
       
     }
