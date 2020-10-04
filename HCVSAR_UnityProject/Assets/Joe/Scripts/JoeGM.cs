@@ -121,16 +121,23 @@ public class JoeGM : MonoBehaviour
                         continue;
                     }
 
-                    foreach (TypeFlag.SocketDataType.StudentType studentType in studentData)
+                    if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3)
                     {
 
-                        if (studentType.mission_id == missionName[MissionNumber])
+                    }
+                    else
+                    {
+                        foreach (TypeFlag.SocketDataType.StudentType studentType in studentData)
                         {
 
-                            textlog("mission_id" + studentType.mission_id + MissionNumber);
-                            goto OverLoop;
-                        }
+                            if (studentType.mission_id == missionName[MissionNumber])
+                            {
 
+                                textlog("mission_id" + studentType.mission_id + MissionNumber);
+                                goto OverLoop;
+                            }
+
+                        }
                     }
 
                     if (example.mybeacons[i].accuracy > 5f)

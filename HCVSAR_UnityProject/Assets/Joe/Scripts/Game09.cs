@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.Events;
 public class Game09 : MonoBehaviour
 {
+    public LayerMask layer;
+    public GameObject UI;
+    public Text text;
+    public string[] vs;
+    
     // Start is called before the first frame update
     void Start()
     {
         transform.position = Camera.main.transform.position;
-        Input.compass.enabled = true;
+        transform.rotation = MainCompass.main.transform.rotation;
+
     }
 
     // Update is called once per frame
@@ -18,25 +25,34 @@ public class Game09 : MonoBehaviour
         
     }
 
-    float dushu = 0;
-    float tempdushu = 0;
-    
+  
+    RaycastHit hit;
     void FixedUpdate()
     {
-      
 
 
-        Input.location.Start();
+
+        
      
-        dushu = Input.compass.trueHeading;
-
-      
-        if (Mathf.Abs(tempdushu - dushu) > 3)
+       
+        // Does the ray intersect any objects excluding the player layer
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, layer))
         {
-            tempdushu = dushu;
-            transform.eulerAngles = new Vector3(0, 0, dushu);
-        }
+            if (!UI.activeInHierarchy) {
+                UI.SetActive(true);
+                text.text = vs[int.Parse(hit.collider.gameObject.name)];
 
+            }
+        }
+        else
+        {
+            if (UI.activeInHierarchy)
+            {
+
+                UI.SetActive(false);
+
+            }
+        }
 
     }
 }
