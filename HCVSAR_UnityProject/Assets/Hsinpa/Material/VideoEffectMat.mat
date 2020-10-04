@@ -68,7 +68,7 @@ Material:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _Distort: 0.038
+    - _Distort: 0.022
     - _DstBlend: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -80,7 +80,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Transition: 0.574
+    - _Transition: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:

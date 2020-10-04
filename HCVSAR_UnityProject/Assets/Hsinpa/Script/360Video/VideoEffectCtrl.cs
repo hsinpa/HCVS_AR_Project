@@ -15,15 +15,21 @@ namespace Hsinpa.Video
         private float _speed, _target;
 
         private const string TransitionTet = "_Transition";
-
+        
         private void Start()
         {
             _mat = _renderer.material;
         }
 
         //Might only need to set once
-        public void SetTexture(RenderTexture renderTex) {
+        public void SetTextureAndCamera(RenderTexture renderTex) {
             _mat.SetTexture("_MainTex", renderTex);
+        }
+
+        public void FaceVideoToCameraFront(Camera camera) {
+            this.transform.rotation = Quaternion.LookRotation(camera.transform.forward);
+            this.transform.Rotate(new Vector3(0, -90, 0));
+
         }
 
         public void SetCoverPercent(float p_percent) {
