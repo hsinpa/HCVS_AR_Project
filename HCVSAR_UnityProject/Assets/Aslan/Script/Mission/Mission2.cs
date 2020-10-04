@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Expect.StaticAsset;
+using Hsinpa.Video;
 
 public class Mission2 : ViewController
 {
@@ -20,6 +21,11 @@ public class Mission2 : ViewController
     private string faultMessage = StringAsset.MissionsQustion.Two.fault;
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
+    [SerializeField]
+    private VideoEffectCtrl videoEffect;
+    [SerializeField]
+    private Camera camera;
+
     [HideInInspector]
     public bool isEnterMission;
     public GameObject hideBG;
@@ -33,12 +39,25 @@ public class Mission2 : ViewController
         hideBG.SetActive(false);
 
         JoeMain.Main.Start360Video(1);
+        
+        StartCoroutine(EnterGameView());
+    }
+
+    public IEnumerator EnterGameView()
+    {
+        videoEffect.FaceVideoToCameraFront(camera);
+        videoEffect.SetCoverPercentAnim(0.95f, 0.1f);
+
+        yield return new WaitForSeconds(2);
+
+        videoEffect.SetCoverPercentAnim(0, 0.01f);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
 
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += ClickCount; // Add fingerClick event
+
     }
 
     void ClickCount()
@@ -61,6 +80,7 @@ public class Mission2 : ViewController
             JoeMain.Main.Play360Video();
             situationMissionView.Show(false);
             InitFingerClick();
+            Debug.Log("==== clickCount: " + clickCount);
         }
     }
 
@@ -119,7 +139,7 @@ public class Mission2 : ViewController
         RemoveAllEvent();
         MissionsController.Instance.ReSetMissions();
         JoeMain.Main.Stop360Video();
-
+        videoEffect.SetCoverPercent(1);
         Debug.Log("Mission 2 Leave");
     }
 
