@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-
+using UnityEngine.Video;
 public class Game05 : MonoBehaviour
 {
     
@@ -14,10 +14,13 @@ public class Game05 : MonoBehaviour
     public Texture texture;
     public Image image;
     int v = 1;
+    public VideoPlayer vp;
+    public VideoClip vc;
     // Start is called before the first frame update
     void Start()
     {
-        
+        vp.clip = vc;
+        vp.Play();
     }
 
     // Update is called once per frame
