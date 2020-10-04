@@ -111,7 +111,7 @@
     },
     "com.unity.xr.arsubsystems": {
       "version": "4.0.8",
-      "depth": 1,
+      "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.subsystemregistration": "1.0.6"
