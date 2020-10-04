@@ -27,9 +27,10 @@ namespace Hsinpa.Video
         }
 
         public void FaceVideoToCameraFront(Camera camera) {
-            this.transform.rotation = Quaternion.LookRotation(camera.transform.forward);
+            var cameraForward = camera.transform.forward;
+            cameraForward.y = 0;
+            this.transform.rotation = Quaternion.LookRotation(cameraForward);
             this.transform.Rotate(new Vector3(0, -90, 0));
-
         }
 
         public void SetCoverPercent(float p_percent) {
