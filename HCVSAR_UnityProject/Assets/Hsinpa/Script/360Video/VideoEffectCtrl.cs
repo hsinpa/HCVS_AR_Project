@@ -22,7 +22,7 @@ namespace Hsinpa.Video
         }
 
         //Might only need to set once
-        public void SetTextureAndCamera(RenderTexture renderTex) {
+        public void SetTexture(RenderTexture renderTex) {
             _mat.SetTexture("_MainTex", renderTex);
         }
 
