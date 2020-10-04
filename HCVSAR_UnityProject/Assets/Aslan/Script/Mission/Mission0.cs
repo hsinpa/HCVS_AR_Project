@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Expect.StaticAsset;
+using Hsinpa.Video;
 
 public class Mission0 : ViewController
 {
@@ -27,6 +28,8 @@ public class Mission0 : ViewController
     private string correctMessage = StringAsset.MissionsQustion.Zero.correct;
     private string faultMessage = StringAsset.MissionsQustion.Zero.fault;
     private string endMessage = StringAsset.MissionsEnd.End.message;
+
+    private VideoEffectCtrl videoEffect;
 
     public GameObject hideBG;
     public GameObject video;

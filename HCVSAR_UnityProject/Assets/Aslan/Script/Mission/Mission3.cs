@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Expect.StaticAsset;
+using Hsinpa.Video;
 
 public class Mission3 : ViewController
 {
@@ -26,6 +27,8 @@ public class Mission3 : ViewController
     public Button fail;
     public GameObject hideBG;
     public GameObject video;
+
+    private VideoEffectCtrl videoEffect;
 
     public override void Enable()
     {
