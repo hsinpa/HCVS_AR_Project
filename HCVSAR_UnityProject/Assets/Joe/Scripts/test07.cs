@@ -14,7 +14,14 @@ public class test07 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = target.position;
-        transform.rotation = target.rotation;
+        var _camera = Camera.main;
+        var _cameraFront = _camera.transform.forward;
+        var _frontPos = _cameraFront * 10;
+
+        _cameraFront.y = 0;
+
+        transform.position = _frontPos;
+
+        transform.rotation = Quaternion.LookRotation(_cameraFront);
     }
 }

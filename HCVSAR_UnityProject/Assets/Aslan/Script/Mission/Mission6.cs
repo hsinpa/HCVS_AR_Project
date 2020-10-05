@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Expect.StaticAsset;
+using System.Collections;
 
 public class Mission6 : ViewController
 {
@@ -82,8 +83,9 @@ public class Mission6 : ViewController
 
     private void SuccessClick()
     {
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += Count; // Add fingerClick event
+        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
+        //fingerClick.Click += Count; // Add fingerClick event
+        StartCoroutine(GameSuccess());
         isSuccess = true;
     }
 
@@ -101,24 +103,31 @@ public class Mission6 : ViewController
 
         if (clickCount >= 0)
         {
-            if (isSuccess) { GameSuccess(); }
+            //if (isSuccess) { StartCoroutine(GameSuccess()); }
             if (!isSuccess) { GameFail(); }
         }
     }
 
-    private void GameSuccess()
+    public IEnumerator GameSuccess()
     {
-        if (clickCount == 1)
-        {
-            Debug.Log("GameSuccess1");
-            dialogMissionView.Show(true);
-            dialogMissionView.DialogView(oldPeopleName, correctMessage_1, primeMinister);
-        }
+        dialogMissionView.Show(true);
+        dialogMissionView.DialogView(primeMinisterName, historyMessage[0], primeMinister);
 
-        if (clickCount >= 2)
-        {
-            StarHistory(2);
-        }
+        yield return new WaitForSeconds(5);
+
+        dialogMissionView.DialogView(primeMinisterName, historyMessage[1], primeMinister);
+
+        yield return new WaitForSeconds(9);
+
+        dialogMissionView.DialogView(primeMinisterName, historyMessage[2], primeMinister);
+
+        yield return new WaitForSeconds(20);
+
+        dialogMissionView.DialogView(primeMinisterName, historyMessage[3], primeMinister);
+
+        yield return new WaitForSeconds(37);
+
+        LeaveMission(isSuccess);
     }
 
     private void GameFail()
@@ -194,4 +203,20 @@ public class Mission6 : ViewController
         fingerClick.Click -= Count;
         clickCount = 0; // initial
     }
+
+    /* // success can delete
+    public void GameSuccess()
+    {
+        if (clickCount == 1)
+        {
+            Debug.Log("GameSuccess1");
+            dialogMissionView.Show(true);
+            dialogMissionView.DialogView(oldPeopleName, correctMessage_1, primeMinister);
+        }
+
+        if (clickCount >= 2)
+        {
+            StarHistory(2);
+        }
+    }*/
 }
