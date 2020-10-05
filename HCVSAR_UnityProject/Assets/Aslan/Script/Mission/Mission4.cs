@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Expect.StaticAsset;
+using Hsinpa.Video;
+using System.Collections;
 
 public class Mission4 : ViewController
 {
@@ -34,6 +36,8 @@ public class Mission4 : ViewController
     public GameObject gameUI;
     public Button success;
     public Button fail;
+    public Camera camera;
+    public VideoEffectCtrl videoEffect;
     private bool isSuccess;
 
     public override void Enable()
@@ -42,13 +46,26 @@ public class Mission4 : ViewController
 
         isEnterMission = true;
         hideBG.SetActive(false);
-        JoeMain.Main.ControllerARCamera(true);
+
+        JoeMain.Main.Start360Video(5);
+        StartCoroutine(EnterGameView());
+    }
+
+    public IEnumerator EnterGameView()
+    {
+        videoEffect.FaceVideoToCameraFront(camera);
+        videoEffect.SetCoverPercentAnim(0.95f, 0.1f);
+
+        yield return new WaitForSeconds(2);
+
+        videoEffect.SetCoverPercentAnim(0, 0.01f);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
 
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += ClickCount; // Add fingerClick event
+
     }
 
     void ClickCount()
@@ -194,6 +211,8 @@ public class Mission4 : ViewController
         RemoveAllListeners();
 
         JoeMain.Main.CloseARGame(2);
+        JoeMain.Main.Stop360Video();
+        videoEffect.SetCoverPercent(1);
         MissionsController.Instance.ReSetMissions();
         Debug.Log("Mission 4 Leave");
     }
