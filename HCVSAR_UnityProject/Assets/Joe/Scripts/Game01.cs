@@ -15,11 +15,12 @@ public class Game01 : MonoBehaviour
     public UnityEvent OverEvent;
     public VideoPlayer vp;
     public VideoClip vc;
-
+    public VideoClip vc2;
     // Start is called before the first frame update
     void Start()
     {
-        
+        vp.clip = vc;
+        vp.Play();
     }
 
     // Update is called once per frame
@@ -34,7 +35,7 @@ public class Game01 : MonoBehaviour
         //transform.position = Camera.main.transform.position;
         if (f >= 10)
         {
-            vp.clip = vc;
+            vp.clip = vc2;
             vp.Play();
             
             unityEvent.Invoke();
