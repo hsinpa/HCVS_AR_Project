@@ -27,7 +27,7 @@ namespace Hsinpa.AR
         private Texture _originalTex
         {
             get {
-                if (referenceImageName == GeneralFlag.ARZero.TrackImage_2)
+                if (ARZeroManager.RandomSkinString == GeneralFlag.ARZero.TrackImage_2)
                     return _skintype_2;
 
                 return _skintype_1;
@@ -37,7 +37,6 @@ namespace Hsinpa.AR
 
         private ARTrackedImage _ARTrackedImage;
         private ARZeroManager _ARZeroManager;
-        private string referenceImageName;
 
         private const string MatTexName = "_MainTex";
         void Start()
@@ -51,7 +50,6 @@ namespace Hsinpa.AR
                 _ARZeroManager.OnSkinChangeClick += OnSkinChange;
                 _ARZeroManager.ForceUpdate();
 
-                referenceImageName = _ARTrackedImage.referenceImage.name;
                 OnSkinChange(0);
             }
         }
