@@ -16,10 +16,9 @@ public class Mission6 : ViewController
     private string primeMinisterName = StringAsset.MissionsDialog.Person.NPC_5;
     private string oldPeopleMessage1 = StringAsset.MissionsDialog.Six.p1;
     private string dogMessage1 = StringAsset.MissionsDialog.Six.d1;
-    private string correctMessage_1 = StringAsset.MissionsDialog.Six.correct_1;
     private string faultMessage_1 = StringAsset.MissionsDialog.Six.fault_1;
     private string[] historyMessage = { StringAsset.MissionsDialog.Six.history1, StringAsset.MissionsDialog.Six.history2,
-                                        StringAsset.MissionsDialog.Six.history3, StringAsset.MissionsDialog.Six.history4};
+                                        StringAsset.MissionsDialog.Six.history3, StringAsset.MissionsDialog.Six.history4, StringAsset.MissionsDialog.Six.history5};
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
     [HideInInspector]
@@ -83,8 +82,6 @@ public class Mission6 : ViewController
 
     private void SuccessClick()
     {
-        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        //fingerClick.Click += Count; // Add fingerClick event
         StartCoroutine(GameSuccess());
         isSuccess = true;
     }
@@ -125,7 +122,11 @@ public class Mission6 : ViewController
 
         dialogMissionView.DialogView(primeMinisterName, historyMessage[3], primeMinister);
 
-        yield return new WaitForSeconds(37);
+        yield return new WaitForSeconds(25);
+
+        dialogMissionView.DialogView(primeMinisterName, historyMessage[4], primeMinister);
+
+        yield return new WaitForSeconds(11);
 
         LeaveMission(isSuccess);
     }
@@ -203,20 +204,4 @@ public class Mission6 : ViewController
         fingerClick.Click -= Count;
         clickCount = 0; // initial
     }
-
-    /* // success can delete
-    public void GameSuccess()
-    {
-        if (clickCount == 1)
-        {
-            Debug.Log("GameSuccess1");
-            dialogMissionView.Show(true);
-            dialogMissionView.DialogView(oldPeopleName, correctMessage_1, primeMinister);
-        }
-
-        if (clickCount >= 2)
-        {
-            StarHistory(2);
-        }
-    }*/
 }
