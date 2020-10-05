@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
+using Utility;
 
 namespace Hsinpa.AR
 {
@@ -17,6 +18,8 @@ namespace Hsinpa.AR
 
         public Button GoogleSheetBtn;
         public Button TakeOffBtn;
+
+        public static string RandomSkinString;
 
         [Header("Skin Buttons")]
         [SerializeField]
@@ -42,6 +45,8 @@ namespace Hsinpa.AR
             int hasSpecialSkin = PlayerPrefs.GetInt(GeneralFlag.PlayerPrefKey.ZeroJet_Skin, -1);
             SetSkinBtnEvent(index: 0, normalSkin);
             SetSkinBtnEvent(index: hasSpecialSkin, normalSkin);
+
+            RandomSkinString = UtilityMethod.RollDice() == 0 ? GeneralFlag.ARZero.TrackImage_1 : GeneralFlag.ARZero.TrackImage_2;
         }
 
         public void ForceUpdate() {
