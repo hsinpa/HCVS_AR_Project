@@ -42,7 +42,7 @@ public class JoeGM : MonoBehaviour
     private void Awake()
     {
         joeGM = this;
-        missionName = new string[] { "A", "B", "C", "D", "E", "F", "G","I","J","K","L","M"};
+        missionName = new string[] { "A", "B", "C", "D", "E", "F", "G","I","J","K","L","M","N"};
     }
     // Start is called before the first frame update
     void Start()
@@ -97,7 +97,7 @@ public class JoeGM : MonoBehaviour
        
     }
     bool R = true;
-    
+    public bool testgame;
     public void UpdateIBeacon()
     {
         
@@ -121,7 +121,7 @@ public class JoeGM : MonoBehaviour
                         continue;
                     }
 
-                    if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3)
+                    if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3||testgame)
                     {
 
                     }
@@ -203,7 +203,7 @@ public class JoeGM : MonoBehaviour
 
             try
             {
-                textlog("MinDistance" + MinDistance + "aaaNumber" + MinNumber);
+                //textlog("MinDistance" + MinDistance + "aaaNumber" + MinNumber);
             }
             catch
             {
@@ -270,7 +270,7 @@ public class JoeGM : MonoBehaviour
                 }
                
                 CheckDistance = false;
-                Invoke("timeStop", 30f);
+                Invoke("timeStop", 10f);
             Missioning:
                     textlog("Missioning");
                 
