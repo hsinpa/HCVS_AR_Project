@@ -24,7 +24,6 @@ public class Mission6 : ViewController
     [HideInInspector]
     public bool isEnterMission;
     public GameObject hideBG;
-    public GameObject gameUI;
     public Button success;
     public Button fail;
     public GameObject closeVideo; //TODO;Deltete
@@ -96,12 +95,14 @@ public class Mission6 : ViewController
     private void Count()
     {
         clickCount++;
-        gameUI.SetActive(false);
 
         if (clickCount >= 0)
         {
             //if (isSuccess) { StartCoroutine(GameSuccess()); }
-            if (!isSuccess) { GameFail(); }
+            if (!isSuccess)
+            {
+                GameFail();
+            }
         }
     }
 

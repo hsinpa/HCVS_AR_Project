@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.Playables;
 
 public class Game07 : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class Game07 : MonoBehaviour
     public Transform movieCubeTransform;
     public Animator ani;
     public float speed = -2;
-
+    
     public GameObject gameMan;
     public GameObject speakMan;
     public GameObject arGameObject;
