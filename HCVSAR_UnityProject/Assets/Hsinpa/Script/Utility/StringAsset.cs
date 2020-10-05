@@ -320,7 +320,7 @@ namespace Expect.StaticAsset {
         public class Domain {
             public const string LocalHost = "http://localhost:8020/";
             public const string GooglePoorServer = "http://34.82.74.32:81/";
-            public const string EC2DeprecatedServer = "http://ec2-52-88-40-169.us-west-2.compute.amazonaws.com:84/";
+            public const string GoogleYuriServer = "http://35.197.38.83:81/";
         }
 
         public class API {
@@ -339,7 +339,7 @@ namespace Expect.StaticAsset {
 
         public static string GetFullAPIUri(string apiUrl)
         {
-            return Domain.GooglePoorServer + apiUrl;
+            return Domain.GoogleYuriServer + apiUrl;
         }
 
     }
