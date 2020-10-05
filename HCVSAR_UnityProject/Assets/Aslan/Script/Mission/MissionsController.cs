@@ -10,7 +10,7 @@ public class MissionsController : Singleton<MissionsController>
 
     public EnterMissionView enterMissionView;
 
-    //[HideInInspector]
+    [HideInInspector]
     public bool isEnter;
 
     private void Awake()

@@ -213,7 +213,7 @@ public class JoeGM : MonoBehaviour
             if (MinDistance < 5)
             {
                 //textlog("MinDistance05" + MissionsController.Instance.MissionsObj.Length.ToString()) ;
-                textlog("StartNumber" + MinNumber);
+                
 
                 try
                 {
@@ -233,15 +233,13 @@ public class JoeGM : MonoBehaviour
                     textlog("ErrorEnter");
                 }
 
-               
-                foreach (ViewController vc in MissionsController.Instance.viewControllers)
+                if (MissionsController.Instance.isEnter == true)
                 {
-                    if (vc.isEnter == true)
-                    {
-                        goto Missioning;
-                    }
+                    goto Missioning;
                 }
+                
                 TT = 0;
+                /*
                 foreach (TypeFlag.SocketDataType.StudentType studentType in studentData)
                 {
                     if (studentType.mission_id == missionName[0] || studentType.mission_id == missionName[2] || studentType.mission_id == missionName[6])
@@ -266,9 +264,11 @@ public class JoeGM : MonoBehaviour
                 }
                 else
                 {
-                    MissionsController.Instance.Missions(MinNumber);
-                }
-               
+                    
+                }*/
+                textlog("StartNumber" + MinNumber);
+                MissionsController.Instance.Missions(MinNumber);
+
                 CheckDistance = false;
                 Invoke("timeStop", 10f);
             Missioning:
