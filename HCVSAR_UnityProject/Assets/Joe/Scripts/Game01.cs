@@ -8,6 +8,7 @@ using UnityEngine.Video;
 public class Game01 : MonoBehaviour
 {
     public float OverTime = 10;
+    public float VideoTime = 12;
     public Text timeUI;
     public float f;
     public RectTransform strip;
@@ -16,29 +17,38 @@ public class Game01 : MonoBehaviour
     public VideoPlayer vp;
     public VideoClip vc;
     public VideoClip vc2;
-    // Start is called before the first frame update
+    public GameObject gameUI;
+    
     void Start()
     {
         vp.clip = vc;
         vp.Play();
     }
 
-    // Update is called once per frame
     public void UI_Enter()
     {
-        if (f<10) {
-            f++;
-        }
+        if (f < 10) { f++; }
     }
+
     void Update()
     {
-        //transform.position = Camera.main.transform.position;
+        
         if (f >= 10)
         {
+            gameUI.SetActive(false);
             vp.clip = vc2;
             vp.Play();
             
-            unityEvent.Invoke();
+            if (VideoTime > 0)
+            {
+                VideoTime -= Time.deltaTime;
+            }
+
+            if (VideoTime < 0)
+            {
+                vp.Pause();
+                unityEvent.Invoke();
+            }
         }
         else
         {
@@ -50,7 +60,7 @@ public class Game01 : MonoBehaviour
             if (OverTime > 0)
             {
                 OverTime -= Time.deltaTime;
-                timeUI.text = OverTime.ToString();
+                timeUI.text = Mathf.RoundToInt(OverTime).ToString();
                 strip.localScale = new Vector3(0 + (f / 10), 1, 1);
             }
             else
@@ -60,4 +70,5 @@ public class Game01 : MonoBehaviour
         }
         
     }
+
 }
