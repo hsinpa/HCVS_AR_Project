@@ -29,7 +29,10 @@ public class Mission0 : ViewController
     private string faultMessage = StringAsset.MissionsQustion.Zero.fault;
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
+    [SerializeField]
     private VideoEffectCtrl videoEffect;
+    [SerializeField]
+    private Camera camera;
 
     public GameObject hideBG;
     public GameObject video;
@@ -48,12 +51,24 @@ public class Mission0 : ViewController
         
         JoeMain.Main.Start360Video(0);
 
-        situationMissionView.Show(true);
+        StartCoroutine(EnterVideoView());
+    }
+
+    public IEnumerator EnterVideoView()
+    {
+        videoEffect.FaceVideoToCameraFront(camera);
+        videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
+
+        yield return new WaitForSeconds(2);
+
+        videoEffect.SetCoverPercentAnim(0, 0.01f);
+
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
 
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += ClickCount; // Add fingerClick event
+
     }
 
     void ClickCount()
@@ -174,6 +189,7 @@ public class Mission0 : ViewController
     {
         endMissionView.Show(false);
         JoeMain.Main.Stop360Video();
+        videoEffect.SetCoverPercent(1);
 
         InitFingerClick();
         RemoveAllListeners();

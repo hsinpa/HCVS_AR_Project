@@ -40,10 +40,10 @@ public class Mission2 : ViewController
 
         JoeMain.Main.Start360Video(1);
         
-        StartCoroutine(EnterGameView());
+        StartCoroutine(EnterVideoView());
     }
 
-    public IEnumerator EnterGameView()
+    public IEnumerator EnterVideoView()
     {
         videoEffect.FaceVideoToCameraFront(camera);
         videoEffect.SetCoverPercentAnim(0.95f, 0.1f);
