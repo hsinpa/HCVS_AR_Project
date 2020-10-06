@@ -33,6 +33,10 @@ namespace Hsinpa.Video
             this.transform.Rotate(new Vector3(0, -90, 0));
         }
 
+        public void FaceDirection(Vector3 vector) {
+            this.transform.rotation = Quaternion.LookRotation(vector);
+        }
+
         public void SetCoverPercent(float p_percent) {
             _mat.SetFloat(TransitionTet, p_percent);
         }
