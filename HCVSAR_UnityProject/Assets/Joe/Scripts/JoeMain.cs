@@ -22,6 +22,7 @@ public class JoeMain : MonoBehaviour
     public Image image;
 
     public static JoeMain Main;
+    public VideoClip[] clip;
     public VideoData[] VideoData;
     public VideoData NowVideoData;
     public VideoPlayer vp;
@@ -37,17 +38,18 @@ public class JoeMain : MonoBehaviour
     private void Awake()
     {
         Main = this;
-    }// Start is called before the first frame update
+    }
+
     void Start()
     {
         vp.Play();
-        
 
         msgSys = this.GetComponent<ES_MessageSystem>();
     }
     
     public void Start360Video(int number)
     {
+        VideoData[number].clip = clip[number];
         NowVideoData = VideoData[number];
         vp.clip = NowVideoData.clip;
         StartCoroutine(CoroutineTest());
