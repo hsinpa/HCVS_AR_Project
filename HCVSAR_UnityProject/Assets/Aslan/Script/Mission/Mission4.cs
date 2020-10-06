@@ -54,7 +54,7 @@ public class Mission4 : ViewController
     public IEnumerator EnterGameView()
     {
         videoEffect.FaceVideoToCameraFront(camera);
-        videoEffect.SetCoverPercentAnim(0.95f, 0.1f);
+        videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
 
         yield return new WaitForSeconds(2);
 
@@ -146,7 +146,7 @@ public class Mission4 : ViewController
         clickCount++;
         picture.enabled = true;
         picture.sprite = pic;
-
+        Debug.Log("Count ++" + clickCount);
         if (clickCount >= 0)
         {
             if (isSuccess) { GameSuccess(); }
