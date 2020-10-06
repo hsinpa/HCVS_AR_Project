@@ -27,13 +27,14 @@ public class Mission3 : ViewController
     public Button fail;
     public GameObject hideBG;
     public GameObject video;
-
+    [SerializeField]
     private VideoEffectCtrl videoEffect;
 
     public override void Enable()
     {
         base.Enable();
 
+        videoEffect.SetCoverPercent(0);
         JoeMain.Main.Start360Video(2);
         JoeMain.Main.PlayGame(1);
         hideBG.SetActive(false);
@@ -117,7 +118,7 @@ public class Mission3 : ViewController
     {
         int score = success ? 5 : 0;
         dialogMissionView.Show(false);
-        //picture.enabled = false;
+        
         PostScoreEvent.Instance.PostScore(score, MainView.Instance.loginData.userType);
 
         if (success)
@@ -156,6 +157,7 @@ public class Mission3 : ViewController
 
         MissionsController.Instance.ReSetMissions();
         JoeMain.Main.Stop360Video();
+        videoEffect.SetCoverPercent(1);
         Debug.Log("Mission 3 Leave");
     }
 
