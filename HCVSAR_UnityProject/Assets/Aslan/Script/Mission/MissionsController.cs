@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using Expect.View;
 
 public class MissionsController : Singleton<MissionsController>
@@ -7,6 +8,7 @@ public class MissionsController : Singleton<MissionsController>
 
     public GameObject[] MissionsObj;
     public ViewController[] viewControllers;
+    public Sprite[] sprites;
 
     public EnterMissionView enterMissionView;
 
@@ -37,6 +39,7 @@ public class MissionsController : Singleton<MissionsController>
     public void Missions(int number)
     {
         MissionStart(number);
+        enterMissionView.image.sprite = sprites[number];
 
         if (number != 3)
         { 

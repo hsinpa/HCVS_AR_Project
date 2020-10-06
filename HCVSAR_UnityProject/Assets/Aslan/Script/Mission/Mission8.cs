@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Expect.StaticAsset;
+using Hsinpa.Video;
 
 public class Mission8 : ViewController
 {
@@ -12,14 +13,15 @@ public class Mission8 : ViewController
     private string dogName = StringAsset.MissionsDialog.Person.dog;
     private string dogMessage1 = StringAsset.MissionsDialog.Eight.d1;
     private string dogMessage2 = StringAsset.MissionsDialog.Eight.d2;
-    //private string[] historyMessage = { StringAsset.MissionsDialog.Eight.history1, StringAsset.MissionsDialog.Eight.history2,
-                                       // StringAsset.MissionsDialog.Eight.history3, StringAsset.MissionsDialog.Eight.history4 };
 
     [HideInInspector]
     public bool isEnterMission;
     public GameObject hideBG;
     public GameObject video;
     public GameObject toolView;
+
+    [SerializeField]
+    private VideoEffectCtrl videoEffect;
 
     public override void Enable()
     {
@@ -29,6 +31,7 @@ public class Mission8 : ViewController
         hideBG.SetActive(false);
         video.SetActive(true);
         JoeMain.Main.StarAndPlay360Video(4);// Start360Video(4);
+        videoEffect.SetCoverPercentAnim(0f, 0.1f);
     }
 
     public override void NextAction()
@@ -83,6 +86,7 @@ public class Mission8 : ViewController
     {
         dialogMissionView.Show(false);
         JoeMain.Main.Stop360Video();
+        videoEffect.SetCoverPercent(1);
 
         InitFingerClick();
         RemoveAllEvent();

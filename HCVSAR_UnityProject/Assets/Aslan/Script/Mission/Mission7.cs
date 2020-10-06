@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Expect.StaticAsset;
+using Hsinpa.Video;
 
 public class Mission7 : ViewController
 {
@@ -25,6 +26,11 @@ public class Mission7 : ViewController
     public GameObject hideBG;
     public GameObject video;
 
+    [SerializeField]
+    private VideoEffectCtrl videoEffect;
+    //[SerializeField]
+    //private Camera camera;
+
     public override void Enable()
     {
         base.Enable();
@@ -34,11 +40,25 @@ public class Mission7 : ViewController
         
         JoeMain.Main.Start360Video(3);
 
+        StartCoroutine(EnterVideoView());
+    }
+
+    public IEnumerator EnterVideoView()
+    {
+        //videoEffect.FaceVideoToCameraFront(camera);
+        videoEffect.FaceDirection(Vector3.forward);
+        videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
+
+        yield return new WaitForSeconds(2);
+
+        videoEffect.SetCoverPercentAnim(0, 0.01f);
+
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
 
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += ClickCount; // Add fingerClick event
+
     }
 
     void ClickCount()
@@ -124,6 +144,7 @@ public class Mission7 : ViewController
         
         MissionsController.Instance.ReSetMissions();
         JoeMain.Main.Stop360Video();
+        videoEffect.SetCoverPercent(1);
 
         Debug.Log("Mission 7 Leave");
     }

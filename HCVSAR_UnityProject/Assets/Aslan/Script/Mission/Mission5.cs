@@ -43,6 +43,8 @@ public class Mission5 : ViewController
         hideBG.SetActive(false);
         video.SetActive(true);
         //JoeMain.Main.Start360Video(0);
+        JoeMain.Main.ControllerARCamera(true);
+        JoeMain.Main.PlayGame(6);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
@@ -195,6 +197,9 @@ public class Mission5 : ViewController
 
         hideBG.SetActive(true);
         video.SetActive(false);
+
+        //JoeMain.Main.ControllerARCamera(false);
+        JoeMain.Main.CloseGame(6);
         Debug.Log("Mission 5 Leave");
 
         StartCoroutine(GetMail());

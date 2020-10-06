@@ -14,10 +14,9 @@ namespace Expect.View
         [SerializeField]
         private Text missionsName;
 
-        [SerializeField]
         public Button EnterButton;
-        [SerializeField]
         public Button LeaveButton;
+        public Image image;
 
         public delegate void OnButtonClick();
         public event OnButtonClick OnEnable;
@@ -27,9 +26,6 @@ namespace Expect.View
         {
             missionsTitle.text = missionTitle;
             missionsName.text = missionName;
-
-            //EnterButton.onClick.AddListener(() => OnEnable());
-            //LeaveButton.onClick.AddListener(() => OnDisable());
         }
 
         public void RemoveListeners()
