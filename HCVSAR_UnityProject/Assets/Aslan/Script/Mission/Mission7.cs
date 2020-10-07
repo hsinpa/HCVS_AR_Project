@@ -28,8 +28,8 @@ public class Mission7 : ViewController
 
     [SerializeField]
     private VideoEffectCtrl videoEffect;
-    //[SerializeField]
-    //private Camera camera;
+    [SerializeField]
+    private Camera camera;
 
     public override void Enable()
     {
@@ -45,8 +45,8 @@ public class Mission7 : ViewController
 
     public IEnumerator EnterVideoView()
     {
-        //videoEffect.FaceVideoToCameraFront(camera);
-        videoEffect.FaceDirection(Vector3.forward);
+        videoEffect.FaceVideoToCameraFront(camera);
+        //videoEffect.FaceDirection(Vector3.forward);
         videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
 
         yield return new WaitForSeconds(2);

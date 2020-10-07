@@ -31,7 +31,7 @@ public class Mission8 : ViewController
         hideBG.SetActive(false);
         video.SetActive(true);
         JoeMain.Main.StarAndPlay360Video(4);// Start360Video(4);
-        videoEffect.SetCoverPercentAnim(0f, 0.1f);
+        videoEffect.SetCoverPercentAnim(0f, 0.05f);
     }
 
     public override void NextAction()
@@ -66,14 +66,13 @@ public class Mission8 : ViewController
 
         if (clickCount == 2)
         {
-            dialogMissionView.Show(false);
-            toolView.SetActive(true);
+            dialogMissionView.DialogView(dogName, dogMessage2, dog);
         }
 
         if (clickCount == 3)
         {
-            dialogMissionView.Show(true);
-            dialogMissionView.DialogView(dogName, dogMessage2, dog);
+            dialogMissionView.Show(false);
+            toolView.SetActive(true);
         }
 
         if (clickCount == 4)
@@ -84,7 +83,6 @@ public class Mission8 : ViewController
 
     private void LeaveEvent()
     {
-        dialogMissionView.Show(false);
         JoeMain.Main.Stop360Video();
         videoEffect.SetCoverPercent(1);
 

@@ -42,6 +42,7 @@ public class MapCollect : MonoBehaviour
     private int clickCount;
 
     public GameObject toolView;
+    public MainBaseVIew mainBaseVIew;
 
     private void Start()
     {
@@ -74,6 +75,8 @@ public class MapCollect : MonoBehaviour
 
     public IEnumerator GetAllMap()
     {
+        mainBaseVIew.PanelController(true);
+
         yield return new WaitForSeconds(1);
         
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger

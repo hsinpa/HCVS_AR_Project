@@ -427,25 +427,25 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private void MainButtonClick()
     {
         user.onClick.AddListener(() => {
-            mainBaseVIew.ShowPanel();
+            mainBaseVIew.PanelController(true);
             userInfoPanel.Show(true);
             userInfoPanel.UserInfoStart(loginData.userType);
         });
 
         bag.onClick.AddListener(() => {
             bagPanel.Show(true);
-            mainBaseVIew.ShowPanel();
+            mainBaseVIew.PanelController(true);
         });
 
         rank.onClick.AddListener(() => {
-            mainBaseVIew.ShowPanel();
+            mainBaseVIew.PanelController(true);
             rankPanel.Show(true);
             rankPanel.RankInfoStart();
         });
 
         connect.onClick.AddListener(() => {
             connectPanel.Show(true);
-            mainBaseVIew.ShowPanel();
+            mainBaseVIew.PanelController(true);
             connectPanel.ConnectStart();
         });
     }

@@ -23,6 +23,7 @@ public class Game07 : MonoBehaviour
 
     void Start()
     {
+        arGameObject.SetActive(false);
         speakMan.SetActive(false);
         targetStone.SetActive(false);
     }
@@ -31,6 +32,7 @@ public class Game07 : MonoBehaviour
     {
         StartEvent.Invoke();
         isARStoneFollowCamera = true;
+        arGameObject.SetActive(true);
         targetStone.SetActive(true);
     }
     public void UI_Enter()
@@ -67,9 +69,11 @@ public class Game07 : MonoBehaviour
     {
         if (!isARStoneFollowCamera)
         {
+            isARStoneFollowCamera = false;
+
             var _camera = Camera.main;
             var _cameraFront = _camera.transform.forward;
-            var _frontPos = _cameraFront * 5;
+            var _frontPos = _cameraFront * 10;
 
             _cameraFront.y = 0;
             arGameObject.transform.position = _frontPos;

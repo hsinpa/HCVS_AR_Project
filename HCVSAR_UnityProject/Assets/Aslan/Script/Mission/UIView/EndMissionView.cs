@@ -25,7 +25,7 @@ namespace Expect.View
 
         public void EndMission(int score, string endMessage)
         {
-            mainBaseVIew.ShowPanel();
+            mainBaseVIew.PanelController(true);
 
             message.text = string.Format(endMessage, score);
             scoreText.text = score.ToString();
@@ -35,7 +35,7 @@ namespace Expect.View
 
         public void RemoveListeners()
         {
-            mainBaseVIew.ClosePanel();
+            mainBaseVIew.PanelController(false);
             LeaveButton.onClick.RemoveAllListeners();
         }
     }
