@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Hsinpa.Video;
 using Expect.StaticAsset;
 
 public class Mission5 : ViewController
@@ -34,6 +35,8 @@ public class Mission5 : ViewController
     public GameObject hideBG;
     public GameObject video;
     public GameObject toolView;
+    public VideoEffectCtrl videoEffect;
+    public MainBaseVIew mainBaseVIew;
 
     public override void Enable()
     {
@@ -42,9 +45,9 @@ public class Mission5 : ViewController
         isEnter = true;
         hideBG.SetActive(false);
         video.SetActive(true);
-        //JoeMain.Main.Start360Video(0);
-        JoeMain.Main.ControllerARCamera(true);
+
         JoeMain.Main.PlayGame(6);
+        videoEffect.SetCoverPercentAnim(0, 0.01f);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
@@ -168,7 +171,7 @@ public class Mission5 : ViewController
 
             if (clickCount == historyMessage.Length + number)
             {
-                Debug.Log("555Finish");
+                Debug.Log("5 Finish");
                 LeaveMission(score);
             }
 
@@ -184,7 +187,7 @@ public class Mission5 : ViewController
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveEvent;
-        Debug.Log("Mission 5555 Leave");
+        Debug.Log("Mission 5 Leave");
     }
 
     private void LeaveEvent()
@@ -207,6 +210,8 @@ public class Mission5 : ViewController
 
     public IEnumerator GetMail()
     {
+        mainBaseVIew.PanelController(true);
+
         yield return new WaitForSeconds(1);
 
         dialogMissionView.Show(true);

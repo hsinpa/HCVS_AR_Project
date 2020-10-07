@@ -35,18 +35,6 @@ namespace Expect.View
 
         public void UserInfoStart(TypeFlag.UserType type)
         {
-            /*
-            switch (type)
-            {
-                case TypeFlag.UserType.Guest:
-                    GuestInfo();
-                    break;
-
-                case TypeFlag.UserType.Student:
-                    StudentInfo();
-                    break;
-            }
-            */
             StudentInfo(type);
             SwitchPanelController();
         }
@@ -59,11 +47,8 @@ namespace Expect.View
 
         private void StudentInfo(TypeFlag.UserType type)
         {
-            string student_name = "Guest";// = MainView.Instance.loginData.user_id;
-            string student_id = "None";// = MainView.Instance.loginData.username;
-            //List<TypeFlag.SocketDataType.StudentType> studentData = MainView.Instance.studentData;
-
-            //if (studentData == null) return;
+            string student_name = "Guest";
+            string student_id = "None";
 
             float height = 20f;
             string score;
@@ -124,52 +109,12 @@ namespace Expect.View
 
             UserInfoText.text = string.Format("{0}, {1}\n{2}", student_name, student_id, isConnection);
         }
-        /*
-        private void GuestInfo()
-        {
-            float height = 20f;
-            string score;
-            string student_name = "Guest";
-            string student_id = "None";
 
-            isConnection = true;
-
-            MissionArraySetUp();
-
-            for (int i = 0; i < missionArray.Length; i++)
-            {
-                Color green = new Color32(18, 255, 73, 255);
-
-                Transform missionTransform = Instantiate(missionInfo, missionContainer);
-                RectTransform missionRectTransform = missionTransform.GetComponent<RectTransform>();
-
-                missionRectTransform.anchoredPosition = new Vector2(0, -height * i);
-                missionTransform.Find("score").GetComponent<Text>().color = green;
-                missionTransform.Find("id").GetComponent<Text>().color = green;
-
-                if (missionArray[i].total_score < 10)
-                    score = "0" + missionArray[i].total_score.ToString();
-                else
-                    score = missionArray[i].total_score.ToString();
-
-                missionTransform.Find("id").GetComponent<Text>().text = missionArray[i].mission_name;
-                missionTransform.Find("score").GetComponent<Text>().text = score;
-
-                selectTransformList.Add(missionTransform);
-                missionTransform.gameObject.SetActive(true);
-            }
-
-            TotalScoreText.text = MainView.Instance.totalScoreString;
-            isConnection = true ? status.sprite = statusOn : status.sprite = statusOff;
-
-            UserInfoText.text = string.Format("{0}, {1}\n{2}", student_name, student_id, isConnection);
-        }
-        */
         private void SwitchPanelController()
         {
             close.onClick.AddListener(() => {
                 this.Show(false);
-                mainBaseVIew.ClosePanel();
+                mainBaseVIew.PanelController(false);
             });
         }
 

@@ -42,6 +42,7 @@ public class Mission0 : ViewController
     public Button success;
     public Button fail;
     public GameObject toolView;
+    public MainBaseVIew mainBaseVIew;
 
     public override void Enable()
     {
@@ -56,8 +57,8 @@ public class Mission0 : ViewController
 
     public IEnumerator EnterVideoView()
     {
-        //videoEffect.FaceVideoToCameraFront(camera);
-        videoEffect.FaceDirection(Vector3.forward);
+        videoEffect.FaceVideoToCameraFront(camera);
+        //videoEffect.FaceDirection(Vector3.forward);
         videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
 
         yield return new WaitForSeconds(2);
@@ -205,6 +206,8 @@ public class Mission0 : ViewController
 
     public IEnumerator GetMap()
     {
+        mainBaseVIew.PanelController(true);
+
         yield return new WaitForSeconds(1);
 
         dialogMissionView.Show(true);

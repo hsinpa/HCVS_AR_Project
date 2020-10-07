@@ -47,7 +47,7 @@ namespace Expect.View
         {
             close.onClick.AddListener(() => {
                 this.Show(false);
-                mainBaseVIew.ClosePanel();
+                mainBaseVIew.PanelController(false);
             });
         }
     }
