@@ -14,6 +14,7 @@ public class GetGPS : MonoBehaviour
     void Start()
     {
         StartCoroutine(StartGPS());
+        Input.location.Start();
         GetGps = "N:" + Input.location.lastData.latitude + " E:" + Input.location.lastData.longitude;
         GetGps = GetGps + " Time:" + Input.location.lastData.timestamp;
         obj.transform.position = new Vector3((NE.x - Input.location.lastData.latitude) * 111000, obj.position.y, (NE.y - Input.location.lastData.longitude) * 111000);
