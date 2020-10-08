@@ -35,7 +35,7 @@ public class Mission6 : ViewController
 
         isEnterMission = true;
         hideBG.SetActive(false);
-        JoeMain.Main.ControllerARCamera(true);
+        //JoeMain.Main.ControllerARCamera(true);
 
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(oldPeopleName, oldPeopleMessage1, primeMinister);
@@ -183,6 +183,8 @@ public class Mission6 : ViewController
 
         closeVideo.SetActive(true);
         JoeMain.Main.CloseARGame(3);
+        //JoeMain.Main.ControllerARCamera(false);
+
         Debug.Log("Mission 6 Leave");
     }
 

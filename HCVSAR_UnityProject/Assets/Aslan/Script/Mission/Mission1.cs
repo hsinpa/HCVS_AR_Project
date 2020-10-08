@@ -111,7 +111,7 @@ public class Mission1 : ViewController
         if(clickCount == number)
         {
             hideBG.SetActive(false);
-            JoeMain.Main.ControllerARCamera(true);
+            //JoeMain.Main.ControllerARCamera(true);
             JoeMain.Main.PlayARGame(4);
         }
 
@@ -150,6 +150,7 @@ public class Mission1 : ViewController
         mainCanvas.interactable = true;
 
         JoeMain.Main.CloseARGame(4);
+        //JoeMain.Main.ControllerARCamera(false);
         Debug.Log("Mission 1 Leave");
     }
 

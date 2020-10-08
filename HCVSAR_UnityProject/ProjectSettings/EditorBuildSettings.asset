@@ -8,12 +8,15 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Hsinpa/Scenes/HsinpaUISCene.unity
     guid: 7c408737799854d0fb4fb5a9f5f0cd6a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Aslan/Scenes/Main.unity
     guid: 2112234de5aac824ab86f507f37ba9a3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Hsinpa/Scenes/ZeroJetARScan.unity
     guid: 6d47c0a54c3f21148ac8f109287de81c
+  - enabled: 1
+    path: Assets/001.unity
+    guid: 579b94e0126764fd4bb3dc71c58e1f11
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 6bbd17eb389a04f7a9c82f01e84fc874,
       type: 2}
