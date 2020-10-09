@@ -39,7 +39,6 @@ public class Mission2 : ViewController
         hideBG.SetActive(false);
 
         JoeMain.Main.Start360Video(1);
-        JoeMain.Main.EnterVideoOpenARCamera(true);
 
         StartCoroutine(EnterVideoView());
     }
@@ -53,7 +52,6 @@ public class Mission2 : ViewController
         yield return new WaitForSeconds(2);
 
         videoEffect.SetCoverPercentAnim(0, 0.01f);
-        JoeMain.Main.EnterVideoOpenARCamera(false);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);

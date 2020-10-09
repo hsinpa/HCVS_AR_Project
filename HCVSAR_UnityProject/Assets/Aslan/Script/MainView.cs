@@ -48,6 +48,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [SerializeField]
     private Text TotalScoreText;
     [SerializeField]
+    private Text RoomNameText;
+    [SerializeField]
     private Text EndLocationText;
 
     [Header("Info View")]
@@ -303,6 +305,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         switch (type)
         {
             case TypeFlag.UserType.Guest:
+                RoomNameText.text = "Guest";
                 GuestTotalScore();
                 break;
 
@@ -310,6 +313,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
                 // id
                 studentScoreData.student_id = loginData.user_id;
+                RoomNameText.text = string.Format("{0}, {1}", loginData.username, loginData.user_id);
 
                 // get student data
                 PrepareScoreData(loginData.user_id);

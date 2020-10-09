@@ -5,7 +5,6 @@ using UnityEngine.Video;
 using UnityEngine.UI;
 using RemptyTool.ES_MessageSystem;
 using Expect.StaticAsset;
-using UnityEngine.XR.ARFoundation;
 
 [RequireComponent(typeof(ES_MessageSystem))]
 public class JoeMain : MonoBehaviour
@@ -34,8 +33,6 @@ public class JoeMain : MonoBehaviour
     
     private ES_MessageSystem msgSys;
     public GameObject[] games;
-    public GameObject ARcamera;
-    public GameObject camera;
 
     private void Awake()
     {
@@ -112,15 +109,7 @@ public class JoeMain : MonoBehaviour
 
     public void ControllerARCamera(bool open)
     {
-        camera.SetActive(!open);
-        ARcamera.GetComponent<ARSessionOrigin>().enabled = open;
         VideoPlane.SetActive(!open);
-    }
-
-    public void EnterVideoOpenARCamera(bool open)
-    {
-        camera.SetActive(!open);
-        ARcamera.GetComponent<ARSessionOrigin>().enabled = open;
     }
 
     public void PlayGame(int number)

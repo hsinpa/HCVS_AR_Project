@@ -51,20 +51,19 @@ public class Mission0 : ViewController
         hideBG.SetActive(false);
         
         JoeMain.Main.Start360Video(0);
-        JoeMain.Main.EnterVideoOpenARCamera(true);
+        //JoeMain.Main.EnterVideoOpenARCamera(true);
         StartCoroutine(EnterVideoView());
     }
 
     public IEnumerator EnterVideoView()
     {
         videoEffect.FaceVideoToCameraFront(camera);
-        //videoEffect.FaceDirection(Vector3.forward);
         videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
 
         yield return new WaitForSeconds(2);
 
         videoEffect.SetCoverPercentAnim(0, 0.01f);
-        JoeMain.Main.EnterVideoOpenARCamera(false);
+        //JoeMain.Main.EnterVideoOpenARCamera(false);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
@@ -192,7 +191,6 @@ public class Mission0 : ViewController
     {
         endMissionView.Show(false);
         JoeMain.Main.Stop360Video();
-        JoeMain.Main.EnterVideoOpenARCamera(false);
         videoEffect.SetCoverPercent(1);
 
         InitFingerClick();
