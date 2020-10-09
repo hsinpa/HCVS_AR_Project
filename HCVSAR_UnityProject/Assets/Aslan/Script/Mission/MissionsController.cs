@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Expect.View;
+using UnityEngine.XR.ARFoundation;
 
 public class MissionsController : Singleton<MissionsController>
 {
@@ -11,6 +12,7 @@ public class MissionsController : Singleton<MissionsController>
     public Sprite[] sprites;
 
     public EnterMissionView enterMissionView;
+    public ARSession ARSession;
 
     [HideInInspector]
     public bool isEnter;
@@ -32,12 +34,14 @@ public class MissionsController : Singleton<MissionsController>
     public void ReSetMissions()
     {
         isEnter = false;
+        ARSession.enabled = false;
         foreach (GameObject g in MissionsObj) { g.SetActive(false); }
         MissionsObj[1].SetActive(true);
     }
 
     public void Missions(int number)
     {
+        ARSession.enabled = true;
         MissionStart(number);
         enterMissionView.image.sprite = sprites[number];
 
@@ -61,6 +65,7 @@ public class MissionsController : Singleton<MissionsController>
 
     public void LeaveGame(int number)
     {
+        ARSession.enabled = false;
         viewControllers[number].isEnter = false;
         ReSetMissions();
         CloseEnterView();

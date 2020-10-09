@@ -54,7 +54,7 @@ namespace Hsinpa.Video
 
             float currentValue = _mat.GetFloat(TransitionTet);
             float finalValue = Mathf.Lerp(currentValue, _target, _speed);
-
+            
             if (Mathf.Abs(_target - finalValue) < 0.01f) {
                 isAnime = false;
                 finalValue = _target;
