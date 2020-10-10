@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using Expect.View;
 using Expect.StaticAsset;
+using UnityEngine.XR.ARFoundation;
 
 public class Mission1 : ViewController
 {
@@ -47,7 +48,7 @@ public class Mission1 : ViewController
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(dogName, dogMessage1, dog);
 
-        MissionsController.Instance.ReSetMissions();
+        MissionsController.Instance.ARSession.enabled = true;
     }
 
     private void FailClick()
@@ -60,7 +61,7 @@ public class Mission1 : ViewController
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(dogName, dogMessage1, dog);
 
-        MissionsController.Instance.ReSetMissions();
+        MissionsController.Instance.ARSession.enabled = true;
     }
 
     private void Count()
@@ -108,10 +109,10 @@ public class Mission1 : ViewController
 
     private void StarHistory(int number)
     {
-        if(clickCount == number)
+        if (clickCount == number)
         {
             hideBG.SetActive(false);
-            JoeMain.Main.ControllerARCamera(true);
+            JoeMain.Main.ControllerVideoPlane(true);
             JoeMain.Main.PlayARGame(4);
         }
 
@@ -149,8 +150,9 @@ public class Mission1 : ViewController
 
         mainCanvas.interactable = true;
 
+        MissionsController.Instance.ReSetMissions();
         JoeMain.Main.CloseARGame(4);
-        JoeMain.Main.ControllerARCamera(false);
+        JoeMain.Main.ControllerVideoPlane(false);
         Debug.Log("Mission 1 Leave");
     }
 

@@ -107,7 +107,7 @@ public class JoeMain : MonoBehaviour
         UI.SetActive(false);
     }
 
-    public void ControllerARCamera(bool open)
+    public void ControllerVideoPlane(bool open)
     {
         VideoPlane.SetActive(!open);
     }

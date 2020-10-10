@@ -26,7 +26,7 @@ public class Mission9 : ViewController
         hideBG.SetActive(false);
         video.SetActive(true);
 
-        JoeMain.Main.ControllerARCamera(true);
+        JoeMain.Main.ControllerVideoPlane(true);
 
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += ClickCount; // Add fingerClick event
@@ -80,7 +80,7 @@ public class Mission9 : ViewController
         hideBG.SetActive(true);
 
         JoeMain.Main.CloseARGame(5);
-        JoeMain.Main.ControllerARCamera(false);
+        JoeMain.Main.ControllerVideoPlane(false);
         MissionsController.Instance.ReSetMissions();
         Debug.Log("Mission 9 Leave");
     }
