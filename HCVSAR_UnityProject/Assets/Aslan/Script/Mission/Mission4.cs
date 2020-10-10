@@ -36,7 +36,7 @@ public class Mission4 : ViewController
     public GameObject gameUI;
     public Button success;
     public Button fail;
-    public Camera camera;
+    private Camera _camera;
     public VideoEffectCtrl videoEffect;
     private bool isSuccess;
 
@@ -47,6 +47,7 @@ public class Mission4 : ViewController
         isEnterMission = true;
         hideBG.SetActive(false);
 
+        _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
         JoeMain.Main.Start360Video(5);
 
         StartCoroutine(EnterGameView());
@@ -54,7 +55,7 @@ public class Mission4 : ViewController
 
     public IEnumerator EnterGameView()
     {
-        videoEffect.FaceVideoToCameraFront(camera);
+        videoEffect.FaceVideoToCameraFront(_camera);
         //videoEffect.FaceDirection(Vector3.forward);
         videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
 

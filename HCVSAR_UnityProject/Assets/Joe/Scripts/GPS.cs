@@ -19,6 +19,7 @@ public class GPS : MonoBehaviour
     public Transform obj;
     public Transform obj1;
     Vector2 NE = new Vector2(22.615582f, 120.282428f);
+    bool GPSUPD = true;
     // Use this for initialization  
     void Start()
     {
@@ -39,8 +40,10 @@ public class GPS : MonoBehaviour
         verticalAccuracy = locationInfo.verticalAccuracy; //垂直精確度
         latitude = locationInfo.latitude; //裝置緯度
         longitude = locationInfo.longitude;//裝置緯度
-        obj.transform.position = new Vector3((NE.x - latitude) * 111000, obj.position.y, (NE.y - longitude) * 111000);
-
+        if (GPSUPD)
+        {
+            obj.transform.position = new Vector3(((NE.x - latitude) * 111000) + Camera.main.transform.position.x, obj.position.y, ((NE.y - longitude) * 111000) + Camera.main.transform.position.z);
+        }
         timestamp = locationInfo.timestamp;//時間戳(自1970年以來以秒為單位)位置時最後一次更新。
     }
 
@@ -56,5 +59,13 @@ public class GPS : MonoBehaviour
         GUI.Label(new Rect(50, 500, 500, 80), "緯度     :   " + latitude);
         GUI.Label(new Rect(50, 600, 500, 80), "經度     :   " + longitude);
         GUI.Label(new Rect(50, 700, 500, 80), "時間戳   :   " + timestamp);
+        if (GUI.Button(new Rect(50, 800, 120, 40), "SetPosition"))
+        {
+            NE = new Vector2(latitude, longitude);
+        }
+        if (GUI.Button(new Rect(50, 900, 120, 40), "stopGps"))
+        {
+            GPSUPD = false;
+        }
     }
 }
