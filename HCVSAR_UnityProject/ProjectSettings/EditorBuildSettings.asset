@@ -8,10 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Hsinpa/Scenes/HsinpaUISCene.unity
     guid: 7c408737799854d0fb4fb5a9f5f0cd6a
-  - enabled: 0
+  - enabled: 1
     path: Assets/Aslan/Scenes/Main.unity
     guid: 2112234de5aac824ab86f507f37ba9a3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Aslan/Scenes/Main_Test.unity
     guid: a88d1a2fadc964a09b2bf4fb81aa2ff6
   - enabled: 1
