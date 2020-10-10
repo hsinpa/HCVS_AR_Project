@@ -13,14 +13,44 @@ public class MissionsController : Singleton<MissionsController>
 
     public EnterMissionView enterMissionView;
     public ARSession ARSession;
+    public GyroControler gyroControler;
+
+    public GameObject MainCameraObj;
+    public GameObject ARCameraObj;
+
+    [HideInInspector]
+    public bool isARsupport = true;
+    [HideInInspector]
+    public Camera MainCamera;
+    [HideInInspector]
+    public Camera ARcamera;
 
     [HideInInspector]
     public bool isEnter;
 
     private void Awake()
     {
+        MainCamera = MainCameraObj.GetComponent<Camera>();
+        ARcamera = ARCameraObj.transform.GetChild(0).GetComponent<Camera>();
+
+        if (ARSession.state == ARSessionState.Unsupported)
+        {
+            isARsupport = false;
+            gyroControler.StartGyro();
+        }
+        SwitchMainCamera(isARsupport);
+    }
+
+    private void Start()
+    {
         InitController();
         ReSetMissions();
+    }
+
+    private void SwitchMainCamera(bool isSupport)
+    {
+        ARCameraObj.SetActive(isSupport);
+        MainCameraObj.SetActive(!isSupport);
     }
 
     private void InitController()
@@ -41,7 +71,8 @@ public class MissionsController : Singleton<MissionsController>
 
     public void Missions(int number)
     {
-        ARSession.enabled = true;
+        if (isARsupport) { ARSession.enabled = true; }
+
         MissionStart(number);
         enterMissionView.image.sprite = sprites[number];
 

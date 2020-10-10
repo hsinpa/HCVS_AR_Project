@@ -31,7 +31,7 @@ public class MainCompass : MonoBehaviour
         if (Mathf.Abs(tempdushu - dushu) > 3)
         {
             tempdushu = dushu;
-            transform.eulerAngles = new Vector3(0, dushu, 0);
+            transform.eulerAngles = new Vector3(0, -dushu, 0);
         }
     }
 }

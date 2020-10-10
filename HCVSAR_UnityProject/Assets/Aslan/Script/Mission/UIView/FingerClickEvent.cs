@@ -8,8 +8,6 @@ public class FingerClickEvent : MonoBehaviour
     public delegate void OnFingerClick();
     public event OnFingerClick Click;
 
-    public Text phaseDisplayText;
-
     [HideInInspector]
     public BoxCollider2D boxCollider;
     [HideInInspector]

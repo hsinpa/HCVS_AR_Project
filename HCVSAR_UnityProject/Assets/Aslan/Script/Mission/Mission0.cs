@@ -18,8 +18,6 @@ public class Mission0 : ViewController
     private string peopleName = StringAsset.MissionsDialog.Person.NPC_1;
     private string dogMessage = StringAsset.MissionsDialog.Zero.d1;
     private string peopleMessage = StringAsset.MissionsDialog.Zero.d2;
-    private string[] historyMessage = { StringAsset.MissionsDialog.Zero.history1, StringAsset.MissionsDialog.Zero.history2,
-                                 StringAsset.MissionsDialog.Zero.history3, StringAsset.MissionsDialog.Zero.history4};
     private string dogMessage3 = StringAsset.MissionsDialog.Eight.d2;
 
     private string qustion = StringAsset.MissionsQustion.Zero.qustion;
@@ -31,8 +29,7 @@ public class Mission0 : ViewController
 
     [SerializeField]
     private VideoEffectCtrl videoEffect;
-    [SerializeField]
-    private Camera camera;
+    private Camera _camera;
 
     public GameObject hideBG;
     public GameObject video;
@@ -42,28 +39,28 @@ public class Mission0 : ViewController
     public Button success;
     public Button fail;
     public GameObject toolView;
-    public MainBaseVIew mainBaseVIew;
+    public MainBaseVIew mainBaseVIew;    
 
     public override void Enable()
     {
         base.Enable();
 
         hideBG.SetActive(false);
-        
+
+        _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
         JoeMain.Main.Start360Video(0);
-        //JoeMain.Main.EnterVideoOpenARCamera(true);
+        
         StartCoroutine(EnterVideoView());
     }
 
     public IEnumerator EnterVideoView()
     {
-        videoEffect.FaceVideoToCameraFront(camera);
+        videoEffect.FaceVideoToCameraFront(_camera);
         videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
 
         yield return new WaitForSeconds(2);
 
         videoEffect.SetCoverPercentAnim(0, 0.01f);
-        //JoeMain.Main.EnterVideoOpenARCamera(false);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);

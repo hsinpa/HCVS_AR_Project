@@ -28,8 +28,7 @@ public class Mission7 : ViewController
 
     [SerializeField]
     private VideoEffectCtrl videoEffect;
-    [SerializeField]
-    private Camera camera;
+    private Camera _camera;
 
     public override void Enable()
     {
@@ -37,7 +36,8 @@ public class Mission7 : ViewController
 
         isEnterMission = true;
         hideBG.SetActive(false);
-        
+
+        _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
         JoeMain.Main.Start360Video(3);
 
         StartCoroutine(EnterVideoView());
@@ -45,7 +45,7 @@ public class Mission7 : ViewController
 
     public IEnumerator EnterVideoView()
     {
-        videoEffect.FaceVideoToCameraFront(camera);
+        videoEffect.FaceVideoToCameraFront(_camera);
         //videoEffect.FaceDirection(Vector3.forward);
         videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
 

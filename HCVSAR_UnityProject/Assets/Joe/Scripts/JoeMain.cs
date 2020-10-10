@@ -137,11 +137,10 @@ public class JoeMain : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //textlog("MinNumber" + MinNumber + "MinNumber");
         var currentTime = Mathf.FloorToInt((float)vp.clockTime);
         var endTime = Mathf.FloorToInt((float)vp.length - 2);
 
-        transform.position = Camera.main.transform.position;
+        //if (MissionsController.Instance.isARsupport) { transform.position = Camera.main.transform.position; }
 
         if (NowVideoData == null) return;
 
@@ -169,9 +168,6 @@ public class JoeMain : MonoBehaviour
             
             MissionsController.Instance.viewControllers[currentElement].NextAction();
         }
-
-        //textlog("MinDistance05" + MissionsController.Instance.viewControllers[MinNumber].isEnter);
-        //textlog("MissionNumber");
     }
  
     public void UI_rePlayVideo()
