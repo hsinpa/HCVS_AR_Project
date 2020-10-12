@@ -8,7 +8,6 @@ public class GetGPS : MonoBehaviour
     public Text ShowGPS;
     public Transform obj;
     public Vector2 NE = new Vector2(22.640111f, 120.284731f);
-    public Button btn;
     /// <summary>
     /// 初始化一次位置
     /// </summary>
@@ -21,8 +20,6 @@ public class GetGPS : MonoBehaviour
         obj.transform.position = new Vector3((NE.x - Input.location.lastData.latitude) * 111000, obj.position.y, (NE.y - Input.location.lastData.longitude) * 111000);
         ShowGPS.text = GetGps;
         Debug.Log(GetGps);
-
-        btn.onClick.AddListener(updateGps);
     }
     /// <summary>
     /// 刷新位置信息（按钮的点击事件）

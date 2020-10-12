@@ -294,7 +294,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         EndView.alpha = 0;
 
         // ibeacon open
-        ibeacon.SetActive(true);
+        JoeGM.joeGM.StartBeacom(type);
+        //ibeacon.SetActive(true);
 
         // switch button
         SwitchLoginButton(true);

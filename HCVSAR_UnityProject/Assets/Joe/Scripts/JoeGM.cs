@@ -7,8 +7,9 @@ public class JoeGM : MonoBehaviour
 {
     Example example;
     public static JoeGM joeGM;
+    TypeFlag.UserType GameType;
     //public List<Beacon> beacons;
-    bool CheckDistance = true;
+    bool CheckDistance = false;
     public static bool AirRaid;
 
     public string[] missionName ;
@@ -39,6 +40,7 @@ public class JoeGM : MonoBehaviour
         public int minor;
     }
     bool tl = true;
+    bool[] Missioned = new bool[20];
     private void Awake()
     {
         joeGM = this;
@@ -90,7 +92,7 @@ public class JoeGM : MonoBehaviour
         uist = "";
         foreach (LogArrayData lad in logArray)
         {
-            uist = lad.t + "v" + lad.v + "\n" + uist;
+            uist = uist + "\n" + lad.t + "~~~~~~~~~~~~~" + lad.v  ;
 
         }
         logui.text = uist;
@@ -100,16 +102,31 @@ public class JoeGM : MonoBehaviour
     public bool testgame;
     public void UpdateIBeacon()
     {
-        
+        switch (GameType)
+        {
+            case TypeFlag.UserType.Guest:
+                UpdateIBeaconGuest();
+                break;
+
+            case TypeFlag.UserType.Student:
+                UpdateIBeaconStudent();             
+                break;
+        }
+
+    }
+
+    private void UpdateIBeaconStudent()
+    {
+
         studentData = MainView.Instance.studentData;
         //textlog("01");
         //MainView.Instance.studentScoreData
-        if (CheckDistance)
+        if (CheckDistance && MissionsController.Instance.isEnter != true)
         {
-           
-            textlog("upuupupupupuupup"+ studentData.Count);
+
+            textlog("studentData" + studentData.Count);
             MinDistance = 100;
-            
+
             try
             {
                 for (int i = 0; i < example.mybeacons.Count; i++)
@@ -121,9 +138,43 @@ public class JoeGM : MonoBehaviour
                         continue;
                     }
 
-                    if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3||testgame)
+                    if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3)
                     {
+                        if (example.mybeacons[i].accuracy > 5f)
+                        {
+                            if (MissionNumber == 3)
+                            {
+                                AirRaid = false;
+                            }
 
+                            if (MissionNumber == 11)
+                            {
+                                RightBotton.SetActive(false);
+                            }
+
+                            if (MissionNumber == 12)
+                            {
+                                RightBotton.SetActive(false);
+                            }
+                        }
+                        else if (example.mybeacons[i].accuracy <= 5f)
+                        {
+                            if (MissionNumber == 11)
+                            {
+                                RightBotton.SetActive(true);
+                            }
+
+                            if (MissionNumber == 12)
+                            {
+                                RightBotton.SetActive(true);
+                            }
+
+                            if (MissionNumber == 3)
+                            {
+                                AirRaid = true;
+                            }
+                        }
+                        goto OverLoop;
                     }
                     else
                     {
@@ -140,26 +191,6 @@ public class JoeGM : MonoBehaviour
                         }
                     }
 
-                    if (example.mybeacons[i].accuracy > 5f)
-                    {
-                        if (MissionNumber == 3)
-                        {
-                            AirRaid = false;
-                        }
-
-
-                        if (MissionNumber == 11)
-                        {
-                            RightBotton.SetActive(false);
-                        }
-
-                        if (MissionNumber == 12)
-                        {
-                            RightBotton.SetActive(false);
-                        }
-                    }
-
-                   
 
                     if (example.mybeacons[i].accuracy < 5f)
                     {
@@ -170,24 +201,6 @@ public class JoeGM : MonoBehaviour
                             MinNumber = MissionNumber;
                             textlog("OVERMin" + MinNumber + "oVERMin");
                         }
-
-
-                        if (MissionNumber == 11)
-                        {
-                            RightBotton.SetActive(true);
-                        }
-
-                        if (MissionNumber == 12)
-                        {
-                            RightBotton.SetActive(true);
-                        }
-
-
-                        if (MissionNumber == 3)
-                        {
-                            AirRaid = true;
-                        }
-
 
                     }
 
@@ -201,45 +214,12 @@ public class JoeGM : MonoBehaviour
                 textlog("ErrorLoop");
             }
 
-            try
-            {
-                //textlog("MinDistance" + MinDistance + "aaaNumber" + MinNumber);
-            }
-            catch
-            {
-                textlog("ErrorPrint");
-            }
-            
+
             if (MinDistance < 5)
             {
-                //textlog("MinDistance05" + MissionsController.Instance.MissionsObj.Length.ToString()) ;
-                
 
-                try
-                {
-                    textlog("Laaaa" + MissionsController.Instance.viewControllers.Length);
-                }
-                catch
-                {
-                    textlog("ErrorLenght");
-                }
-
-                try
-                {
-                    textlog("StartMission"+ MinNumber+ MissionsController.Instance.viewControllers[MinNumber].isEnter);
-                }
-                catch
-                {
-                    textlog("ErrorEnter");
-                }
-
-                if (MissionsController.Instance.isEnter == true)
-                {
-                    goto Missioning;
-                }
-                
                 TT = 0;
-                /*
+
                 foreach (TypeFlag.SocketDataType.StudentType studentType in studentData)
                 {
                     if (studentType.mission_id == missionName[0] || studentType.mission_id == missionName[2] || studentType.mission_id == missionName[6])
@@ -248,10 +228,10 @@ public class JoeGM : MonoBehaviour
                     }
                     if (studentType.mission_id == missionName[3])
                     {
-                        TT = 100;
+                        goto Missioning;
                     }
                 }
-                if (TT != 0 && TT < 50)
+                if (TT != 0)
                 {
                     if (TT == 1 && Random.Range(0, 1) == 0)
                     {
@@ -264,23 +244,160 @@ public class JoeGM : MonoBehaviour
                 }
                 else
                 {
+                    textlog("StartNumber" + MinNumber);
+                    MissionsController.Instance.Missions(MinNumber);
+                    CheckDistance = false;
                     
-                }*/
-                textlog("StartNumber" + MinNumber);
-                MissionsController.Instance.Missions(MinNumber);
+                }
 
-                CheckDistance = false;
-                Invoke("timeStop", 10f);
+
             Missioning:
-                    textlog("Missioning");
-                
+                textlog("Missioning");
+
             }
         }
 
+
+
+    }
+    private void UpdateIBeaconGuest()
+    {
+
+        //studentData = MainView.Instance.studentData;
+        //textlog("01");
+        //MainView.Instance.studentScoreData
+        if (CheckDistance && MissionsController.Instance.isEnter != true)
+        {
+
+            //textlog("studentData" + studentData.Count);
+            MinDistance = 100;
+
+            try
+            {
+                for (int i = 0; i < example.mybeacons.Count; i++)
+                {
+
+                    MissionNumber = example.mybeacons[i].major * 10 + example.mybeacons[i].minor;
+                    if (MissionNumber >= missionName.Length)
+                    {
+                        continue;
+                    }
+
+                    if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3)
+                    {
+                        CheckMission(example.mybeacons[i].accuracy);                    
+                        goto OverLoop;
+                    }
+                    else
+                    {
+                        if (Missioned[MissionNumber] == true)
+                        {                            
+                            goto OverLoop;
+                        }
+                    }
+
+
+                    if (example.mybeacons[i].accuracy < 5f)
+                    {
+
+                        if (example.mybeacons[i].accuracy < MinDistance)
+                        {
+                            MinDistance = example.mybeacons[i].accuracy;
+                            MinNumber = MissionNumber;
+                            
+                        }
+
+                    }
+
+
+                OverLoop:
+                    textlog("JampLoop");
+                }
+            }
+            catch
+            {
+                textlog("ErrorLoop");
+            }
+
+
+            if (MinDistance < 5)
+            {
+                textlog("OVERMin" + MinNumber );
+               
+
+                
+                if ((MinNumber == 0|| MinNumber == 2|| MinNumber == 6)&& !Missioned[3])
+                {
+                    TT = 0;
+                    TT += (Missioned[0] ? 0 : 1) + (Missioned[2] ? 0 : 1) + (Missioned[6] ? 0 : 1);
+                    
+                    if (Random.Range(0, TT) == 0)
+                    {
+                        MissionsController.Instance.Missions(3);
+                        LeaveMission();
+                    }
+                    else
+                    {
+                        MissionsController.Instance.Missions(MinNumber);
+                    }
+                }
+                else
+                {
+                    textlog("StartNumber" + MinNumber);
+                    MissionsController.Instance.Missions(MinNumber);
+                    
+
+                }
+                CheckDistance = false;
+
+
+
+           //Missioning:
+                //textlog("Missioning");
+
+            }
+        }
+
+
+
+    }
+  
+    private void CheckMission(double accuracy)
+    {
+        if (MissionNumber == 3)
+        {
+            AirRaid = accuracy < 5f;
+        }
+
+        if (MissionNumber == 11)
+        {
+            RightBotton.SetActive(accuracy < 5f);
+        }
+
+        if (MissionNumber == 12)
+        {
+            RightBotton.SetActive(accuracy < 5f);
+        }
+        
+    }
+    public void StartMission(int number)
+    {
+        Missioned[number] = true;
+        Invoke("timeStop", 10f);
     }
 
+    public void LeaveMission()
+    {
+        Invoke("timeStop", 10f);
+    }
     public void timeStop()
     {
+        CheckDistance = true;
+    }
+
+    public void StartBeacom(TypeFlag.UserType type)
+    {
+        GameType = type;
         CheckDistance = true;
     }
 }
