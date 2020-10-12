@@ -31,6 +31,7 @@ namespace Hsinpa.Video
             cameraForward.y = 0;
             this.transform.rotation = Quaternion.LookRotation(cameraForward);
             this.transform.Rotate(new Vector3(0, -90, 0));
+            this.transform.position = camera.transform.position;
         }
 
         public void FaceDirection(Vector3 vector) {
