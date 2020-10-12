@@ -29,9 +29,14 @@ namespace Expect.View
         private Sprite SelectFalse;
 
         [Header("Select Answer")]
-        [SerializeField]
         public Transform container;
         public Transform selectAnswer;
+
+        [Header("Audio Play")]
+        [SerializeField]
+        private AudioSource correctSound;
+        [SerializeField]
+        private AudioSource errorSound;
 
         public delegate void OnButtonClick();
         public event OnButtonClick buttonClick;
@@ -151,6 +156,7 @@ namespace Expect.View
                 nextButton.SetActive(true);
 
                 ShowCorrectOption();
+                correctSound.Play();
 
                 Debug.Log("Correct!!!  Get Score: " + missionScore);
             }
@@ -167,6 +173,7 @@ namespace Expect.View
                     nextButton.SetActive(true);
 
                     ShowCorrectOption();
+                    errorSound.Play();
                     Debug.Log("Wrong!!!!!!!" + "isSelectOnce " + isSelectOnce);
                 }
                 else
@@ -175,7 +182,7 @@ namespace Expect.View
                     wrongSelectIndex = currentSelectIndex;
                     SelectButtons[currentSelectIndex].image.sprite = SelectFalse;
                     SelectButtons[currentSelectIndex].interactable = false;
-
+                    errorSound.Play();
                     Debug.Log("Wrong Once!!!" + "isSelectOnce " + isSelectOnce);
                 }
             }

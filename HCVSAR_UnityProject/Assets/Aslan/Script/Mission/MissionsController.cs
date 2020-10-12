@@ -88,6 +88,7 @@ public class MissionsController : Singleton<MissionsController>
         MissionsObj[number].SetActive(true);
         viewControllers[number].Enable();
         viewControllers[number].isEnter = true;
+        JoeGM.joeGM.StartMission(number);
 
         isEnter = true;
 
@@ -98,6 +99,7 @@ public class MissionsController : Singleton<MissionsController>
     {
         ARSession.enabled = false;
         viewControllers[number].isEnter = false;
+        JoeGM.joeGM.LeaveMission();
         ReSetMissions();
         CloseEnterView();
     }
