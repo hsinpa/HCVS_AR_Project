@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using Utility;
+using UnityEngine.SceneManagement;
 
 namespace Hsinpa.AR
 {
@@ -60,6 +61,12 @@ namespace Hsinpa.AR
 
         private void OnClickTakeOffBtnEvent() {
             if (OnTakeOffBtnEvent != null) OnTakeOffBtnEvent();
+
+            _ = UtilityMethod.DoDelayWork(10, () =>
+            {
+                Debug.Log("ZeroJet : Change scene");
+                StartCoroutine(LoadYourAsyncScene());
+            });
         }
 
         private void UpdateWebCSV() {
@@ -83,6 +90,20 @@ namespace Hsinpa.AR
                     OnSkinChangeClick(index);
             });
         }
+
+        private IEnumerator LoadYourAsyncScene()
+        {
+            string TargetScene = "AirScene";
+
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(TargetScene);
+
+            // Wait until the asynchronous scene fully loads
+            while (!asyncLoad.isDone)
+            {
+                yield return null;
+            }
+        }
+
 
     }
 }
