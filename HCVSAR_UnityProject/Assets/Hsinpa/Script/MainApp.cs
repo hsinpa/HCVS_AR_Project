@@ -78,4 +78,9 @@ public class MainApp : Singleton<MainApp>
 
         return default(T);
     }
+
+    private void OnApplicationQuit()
+    {
+        _socketManager.socket.Disconnect();
+    }
 }
