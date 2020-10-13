@@ -147,12 +147,12 @@ public class MissionViewController_5 : MonoBehaviour
         clickCount++;
 
         int score = MainView.Instance.studentScoreData.score;
-        int number;  
+        int number;
 
         if (score > 0)
         {
             number = 2;
-            
+
             if (clickCount == 1)
             {
                 dialogMissionView.DialogView(npcName, correctMessage_2, npc);
@@ -170,7 +170,7 @@ public class MissionViewController_5 : MonoBehaviour
             }
 
             if (clickCount == historyMessage.Length + number)
-            { 
+            {
                 LeaveMission(score);
                 Debug.Log("Finish");
             }
@@ -198,7 +198,7 @@ public class MissionViewController_5 : MonoBehaviour
             {
                 Debug.Log("clickCount4: " + clickCount);
                 situationMissionView.Show(false);
-                dialogMissionView.Show(true);                
+                dialogMissionView.Show(true);
                 dialogMissionView.DialogView(dogName, historyMessage[clickCount - number], dog);
             }
 

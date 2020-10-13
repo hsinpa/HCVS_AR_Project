@@ -47,7 +47,7 @@ public class Mission5 : ViewController
         video.SetActive(true);
 
         JoeMain.Main.PlayGame(6);
-        videoEffect.SetCoverPercentAnim(0, 0.01f);
+        //videoEffect.SetCoverPercentAnim(0, 0.01f);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);

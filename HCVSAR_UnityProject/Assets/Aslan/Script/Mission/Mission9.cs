@@ -26,7 +26,8 @@ public class Mission9 : ViewController
         hideBG.SetActive(false);
         video.SetActive(true);
 
-        JoeMain.Main.ControllerVideoPlane(true);
+        //JoeMain.Main.ControllerVideoPlane(true);
+        JoeMain.Main.PlayARGame(5);
 
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += ClickCount; // Add fingerClick event
@@ -47,11 +48,6 @@ public class Mission9 : ViewController
     private void StarHistory()
     {
         int historyCount = historyMessage.Length + 1;
-
-        if (clickCount == 1)
-        {
-            JoeMain.Main.PlayARGame(5);
-        }
 
         if (clickCount >= 1 && clickCount < historyCount)
         {

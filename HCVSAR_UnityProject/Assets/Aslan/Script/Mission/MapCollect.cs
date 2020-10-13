@@ -53,7 +53,7 @@ public class MapCollect : MonoBehaviour
     private void ClickMap1()
     {
         isCollectMap1 = true;
-        
+
         if (isCollectMap2)
         {
             MissionsController.Instance.isEnter = true;
@@ -64,13 +64,13 @@ public class MapCollect : MonoBehaviour
     private void ClickMap2()
     {
         isCollectMap2 = true;
-        
+
         if (isCollectMap1)
         {
             MissionsController.Instance.isEnter = true;
             StartCoroutine(GetAllMap());
         }
-            
+
     }
 
     public IEnumerator GetAllMap()
@@ -78,7 +78,7 @@ public class MapCollect : MonoBehaviour
         mainBaseVIew.PanelController(true);
 
         yield return new WaitForSeconds(1);
-        
+
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += ClickCount; // Add fingerClick event
 
