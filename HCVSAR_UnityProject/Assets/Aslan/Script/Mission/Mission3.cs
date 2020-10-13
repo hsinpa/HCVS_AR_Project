@@ -118,7 +118,7 @@ public class Mission3 : ViewController
     {
         int score = success ? 5 : 0;
         dialogMissionView.Show(false);
-        
+
         PostScoreEvent.Instance.PostScore(score, MainView.Instance.loginData.userType);
 
         if (success)
