@@ -22,7 +22,7 @@ public class TypeFlag
 
     public class InGameType {
         [System.Serializable]
-        public struct MissionType
+        public struct     MissionType
         {
             public string mission_id;
             public string mission_name;

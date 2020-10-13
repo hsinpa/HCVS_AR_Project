@@ -39,7 +39,7 @@ public class Mission0 : ViewController
     public Button success;
     public Button fail;
     public GameObject toolView;
-    public MainBaseVIew mainBaseVIew;    
+    public MainBaseVIew mainBaseVIew;
 
     public override void Enable()
     {
@@ -49,7 +49,7 @@ public class Mission0 : ViewController
 
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
         JoeMain.Main.Start360Video(0);
-        
+
         StartCoroutine(EnterVideoView());
     }
 
@@ -195,7 +195,7 @@ public class Mission0 : ViewController
         RemoveAllEvent();
 
         hideBG.SetActive(true);
-        
+
         Debug.Log("Mission 0 Leave");
 
         StartCoroutine(GetMap());

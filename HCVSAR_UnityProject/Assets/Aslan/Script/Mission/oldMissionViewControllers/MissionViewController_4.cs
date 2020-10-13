@@ -39,7 +39,7 @@ public class MissionViewController_4 : MonoBehaviour
     private string correctMessage_2 = StringAsset.MissionsDialog.Four.correct_2;
     private string faultMessage_1 = StringAsset.MissionsDialog.Four.fault_1;
 
-    private string[] historyMessage = { StringAsset.MissionsDialog.Four.history1, StringAsset.MissionsDialog.Four.history2,StringAsset.MissionsDialog.Four.history3};
+    private string[] historyMessage = { StringAsset.MissionsDialog.Four.history1, StringAsset.MissionsDialog.Four.history2, StringAsset.MissionsDialog.Four.history3 };
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
     [HideInInspector]
@@ -95,7 +95,7 @@ public class MissionViewController_4 : MonoBehaviour
         {
             Convercestion();
         }
-        
+
         Debug.Log("clickCount: " + clickCount);
     }
 
@@ -111,7 +111,7 @@ public class MissionViewController_4 : MonoBehaviour
         if (clickCount == 2)
         {
             Debug.Log("clickCount2: " + clickCount);
-            dialogMissionView.DialogView(dogName, dogMessage1, dog);            
+            dialogMissionView.DialogView(dogName, dogMessage1, dog);
         }
         if (clickCount == 3)
         {
@@ -132,7 +132,7 @@ public class MissionViewController_4 : MonoBehaviour
     private void StarGame()
     {
         dialogMissionView.Show(false);
-        JoeMain.Main.PlayARGame(2);        
+        JoeMain.Main.PlayARGame(2);
 
         success.onClick.AddListener(SuccessClick);
         fail.onClick.AddListener(FailClick);
@@ -165,7 +165,7 @@ public class MissionViewController_4 : MonoBehaviour
         clickCount++;
         picture.enabled = true;
         picture.sprite = pic;
-        
+
         if (clickCount >= 0)
         {
             if (isSuccess) { GameSuccess(); }

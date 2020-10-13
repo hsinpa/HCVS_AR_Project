@@ -79,7 +79,7 @@ public class Mission7 : ViewController
             dialogMissionView.Show(true);
             dialogMissionView.DialogView(dogName, dogMessage, dog);
         }
-        
+
         if (clickCount == 2)
         {
             dialogMissionView.Show(false);
@@ -141,7 +141,7 @@ public class Mission7 : ViewController
         RemoveAllEvent();
 
         hideBG.SetActive(true);
-        
+
         MissionsController.Instance.ReSetMissions();
         JoeMain.Main.Stop360Video();
         videoEffect.SetCoverPercent(1);

@@ -72,7 +72,7 @@ public class Mission2 : ViewController
 
         Debug.Log("clickCount: " + clickCount);
     }
-    
+
     void Convercestion()
     {
 
@@ -140,7 +140,7 @@ public class Mission2 : ViewController
         RemoveAllEvent();
         MissionsController.Instance.ReSetMissions();
         JoeMain.Main.Stop360Video();
-        
+
         videoEffect.SetCoverPercent(1);
         Debug.Log("Mission 2 Leave");
     }

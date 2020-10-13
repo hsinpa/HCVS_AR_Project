@@ -12,17 +12,11 @@ public class Game04 : MonoBehaviour
     public Transform targer;
     public UnityEvent unityEvent;
     public UnityEvent OverEvent;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    public void UI_Enter()
-    {
-        
-    }
+    [Header("Audio Play")]
+    [SerializeField]
+    private AudioSource AirRaidtSound;
+
     void Update()
     {
         f = Vector3.Distance(Camera.main.transform.position, targer.position);
@@ -30,7 +24,7 @@ public class Game04 : MonoBehaviour
         if (JoeGM.AirRaid)
         {
             unityEvent.Invoke();
-            
+            AirRaidtSound.Stop();
         }
         else
         {
@@ -43,10 +37,11 @@ public class Game04 : MonoBehaviour
         {
             OverTime -= Time.deltaTime;
             timeUI.text = OverTime.ToString();
-                
+            AirRaidtSound.enabled = true;
         }
         else
         {
+            AirRaidtSound.Stop();
             OverEvent.Invoke();
         }
     }
