@@ -7,6 +7,7 @@ class SocketEnvironment {
 
     //UserID -> SocketID
     userSocketTable : Map<string, string>;
+    socketID2SocketTable : Map<string, SocketIO.Socket>;
     users : Map<string, UserComponentType>;
     rooms : Map<string, RoomComponentType>;
     userEmitter : UserEmitter;
@@ -14,6 +15,7 @@ class SocketEnvironment {
     constructor(userEmitter : UserEmitter) {
         this.userEmitter = userEmitter;
         this.userSocketTable = new Map<string, string>();
+        this.socketID2SocketTable = new Map<string, SocketIO.Socket>();
         this.users = new Map<string, UserComponentType>();
         this.rooms = new Map<string, RoomComponentType>();
     }
@@ -63,6 +65,7 @@ class SocketEnvironment {
     public UserJoin(socketInfo : SocketIO.Socket) {
         let userComp = CreateUserType(socketInfo);
         this.users.set(socketInfo.id, userComp);
+        this.socketID2SocketTable.set(socketInfo.id, socketInfo);
     }
 
     UserDisconnect(socketID : string) : UserComponentType {
@@ -73,6 +76,7 @@ class SocketEnvironment {
 
         this.userSocketTable.delete(userComp.user_id);
         this.users.delete(socketID);
+        this.socketID2SocketTable.delete(socketID);
         return userComp;
     }
 
@@ -136,7 +140,10 @@ class SocketEnvironment {
     AutoJoinAllUserInClass(socket : SocketIO.Socket, room_id : string) {
         this.users.forEach(userComp => {
             if (userComp && userComp.room_id == room_id && this.CheckIfRoomAvailable(userComp)) {
-             this.userEmitter.EmitUserJoinRoom(socket, room_id, userComp);   
+                let userSocket = this.socketID2SocketTable.get(userComp.socket_id);
+
+                if (userSocket != null)
+                    this.userEmitter.EmitUserJoinRoom(userSocket, room_id, userComp);   
             }
         });
     }

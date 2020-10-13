@@ -57,6 +57,14 @@
     console.log(data);
   });
 
+  socket.on('event@start_game', function (data) {
+    console.log(data);
+  });
+
+  socket.on('event@force_end_game', function (data) {
+    console.log(data);
+  });
+
 //#region Login
 let formDom =  document.querySelector("form");
 formDom.addEventListener("submit", (e) => {
