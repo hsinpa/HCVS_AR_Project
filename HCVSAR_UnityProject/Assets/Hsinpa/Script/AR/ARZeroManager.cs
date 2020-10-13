@@ -62,7 +62,7 @@ namespace Hsinpa.AR
         private void OnClickTakeOffBtnEvent() {
             if (OnTakeOffBtnEvent != null) OnTakeOffBtnEvent();
 
-            _ = UtilityMethod.DoDelayWork(10, () =>
+            _ = UtilityMethod.DoDelayWork(7, () =>
             {
                 Debug.Log("ZeroJet : Change scene");
                 StartCoroutine(LoadYourAsyncScene());
