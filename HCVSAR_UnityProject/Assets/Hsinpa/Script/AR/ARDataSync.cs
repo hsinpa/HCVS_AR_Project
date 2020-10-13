@@ -70,7 +70,7 @@ namespace Hsinpa.AR
                 aRData.scale = new Vector3(scale, scale, scale);
 
                 Debug.Log("name " + name);
-                Debug.Log("position_str " + position_str);
+                Debug.Log("position_str " + aRData.position);
                 Debug.Log("rotation_str " + rotation_str);
                 Debug.Log("scale " + scale);
 

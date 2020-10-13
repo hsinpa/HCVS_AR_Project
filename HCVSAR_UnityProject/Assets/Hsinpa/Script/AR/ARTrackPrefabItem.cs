@@ -24,6 +24,8 @@ namespace Hsinpa.AR
         [SerializeField]
         private Texture _skintype_2;
 
+        private AudioSource _audioSource;
+
         private Texture _originalTex
         {
             get {
@@ -43,6 +45,8 @@ namespace Hsinpa.AR
         {
             _ARTrackedImage = GetComponent<ARTrackedImage>();
             _ARZeroManager = GameObject.FindObjectOfType<ARZeroManager>();
+
+            _audioSource = _animator.GetComponent<AudioSource>();
 
             if (_ARZeroManager) {
                 _ARZeroManager.OnDataUpdate += (OnARDataUpdate);
@@ -71,7 +75,10 @@ namespace Hsinpa.AR
         }
 
         private void OnTakeOffEvent() {
+            _animator.enabled = true;
+            _audioSource.enabled = true;
             _animator.SetTrigger(GeneralFlag.ARZero.TakeOff_Anim);
+            _audioSource.Play();
         }
 
         private void OnSkinChange(int p_skinIndex) {
