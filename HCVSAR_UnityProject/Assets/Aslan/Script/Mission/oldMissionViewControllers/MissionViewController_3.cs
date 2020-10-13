@@ -131,7 +131,7 @@ public class MissionViewController_3 : MonoBehaviour
         {
             StartCoroutine(EndPause(score));
         }
-        
+
     }
 
     public IEnumerator EndPause(int score)
