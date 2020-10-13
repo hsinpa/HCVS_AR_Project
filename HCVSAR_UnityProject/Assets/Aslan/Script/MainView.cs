@@ -261,15 +261,19 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         {
 
             var terminateData = JsonUtility.FromJson<TypeFlag.SocketDataType.TerminateGameType>(args[0].ToString());
-            TerminateGameAction(terminateData.room_id, terminateData.location_id);
+            TerminateGameAction(terminateData.location_id);
         }
     }
 
-    public void TerminateGameAction(string class_id, string location)
+    public void TerminateGameAction(string location)
     {
+        var missionLookupTable = MainApp.Instance.database.MissionShortNameObj.MissionTable;
+        string missionName = missionLookupTable.Single(s => s.Key == location).Value.mission_name;
+
         this.GetComponent<CanvasGroup>().interactable = false;
-        EndView.alpha = 1;
-        EndLocationText.text = location;
+        EndView.alpha = 1;        
+
+        EndLocationText.text = missionName;
         isEndEvent = true;
     }
 
