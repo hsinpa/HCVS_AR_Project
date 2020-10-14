@@ -40,6 +40,7 @@ public class Mission1 : ViewController
 
     private void SuccessClick()
     {
+        fingerClick = fingerClickController.currentClick;
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += Count; // Add fingerClick event
         isSuccess = true;
@@ -53,6 +54,7 @@ public class Mission1 : ViewController
 
     private void FailClick()
     {
+        fingerClick = fingerClickController.currentClick;
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += Count; // Add fingerClick event
         isSuccess = false;

@@ -17,6 +17,7 @@ public class MissionsController : Singleton<MissionsController>
 
     public GameObject MainCameraObj;
     public GameObject ARCameraObj;
+    public GameObject ARObj;
 
     [HideInInspector]
     public bool isARsupport = true;
@@ -24,21 +25,46 @@ public class MissionsController : Singleton<MissionsController>
     public Camera MainCamera;
     [HideInInspector]
     public Camera ARcamera;
-
+    public Text text;
     [HideInInspector]
     public bool isEnter;
-
+    
     private void Awake()
     {
         MainCamera = MainCameraObj.GetComponent<Camera>();
         ARcamera = ARCameraObj.transform.GetChild(0).GetComponent<Camera>();
 
+        text.text = "support";
+
         if (ARSession.state == ARSessionState.Unsupported)
         {
             isARsupport = false;
-            gyroControler.StartGyro();
+            //gyroControler.StartGyro();
+            text.text = "Device Unsupported";
         }
+        if (ARSession.state == ARSessionState.None)
+        {
+            isARsupport = false;
+            text.text = "Device None";
+        }
+
+        if (ARSession.state == ARSessionState.NeedsInstall)
+        {
+            text.text = "Device NeedsInstall";
+        }
+
+        if (ARSession.state == ARSessionState.Installing)
+        {
+            text.text = "Device Installing";
+        }
+
+        if (ARSession.state == ARSessionState.Ready)
+        {
+            text.text = "Device Ready";
+        }
+        
         SwitchMainCamera(isARsupport);
+        
     }
 
     private void Start()
@@ -50,6 +76,7 @@ public class MissionsController : Singleton<MissionsController>
     private void SwitchMainCamera(bool isSupport)
     {
         ARCameraObj.SetActive(isSupport);
+        ARObj.SetActive(isSupport);
         MainCameraObj.SetActive(!isSupport);
     }
 

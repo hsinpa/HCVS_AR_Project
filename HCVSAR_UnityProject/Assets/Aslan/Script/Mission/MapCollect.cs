@@ -23,11 +23,11 @@ public class MapCollect : MonoBehaviour
     [SerializeField]
     DialogMissionView dialogMissionView;
     [SerializeField]
-    EndMissionView endMissionView;
-    [SerializeField]
-    FingerClickEvent fingerClick;
+    EndMissionView endMissionView;    
     [SerializeField]
     BagPanel bagPanel;
+
+    FingerClickEvent fingerClick;
 
     // Message
     private string dogName = StringAsset.MissionsDialog.Person.dog;
@@ -43,6 +43,7 @@ public class MapCollect : MonoBehaviour
 
     public GameObject toolView;
     public MainBaseVIew mainBaseVIew;
+    public FingerClickController fingerClickController;
 
     private void Start()
     {
@@ -76,6 +77,7 @@ public class MapCollect : MonoBehaviour
     public IEnumerator GetAllMap()
     {
         mainBaseVIew.PanelController(true);
+        fingerClick = fingerClickController.currentClick;
 
         yield return new WaitForSeconds(1);
 

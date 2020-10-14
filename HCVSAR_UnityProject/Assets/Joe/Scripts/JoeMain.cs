@@ -5,6 +5,7 @@ using UnityEngine.Video;
 using UnityEngine.UI;
 using RemptyTool.ES_MessageSystem;
 using Expect.StaticAsset;
+using Hsinpa.Video;
 
 [RequireComponent(typeof(ES_MessageSystem))]
 public class JoeMain : MonoBehaviour
@@ -15,6 +16,8 @@ public class JoeMain : MonoBehaviour
     private Sprite primeMinister;
     private string dogName = StringAsset.MissionsDialog.Person.dog;
     private string primeMinisterName = StringAsset.MissionsDialog.Person.NPC_5;
+    [SerializeField]
+    private VideoEffectCtrl videoEffect;
 
     public GameObject UI;
     public Text text;
@@ -41,7 +44,7 @@ public class JoeMain : MonoBehaviour
 
     void Start()
     {
-        vp.Play();
+        //vp.Play();
 
         msgSys = this.GetComponent<ES_MessageSystem>();
     }
@@ -51,7 +54,10 @@ public class JoeMain : MonoBehaviour
         VideoData[number].clip = clip[number];
         NowVideoData = VideoData[number];
         vp.clip = NowVideoData.clip;
+
+        //vp.prepareCompleted += PrepareCompleted;
         StartCoroutine(CoroutineTest());
+
         UI_rePlayVideo();
         UI.SetActive(false);
         currentElement = number;
@@ -64,9 +70,18 @@ public class JoeMain : MonoBehaviour
         VideoPlane.SetActive(true);
         
     }
+
+    void PrepareCompleted(VideoPlayer videoPlayer)
+    {
+        //StartCoroutine(CoroutineTest());
+        //videoPlayer.Play();
+        Debug.Log("complete");
+    }
+
     IEnumerator CoroutineTest()
     {
         vp.Play();
+
         yield return new WaitForSeconds(0.1f);
         vp.Pause();
     }

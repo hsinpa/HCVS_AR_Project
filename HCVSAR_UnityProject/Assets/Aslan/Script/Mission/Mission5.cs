@@ -47,6 +47,7 @@ public class Mission5 : ViewController
         video.SetActive(true);
 
         JoeMain.Main.PlayGame(6);
+        fingerClick = fingerClickController.currentClick;
         //videoEffect.SetCoverPercentAnim(0, 0.01f);
 
         situationMissionView.Show(true);

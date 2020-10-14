@@ -12,8 +12,8 @@ namespace Expect.View
         [SerializeField]
         private Text ConnectText;
 
-        [SerializeField]
-        private Button callPhoneButton;
+        //[SerializeField]
+        //private Button callPhoneButton;
 
         [Header("SiwtchPanel")]
         public Button close;
@@ -34,8 +34,8 @@ namespace Expect.View
 
         private void GetConnectInfo()
         {
-            ConnectText.text = string.Format("{0}\n{1}\n{2}\n\n{3}\n{4}", schoolName, schoolAdd, schoolPhone, teacherName, teacherPhone);
-            callPhoneButton.onClick.AddListener(CallPhone);
+            ConnectText.text = string.Format("{0}\n{1}\n{2}\n\n{3}", schoolName, schoolAdd, schoolPhone, teacherName);
+            //callPhoneButton.onClick.AddListener(CallPhone);
         }
 
         private void CallPhone()
