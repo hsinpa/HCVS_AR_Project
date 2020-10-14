@@ -40,6 +40,10 @@ namespace Hsinpa.View
             modals = GetComponentsInChildren<Modal>();
         }
 
+        public void EnableBackground(bool isEnable) {
+            hasBackground = isEnable;
+        }
+
         public T GetModal<T>() where T : Modal
         {
             return modals.First(x=> typeof(T) == x.GetType()) as T;

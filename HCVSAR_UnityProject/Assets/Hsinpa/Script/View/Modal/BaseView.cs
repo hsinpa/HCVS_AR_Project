@@ -5,6 +5,8 @@ using UnityEngine;
 namespace Hsinpa.View {
     public class BaseView : MonoBehaviour
     {
+        [SerializeField]
+        protected bool enableModalBG;
 
         [SerializeField]
         protected CanvasGroup canvasGroup;

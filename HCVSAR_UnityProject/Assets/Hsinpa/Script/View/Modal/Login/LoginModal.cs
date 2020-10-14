@@ -76,7 +76,6 @@ namespace Expect.View
             if (tabIndex < 0) return;
 
             SetTabEvent(_tabComponents[tabIndex].tabButton, tab, InputLookupTable[tab]);
-
         }
 
         private void RegisterTabEvent()
@@ -124,6 +123,9 @@ namespace Expect.View
             inputComponents.Clear();
             UtilityMethod.ClearChildObject(inputGroups);
 
+            SetWarningMsg(null);
+
+
             int structCount = inputGroupStructs.Count;
 
             for (int i = 0; i < structCount; i++) {
@@ -143,10 +145,10 @@ namespace Expect.View
 
             foreach (Transform childTab in onClickTab.transform.parent.transform) {
                 Button tabBtn = childTab.GetComponent<Button>();
-                tabBtn.targetGraphic.color = Color.white;
+                tabBtn.targetGraphic.color = Color.gray;
             }
 
-            onClickTab.targetGraphic.color = Color.gray;
+            onClickTab.targetGraphic.color = Color.white;
         }
 
         private Dictionary<Tab, List<InputGroupStruct>> GenerateInputTable() {
