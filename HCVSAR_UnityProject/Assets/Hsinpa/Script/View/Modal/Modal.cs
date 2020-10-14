@@ -13,6 +13,9 @@ namespace Hsinpa.View
         public override void Show(bool isShow)
         {
             base.Show(isShow);
+
+            if (isShow)
+                Modals.instance.EnableBackground(enableModalBG);
         }
     }
 }

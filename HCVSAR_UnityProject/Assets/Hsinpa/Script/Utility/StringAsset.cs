@@ -13,6 +13,9 @@ namespace Expect.StaticAsset {
 
             public const string UserIDInputError = "帳號格式錯誤 : 字數6-20";
             public const string PasswordInputError = "密碼格式錯誤 : 字數6-20";
+            public const string StudentNameInputError = "姓名格式錯誤 : 字數6-20";
+            public const string ClassIDInputError = "班級代碼格式錯誤 : 字數6-20";
+
             public const string ServerLoginError = "帳號密碼不符合: 查無此筆資料";
             public const string ServerRegisterError = "帳號已存在, 或班級代號錯誤";
         }

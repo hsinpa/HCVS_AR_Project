@@ -29,7 +29,13 @@ namespace Hsinpa.Controller {
 
 
         public void ProcessLogin() {
-            Modals.instance.OpenModal<LoginModal>();
+
+            AppStartModal appStart = Modals.instance.OpenModal<AppStartModal>();
+            appStart.SetConfirmBtnEvent(() =>
+            {
+                Modals.instance.Close();
+                Modals.instance.OpenModal<LoginModal>();
+            });
         }
 
         private bool ValidInputText(string user_id) {
@@ -114,7 +120,16 @@ namespace Hsinpa.Controller {
 
                 if (!isValid)
                 {
-                    _loginModal.SetWarningMsg((inputComponents[i].isHash) ? StringAsset.Login.PasswordInputError : StringAsset.Login.UserIDInputError);
+                    Debug.Log(inputComponents[i].name);
+                    string errorMsg = (inputComponents[i].isHash) ? StringAsset.Login.PasswordInputError : StringAsset.Login.UserIDInputError;
+
+                    if (inputComponents[i].name == StringAsset.Login.StudentNameInputLabel)
+                        errorMsg = StringAsset.Login.StudentNameInputError;
+
+                    if (inputComponents[i].name == StringAsset.Login.ClassIDInputLabel)
+                        errorMsg = StringAsset.Login.ClassIDInputError;
+
+                    _loginModal.SetWarningMsg(errorMsg);
                     return false;
                 }
             }
