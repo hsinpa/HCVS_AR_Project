@@ -48,6 +48,8 @@ namespace Hsinpa.AR
             SetSkinBtnEvent(index: hasSpecialSkin, normalSkin);
 
             RandomSkinString = UtilityMethod.RollDice() == 0 ? GeneralFlag.ARZero.TrackImage_1 : GeneralFlag.ARZero.TrackImage_2;
+
+            StartCoroutine(CheckIfNoARCore());
         }
 
         public void ForceUpdate() {
@@ -91,7 +93,22 @@ namespace Hsinpa.AR
             });
         }
 
-        private IEnumerator LoadYourAsyncScene()
+        private IEnumerator CheckIfNoARCore() {
+            if ((ARSession.state == ARSessionState.None) ||
+                (ARSession.state == ARSessionState.CheckingAvailability))
+            {
+                yield return ARSession.CheckAvailability();
+            }
+
+            Debug.Log(ARSession.state);
+
+            if (ARSession.state == ARSessionState.Unsupported)
+            {
+                yield return LoadYourAsyncScene();
+            }
+        }
+
+private IEnumerator LoadYourAsyncScene()
         {
             string TargetScene = "AirScene";
 
