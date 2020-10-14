@@ -71,6 +71,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8724246603270578610}
     m_Modifications:
+    - target: {fileID: 4027977849743363874, guid: 8cb79afb69951624ca4a51bb5816f0f8,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4027977849743363874, guid: 8cb79afb69951624ca4a51bb5816f0f8,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4861251649711337777, guid: 8cb79afb69951624ca4a51bb5816f0f8,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -100,6 +110,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998554407231088984, guid: 8cb79afb69951624ca4a51bb5816f0f8,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998554407231088984, guid: 8cb79afb69951624ca4a51bb5816f0f8,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6998554407231088991, guid: 8cb79afb69951624ca4a51bb5816f0f8,
         type: 3}
