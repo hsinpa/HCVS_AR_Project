@@ -35,10 +35,10 @@ RectTransform:
   m_Father: {fileID: 1346288083660284883}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.5248561}
-  m_AnchoredPosition: {x: 0, y: 0.11999893}
-  m_SizeDelta: {x: 0, y: -0.22354507}
+  m_AnchorMin: {x: 0.3025, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -1.5, y: 0.30400085}
+  m_SizeDelta: {x: 2.9404297, y: 0.14392853}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1346288083574227546
 CanvasRenderer:
@@ -177,8 +177,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 80.76697}
+  m_AnchoredPosition: {x: 0, y: 20.192}
+  m_SizeDelta: {x: 400, y: 40.383484}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1346288083660284877
 CanvasRenderer:
@@ -202,6 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titleTxt: {fileID: 1346288083919058663}
   _inputField: {fileID: 1346288083574227544}
+  isHash: 0
 --- !u!114 &6053863300141230770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,7 +219,7 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: -1
-  m_PreferredHeight: 70
+  m_PreferredHeight: 50
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -254,10 +255,10 @@ RectTransform:
   m_Father: {fileID: 1346288083660284883}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5248561}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00399971}
-  m_SizeDelta: {x: 0, y: -0.008514404}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.3025, y: 1}
+  m_AnchoredPosition: {x: -1.4844971, y: -0.08000183}
+  m_SizeDelta: {x: -2.9715042, y: 0.15874481}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1346288083919058662
 CanvasRenderer:
@@ -293,13 +294,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u5B78\u865F"
+  m_Text: "\u767B\u9678\u5E33\u865F"
 --- !u!1 &1346288083945606110
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,7 +372,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 0
     m_HorizontalOverflow: 1
@@ -449,7 +450,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
