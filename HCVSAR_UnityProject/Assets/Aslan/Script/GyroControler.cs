@@ -9,7 +9,7 @@ public class GyroControler : MonoBehaviour
     private Quaternion rot;
     private bool gyroEnable;
     private GameObject CameraContainer;
-    /*
+    
     public void Start()
     {
         CameraContainer = new GameObject("Camera Container");
@@ -17,7 +17,7 @@ public class GyroControler : MonoBehaviour
         transform.SetParent(CameraContainer.transform);
         gyroEnable = EnableGyro();
     }
-    */
+    /*
     public void StartGyro()
     {
         CameraContainer = new GameObject("Camera Container");
@@ -25,7 +25,7 @@ public class GyroControler : MonoBehaviour
         transform.SetParent(CameraContainer.transform);
         gyroEnable = EnableGyro();
     }
-    
+    */
     private bool EnableGyro()
     {
         if (SystemInfo.supportsGyroscope)

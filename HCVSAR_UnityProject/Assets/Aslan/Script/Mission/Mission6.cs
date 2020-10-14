@@ -37,6 +37,7 @@ public class Mission6 : ViewController
         hideBG.SetActive(false);
 
         JoeMain.Main.ControllerVideoPlane(true);
+        fingerClick = fingerClickController.currentClick;
 
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(oldPeopleName, oldPeopleMessage1, primeMinister);

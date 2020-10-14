@@ -16,9 +16,9 @@ public class GPS : MonoBehaviour
     private float latitude;       //緯度
     private float longitude;      //經度
     private double timestamp;     //最近一次定位的時間戳，從 1970年開始
-    public Transform obj;
-    public Transform obj1;
-    Vector2 NE = new Vector2(22.615582f, 120.282428f);
+                                  //public Transform obj;
+
+    public Vector2 NE = new Vector2();//(22.67401f, 120.2865f);//(22.615582f, 120.282428f);
     bool GPSUPD = true;
     // Use this for initialization  
     void Start()
@@ -42,7 +42,7 @@ public class GPS : MonoBehaviour
         longitude = locationInfo.longitude;//裝置緯度
         if (GPSUPD)
         {
-            obj.transform.position = new Vector3(((NE.x - latitude) * 111000) + Camera.main.transform.position.x, obj.position.y, ((NE.y - longitude) * 111000) + Camera.main.transform.position.z);
+            this.transform.position = new Vector3(((NE.x - latitude) * 111000) + Camera.main.transform.position.x, this.transform.position.y, ((NE.y - longitude) * 111000) + Camera.main.transform.position.z);
         }
         timestamp = locationInfo.timestamp;//時間戳(自1970年以來以秒為單位)位置時最後一次更新。
     }

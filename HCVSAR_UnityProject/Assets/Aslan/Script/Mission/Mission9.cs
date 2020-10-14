@@ -28,6 +28,7 @@ public class Mission9 : ViewController
 
         //JoeMain.Main.ControllerVideoPlane(true);
         JoeMain.Main.PlayARGame(5);
+        fingerClick = fingerClickController.currentClick;
 
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += ClickCount; // Add fingerClick event

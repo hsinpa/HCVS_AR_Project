@@ -9,12 +9,14 @@ public class ViewController : MonoBehaviour
     public bool isEnter;
     [HideInInspector]
     public int clickCount;
+    [HideInInspector]
+    public FingerClickEvent fingerClick;
 
     public SituationMissionView situationMissionView;
     public DialogMissionView dialogMissionView;
     public QuestionMissionView questionMissionView;
     public EndMissionView endMissionView;
-    public FingerClickEvent fingerClick;
+    public FingerClickController fingerClickController;
 
     public virtual void Enable()
     {

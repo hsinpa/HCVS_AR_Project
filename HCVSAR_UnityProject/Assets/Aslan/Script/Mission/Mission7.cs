@@ -38,6 +38,7 @@ public class Mission7 : ViewController
         hideBG.SetActive(false);
 
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
+        fingerClick = fingerClickController.currentClick;
         JoeMain.Main.Start360Video(3);
 
         StartCoroutine(EnterVideoView());

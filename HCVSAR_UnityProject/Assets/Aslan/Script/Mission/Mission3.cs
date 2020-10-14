@@ -37,6 +37,7 @@ public class Mission3 : ViewController
         videoEffect.SetCoverPercent(0);
         JoeMain.Main.Start360Video(2);
         JoeMain.Main.PlayGame(1);
+        fingerClick = fingerClickController.currentClick;
         hideBG.SetActive(false);
         seccess.onClick.AddListener(SuccessClick);
         fail.onClick.AddListener(FailClick);

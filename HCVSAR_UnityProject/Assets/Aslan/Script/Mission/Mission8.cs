@@ -19,6 +19,7 @@ public class Mission8 : ViewController
     public GameObject hideBG;
     public GameObject video;
     public GameObject toolView;
+    private Camera _camera;
 
     [SerializeField]
     private VideoEffectCtrl videoEffect;
@@ -30,8 +31,23 @@ public class Mission8 : ViewController
         isEnterMission = true;
         hideBG.SetActive(false);
         video.SetActive(true);
+
         JoeMain.Main.StarAndPlay360Video(4);// Start360Video(4);
-        videoEffect.SetCoverPercentAnim(0f, 0.05f);
+        _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
+
+        StartCoroutine(EnterVideoView());
+    }
+
+    public IEnumerator EnterVideoView()
+    {
+        videoEffect.FaceVideoToCameraFront(_camera);
+        videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
+
+        yield return new WaitForSeconds(2);
+
+        videoEffect.SetCoverPercentAnim(0, 0.01f);
+
+        fingerClick = fingerClickController.currentClick;
     }
 
     public override void NextAction()
