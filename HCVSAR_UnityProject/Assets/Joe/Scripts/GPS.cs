@@ -27,7 +27,7 @@ public class GPS : MonoBehaviour
         isCould = locationServer.isEnabledByUser; //使用者是否可以設定定位服務      
         locationServerStatus = locationServer.status; //返回裝置服務狀態
         //引數1 服務所需的精度，以米為單位，引數2 最小更新距離
-        locationServer.Start(1, 1);//開始位置更新服務，最後的位置座標
+        //locationServer.Start(1, 1);//開始位置更新服務，最後的位置座標
         //locationServer.Stop();//停止位置服務更新，節省電池壽命
     }
 

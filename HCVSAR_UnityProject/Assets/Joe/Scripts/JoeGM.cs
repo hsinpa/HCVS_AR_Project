@@ -5,6 +5,7 @@ using UnityEngine.Video;
 using UnityEngine.UI;
 public class JoeGM : MonoBehaviour
 {
+    public GameObject expectObj;
     Example example;
     public static JoeGM joeGM;
     TypeFlag.UserType GameType;
@@ -50,7 +51,7 @@ public class JoeGM : MonoBehaviour
     void Start()
     {
         //example = this;
-        example = GetComponent<Example>();
+        example = expectObj.GetComponent<Example>();
     }
 
     // Update is called once per frame
@@ -398,6 +399,8 @@ public class JoeGM : MonoBehaviour
     public void StartBeacom(TypeFlag.UserType type)
     {
         GameType = type;
+        example.btn_StartStop();
         CheckDistance = true;
+        
     }
 }

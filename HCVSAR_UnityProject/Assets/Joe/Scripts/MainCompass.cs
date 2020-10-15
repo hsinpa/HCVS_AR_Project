@@ -5,6 +5,7 @@ using UnityEngine;
 public class MainCompass : MonoBehaviour
 {
     public static MainCompass main;
+    public Transform camera;
     float dushu = 0;
     float tempdushu = 0;
     // Start is called before the first frame update
@@ -15,15 +16,16 @@ public class MainCompass : MonoBehaviour
 
     void Start()
     {
+        Input.location.Start();
         Input.compass.enabled = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //transform.position = Camera.main.transform.position+new Vector3(0,-2,0);
+        transform.position = camera.position+new Vector3(0,-2,0);
 
-        Input.location.Start();
+        //Input.location.Start();
 
         dushu = Input.compass.trueHeading;
 
@@ -31,7 +33,7 @@ public class MainCompass : MonoBehaviour
         if (Mathf.Abs(tempdushu - dushu) > 3)
         {
             tempdushu = dushu;
-            transform.eulerAngles = new Vector3(0, -dushu, 0);
+            transform.eulerAngles = new Vector3(0,-dushu, 0);
         }
     }
 }

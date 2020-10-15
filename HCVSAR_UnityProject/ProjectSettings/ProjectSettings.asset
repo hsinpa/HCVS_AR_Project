@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: HCVSAR_ARHistoryExploration
+  productName: HCVSAR_ARHistoryExploration2
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -451,7 +451,7 @@ PlayerSettings:
   logObjCUncaughtExceptions: 1
   enableCrashReportAPI: 0
   cameraUsageDescription: Required for augmented reality support.
-  locationUsageDescription: "\u5141\u8A31APP\u53D6\u5F97\u60A8\u7684\u4F4D\u7F6E"
+  locationUsageDescription: Allow the app to get your location for ibeacon and AR
   microphoneUsageDescription: 
   switchNetLibKey: 
   switchSocketMemoryPoolSize: 6144

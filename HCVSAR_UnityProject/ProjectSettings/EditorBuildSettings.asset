@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Airplan/Scene/AirScene.unity
     guid: 0a9ba88bc7f09e84580dd2376b7e14d2
+  - enabled: 0
+    path: Assets/Joe/Scenes/ttt.unity
+    guid: a8d8561c1e4c743b7a939b3c0f835526
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 6bbd17eb389a04f7a9c82f01e84fc874,
       type: 2}

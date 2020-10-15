@@ -160,8 +160,10 @@ internal class Example : MonoBehaviour {
 		f_ScrollViewContentRectWidth = ((RectTransform)go_FoundBeacon.transform).rect.width;
 		f_ScrollViewContentRectHeight = ((RectTransform)go_FoundBeacon.transform).rect.height;
 		BluetoothState.Init();
-		set_iBeaconText();
-		btn_StartStop();
+
+		btn_switch();
+        set_iBeaconText();
+		
 
 	}
 
@@ -341,7 +343,7 @@ internal class Example : MonoBehaviour {
 	public void btn_switch() { 
 		//Debug.Log("Button Switch pressed");
 		if (bm_Mode == BroadcastMode.receive)
-			bm_Mode = BroadcastMode.send;
+			bm_Mode = BroadcastMode.receive;
 		else
 			bm_Mode = BroadcastMode.receive;
 		SetBroadcastMode();
@@ -351,7 +353,7 @@ internal class Example : MonoBehaviour {
 		// setText
 		txt_BroadcastMode_LabelText.text = bm_Mode.ToString();
 		if (bm_Mode == BroadcastMode.receive)
-			txt_BroadcastMode_ButtonText.text = "Switch to " + BroadcastMode.send.ToString();
+			txt_BroadcastMode_ButtonText.text = "Switch to " + BroadcastMode.receive.ToString();
 		else
 			txt_BroadcastMode_ButtonText.text = "Switch to " + BroadcastMode.receive.ToString();
 	}
