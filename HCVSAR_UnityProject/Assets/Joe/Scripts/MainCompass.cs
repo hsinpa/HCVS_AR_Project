@@ -23,7 +23,7 @@ public class MainCompass : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = camera.position+new Vector3(0,-2,0);
+        //transform.position = camera.position+new Vector3(0,-2,0);
 
         //Input.location.Start();
 
