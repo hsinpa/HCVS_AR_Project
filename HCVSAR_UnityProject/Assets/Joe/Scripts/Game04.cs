@@ -17,6 +17,11 @@ public class Game04 : MonoBehaviour
     [SerializeField]
     private AudioSource AirRaidtSound;
 
+    private void Start()
+    {
+        //Handheld.Vibrate();
+    }
+
     void Update()
     {
         f = Vector3.Distance(Camera.main.transform.position, targer.position);

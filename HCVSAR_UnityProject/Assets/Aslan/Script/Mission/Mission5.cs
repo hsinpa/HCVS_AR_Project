@@ -46,7 +46,7 @@ public class Mission5 : ViewController
         hideBG.SetActive(false);
         video.SetActive(true);
 
-        JoeMain.Main.PlayGame(6);
+        //JoeMain.Main.PlayGame(6);
         fingerClick = fingerClickController.currentClick;
         //videoEffect.SetCoverPercentAnim(0, 0.01f);
 
