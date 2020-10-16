@@ -15,7 +15,7 @@ namespace Hsinpa.Video
         private float _speed, _target;
 
         private const string TransitionTet = "_Transition";
-        private float[] VideoRotation = new float[] {268, 0, 26, 0, 107, 5, 6, 190, 230, 9};
+        private float[] VideoRotation = new float[] {202, 0, 265, 0, 285, 0, 0, 209, 269, 0};
         private void Start()
         {
             _mat = _renderer.material;
