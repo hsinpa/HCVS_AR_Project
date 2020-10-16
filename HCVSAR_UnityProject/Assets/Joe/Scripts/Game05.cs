@@ -20,7 +20,8 @@ public class Game05 : MonoBehaviour
     private void Start()
     {
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
-        trackPeople.transform.Rotate(new Vector3(0, 107, 0));
+        trackPeople.transform.position = _camera.transform.position + _camera.transform.forward * 5;
+        trackPeople.transform.Rotate(new Vector3(0, 285, 0));
         trackPeople.SetActive(true);
         image.SetActive(false);
     }
