@@ -154,6 +154,7 @@ public class Mission1 : ViewController
 
         MissionsController.Instance.ReSetMissions();
         JoeMain.Main.CloseARGame(4);
+        JoeMain.Main.CloseGame(8);
         JoeMain.Main.ControllerVideoPlane(false);
         Debug.Log("Mission 1 Leave");
     }

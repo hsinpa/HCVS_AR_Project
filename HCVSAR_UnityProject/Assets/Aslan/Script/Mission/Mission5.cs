@@ -33,7 +33,6 @@ public class Mission5 : ViewController
 
     [HideInInspector]
     public GameObject hideBG;
-    public GameObject video;
     public GameObject toolView;
     public VideoEffectCtrl videoEffect;
     public MainBaseVIew mainBaseVIew;
@@ -44,7 +43,6 @@ public class Mission5 : ViewController
 
         isEnter = true;
         hideBG.SetActive(false);
-        video.SetActive(true);
 
         JoeMain.Main.PlayGame(6);
         fingerClick = fingerClickController.currentClick;
@@ -200,10 +198,9 @@ public class Mission5 : ViewController
         RemoveAllListeners();
 
         hideBG.SetActive(true);
-        video.SetActive(false);
 
-        //JoeMain.Main.ControllerARCamera(false);
         JoeMain.Main.CloseGame(6);
+        JoeMain.Main.CloseGame(7);
         Debug.Log("Mission 5 Leave");
 
         StartCoroutine(GetMail());

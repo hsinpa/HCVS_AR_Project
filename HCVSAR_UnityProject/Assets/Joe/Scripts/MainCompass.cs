@@ -16,8 +16,14 @@ public class MainCompass : MonoBehaviour
 
     void Start()
     {
-        Input.location.Start();
-        Input.compass.enabled = true;
+        if (MissionsController.Instance.isARsupport) {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            Input.location.Start();
+            Input.compass.enabled = true;
+        }
     }
 
     // Update is called once per frame
