@@ -15,10 +15,12 @@ public class Game05 : MonoBehaviour
     public GameObject image;
     int v = 1;
     public GameObject trackPeople;
-    
+    private Camera _camera;
 
     private void Start()
     {
+        _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
+        trackPeople.transform.Rotate(new Vector3(0, 107, 0));
         trackPeople.SetActive(true);
         image.SetActive(false);
     }
@@ -26,7 +28,7 @@ public class Game05 : MonoBehaviour
     public void UI_Enter()
     {
 
-        if (Physics.Linecast(Camera.main.transform.position, Camera.main.transform.position + (Camera.main.transform.forward*300)))
+        if (Physics.Linecast(_camera.transform.position, _camera.transform.position + (_camera.transform.forward*300)))
         {
             Debug.Log("blocked");
             unityEvent.Invoke();
@@ -45,11 +47,11 @@ public class Game05 : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        Camera.main.targetTexture = new RenderTexture(222, 128, 0);//Camera.main.pixelWidth, Camera.main.pixelHeight, 0);
+        _camera.targetTexture = new RenderTexture(222, 128, 0);//Camera.main.pixelWidth, Camera.main.pixelHeight, 0);
 
-        RenderTexture renderTexture = Camera.main.targetTexture;
+        RenderTexture renderTexture = _camera.targetTexture;
         Texture2D renderResult = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false);
-        Camera.main.Render();
+        _camera.Render();
         RenderTexture.active = renderTexture;
         Rect rect = new Rect(0, 0, renderTexture.width, renderTexture.height);
 
@@ -60,7 +62,7 @@ public class Game05 : MonoBehaviour
         image.GetComponent<Image>().sprite = screenShot;
         image.SetActive(true);
 
-        Camera.main.targetTexture = null;
+        _camera.targetTexture = null;
 
         if (isPlayOnce)
         {

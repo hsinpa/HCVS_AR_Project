@@ -56,7 +56,7 @@ public class Mission4 : ViewController
 
     public IEnumerator EnterGameView()
     {
-        videoEffect.FaceVideoToCameraFront(_camera);
+        videoEffect.FaceVideoToCameraFront(_camera, 4);
         //videoEffect.FaceDirection(Vector3.forward);
         videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
 

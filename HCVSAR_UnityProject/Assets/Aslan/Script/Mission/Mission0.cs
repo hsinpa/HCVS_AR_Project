@@ -56,7 +56,7 @@ public class Mission0 : ViewController
 
     public IEnumerator EnterVideoView()
     {
-        videoEffect.FaceVideoToCameraFront(_camera);
+        videoEffect.FaceVideoToCameraFront(_camera, 0);
         videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
 
         yield return new WaitForSeconds(2);
