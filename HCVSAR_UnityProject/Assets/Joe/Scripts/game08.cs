@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class game08 : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public GameObject ARmodel;
+    public GameObject CameraModel;
+
+    private bool isARsupport;
+
     void Start()
     {
-        //ransform.position = Camera.main.transform.position;
-        transform.rotation = MainCompass.main.transform.rotation;
+        isARsupport = MissionsController.Instance.isARsupport;
+        SewitchModel(isARsupport);
     }
 
-    // Update is called once per frame
-    void Update()
+    void SewitchModel(bool _isARsupport)
     {
-        transform.rotation = MainCompass.main.transform.rotation;
+        ARmodel.SetActive(_isARsupport);
+        CameraModel.SetActive(!_isARsupport);
     }
 }

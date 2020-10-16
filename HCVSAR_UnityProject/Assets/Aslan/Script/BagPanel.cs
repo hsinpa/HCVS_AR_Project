@@ -69,7 +69,7 @@ namespace Expect.View
 
         private void AddContentInfo(int index)
         {
-            height += 80f;
+            height += 90f;
 
             Transform infoTransform = Instantiate(Info, Container);
             RectTransform infoRectTransform = infoTransform.GetComponent<RectTransform>();

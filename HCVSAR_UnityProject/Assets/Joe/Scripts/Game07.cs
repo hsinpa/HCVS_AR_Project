@@ -28,6 +28,7 @@ public class Game07 : MonoBehaviour
     void Start()
     {
         _camera = MissionsController.Instance.isARsupport ? ARCamera : MainCamera;
+        
         arGameObject.SetActive(false);
         speakMan.SetActive(false);
         targetStone.SetActive(false);
@@ -80,7 +81,7 @@ public class Game07 : MonoBehaviour
             var _frontPos = _cameraFront * 10;
 
             _cameraFront.y = 0;
-            arGameObject.transform.position = _frontPos;
+            arGameObject.transform.position = _camera.transform.position + _frontPos;
             arGameObject.transform.rotation = Quaternion.LookRotation(_cameraFront);
         }
     }
