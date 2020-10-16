@@ -8,24 +8,15 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Aslan/Scenes/Main.unity
     guid: 2112234de5aac824ab86f507f37ba9a3
-  - enabled: 0
+  - enabled: 1
     path: Assets/Aslan/Scenes/Main_Video.unity
     guid: 8b80adda3d2e546539fbee00deea04b7
-  - enabled: 0
-    path: Assets/Joe/Scenes/009.unity
-    guid: dea36687c96434cb5b5b8d60381b433b
-  - enabled: 0
+  - enabled: 1
     path: Assets/Hsinpa/Scenes/ZeroJetARScan.unity
     guid: 6d47c0a54c3f21148ac8f109287de81c
-  - enabled: 0
+  - enabled: 1
     path: Assets/Airplan/Scene/AirScene.unity
     guid: 0a9ba88bc7f09e84580dd2376b7e14d2
-  - enabled: 0
-    path: Assets/Joe/Scenes/ttt.unity
-    guid: a8d8561c1e4c743b7a939b3c0f835526
-  - enabled: 1
-    path: Assets/Joe/Scenes/10.unity
-    guid: 6227dd1416ed44768a5b8c2d3abfcb2b
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 6bbd17eb389a04f7a9c82f01e84fc874,
       type: 2}

@@ -40,7 +40,7 @@ public class Mission8 : ViewController
 
     public IEnumerator EnterVideoView()
     {
-        videoEffect.FaceVideoToCameraFront(_camera);
+        videoEffect.FaceVideoToCameraFront(_camera, 8);
         videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
 
         yield return new WaitForSeconds(2);

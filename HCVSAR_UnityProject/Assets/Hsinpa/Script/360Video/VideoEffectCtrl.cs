@@ -15,7 +15,7 @@ namespace Hsinpa.Video
         private float _speed, _target;
 
         private const string TransitionTet = "_Transition";
-        
+        private float[] VideoRotation = new float[] {268, 0, 26, 0, 107, 5, 6, 190, 230, 9};
         private void Start()
         {
             _mat = _renderer.material;
@@ -26,11 +26,11 @@ namespace Hsinpa.Video
             _mat.SetTexture("_MainTex", renderTex);
         }
 
-        public void FaceVideoToCameraFront(Camera camera) {
+        public void FaceVideoToCameraFront(Camera camera,int missionNumber) {
             var cameraForward = camera.transform.forward;
             cameraForward.y = 0;
-            this.transform.rotation = Quaternion.LookRotation(cameraForward);
-            this.transform.Rotate(new Vector3(0, -90, 0));
+            //this.transform.rotation = MainCompass.main.gameObject.transform.rotation;
+            this.transform.Rotate(new Vector3(0, VideoRotation[missionNumber], 0));
             this.transform.position = camera.transform.position;
         }
 
