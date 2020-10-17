@@ -92,6 +92,9 @@ public class Mission6 : ViewController
         fingerClick.boxCollider.enabled = true; //open fingerClick trigger
         fingerClick.Click += Count; // Add fingerClick event
         isSuccess = false;
+
+        dialogMissionView.Show(true);
+        dialogMissionView.DialogView(oldPeopleName, faultMessage_1, primeMinister);
     }
 
     private void Count()
@@ -100,11 +103,7 @@ public class Mission6 : ViewController
 
         if (clickCount >= 0)
         {
-            //if (isSuccess) { StartCoroutine(GameSuccess()); }
-            if (!isSuccess)
-            {
-                GameFail();
-            }
+            GameFail();
         }
     }
 
@@ -136,15 +135,9 @@ public class Mission6 : ViewController
 
     private void GameFail()
     {
-        if (clickCount == 1)
+        if (clickCount >= 1)
         {
-            dialogMissionView.Show(true);
-            dialogMissionView.DialogView(oldPeopleName, faultMessage_1, primeMinister);
-        }
-
-        if (clickCount >= 2)
-        {
-            StarHistory(2);
+            StarHistory(1);
         }
     }
 

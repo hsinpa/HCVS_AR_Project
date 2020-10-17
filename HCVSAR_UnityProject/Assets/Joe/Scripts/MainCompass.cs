@@ -16,13 +16,15 @@ public class MainCompass : MonoBehaviour
 
     void Start()
     {
+        Input.location.Start();
+        Input.compass.enabled = true;
         if (MissionsController.Instance.isARsupport) {
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
         }
         else
         {
-            Input.location.Start();
-            Input.compass.enabled = true;
+            //Input.location.Start();
+            //Input.compass.enabled = true;
         }
     }
 

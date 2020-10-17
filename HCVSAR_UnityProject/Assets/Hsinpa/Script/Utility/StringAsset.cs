@@ -74,6 +74,12 @@ namespace Expect.StaticAsset {
             public const string mapAlDetail = "一張完整的地圖，上面記載了這塊土地上曾經出現過的鳳山舊城城牆的位置，分別有東門、西門、南門、北門。\n有些城牆在後期已經被拆除了，真是歷史悠久又珍貴的一張地圖啊！";
         }
 
+        public class EnterMission
+        {
+            public const string enterMission = "在附近感測到能量提示\n您即將進入\n確定要進入此處尋找能量嗎？";
+            public const string enterEndMission = "您即將進入最終關卡\n您即將進入\n進入後遊戲體驗將會結束";
+        }
+
         public class MissionsSituation
         {
             public class Zero

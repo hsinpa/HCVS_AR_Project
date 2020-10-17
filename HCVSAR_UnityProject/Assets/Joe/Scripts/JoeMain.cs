@@ -158,7 +158,7 @@ public class JoeMain : MonoBehaviour
     void Update()
     {
         var currentTime = Mathf.FloorToInt((float)vp.clockTime);
-        var endTime = Mathf.FloorToInt((float)vp.length - 2);
+        var endTime = Mathf.FloorToInt((float)vp.length - 0.1f);
 
         //if (MissionsController.Instance.isARsupport) { transform.position = Camera.main.transform.position; }
 

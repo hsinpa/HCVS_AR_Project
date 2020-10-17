@@ -16,15 +16,17 @@ public class Game04 : MonoBehaviour
     [Header("Audio Play")]
     [SerializeField]
     private AudioSource AirRaidtSound;
+    private Camera _camera;
 
     private void Start()
     {
-        //Handheld.Vibrate();
+        Handheld.Vibrate();
+        _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
     }
 
     void Update()
     {
-        f = Vector3.Distance(Camera.main.transform.position, targer.position);
+        f = Vector3.Distance(_camera.transform.position, targer.position);
        
         if (JoeGM.AirRaid)
         {

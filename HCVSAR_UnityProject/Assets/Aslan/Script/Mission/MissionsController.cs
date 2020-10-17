@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Expect.View;
+using Expect.StaticAsset;
 using UnityEngine.XR.ARFoundation;
 
 public class MissionsController : Singleton<MissionsController>
@@ -20,7 +21,7 @@ public class MissionsController : Singleton<MissionsController>
     public GameObject ARObj;
 
     [HideInInspector]
-    public bool isARsupport = true;
+    public bool isARsupport;
     [HideInInspector]
     public Camera MainCamera;
     [HideInInspector]
@@ -35,6 +36,7 @@ public class MissionsController : Singleton<MissionsController>
         ARcamera = ARCameraObj.transform.GetChild(0).GetComponent<Camera>();
 
         text.text = "support";
+        isARsupport = true;
 
         if (ARSession.state == ARSessionState.Unsupported)
         {
@@ -100,6 +102,7 @@ public class MissionsController : Singleton<MissionsController>
     {
         if (isARsupport) { ARSession.enabled = true; }
 
+        enterMissionView.message.text = StringAsset.EnterMission.enterMission;
         MissionStart(number);
         enterMissionView.image.sprite = sprites[number];
 
@@ -107,6 +110,16 @@ public class MissionsController : Singleton<MissionsController>
         { 
             enterMissionView.EnterButton.onClick.AddListener(() => EnterGame(number));
             enterMissionView.LeaveButton.onClick.AddListener(() => LeaveGame(number));
+        }
+
+        if(number == 8)
+        {
+            MainView.Instance.warnImage.enabled = true;
+        }
+
+        if(number == 9)
+        {
+            enterMissionView.message.text = StringAsset.EnterMission.enterEndMission;
         }
     }
 
