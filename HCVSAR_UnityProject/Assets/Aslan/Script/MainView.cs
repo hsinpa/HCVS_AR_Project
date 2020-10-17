@@ -62,10 +62,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private float maxHealth = 100;
     private float currentHealth = 0;
 
-    [Header("Ibeacon")]
-    [SerializeField]
-    private GameObject ibeacon;
-
     [Header("Canvas Group")]
     [SerializeField]
     private CanvasGroup EndView;
@@ -298,7 +294,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         EndView.alpha = 0;
 
         // ibeacon open
-        ibeacon.SetActive(true);
         JoeGM.joeGM.StartBeacom(type);        
 
         // switch button
