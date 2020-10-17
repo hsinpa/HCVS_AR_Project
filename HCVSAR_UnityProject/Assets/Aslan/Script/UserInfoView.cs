@@ -87,10 +87,12 @@ namespace Expect.View
                     case TypeFlag.UserType.Guest:
                         missionTransform.Find("score").GetComponent<Text>().color = green;
                         missionTransform.Find("id").GetComponent<Text>().color = green;
+
                         break;
+                        
                 }
 
-
+                Debug.Log("studentData: " + MainView.Instance.studentScoreData.mission_id);
 
                 if (missionArray[i].total_score < 10)
                     score = "0" + missionArray[i].total_score.ToString();

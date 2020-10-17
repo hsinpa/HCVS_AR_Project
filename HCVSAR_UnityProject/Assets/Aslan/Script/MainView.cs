@@ -89,6 +89,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [HideInInspector]
     public int missionNumber;
     public TypeFlag.SocketDataType.StudentType studentScoreData;
+    public GameObject endMission;
+    public Image warnImage;
 
     private TypeFlag.InGameType.MissionType[] guestMissionArray;
     private TypeFlag.SocketDataType.ClassScoreHolderType classScore;
@@ -292,6 +294,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         this.GetComponent<CanvasGroup>().interactable = true;
         this.GetComponent<CanvasGroup>().blocksRaycasts = true;
         EndView.alpha = 0;
+        endMission.SetActive(false); // open score =>= 70
+        warnImage.enabled = false;
 
         // ibeacon open
         JoeGM.joeGM.StartBeacom(type);        
@@ -363,6 +367,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
         RefreshHealthBar(totalScore);
 
+        if (totalScore >= 70) { endMission.SetActive(true); }
+
         if (totalScore < 10)
         {
             totalScoreString = "0" + totalScore.ToString();
@@ -385,6 +391,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         }
 
         RefreshHealthBar(totalScore);
+
+        if (totalScore >= 70) { endMission.SetActive(true); }
 
         if (totalScore < 10)
         {

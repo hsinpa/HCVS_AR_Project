@@ -106,7 +106,7 @@ public class Mission8 : ViewController
         RemoveAllEvent();
 
         hideBG.SetActive(true);
-
+        MainView.Instance.warnImage.enabled = false;
         MissionsController.Instance.ReSetMissions();
     }
 

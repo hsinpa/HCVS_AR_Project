@@ -29,7 +29,7 @@ namespace Hsinpa.Video
         public void FaceVideoToCameraFront(Camera camera,int missionNumber) {
             var cameraForward = camera.transform.forward;
             cameraForward.y = 0;
-            //this.transform.rotation = MainCompass.main.gameObject.transform.rotation;
+            this.transform.rotation = MainCompass.main.gameObject.transform.rotation;
             this.transform.Rotate(new Vector3(0, VideoRotation[missionNumber], 0));
             this.transform.position = camera.transform.position;
         }
