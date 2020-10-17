@@ -59,7 +59,7 @@ public class JoeGM : MonoBehaviour
     {
         
         //example = this;
-        example = expectObj.GetComponent<Example>();
+        
     }
 
     // Update is called once per frame
@@ -278,6 +278,7 @@ public class JoeGM : MonoBehaviour
     {
         GameType = type;
         CheckDistance = true;
+        example = expectObj.GetComponent<Example>();
         switch (GameType)
         {
             case TypeFlag.UserType.Guest:
@@ -289,6 +290,12 @@ public class JoeGM : MonoBehaviour
                 
                 break;
         }
+
+        Invoke("startIbeacon", 1);
+    }
+
+    void startIbeacon()
+    {
         example.btn_StartStop();
     }
 }

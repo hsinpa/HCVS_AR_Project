@@ -55,7 +55,6 @@ public class JoeMain : MonoBehaviour
         NowVideoData = VideoData[number];
         vp.clip = NowVideoData.clip;
 
-        //vp.prepareCompleted += PrepareCompleted;
         StartCoroutine(CoroutineTest());
 
         UI_rePlayVideo();
@@ -69,13 +68,6 @@ public class JoeMain : MonoBehaviour
         isVideoEnd = false;
         VideoPlane.SetActive(true);
         
-    }
-
-    void PrepareCompleted(VideoPlayer videoPlayer)
-    {
-        //StartCoroutine(CoroutineTest());
-        //videoPlayer.Play();
-        Debug.Log("complete");
     }
 
     IEnumerator CoroutineTest()

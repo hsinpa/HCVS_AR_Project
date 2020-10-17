@@ -38,13 +38,13 @@ public class MissionsController : Singleton<MissionsController>
 
         if (ARSession.state == ARSessionState.Unsupported)
         {
-            //isARsupport = false;
+            isARsupport = false;
             //gyroControler.StartGyro();
             text.text = "Device Unsupported";
         }
         if (ARSession.state == ARSessionState.None)
         {
-            //isARsupport = false;
+            isARsupport = false;
             text.text = "Device None";
         }
 
