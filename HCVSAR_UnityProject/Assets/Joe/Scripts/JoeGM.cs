@@ -144,38 +144,39 @@ public class JoeGM : MonoBehaviour
         //studentData = MainView.Instance.studentData;
         //textlog("01");
         //MainView.Instance.studentScoreData
-        if (CheckDistance && MissionsController.Instance.isEnter != true)
+       
+
+
+        //textlog("studentData" + studentData.Count);
+        MinDistance = 100;
+
+        try
         {
-
-            //textlog("studentData" + studentData.Count);
-            MinDistance = 100;
-
-            try
+            for (int i = 0; i < example.mybeacons.Count; i++)
             {
-                for (int i = 0; i < example.mybeacons.Count; i++)
+
+                MissionNumber = example.mybeacons[i].major * 10 + example.mybeacons[i].minor;
+                IBeaconDistances[MissionNumber] = example.mybeacons[i].accuracy;
+                if (MissionNumber >= missionName.Length)
                 {
+                    continue;
+                }
 
-                    MissionNumber = example.mybeacons[i].major * 10 + example.mybeacons[i].minor;
-                    IBeaconDistances[MissionNumber] = example.mybeacons[i].accuracy;
-                    if (MissionNumber >= missionName.Length)
+                if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3)
+                {
+                    CheckMission(example.mybeacons[i].accuracy);
+                    goto OverLoop;
+                }
+                else
+                {
+                    if (Missioned[MissionNumber] == true)
                     {
-                        continue;
-                    }
-
-                    if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3)
-                    {
-                        CheckMission(example.mybeacons[i].accuracy);                    
                         goto OverLoop;
                     }
-                    else
-                    {
-                        if (Missioned[MissionNumber] == true)
-                        {                            
-                            goto OverLoop;
-                        }
-                    }
+                }
 
-
+                if (CheckDistance && MissionsController.Instance.isEnter != true)
+                {
                     if (example.mybeacons[i].accuracy < 5f)
                     {
 
@@ -183,61 +184,60 @@ public class JoeGM : MonoBehaviour
                         {
                             MinDistance = example.mybeacons[i].accuracy;
                             MinNumber = MissionNumber;
-                            
+
                         }
 
                     }
 
-
-                OverLoop:
-                    textlog("JampLoop");
                 }
+
+
+            OverLoop:
+                textlog("JampLoop");
             }
-            catch
-            {
-                textlog("ErrorLoop");
-            }
-
-
-            if (MinDistance < 5)
-            {
-                textlog("OVERMin" + MinNumber );
-               
-
-                
-                if ((MinNumber == 0|| MinNumber == 2|| MinNumber == 6)&& !Missioned[3])
-                {
-                    TT = 0;
-                    TT += (Missioned[0] ? 0 : 1) + (Missioned[2] ? 0 : 1) + (Missioned[6] ? 0 : 1);
-                    
-                    if (Random.Range(0, TT) == 0)
-                    {
-                        MissionsController.Instance.Missions(3);
-                        LeaveMission();
-                    }
-                    else
-                    {
-                        MissionsController.Instance.Missions(MinNumber);
-                    }
-                }
-                else
-                {
-                    textlog("StartNumber" + MinNumber);
-                    MissionsController.Instance.Missions(MinNumber);
-                    
-
-                }
-                CheckDistance = false;
-
-
-
-           //Missioning:
-                //textlog("Missioning");
-
-            }
+        }
+        catch
+        {
+            textlog("ErrorLoop");
         }
 
 
+        if (MinDistance < 5)
+        {
+            textlog("OVERMin" + MinNumber);
+
+
+
+            if ((MinNumber == 0 || MinNumber == 2 || MinNumber == 6) && !Missioned[3])
+            {
+                TT = 0;
+                TT += (Missioned[0] ? 0 : 1) + (Missioned[2] ? 0 : 1) + (Missioned[6] ? 0 : 1);
+
+                if (Random.Range(0, TT) == 0)
+                {
+                    MissionsController.Instance.Missions(3);
+                    LeaveMission();
+                }
+                else
+                {
+                    MissionsController.Instance.Missions(MinNumber);
+                }
+            }
+            else
+            {
+                textlog("StartNumber" + MinNumber);
+                MissionsController.Instance.Missions(MinNumber);
+
+
+            }
+            CheckDistance = false;
+
+
+
+            //Missioning:
+            //textlog("Missioning");
+
+        }
 
     }
   

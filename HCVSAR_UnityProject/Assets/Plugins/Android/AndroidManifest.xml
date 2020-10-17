@@ -9,8 +9,6 @@
       </intent-filter>
       <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
     </activity>
-    <!--iBeacon-->
-    <meta-data android:name="unityplayer.SkipPermissionsDialog" android:value="false" />
   </application>
   <!--iBeacon-->
   <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />

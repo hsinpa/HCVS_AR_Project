@@ -34,6 +34,7 @@ public class Mission4 : ViewController
     public bool isEnterMission;
     public GameObject hideBG;
     public GameObject gameUI;
+    public GameObject messageUI;
     public Button success;
     public Button fail;
     private Camera _camera;
@@ -46,6 +47,7 @@ public class Mission4 : ViewController
 
         isEnterMission = true;
         hideBG.SetActive(false);
+        messageUI.SetActive(false);
 
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
         fingerClick = fingerClickController.currentClick;
@@ -57,11 +59,11 @@ public class Mission4 : ViewController
     public IEnumerator EnterGameView()
     {
         videoEffect.FaceVideoToCameraFront(_camera, 4);
-        //videoEffect.FaceDirection(Vector3.forward);
         videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
 
         yield return new WaitForSeconds(2);
 
+        JoeMain.Main.Play360Video();
         videoEffect.SetCoverPercentAnim(0, 0.01f);
 
         situationMissionView.Show(true);
@@ -173,9 +175,9 @@ public class Mission4 : ViewController
 
     private void GameFail()
     {
-        if (clickCount >= 1)
+        if (clickCount >= 0)
         {
-            StarHistory(1);
+            StarHistory(0);
         }
     }
 

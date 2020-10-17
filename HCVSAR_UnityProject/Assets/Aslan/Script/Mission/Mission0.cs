@@ -54,7 +54,7 @@ public class Mission0 : ViewController
         StartCoroutine(EnterVideoView());
     }
 
-#if UNITY_IOS
+
     public IEnumerator EnterVideoView()
     {
         videoEffect.FaceVideoToCameraFront(_camera, 0);
@@ -71,28 +71,6 @@ public class Mission0 : ViewController
         fingerClick.Click += ClickCount; // Add fingerClick event
 
     }
-#endif
-
-#if UNITY_ANDROID
-    public IEnumerator EnterVideoView()
-    {
-        yield return new WaitForSeconds(2);
-
-        videoEffect.FaceVideoToCameraFront(_camera, 0);
-        videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
-
-        yield return new WaitForSeconds(2);
-
-        videoEffect.SetCoverPercentAnim(0, 0.01f);
-
-        situationMissionView.Show(true);
-        situationMissionView.SituationView(situationMessage);
-
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += ClickCount; // Add fingerClick event
-
-    }
-#endif
 
     void ClickCount()
     {

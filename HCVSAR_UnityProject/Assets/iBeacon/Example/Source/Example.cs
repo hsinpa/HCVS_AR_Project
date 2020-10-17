@@ -161,8 +161,10 @@ internal class Example : MonoBehaviour {
 		f_ScrollViewContentRectHeight = ((RectTransform)go_FoundBeacon.transform).rect.height;
 		BluetoothState.Init();
 
-		btn_switch();
-        set_iBeaconText();
+        //set_iBeaconText();
+
+        btn_switch();
+        
 		
 
 	}
