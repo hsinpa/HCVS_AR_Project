@@ -70,6 +70,7 @@ public class JoeMain : MonoBehaviour
         
     }
 
+#if UNITY_IOS
     IEnumerator CoroutineTest()
     {
         vp.Play();
@@ -77,6 +78,18 @@ public class JoeMain : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         vp.Pause();
     }
+#endif
+
+#if UNITY_ANDROID
+    IEnumerator CoroutineTest()
+    {
+        yield return new WaitForSeconds(1f);
+        vp.Play();
+
+        yield return new WaitForSeconds(0.1f);
+        vp.Pause();
+    }
+#endif
 
     public void StarAndPlay360Video(int number)
     {
