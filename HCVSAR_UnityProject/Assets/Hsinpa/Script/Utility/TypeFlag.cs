@@ -14,6 +14,8 @@ public class TypeFlag
         public const string StartGame = "event@start_game";
         public const string TerminateGame = "event@force_end_game";
         public const string KickFromGame = "event@kick_from_game";
+        public const string Reconnect = "event@reconnect";
+        public const string Disconnect = "event@disconnect";
     }
 
     public class PostScoreEvent {
@@ -34,10 +36,16 @@ public class TypeFlag
     public class SocketDataType
     {
         [System.Serializable]
+        public struct AccessTokenType {
+            public string socket_id;
+        }
+
+        [System.Serializable]
         public struct UserDataType
         {
             public TypeFlag.UserType userType;
             public string user_id;
+            public string socket_id;
             public string user_name;
             public string room_id;
         }
@@ -168,6 +176,12 @@ public class TypeFlag
         {
             public string room_id;
             public string location_id;
+        }
+
+        public struct ReconnectRequestType
+        {
+            public string reconnect_sid;
+            public string target_sid;
         }
     }
 }

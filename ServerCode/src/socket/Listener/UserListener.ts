@@ -1,5 +1,5 @@
 import {TeacherSocketEvent, UniversalSocketEvent} from '../../Utility/Flag/EventFlag';
-import {TeacherCreateMsgRoomType, TerminateEventType, TeacherCommonType, UserDataType, UserComponentType} from '../../Utility/Flag/TypeFlag';
+import {TeacherCreateMsgRoomType, TerminateEventType, TeacherCommonType, UserDataType, UserComponentType, AccessTokenType} from '../../Utility/Flag/TypeFlag';
 import SocketEnvironment from '../SocketEnvironment';
 
 export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketIO.Server, socektEnv : SocketEnvironment) {
@@ -21,8 +21,9 @@ export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketI
         }));
     });
 
-    socket.on(TeacherSocketEvent.RefreshUserStatus, function() {
-        let userComp = socektEnv.users.get(socket.id);
+    socket.on(TeacherSocketEvent.RefreshUserStatus, function(data : string) {
+        let parseData : AccessTokenType = JSON.parse(data);
+        let userComp = socektEnv.users.get(parseData.socket_id);
 
         if (socektEnv.rooms.has(userComp.room_id)) {
             let students = socektEnv.FindAllUserInClass(userComp.room_id);
@@ -61,7 +62,7 @@ export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketI
     socket.on(UniversalSocketEvent.UpdateUserInfo, function (data : string) {
         let parseData : UserDataType = JSON.parse(data);
 
-        let userComp = socektEnv.UpdateUserLoginInfo(socket.id, parseData.user_name, parseData.user_id, parseData.room_id, parseData.userType);
+        let userComp = socektEnv.UpdateUserLoginInfo(parseData.socket_id, parseData.user_name, parseData.user_id, parseData.room_id, parseData.userType);
 
         if (userComp && socektEnv.CheckIfRoomAvailable(userComp)) {
 

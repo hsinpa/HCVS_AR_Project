@@ -81,6 +81,7 @@ public class MainApp : Singleton<MainApp>
 
     private void OnApplicationQuit()
     {
+        _socketManager.Emit(TypeFlag.SocketEvent.Disconnect);
         _socketManager.socket.Disconnect();
     }
 }

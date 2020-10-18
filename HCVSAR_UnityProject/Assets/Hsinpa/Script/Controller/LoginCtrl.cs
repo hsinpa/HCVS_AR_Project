@@ -147,6 +147,7 @@ namespace Hsinpa.Controller {
             userDataType.userType = type;
             userDataType.user_id = loginInfo.user_id;
             userDataType.user_name = loginInfo.username;
+            userDataType.socket_id = _socketIOManager.originalSocketID;
 
             _socketIOManager.Emit(TypeFlag.SocketEvent.UpdateUserInfo, JsonUtility.ToJson(userDataType) );
         }
