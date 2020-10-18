@@ -138,6 +138,7 @@ public class JoeGM : MonoBehaviour
 
 
     }
+    public int c;
     private void UpdateIBeaconMain()
     {
 
@@ -221,6 +222,17 @@ public class JoeGM : MonoBehaviour
                     else
                     {
                         MissionsController.Instance.Missions(MinNumber);
+                    }
+                }
+                else if (MinNumber == 9)
+                {
+                    if (c>70)
+                    {
+                        MissionsController.Instance.Missions(MinNumber);
+                    }
+                    else
+                    {
+                        Invoke("timeStop", 10f);
                     }
                 }
                 else
