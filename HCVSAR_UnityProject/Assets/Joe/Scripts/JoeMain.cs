@@ -25,7 +25,7 @@ public class JoeMain : MonoBehaviour
     public Image image;
 
     public static JoeMain Main;
-    public VideoClip[] clip;
+    //public VideoClip[] clip;
     public VideoData[] VideoData;
     public VideoData NowVideoData;
     public VideoPlayer vp;
@@ -51,7 +51,7 @@ public class JoeMain : MonoBehaviour
     
     public void Start360Video(int number)
     {
-        VideoData[number].clip = clip[number];
+        //VideoData[number].clip = clip[number];
         NowVideoData = VideoData[number];
         vp.clip = NowVideoData.clip;
 
@@ -158,7 +158,7 @@ public class JoeMain : MonoBehaviour
     void Update()
     {
         var currentTime = Mathf.FloorToInt((float)vp.clockTime);
-        var endTime = Mathf.FloorToInt((float)vp.length - 0.1f);
+        var endTime = Mathf.FloorToInt((float)vp.length -2);
 
         //if (MissionsController.Instance.isARsupport) { transform.position = Camera.main.transform.position; }
 
@@ -182,10 +182,10 @@ public class JoeMain : MonoBehaviour
         if (currentTime == endTime && !isVideoEnd)
         {
             isVideoEnd = true;
-            
-            if (currentElement == 1 || currentElement == 2) { currentElement += 1; }
-            else if (currentElement == 3 || currentElement == 4) { currentElement += 4; }
-            
+
+            //if (currentElement == 1 || currentElement == 2) { currentElement += 1; }
+            //else if (currentElement == 3 || currentElement == 4) { currentElement += 4; }
+
             MissionsController.Instance.viewControllers[currentElement].NextAction();
         }
     }

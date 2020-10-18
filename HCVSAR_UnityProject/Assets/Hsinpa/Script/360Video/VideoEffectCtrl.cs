@@ -16,6 +16,7 @@ namespace Hsinpa.Video
 
         private const string TransitionTet = "_Transition";
         private float[] VideoRotation = new float[] {205, 0, 265, 0, 285, 0, 0, 209, 269, 0};
+        private float time;
         private void Start()
         {
             _mat = _renderer.material;
@@ -27,12 +28,16 @@ namespace Hsinpa.Video
         }
 
         public void FaceVideoToCameraFront(Camera camera,int missionNumber) {
+
             var cameraForward = camera.transform.forward;
             cameraForward.y = 0;
             this.transform.rotation = MainCompass.main.gameObject.transform.rotation;
+            time = 1.1f;
             this.transform.Rotate(new Vector3(0, VideoRotation[missionNumber], 0));
             this.transform.position = camera.transform.position;
         }
+
+        
 
         public void FaceDirection(Vector3 vector) {
             this.transform.rotation = Quaternion.LookRotation(vector);
@@ -51,8 +56,21 @@ namespace Hsinpa.Video
 
         private void Update()
         {
+
+            if (time > 1)
+            {
+                if (time > 3)
+                {
+                    time = 0;
+
+                }
+                transform.rotation = MainCompass.main.gameObject.transform.rotation;
+                time += Time.deltaTime;
+            }
+
             if (!isAnime) return;
 
+            
             float currentValue = _mat.GetFloat(TransitionTet);
             float finalValue = Mathf.Lerp(currentValue, _target, _speed);
             

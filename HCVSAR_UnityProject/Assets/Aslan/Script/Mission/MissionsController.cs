@@ -150,7 +150,11 @@ public class MissionsController : Singleton<MissionsController>
         MainView.Instance.studentScoreData.mission_id = missionArray[missionNumber].mission_id;
         MainView.Instance.missionNumber = missionNumber;
         
-        if (missionNumber == 3) { EnterGame(missionNumber); }
+        if (missionNumber == 3)
+        {
+            isEnter = true;
+            EnterGame(missionNumber);
+        }
 
         if (missionNumber != 3)
         {
