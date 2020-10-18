@@ -69,6 +69,7 @@ export interface DatabaseResultType {
 
 export interface UserDataType {
     userType : UserStatus,
+    socket_id : string,
     user_id : string,
     user_name : string,
     room_id? : string
@@ -82,6 +83,22 @@ export interface RoomStudentType {
 export interface TerminateEventType {
     location_id: string,
     room_id : string
+}
+
+export interface ReserveUserType {
+    socket_id : string,
+    root_id : string,
+    startReserveTime : number
+}
+
+export interface AccessTokenType {
+    socket_id : string
+}
+
+export interface ReconnectRequestType
+{
+    reconnect_sid: string;
+    target_sid : string;
 }
 
 export const ClassCSVKey = {

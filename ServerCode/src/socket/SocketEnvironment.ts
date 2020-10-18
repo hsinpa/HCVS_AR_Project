@@ -71,6 +71,8 @@ class SocketEnvironment {
     UserDisconnect(socketID : string) : UserComponentType {
         let userComp = this.users.get(socketID);
 
+        if (userComp == null) return null;
+
         //Remove student from classroom
         this.LeaveRoom(userComp.user_id, userComp.room_id, userComp.type);
 
@@ -171,7 +173,6 @@ class SocketEnvironment {
             this.rooms.set(room_id, room);
         }
     }
-
 }
 
 export default SocketEnvironment;
