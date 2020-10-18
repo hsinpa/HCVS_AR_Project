@@ -29,14 +29,19 @@ public class Mission3 : ViewController
     public GameObject video;
     [SerializeField]
     private VideoEffectCtrl videoEffect;
+    private Camera _camera;
 
     public override void Enable()
     {
         base.Enable();
 
         videoEffect.SetCoverPercent(0);
-        JoeMain.Main.Start360Video(2);
+        JoeMain.Main.Start360Video(3);
         JoeMain.Main.PlayGame(1);
+
+        _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
+        videoEffect.FaceVideoToCameraFront(_camera, 3);
+
         fingerClick = fingerClickController.currentClick;
         hideBG.SetActive(false);
         seccess.onClick.AddListener(SuccessClick);

@@ -126,9 +126,10 @@ public class Mission5 : ViewController
             if (clickCount == number)
             {
                 //TODO: video? model?
-                //JoeMain.Main.Play360Video();
+                dialogMissionView.Show(false);
+                JoeMain.Main.StarAndPlay360Video(5);
             }
-
+            /*
             if (clickCount >= number && clickCount < historyMessage.Length + number)
             {
                 dialogMissionView.DialogView(dogName, historyMessage[clickCount - number], dog);
@@ -140,7 +141,7 @@ public class Mission5 : ViewController
                 LeaveMission(score);
                 Debug.Log("5Finish");
             }
-
+            */
         }
         else
         {
@@ -162,7 +163,7 @@ public class Mission5 : ViewController
             }
             if (clickCount >= number && clickCount < historyMessage.Length + number)
             {
-                Debug.Log("55clickCount: " + clickCount);
+                Debug.Log("5clickCount: " + clickCount);
                 situationMissionView.Show(false);
                 dialogMissionView.Show(true);
                 dialogMissionView.DialogView(dogName, historyMessage[clickCount - number], dog);
@@ -175,6 +176,11 @@ public class Mission5 : ViewController
             }
 
         }
+    }
+
+    public override void NextAction()
+    {
+        LeaveMission(5);
     }
 
     private void LeaveMission(int score)

@@ -91,6 +91,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     public TypeFlag.SocketDataType.StudentType studentScoreData;
     public GameObject endMission;
     public Image warnImage;
+    public bool isEndMissionOpen;
 
     private TypeFlag.InGameType.MissionType[] guestMissionArray;
     private TypeFlag.SocketDataType.ClassScoreHolderType classScore;
@@ -367,7 +368,11 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
         RefreshHealthBar(totalScore);
 
-        if (totalScore >= 70) { endMission.SetActive(true); }
+        if (totalScore >= 70)
+        {
+            endMission.SetActive(true);
+            isEndMissionOpen = true;
+        }
 
         if (totalScore < 10)
         {
@@ -392,7 +397,11 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
         RefreshHealthBar(totalScore);
 
-        if (totalScore >= 70) { endMission.SetActive(true); }
+        if (totalScore >= 70)
+        {
+            endMission.SetActive(true);
+            isEndMissionOpen = true;
+        }
 
         if (totalScore < 10)
         {

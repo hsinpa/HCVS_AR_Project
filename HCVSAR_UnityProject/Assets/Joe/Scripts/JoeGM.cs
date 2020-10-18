@@ -113,6 +113,7 @@ public class JoeGM : MonoBehaviour
     {
         UpdateIBeaconMain();
         beaconUPD();
+        logUpd();
     }
 
     private void UpdateIBeaconStudent()
@@ -138,14 +139,14 @@ public class JoeGM : MonoBehaviour
 
 
     }
-    public int c;
+    public string c;
     private void UpdateIBeaconMain()
     {
 
         //studentData = MainView.Instance.studentData;
         //textlog("01");
         //MainView.Instance.studentScoreData
-
+        c = "";
         if (isGameStart) {
 
             //textlog("studentData" + studentData.Count);
@@ -172,13 +173,14 @@ public class JoeGM : MonoBehaviour
                     {
                         if (Missioned[MissionNumber] == true)
                         {
+                            c += MissionNumber.ToString();
                             goto OverLoop;
                         }
                     }
 
                     if (CheckDistance && MissionsController.Instance.isEnter != true)
                     {
-                        if (example.mybeacons[i].accuracy < 5f)
+                        if (example.mybeacons[i].accuracy < 5f&& example.mybeacons[i].accuracy!=0)
                         {
 
                             if (example.mybeacons[i].accuracy < MinDistance)
@@ -194,7 +196,7 @@ public class JoeGM : MonoBehaviour
 
 
                 OverLoop:
-                    textlog("JampLoop");
+                    textlog("overMission"+c);
                 }
             }
             catch
@@ -226,7 +228,7 @@ public class JoeGM : MonoBehaviour
                 }
                 else if (MinNumber == 9)
                 {
-                    if (c>70)
+                    if (MainView.Instance.isEndMissionOpen == true)
                     {
                         MissionsController.Instance.Missions(MinNumber);
                     }
