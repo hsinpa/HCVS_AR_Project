@@ -8,7 +8,7 @@ export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketI
 //#region Teacher Section
     socket.on(TeacherSocketEvent.CreateRoom, function (data : string) {
         let parseData : TeacherCreateMsgRoomType = JSON.parse(data);
-        let isSucess = socektEnv.CreateRoom(parseData.user_id, parseData.room_id, socket.id);
+        let isSucess = socektEnv.CreateRoom(parseData.user_id, parseData.room_id, parseData.root_socket_id);
 
         if (isSucess) {
             socket.join(parseData.room_id);
