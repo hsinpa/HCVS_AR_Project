@@ -14,6 +14,7 @@ namespace Expect.View
         [SerializeField]
         private Text missionsName;
 
+        public Text message;
         public Button EnterButton;
         public Button LeaveButton;
         public Image image;

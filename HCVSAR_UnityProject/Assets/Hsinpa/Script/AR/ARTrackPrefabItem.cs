@@ -52,7 +52,7 @@ namespace Hsinpa.AR
                 _ARZeroManager.OnDataUpdate += (OnARDataUpdate);
                 _ARZeroManager.OnTakeOffBtnEvent += OnTakeOffEvent;
                 _ARZeroManager.OnSkinChangeClick += OnSkinChange;
-                _ARZeroManager.ForceUpdate();
+                //_ARZeroManager.ForceUpdate();
 
                 OnSkinChange(0);
             }
