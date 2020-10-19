@@ -24,7 +24,13 @@ class SocketEnvironment {
 
     CreateRoom(host_id : string, room_id: string, socket_id : string) : boolean {
         //No duplicate room
-        if (this.rooms.has(room_id)) return false;
+        if (this.rooms.has(room_id))  {
+            let existRoom = this.rooms.get(room_id);
+
+            //Someone else, is using the classRoom
+            if (existRoom.host_id != host_id)
+                return false;
+        }
 
         this.rooms.set(room_id, {
             host_id : host_id,

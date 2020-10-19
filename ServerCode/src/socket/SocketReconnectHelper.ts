@@ -9,7 +9,7 @@ class SocketReconnectHelper {
 
     fps : number = 1;
     //First Letter(Minutes)
-    reserveTime : number = 0.2 * 60000;
+    reserveTime : number = 39 * 60000;
     userEmitter : UserEmitter;
     socketEnv : SocketEnvironment;
     socketManager : SocketManager;
@@ -99,7 +99,7 @@ class SocketReconnectHelper {
         try {
             for (let i = 0; i < reserveCount; i++) {
                 let reserveComp = this.reserveUserList[i];
-                console.log("currentTime " + currentTime +", waitTime" + (reserveComp.startReserveTime + this.reserveTime));
+                //console.log("currentTime " + currentTime +", waitTime" + (reserveComp.startReserveTime + this.reserveTime));
     
                 if (currentTime > (reserveComp.startReserveTime + this.reserveTime)) {
                     let targetSocketID = this.reconnectIdToOldID.get(reserveComp.socket_id);

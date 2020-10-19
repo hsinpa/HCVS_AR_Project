@@ -47,7 +47,8 @@ export const SocketIOKey = {
 
 export interface TeacherCreateMsgRoomType {
     user_id : string,
-    room_id : string
+    room_id : string,
+    root_socket_id : string
 }
 
 export interface TeacherCommonType {

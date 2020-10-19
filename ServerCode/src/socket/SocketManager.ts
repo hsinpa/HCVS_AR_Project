@@ -58,7 +58,7 @@ export default class SocketManager {
                 let rootSocketID = self.reconnectHandler.GetPairSocketID(socket.id);
                 let userComp = self.env.users.get(rootSocketID);
 
-                if (userComp != null)
+                if (userComp)
                     self.userEmitter.EmitUserLeave(userComp);
             
                 // let userComp = self.env.UserDisconnect(socket.id);

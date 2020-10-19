@@ -98,6 +98,7 @@ public class TypeFlag
         {
             public string user_id;
             public string room_id;
+            public string root_socket_id;
         }
 
         [System.Serializable]
