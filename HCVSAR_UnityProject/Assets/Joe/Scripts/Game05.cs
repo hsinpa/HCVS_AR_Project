@@ -20,16 +20,22 @@ public class Game05 : MonoBehaviour
     private void Start()
     {
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
-        trackPeople.transform.position = _camera.transform.position + JoeMain.Main.VideoPlane.transform.right * 5;
+        trackPeople.transform.position = _camera.transform.position + JoeMain.Main.VideoPlane.transform.right * 150;
         trackPeople.transform.rotation = JoeMain.Main.VideoPlane.transform.rotation;
         trackPeople.SetActive(true);
         image.SetActive(false);
     }
 
+    private void Update()
+    {
+        trackPeople.transform.position = _camera.transform.position + JoeMain.Main.VideoPlane.transform.right * 150;
+        trackPeople.transform.rotation = JoeMain.Main.VideoPlane.transform.rotation;
+    }
+
     public void UI_Enter()
     {
 
-        if (Physics.Linecast(_camera.transform.position, _camera.transform.position + (_camera.transform.forward*300)))
+        if (Physics.Linecast(_camera.transform.position, _camera.transform.position + (_camera.transform.forward*30000)))
         {
             Debug.Log("blocked");
             unityEvent.Invoke();

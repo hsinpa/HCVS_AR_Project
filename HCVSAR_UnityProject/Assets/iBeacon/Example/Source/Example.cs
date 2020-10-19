@@ -457,19 +457,26 @@ internal class Example : MonoBehaviour {
 			txt_BroadcastState_ButtonText.text = "Stop";
 		txt_BroadcastState_LabelText.text = bs_State.ToString();
 	}
+    
+	private void OnBeaconRangeChanged(Beacon[] beacons) {
 
-	private void OnBeaconRangeChanged(Beacon[] beacons) { // 
+		
 		foreach (Beacon b in beacons) {
-			var index = mybeacons.IndexOf(b);
-			if (index == -1) {
-                if(b.range != BeaconRange.UNKNOWN)
-                {
-                    mybeacons.Add(b);
-                }
-				
-			} else {
-				mybeacons[index] = b;
+			if (b.range != BeaconRange.UNKNOWN)
+			{
+				var index = mybeacons.IndexOf(b);
+				if (index == -1)
+				{
+					mybeacons.Add(b);
+
+
+				}
+				else
+				{
+					mybeacons[index] = b;
+				}
 			}
+			
 		}
 		for (int i = mybeacons.Count - 1; i >= 0; --i) {
 			if (mybeacons[i].lastSeen.AddSeconds(10) < DateTime.Now) {

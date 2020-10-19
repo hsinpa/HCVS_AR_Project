@@ -152,6 +152,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         var loginCtrl = MainApp.Instance.GetObserver<LoginCtrl>();
         loginCtrl.OnLoginEvent += OnReceiveLoginEvent;
         SwitchLoginButton(false);
+        warnImage.enabled = false;
     }
 
     private void OnReceiveLoginEvent(TypeFlag.SocketDataType.LoginDatabaseType loginType, SocketIOManager socketIOManager)
@@ -166,7 +167,11 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             _socketIOManager.socket.On(TypeFlag.SocketEvent.TerminateGame, OnTerminateEvent);
         }
 
-        if (loginType.userType == TypeFlag.UserType.Guest) { InitGuestMissionScore(); }
+        if (loginType.userType == TypeFlag.UserType.Guest)
+        {
+            InitGuestMissionScore();
+            StarGame(loginType.userType);
+        }
         //StarGame(loginType.userType); //use for no teacher
     }
 
@@ -296,7 +301,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         this.GetComponent<CanvasGroup>().blocksRaycasts = true;
         EndView.alpha = 0;
         endMission.SetActive(false); // open score =>= 70
-        warnImage.enabled = false;
+        
 
         // ibeacon open
         JoeGM.joeGM.StartBeacom(type);        
