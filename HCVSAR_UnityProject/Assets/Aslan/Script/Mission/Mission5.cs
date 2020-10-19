@@ -36,6 +36,10 @@ public class Mission5 : ViewController
     public GameObject toolView;
     public VideoEffectCtrl videoEffect;
     public MainBaseVIew mainBaseVIew;
+    public GameObject videoUI;
+    public GameObject[] models;
+
+    private Camera _camera;
 
     public override void Enable()
     {
@@ -125,22 +129,15 @@ public class Mission5 : ViewController
 
             if (clickCount == number)
             {
-                //TODO: video? model?
-                //JoeMain.Main.Play360Video();
-            }
+                foreach(var m in models) { m.SetActive(false); }
+                dialogMissionView.Show(false);
 
-            if (clickCount >= number && clickCount < historyMessage.Length + number)
-            {
-                dialogMissionView.DialogView(dogName, historyMessage[clickCount - number], dog);
-                Debug.Log("5clickCount: " + clickCount);
-            }
+                JoeMain.Main.StarAndPlay360Video(5);
 
-            if (clickCount == historyMessage.Length + number)
-            {
-                LeaveMission(score);
-                Debug.Log("5Finish");
+                _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
+                videoEffect.FaceVideoToCameraFront(_camera, 5);
+                videoEffect.SetCoverPercentAnim(0, 0.01f);
             }
-
         }
         else
         {
@@ -162,7 +159,7 @@ public class Mission5 : ViewController
             }
             if (clickCount >= number && clickCount < historyMessage.Length + number)
             {
-                Debug.Log("55clickCount: " + clickCount);
+                Debug.Log("5clickCount: " + clickCount);
                 situationMissionView.Show(false);
                 dialogMissionView.Show(true);
                 dialogMissionView.DialogView(dogName, historyMessage[clickCount - number], dog);
@@ -175,6 +172,12 @@ public class Mission5 : ViewController
             }
 
         }
+    }
+
+    public override void NextAction()
+    {
+        videoUI.SetActive(false);
+        LeaveMission(5);
     }
 
     private void LeaveMission(int score)
@@ -199,8 +202,7 @@ public class Mission5 : ViewController
 
         hideBG.SetActive(true);
 
-        JoeMain.Main.CloseGame(6);
-        JoeMain.Main.CloseGame(7);
+        JoeMain.Main.CloseGame(6);        
         Debug.Log("Mission 5 Leave");
 
         StartCoroutine(GetMail());

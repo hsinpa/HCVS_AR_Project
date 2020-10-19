@@ -16,8 +16,6 @@ public class JoeMain : MonoBehaviour
     private Sprite primeMinister;
     private string dogName = StringAsset.MissionsDialog.Person.dog;
     private string primeMinisterName = StringAsset.MissionsDialog.Person.NPC_5;
-    [SerializeField]
-    private VideoEffectCtrl videoEffect;
 
     public GameObject UI;
     public Text text;
@@ -25,7 +23,6 @@ public class JoeMain : MonoBehaviour
     public Image image;
 
     public static JoeMain Main;
-    public VideoClip[] clip;
     public VideoData[] VideoData;
     public VideoData NowVideoData;
     public VideoPlayer vp;
@@ -51,7 +48,6 @@ public class JoeMain : MonoBehaviour
     
     public void Start360Video(int number)
     {
-        VideoData[number].clip = clip[number];
         NowVideoData = VideoData[number];
         vp.clip = NowVideoData.clip;
 
@@ -158,9 +154,7 @@ public class JoeMain : MonoBehaviour
     void Update()
     {
         var currentTime = Mathf.FloorToInt((float)vp.clockTime);
-        var endTime = Mathf.FloorToInt((float)vp.length - 2);
-
-        //if (MissionsController.Instance.isARsupport) { transform.position = Camera.main.transform.position; }
+        var endTime = Mathf.FloorToInt((float)vp.length);
 
         if (NowVideoData == null) return;
 
@@ -182,10 +176,7 @@ public class JoeMain : MonoBehaviour
         if (currentTime == endTime && !isVideoEnd)
         {
             isVideoEnd = true;
-            
-            if (currentElement == 1 || currentElement == 2) { currentElement += 1; }
-            else if (currentElement == 3 || currentElement == 4) { currentElement += 4; }
-            
+
             MissionsController.Instance.viewControllers[currentElement].NextAction();
         }
     }

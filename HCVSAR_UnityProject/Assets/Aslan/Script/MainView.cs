@@ -89,6 +89,9 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [HideInInspector]
     public int missionNumber;
     public TypeFlag.SocketDataType.StudentType studentScoreData;
+    public GameObject endMission;
+    public Image warnImage;
+    public bool isEndMissionOpen;
 
     private TypeFlag.InGameType.MissionType[] guestMissionArray;
     private TypeFlag.SocketDataType.ClassScoreHolderType classScore;
@@ -164,7 +167,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         }
 
         if (loginType.userType == TypeFlag.UserType.Guest) { InitGuestMissionScore(); }
-        StarGame(loginType.userType); //use for no teacher
+        //StarGame(loginType.userType); //use for no teacher
     }
 
     private void InitGuestMissionScore()
@@ -283,7 +286,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             isEndEvent = false;
         }
 
-        //StarGame(loginType.userType);  //use for Listen teacher
+        StarGame(loginData.userType);  //use for Listen teacher
     }
 
     private void StarGame(TypeFlag.UserType type)
@@ -292,6 +295,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         this.GetComponent<CanvasGroup>().interactable = true;
         this.GetComponent<CanvasGroup>().blocksRaycasts = true;
         EndView.alpha = 0;
+        endMission.SetActive(false); // open score =>= 70
+        warnImage.enabled = false;
 
         // ibeacon open
         JoeGM.joeGM.StartBeacom(type);        
@@ -363,6 +368,12 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
         RefreshHealthBar(totalScore);
 
+        if (totalScore >= 70)
+        {
+            endMission.SetActive(true);
+            isEndMissionOpen = true;
+        }
+
         if (totalScore < 10)
         {
             totalScoreString = "0" + totalScore.ToString();
@@ -385,6 +396,12 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         }
 
         RefreshHealthBar(totalScore);
+
+        if (totalScore >= 70)
+        {
+            endMission.SetActive(true);
+            isEndMissionOpen = true;
+        }
 
         if (totalScore < 10)
         {

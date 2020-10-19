@@ -12,7 +12,6 @@ public class Mission2 : ViewController
     // Message
     private string situationMessage = StringAsset.MissionsSituation.Two.s1;
     private string dogName = StringAsset.MissionsDialog.Person.dog;
-    //private string[] historyMessage = { StringAsset.MissionsDialog.Two.history1, StringAsset.MissionsDialog.Two.history2, StringAsset.MissionsDialog.Two.history3 };
 
     private string qustion = StringAsset.MissionsQustion.Two.qustion;
     private string[] answers = { StringAsset.MissionsAnswer.Two.ans1, StringAsset.MissionsAnswer.Two.ans2,
@@ -28,7 +27,7 @@ public class Mission2 : ViewController
     [HideInInspector]
     public bool isEnterMission;
     public GameObject hideBG;
-    public GameObject video;
+    public GameObject videoUI;
 
     public override void Enable()
     {
@@ -39,7 +38,7 @@ public class Mission2 : ViewController
 
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
         fingerClick = fingerClickController.currentClick;
-        JoeMain.Main.Start360Video(1);
+        JoeMain.Main.Start360Video(2);
 
         StartCoroutine(EnterVideoView());
     }
@@ -47,7 +46,6 @@ public class Mission2 : ViewController
     public IEnumerator EnterVideoView()
     {
         videoEffect.FaceVideoToCameraFront(_camera, 2);
-        //videoEffect.FaceDirection(Vector3.forward);
         videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
 
         yield return new WaitForSeconds(2);
@@ -89,7 +87,7 @@ public class Mission2 : ViewController
     public override void NextAction()
     {
         Debug.Log("2 Finish");
-        video.SetActive(false);
+        videoUI.SetActive(false);
         Qusteion();
     }
 

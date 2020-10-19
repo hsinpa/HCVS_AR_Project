@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using System.Collections;
 using UnityEngine.UI;
 using Expect.View;
+using Expect.StaticAsset;
 using UnityEngine.XR.ARFoundation;
 
 public class MissionsController : Singleton<MissionsController>
@@ -20,7 +22,7 @@ public class MissionsController : Singleton<MissionsController>
     public GameObject ARObj;
 
     [HideInInspector]
-    public bool isARsupport = true;
+    public bool isARsupport;
     [HideInInspector]
     public Camera MainCamera;
     [HideInInspector]
@@ -34,37 +36,7 @@ public class MissionsController : Singleton<MissionsController>
         MainCamera = MainCameraObj.GetComponent<Camera>();
         ARcamera = ARCameraObj.transform.GetChild(0).GetComponent<Camera>();
 
-        text.text = "support";
-
-        if (ARSession.state == ARSessionState.Unsupported)
-        {
-            isARsupport = false;
-            //gyroControler.StartGyro();
-            text.text = "Device Unsupported";
-        }
-        if (ARSession.state == ARSessionState.None)
-        {
-            isARsupport = false;
-            text.text = "Device None";
-        }
-
-        if (ARSession.state == ARSessionState.NeedsInstall)
-        {
-            text.text = "Device NeedsInstall";
-        }
-
-        if (ARSession.state == ARSessionState.Installing)
-        {
-            text.text = "Device Installing";
-        }
-
-        if (ARSession.state == ARSessionState.Ready)
-        {
-            text.text = "Device Ready";
-        }
-        
-        SwitchMainCamera(isARsupport);
-        
+        StartCoroutine(CheckSupport());        
     }
 
     private void Start()
@@ -100,6 +72,7 @@ public class MissionsController : Singleton<MissionsController>
     {
         if (isARsupport) { ARSession.enabled = true; }
 
+        enterMissionView.message.text = StringAsset.EnterMission.enterMission;
         MissionStart(number);
         enterMissionView.image.sprite = sprites[number];
 
@@ -107,6 +80,11 @@ public class MissionsController : Singleton<MissionsController>
         { 
             enterMissionView.EnterButton.onClick.AddListener(() => EnterGame(number));
             enterMissionView.LeaveButton.onClick.AddListener(() => LeaveGame(number));
+        }
+
+        if(number == 9)
+        {
+            enterMissionView.message.text = StringAsset.EnterMission.enterEndMission;
         }
     }
 
@@ -137,7 +115,11 @@ public class MissionsController : Singleton<MissionsController>
         MainView.Instance.studentScoreData.mission_id = missionArray[missionNumber].mission_id;
         MainView.Instance.missionNumber = missionNumber;
         
-        if (missionNumber == 3) { EnterGame(missionNumber); }
+        if (missionNumber == 3)
+        {
+            isEnter = true;
+            EnterGame(missionNumber);
+        }
 
         if (missionNumber != 3)
         {
@@ -152,5 +134,45 @@ public class MissionsController : Singleton<MissionsController>
     {
         enterMissionView.Show(false);
         enterMissionView.RemoveListeners();
+    }
+
+
+    private IEnumerator CheckSupport()
+    {
+        Debug.Log("Checking for AR support...");
+
+        yield return ARSession.CheckAvailability();
+
+        text.text = "support";
+        isARsupport = true;
+
+        switch (ARSession.state)
+        {
+            case ARSessionState.Unsupported:
+                isARsupport = false;
+                text.text = "Device Unsupported AR";
+                break;
+
+            case ARSessionState.None:
+                isARsupport = false;
+                text.text = "Device None";
+                break;
+
+            case ARSessionState.NeedsInstall:
+                isARsupport = false;
+                text.text = "Device Installing";
+                break;
+
+            case ARSessionState.Ready:
+                isARsupport = true;
+                text.text = "Device Ready";
+                break;
+
+            default:
+                isARsupport = false;
+                break;
+        }
+
+        SwitchMainCamera(isARsupport);
     }
 }

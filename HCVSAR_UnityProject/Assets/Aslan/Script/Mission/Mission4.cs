@@ -51,7 +51,7 @@ public class Mission4 : ViewController
 
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
         fingerClick = fingerClickController.currentClick;
-        JoeMain.Main.Start360Video(5);
+        JoeMain.Main.Start360Video(4);
 
         StartCoroutine(EnterGameView());
     }
