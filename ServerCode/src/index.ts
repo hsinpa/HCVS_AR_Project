@@ -37,11 +37,11 @@ app.use(bodyParser());
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-rootRouter(router, rootFolder, models);
-
 // @ts-ignore
 var server = http.Server(app.callback());
 var socketServer = new SocketIOManager(server);
+
+rootRouter(router, rootFolder, models, socketServer);
 
 //"192.168.0.86"
 server.listen(env.NODE_PORT || 8020, 'localhost', function () {

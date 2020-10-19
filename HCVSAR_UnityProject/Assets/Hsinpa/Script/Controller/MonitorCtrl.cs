@@ -50,11 +50,9 @@ namespace Hsinpa.Controller
         public void SetUp(SocketIOManager socketIOManager)
         {
             _socketIOManager = socketIOManager;
-            _socketIOManager.socket.On(TypeFlag.SocketEvent.UserJoined, OnUserJoinEvent);
-            _socketIOManager.socket.On(TypeFlag.SocketEvent.UserLeaved, OnUesrLeaveEvent);
-            _socketIOManager.socket.On(TypeFlag.SocketEvent.RefreshUserStatus, OnRefreshUserStatusEvent);
-            _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
-            _socketIOManager.socket.On(TypeFlag.SocketEvent.KickFromGame, OnKickFromGameEvent);
+            RegisterSocketEvent();
+
+            _socketIOManager.OnSocketReconnected += OnReconnect;
 
             _missionItemSObj = MainApp.Instance.database.MissionItemSObj;
 
@@ -85,9 +83,8 @@ namespace Hsinpa.Controller
                     string fullRoomName = string.Format("{0}年, {1}\nID: {2}", selectedRoomData.year, selectedRoomData.class_name, selectedRoomData.class_id);
                     _monitorView.SetContent(fullRoomName, allStudentData);
 
-                    _socketIOManager.Emit(TypeFlag.SocketEvent.RefreshUserStatus);
+                    RequestUsersRefresh();
                 }
-                
             }, null));
         }
 
@@ -191,7 +188,6 @@ namespace Hsinpa.Controller
         {
             if (args.Length > 0)
             {
-
                 var roomComps = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
 
                 if (_monitorView.isShow) _monitorView.SetTimerAndGameStart(roomComps.end_time);
@@ -214,6 +210,18 @@ namespace Hsinpa.Controller
             _socketIOManager.socket.Emit(TypeFlag.SocketEvent.TerminateGame, jsonString);
 
         }
+
+        private void OnReconnect(BestHTTP.SocketIO.Socket socket) {
+            RequestUsersRefresh();
+            RegisterSocketEvent();
+        }
+
+        private void RequestUsersRefresh() {
+            TypeFlag.SocketDataType.AccessTokenType accessTokenType = new TypeFlag.SocketDataType.AccessTokenType();
+            accessTokenType.socket_id = _socketIOManager.originalSocketID;
+            _socketIOManager.Emit(TypeFlag.SocketEvent.RefreshUserStatus, JsonUtility.ToJson(accessTokenType));
+        }
+
         #endregion
 
         private void ShowTerminateModal(Button btn, string terminateContentText, DialogueModal.ButtonType[] buttonTypes) {
@@ -244,7 +252,30 @@ namespace Hsinpa.Controller
             dialogueModal.SetDropDown(missionItemSObj.missionArray.Select(x => x.mission_name).ToArray());
         }
 
+#if UNITY_EDITOR
+        private void Update()
+        {
+            if (!_monitorView.isShow) return;
 
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                _socketIOManager.ManulControlConnection(true);
+            }
+
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                _socketIOManager.ManulControlConnection(false);
+            }
+        }
+#endif
+
+        private void RegisterSocketEvent() {
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.UserJoined, OnUserJoinEvent);
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.UserLeaved, OnUesrLeaveEvent);
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.RefreshUserStatus, OnRefreshUserStatusEvent);
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.KickFromGame, OnKickFromGameEvent);
+        }
 
     }
 }

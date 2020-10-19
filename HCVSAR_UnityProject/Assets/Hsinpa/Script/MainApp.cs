@@ -6,7 +6,9 @@ using ObserverPattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Expect.StaticAsset;
 using Hsinpa.Model;
+using UnityEngine.Networking;
 
 public class MainApp : Singleton<MainApp>
 {
@@ -81,6 +83,11 @@ public class MainApp : Singleton<MainApp>
 
     private void OnApplicationQuit()
     {
+        if (_socketManager.IsConnected) {
+            string leaveAPI = StringAsset.GetFullAPIUri(string.Format(Expect.StaticAsset.StringAsset.API.ManualDisconnect, _socketManager.socket.Id));
+            StartCoroutine(APIHttpRequest.NativeCurl(leaveAPI, UnityWebRequest.kHttpVerbGET, null, null, null));
+        }
+
         _socketManager.socket.Disconnect();
     }
 }

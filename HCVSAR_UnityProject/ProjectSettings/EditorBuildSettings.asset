@@ -5,13 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Aslan/Scenes/Main.unity
     guid: 2112234de5aac824ab86f507f37ba9a3
   - enabled: 1
     path: Assets/Hsinpa/Scenes/ZeroJetARScan.unity
     guid: 6d47c0a54c3f21148ac8f109287de81c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Airplan/Scene/AirScene.unity
     guid: 0a9ba88bc7f09e84580dd2376b7e14d2
   m_configObjects:
