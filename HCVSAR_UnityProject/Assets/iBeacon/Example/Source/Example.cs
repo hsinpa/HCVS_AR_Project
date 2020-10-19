@@ -462,7 +462,11 @@ internal class Example : MonoBehaviour {
 		foreach (Beacon b in beacons) {
 			var index = mybeacons.IndexOf(b);
 			if (index == -1) {
-				mybeacons.Add(b);
+                if(b.range != BeaconRange.UNKNOWN)
+                {
+                    mybeacons.Add(b);
+                }
+				
 			} else {
 				mybeacons[index] = b;
 			}

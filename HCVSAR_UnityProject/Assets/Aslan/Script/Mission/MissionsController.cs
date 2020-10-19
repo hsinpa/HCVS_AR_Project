@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using UnityEngine.UI;
 using Expect.View;
 using Expect.StaticAsset;
@@ -35,38 +36,7 @@ public class MissionsController : Singleton<MissionsController>
         MainCamera = MainCameraObj.GetComponent<Camera>();
         ARcamera = ARCameraObj.transform.GetChild(0).GetComponent<Camera>();
 
-        text.text = "support";
-        isARsupport = true;
-
-        if (ARSession.state == ARSessionState.Unsupported)
-        {
-            isARsupport = false;
-            //gyroControler.StartGyro();
-            text.text = "Device Unsupported";
-        }
-        if (ARSession.state == ARSessionState.None)
-        {
-            isARsupport = false;
-            text.text = "Device None";
-        }
-
-        if (ARSession.state == ARSessionState.NeedsInstall)
-        {
-            text.text = "Device NeedsInstall";
-        }
-
-        if (ARSession.state == ARSessionState.Installing)
-        {
-            text.text = "Device Installing";
-        }
-
-        if (ARSession.state == ARSessionState.Ready)
-        {
-            text.text = "Device Ready";
-        }
-        
-        SwitchMainCamera(isARsupport);
-        
+        StartCoroutine(CheckSupport());        
     }
 
     private void Start()
@@ -110,11 +80,6 @@ public class MissionsController : Singleton<MissionsController>
         { 
             enterMissionView.EnterButton.onClick.AddListener(() => EnterGame(number));
             enterMissionView.LeaveButton.onClick.AddListener(() => LeaveGame(number));
-        }
-
-        if(number == 8)
-        {
-            MainView.Instance.warnImage.enabled = true;
         }
 
         if(number == 9)
@@ -169,5 +134,45 @@ public class MissionsController : Singleton<MissionsController>
     {
         enterMissionView.Show(false);
         enterMissionView.RemoveListeners();
+    }
+
+
+    private IEnumerator CheckSupport()
+    {
+        Debug.Log("Checking for AR support...");
+
+        yield return ARSession.CheckAvailability();
+
+        text.text = "support";
+        isARsupport = true;
+
+        switch (ARSession.state)
+        {
+            case ARSessionState.Unsupported:
+                isARsupport = false;
+                text.text = "Device Unsupported AR";
+                break;
+
+            case ARSessionState.None:
+                isARsupport = false;
+                text.text = "Device None";
+                break;
+
+            case ARSessionState.NeedsInstall:
+                isARsupport = false;
+                text.text = "Device Installing";
+                break;
+
+            case ARSessionState.Ready:
+                isARsupport = true;
+                text.text = "Device Ready";
+                break;
+
+            default:
+                isARsupport = false;
+                break;
+        }
+
+        SwitchMainCamera(isARsupport);
     }
 }

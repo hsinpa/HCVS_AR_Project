@@ -2,7 +2,6 @@
 using UnityEngine.UI;
 using Expect.View;
 using Expect.StaticAsset;
-using UnityEngine.XR.ARFoundation;
 
 public class Mission1 : ViewController
 {
@@ -31,6 +30,7 @@ public class Mission1 : ViewController
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
     public GameObject hideBG;
+    public GameObject[] models;
 
     private void Start()
     {
@@ -152,9 +152,9 @@ public class Mission1 : ViewController
 
         mainCanvas.interactable = true;
 
+        foreach (var m in models) { m.SetActive(false); }
         MissionsController.Instance.ReSetMissions();
         JoeMain.Main.CloseARGame(4);
-        JoeMain.Main.CloseGame(8);
         JoeMain.Main.ControllerVideoPlane(false);
         Debug.Log("Mission 1 Leave");
     }

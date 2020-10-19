@@ -31,8 +31,9 @@ public class Mission8 : ViewController
         isEnterMission = true;
         hideBG.SetActive(false);
         video.SetActive(true);
+        MainView.Instance.warnImage.enabled = true;
 
-        JoeMain.Main.StarAndPlay360Video(8);// Start360Video(4);
+        JoeMain.Main.StarAndPlay360Video(8);
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
 
         StartCoroutine(EnterVideoView());
