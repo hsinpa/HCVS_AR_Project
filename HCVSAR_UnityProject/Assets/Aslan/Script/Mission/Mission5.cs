@@ -129,7 +129,7 @@ public class Mission5 : ViewController
 
             if (clickCount == number)
             {
-                foreach(var m in models) { m.SetActive(false); }
+                
                 dialogMissionView.Show(false);
 
                 JoeMain.Main.StarAndPlay360Video(5);
@@ -184,6 +184,7 @@ public class Mission5 : ViewController
     {
         InitFingerClick();
         fingerClick.Click -= QuestionReult;
+        foreach (var m in models) { m.SetActive(false); }
 
         dialogMissionView.Show(false);
         endMissionView.Show(true);

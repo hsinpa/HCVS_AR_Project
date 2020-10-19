@@ -17,9 +17,12 @@ namespace Hsinpa.Video
         private const string TransitionTet = "_Transition";
         private float[] VideoRotation = new float[] {205, 0, 265, 0, 285, 0, 0, 209, 269, 0};
         private float time;
+        private int VideoNumber;
+        private Camera _camera;
         private void Start()
         {
             _mat = _renderer.material;
+            _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
         }
 
         //Might only need to set once
@@ -30,11 +33,13 @@ namespace Hsinpa.Video
         public void FaceVideoToCameraFront(Camera camera,int missionNumber) {
 
             var cameraForward = camera.transform.forward;
+            VideoNumber = missionNumber;
             cameraForward.y = 0;
             this.transform.rotation = MainCompass.main.gameObject.transform.rotation;
             time = 1.1f;
             this.transform.Rotate(new Vector3(0, VideoRotation[missionNumber], 0));
             this.transform.position = camera.transform.position;
+            _camera = camera;
         }
 
         
@@ -56,15 +61,18 @@ namespace Hsinpa.Video
 
         private void Update()
         {
-
+            //transform.rotation = MainCompass.main.gameObject.transform.rotation;
+            //this.transform.Rotate(new Vector3(0, VideoRotation[VideoNumber], 0));
+            //this.transform.position = _camera.transform.position;
             if (time > 1)
             {
-                if (time > 3)
+                if (time > 10)
                 {
                     time = 0;
 
                 }
                 transform.rotation = MainCompass.main.gameObject.transform.rotation;
+                this.transform.Rotate(new Vector3(0, VideoRotation[VideoNumber], 0));
                 time += Time.deltaTime;
             }
 

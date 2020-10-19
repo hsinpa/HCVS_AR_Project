@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Game04 : MonoBehaviour
 {
-    public float OverTime = 90;
+    public float OverTime = 60;
     public Text timeUI;
     public float f = 10;
     public Transform targer;
@@ -26,20 +26,15 @@ public class Game04 : MonoBehaviour
 
     void Update()
     {
-        f = Vector3.Distance(_camera.transform.position, targer.position);
+        //f = Vector3.Distance(_camera.transform.position, targer.position);
        
         if (JoeGM.AirRaid)
         {
             unityEvent.Invoke();
             AirRaidtSound.Stop();
+            Destroy(this);
         }
-        else
-        {
-            if (f > 0)
-            {
-                f -= Time.deltaTime * 3;
-            }
-        }
+       
         if (OverTime>0)
         {
             OverTime -= Time.deltaTime;
@@ -50,6 +45,8 @@ public class Game04 : MonoBehaviour
         {
             AirRaidtSound.Stop();
             OverEvent.Invoke();
+            Destroy(this);
+            
         }
     }
 }

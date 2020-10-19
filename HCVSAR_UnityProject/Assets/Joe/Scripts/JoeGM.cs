@@ -112,8 +112,8 @@ public class JoeGM : MonoBehaviour
     public void UpdateIBeacon()
     {
         UpdateIBeaconMain();
-        beaconUPD();
-        logUpd();
+        //beaconUPD();
+        
     }
 
     private void UpdateIBeaconStudent()
@@ -164,7 +164,7 @@ public class JoeGM : MonoBehaviour
                         continue;
                     }
 
-                    if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3)
+                    if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3|| MissionNumber == 9|| MissionNumber == 1)
                     {
                         CheckMission(example.mybeacons[i].accuracy);
                         goto OverLoop;
