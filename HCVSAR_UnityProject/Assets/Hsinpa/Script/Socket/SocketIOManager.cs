@@ -52,6 +52,9 @@ namespace Hsinpa.Socket {
             reconnectRequestType.target_sid = originalSocketID;
 
             Emit(TypeFlag.SocketEvent.Reconnect, JsonUtility.ToJson(reconnectRequestType));
+
+            if (OnSocketReconnected != null)
+                OnSocketReconnected(_socketManager.Socket);
         }
 
         public void Emit(string event_id, string raw_json = "{}") {

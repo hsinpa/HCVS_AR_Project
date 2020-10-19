@@ -50,11 +50,7 @@ namespace Hsinpa.Controller
         public void SetUp(SocketIOManager socketIOManager)
         {
             _socketIOManager = socketIOManager;
-            _socketIOManager.socket.On(TypeFlag.SocketEvent.UserJoined, OnUserJoinEvent);
-            _socketIOManager.socket.On(TypeFlag.SocketEvent.UserLeaved, OnUesrLeaveEvent);
-            _socketIOManager.socket.On(TypeFlag.SocketEvent.RefreshUserStatus, OnRefreshUserStatusEvent);
-            _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
-            _socketIOManager.socket.On(TypeFlag.SocketEvent.KickFromGame, OnKickFromGameEvent);
+            RegisterSocketEvent();
 
             _socketIOManager.OnSocketReconnected += OnReconnect;
 
@@ -217,6 +213,7 @@ namespace Hsinpa.Controller
 
         private void OnReconnect(BestHTTP.SocketIO.Socket socket) {
             RequestUsersRefresh();
+            RegisterSocketEvent();
         }
 
         private void RequestUsersRefresh() {
@@ -271,6 +268,14 @@ namespace Hsinpa.Controller
             }
         }
 #endif
+
+        private void RegisterSocketEvent() {
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.UserJoined, OnUserJoinEvent);
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.UserLeaved, OnUesrLeaveEvent);
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.RefreshUserStatus, OnRefreshUserStatusEvent);
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.KickFromGame, OnKickFromGameEvent);
+        }
 
     }
 }

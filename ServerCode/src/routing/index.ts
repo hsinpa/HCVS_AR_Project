@@ -2,9 +2,10 @@
 import * as path from 'path';
 import * as Router from 'koa-router';
 import Models from '../service/Models';
+import SocketManager from '../socket/SocketManager';
 
 
-module.exports =  (router : Router, rootPath:string, model : Models) => {
+module.exports =  (router : Router, rootPath:string, model : Models, socketManager : SocketManager) => {
   router.get('/', async function (ctx:any, next:any) {
     ctx.state = {
       title: 'HSINPA'
@@ -15,6 +16,12 @@ module.exports =  (router : Router, rootPath:string, model : Models) => {
   router.get('/upload_info_parser', async function (ctx:any, next:any) {
 
     await ctx.render('class_info_parser');
+  });
+
+  router.get('/manual_leave/:root_id', async function (ctx:any, next:any) {
+    console.log("Hello leaver");
+    socketManager.DiconnectAndCleanUp(ctx.params.root_id);
+    ctx.body = "";
   });
 
   //#region Teacher Http Request

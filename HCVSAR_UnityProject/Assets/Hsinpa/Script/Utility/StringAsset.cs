@@ -337,6 +337,7 @@ namespace Expect.StaticAsset {
             public const string GetStudentScore = "getStudentScore/{0}";
             public const string GetClassScore = "getClassScoreInfo/{0}";
             public const string GetStudentRank = "getStudentRank/{0}";
+            public const string ManualDisconnect = "manual_leave/{0}";
 
             public const string PostStudentScore = "Insert_student_record";
         }
