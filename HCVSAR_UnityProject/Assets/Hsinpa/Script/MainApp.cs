@@ -83,13 +83,11 @@ public class MainApp : Singleton<MainApp>
 
     private void OnApplicationQuit()
     {
-        _socketManager.Emit(TypeFlag.SocketEvent.Disconnect);
+        if (_socketManager.IsConnected) {
+            string leaveAPI = StringAsset.GetFullAPIUri(string.Format(Expect.StaticAsset.StringAsset.API.ManualDisconnect, _socketManager.socket.Id));
+            StartCoroutine(APIHttpRequest.NativeCurl(leaveAPI, UnityWebRequest.kHttpVerbGET, null, null, null));
+        }
 
-        string leaveAPI = StringAsset.GetFullAPIUri(string.Format(Expect.StaticAsset.StringAsset.API.ManualDisconnect, _socketManager.originalSocketID));
-        Debug.Log(leaveAPI);
-        //APIHttpRequest.Curl(leaveAPI, BestHTTP.HTTPMethods.Get, null, null);
-        //APIHttpRequest.NativeCurl(leaveAPI, UnityWebRequest.kHttpVerbGET, null, null, null);
-        StartCoroutine( APIHttpRequest.NativeCurl(leaveAPI, UnityWebRequest.kHttpVerbGET, null, null, null));
-        //_socketManager.socket.Disconnect();
+        _socketManager.socket.Disconnect();
     }
 }
