@@ -53,7 +53,7 @@ class SocketReconnectHelper {
             this.reconnectIdToOldID.set(reconnectRequestType.reconnect_sid, reconnectRequestType.target_sid);
 
             let userComp = this.socketEnv.users.get(reconnectRequestType.target_sid);
-            if (userComp != null && userComp.room_id != null) {
+            if (userComp && userComp.room_id) {
                 socket.join(userComp.room_id);
                 console.log("Reconnect successful");
             }
@@ -64,7 +64,7 @@ class SocketReconnectHelper {
         let rootSocketID = this.GetPairSocketID(socket.id);
         let userComp = this.socketEnv.users.get(rootSocketID);
 
-        if (userComp != null && userComp.room_id != null) {
+        if (userComp && userComp.room_id ) {
             this.userEmitter.EmitUserJoinRoom(socket, userComp.room_id, userComp);
 
             //If Student, and room is close before reconnect
