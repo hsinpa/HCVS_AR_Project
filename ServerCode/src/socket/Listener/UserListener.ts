@@ -25,7 +25,7 @@ export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketI
         let parseData : AccessTokenType = JSON.parse(data);
         let userComp = socektEnv.users.get(parseData.socket_id);
 
-        if (socektEnv.rooms.has(userComp.room_id)) {
+        if (userComp && userComp.room_id && socektEnv.rooms.has(userComp.room_id)) {
             let students = socektEnv.FindAllUserInClass(userComp.room_id);
             console.log(userComp.room_id);
             socket.emit(TeacherSocketEvent.RefreshUserStatus, JSON.stringify(students));
@@ -38,7 +38,7 @@ export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketI
         console.log(TeacherSocketEvent.ForceEndGame +", parseData.room_id " + parseData.room_id);
         socektEnv.RoomDismiss(parseData.room_id, parseData.location_id);
 
-        if (parseData.room_id != null && parseData.location_id != null)
+        if (parseData.room_id && parseData.location_id)
             socektEnv.cacheLastRoomHistory.set(parseData.room_id, parseData.location_id);
     });
 
