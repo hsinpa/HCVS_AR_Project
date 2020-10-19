@@ -87,6 +87,7 @@ namespace Hsinpa.View
             else {
                 //New Student, that is not record
                 var studentType = CreateStudentDatabaseType(userComp.user_id, userComp.room_id, userComp.name);
+                allStudentData.Add(studentType);
                 AddSingleStudent(studentType, isConnect:true);
             }
         }
@@ -125,11 +126,25 @@ namespace Hsinpa.View
         public void SyncUserStateByArray(TypeFlag.SocketDataType.UserComponentType[] userCompList) {
             if (userCompList == null) return;
 
+            List<TypeFlag.SocketDataType.StudentDatabaseType> students = new List<TypeFlag.SocketDataType.StudentDatabaseType>(allStudentData);
             int compCount = userCompList.Length;
 
             for (int i = 0; i < compCount; i++) {
                 if (studentItemDict.TryGetValue(userCompList[i].user_id, out MonitorItemPrefabView item)) {
                     item.ChangeStatus(true);
+                }
+
+                int removeIndex = students.FindIndex(x => x.id == userCompList[i].user_id);
+                if (removeIndex >= 0)
+                    students.RemoveAt(removeIndex);
+            }
+
+            int leaveStudentCount = students.Count;
+            for (int i = 0; i < leaveStudentCount; i++)
+            {
+                if (studentItemDict.TryGetValue(students[i].id, out MonitorItemPrefabView item))
+                {
+                    item.ChangeStatus(false);
                 }
             }
         }

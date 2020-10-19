@@ -10,6 +10,7 @@ class SocketEnvironment {
     socketID2SocketTable : Map<string, SocketIO.Socket>;
     users : Map<string, UserComponentType>;
     rooms : Map<string, RoomComponentType>;
+    cacheLastRoomHistory : Map<string, string>;
     userEmitter : UserEmitter;
 
     constructor(userEmitter : UserEmitter) {
@@ -18,11 +19,18 @@ class SocketEnvironment {
         this.socketID2SocketTable = new Map<string, SocketIO.Socket>();
         this.users = new Map<string, UserComponentType>();
         this.rooms = new Map<string, RoomComponentType>();
+        this.cacheLastRoomHistory = new Map<string, string>();
     }
 
     CreateRoom(host_id : string, room_id: string, socket_id : string) : boolean {
         //No duplicate room
-        if (this.rooms.has(room_id)) return false;
+        if (this.rooms.has(room_id))  {
+            let existRoom = this.rooms.get(room_id);
+
+            //Someone else, is using the classRoom
+            if (existRoom.host_id != host_id)
+                return false;
+        }
 
         this.rooms.set(room_id, {
             host_id : host_id,
@@ -71,6 +79,9 @@ class SocketEnvironment {
     UserDisconnect(socketID : string) : UserComponentType {
         let userComp = this.users.get(socketID);
 
+        if (userComp == null) return null;
+        console.log("UserDisconnect");
+
         //Remove student from classroom
         this.LeaveRoom(userComp.user_id, userComp.room_id, userComp.type);
 
@@ -82,6 +93,7 @@ class SocketEnvironment {
 
     LeaveRoom(user_id : string, room_id : string, type : UserStatus) : boolean {
         if (!this.userSocketTable.has(user_id)) return false;
+        console.log("LeaveRoom " + type);
         let socketID = this.userSocketTable.get(user_id);
 
         if (this.rooms.has(room_id) && room_id) {
@@ -171,7 +183,6 @@ class SocketEnvironment {
             this.rooms.set(room_id, room);
         }
     }
-
 }
 
 export default SocketEnvironment;
