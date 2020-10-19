@@ -1,4 +1,5 @@
 import {RoomComponentType, UserComponentType, UserStatus, ReserveUserType, ReconnectRequestType} from '../Utility/Flag/TypeFlag';
+import {UniversalSocketEvent, TeacherSocketEvent} from '../Utility/Flag/EventFlag';
 import {CreateUserType} from '../Utility/SocketUtility';
 import UserEmitter from './Listener/UserEmitter';
 import SocketEnvironment from './SocketEnvironment';
@@ -7,9 +8,8 @@ import SocketManager from './SocketManager';
 class SocketReconnectHelper {
 
     fps : number = 1;
-
     //First Letter(Minutes)
-    reserveTime : number = 20 * 60000;
+    reserveTime : number = 0.2 * 60000;
     userEmitter : UserEmitter;
     socketEnv : SocketEnvironment;
     socketManager : SocketManager;
@@ -48,11 +48,33 @@ class SocketReconnectHelper {
         if (this.socketEnv.socketID2SocketTable.has(reconnectRequestType.target_sid)) {
             this.socketEnv.socketID2SocketTable.set(reconnectRequestType.target_sid, socket);
 
+            console.log("Has target_sid");
+
             this.reconnectIdToOldID.set(reconnectRequestType.reconnect_sid, reconnectRequestType.target_sid);
 
             let userComp = this.socketEnv.users.get(reconnectRequestType.target_sid);
             if (userComp != null && userComp.room_id != null) {
                 socket.join(userComp.room_id);
+                console.log("Reconnect successful");
+            }
+        }
+    }
+
+    ReconnectUserProcess( socket : SocketIO.Socket) {
+        let rootSocketID = this.GetPairSocketID(socket.id);
+        let userComp = this.socketEnv.users.get(rootSocketID);
+
+        if (userComp != null && userComp.room_id != null) {
+            this.userEmitter.EmitUserJoinRoom(socket, userComp.room_id, userComp);
+
+            //If Student, and room is close before reconnect
+            if (userComp.type == UserStatus.Student &&
+                !this.socketEnv.rooms.has(userComp.room_id)&&
+                this.socketEnv.cacheLastRoomHistory.has(userComp.room_id)) {
+
+                    let location_id = this.socketEnv.cacheLastRoomHistory.get(userComp.room_id);
+                    socket.emit(TeacherSocketEvent.ForceEndGame,
+                        JSON.stringify({location_id : location_id}));  
             }
         }
     }
@@ -77,7 +99,7 @@ class SocketReconnectHelper {
         try {
             for (let i = 0; i < reserveCount; i++) {
                 let reserveComp = this.reserveUserList[i];
-                // console.log("currentTime " + currentTime +", waitTime" + (reserveComp.startReserveTime + this.reserveTime));
+                console.log("currentTime " + currentTime +", waitTime" + (reserveComp.startReserveTime + this.reserveTime));
     
                 if (currentTime > (reserveComp.startReserveTime + this.reserveTime)) {
                     let targetSocketID = this.reconnectIdToOldID.get(reserveComp.socket_id);
@@ -93,7 +115,7 @@ class SocketReconnectHelper {
     CleanUpSocketID(socket_id : string, root_id : string) {
         this.reconnectIdToOldID.delete(socket_id);
 
-        let reserveIndex = this.reserveUserList.findIndex(x=>x.socket_id == root_id);
+        let reserveIndex = this.reserveUserList.findIndex(x=>x.root_id == root_id);
         if (reserveIndex >= 0)
             this.reserveUserList.splice(reserveIndex, 1);
     }

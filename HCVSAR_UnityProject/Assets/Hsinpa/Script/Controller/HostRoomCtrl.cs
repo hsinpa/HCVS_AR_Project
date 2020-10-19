@@ -25,7 +25,9 @@ namespace Hsinpa.Controller
             this._hostRoomModal = hostRoomModal;
             this._socketIOManager = socketIOManager;
 
-            _socketIOManager.socket.On(TypeFlag.SocketEvent.CreateRoom, OnSocketHostRoomEvent);
+            OnReconnect(_socketIOManager.socket);
+            _socketIOManager.OnSocketReconnected += OnReconnect;
+
             classroomDataSet = new List<TypeFlag.SocketDataType.ClassroomDatabaseType>();
 
             hostRoomModal.SetUp(OnHostRoomEvent);
@@ -83,6 +85,11 @@ namespace Hsinpa.Controller
             Debug.Log("_socketIOManager.Emit");
 
             _socketIOManager.Emit(TypeFlag.SocketEvent.CreateRoom, JsonUtility.ToJson(teacherCreateMsgRoomType));
+        }
+
+        private void OnReconnect(BestHTTP.SocketIO.Socket socket)
+        {
+            _socketIOManager.socket.On(TypeFlag.SocketEvent.CreateRoom, OnSocketHostRoomEvent);
         }
 
         private void OnSocketHostRoomEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args) {

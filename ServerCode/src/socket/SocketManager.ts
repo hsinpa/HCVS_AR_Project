@@ -48,27 +48,33 @@ export default class SocketManager {
                 console.log("OnReconnect");
                 let parseData : ReconnectRequestType = JSON.parse(data);
                 self.reconnectHandler.RepairSocketID(parseData, socket);
+                self.reconnectHandler.ReconnectUserProcess(socket);
             });
 
             //When client discconected
             socket.on('disconnect', function () {
                 console.log(socket.id + " is disconnect");
                 self.reconnectHandler.TempDisconnectUser(socket);
+                let rootSocketID = self.reconnectHandler.GetPairSocketID(socket.id);
+                let userComp = self.env.users.get(rootSocketID);
+
+                if (userComp != null)
+                    self.userEmitter.EmitUserLeave(userComp);
+            
                 // let userComp = self.env.UserDisconnect(socket.id);
                 // self.userEmitter.EmitUserLeave(userComp);
                 
                // self.Disonnect(socket.id);
             });
-
-            //When client close their app entirely
-            socket.on(UniversalSocketEvent.Disconnect, function () {
-                console.log(UniversalSocketEvent.Disconnect +", " + socket.id);
-                let rootID = self.reconnectHandler.GetPairSocketID(socket.id);
-                self.reconnectHandler.CleanUpSocketID(socket.id, rootID);
-                self.Disonnect(rootID);
-                self.Disonnect(socket.id);
-            });
         });
+    }
+
+    //When client close their app entirely
+    DiconnectAndCleanUp(socket_id : string) {
+        let rootID = this.reconnectHandler.GetPairSocketID(socket_id);
+        this.reconnectHandler.CleanUpSocketID(socket_id, rootID);
+        this.Disonnect(rootID);
+        this.Disonnect(socket_id);
     }
 
     Disonnect(socket_id : string) {
@@ -76,4 +82,5 @@ export default class SocketManager {
         if (userComp != null)
             this.userEmitter.EmitUserLeave(userComp);
     }
+
 }

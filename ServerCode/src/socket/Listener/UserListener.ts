@@ -35,7 +35,11 @@ export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketI
     socket.on(TeacherSocketEvent.ForceEndGame, function (data : string) {
         let parseData : TerminateEventType = JSON.parse(data);
 
+        console.log(TeacherSocketEvent.ForceEndGame +", parseData.room_id " + parseData.room_id);
         socektEnv.RoomDismiss(parseData.room_id, parseData.location_id);
+
+        if (parseData.room_id != null && parseData.location_id != null)
+            socektEnv.cacheLastRoomHistory.set(parseData.room_id, parseData.location_id);
     });
 
     socket.on(TeacherSocketEvent.KickFromGame, function (data : string) {
@@ -49,7 +53,7 @@ export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketI
         let parseData : TeacherCommonType = JSON.parse(data);
         socektEnv.SetRoomTimer(parseData.room_id, Date.now());
         let roomComp = socektEnv.rooms.get(parseData.room_id);
-
+        console.log("Start game " + parseData.room_id);
         socketServer.to(parseData.room_id).emit(TeacherSocketEvent.StartGame, JSON.stringify(roomComp));
     });
 //#endregion
