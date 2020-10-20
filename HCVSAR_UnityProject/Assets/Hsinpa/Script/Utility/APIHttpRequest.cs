@@ -5,9 +5,40 @@ using BestHTTP;
 using BestHTTP.SecureProtocol.Org.BouncyCastle.Ocsp;
 using UnityEngine.Networking;
 using System.Text;
+using thelab.core;
 
 public class APIHttpRequest
 {
+    public static System.Action OnDynamicDomainIsGet;
+
+    public static IEnumerator LoadServerCSVLink()
+    {
+        UnityWebRequest.ClearCookieCache();
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(Expect.StaticAsset.StringAsset.Domain.ServerDomainCSV))
+        {
+            webRequest.timeout = 5;
+            webRequest.useHttpContinue = false;
+
+            // Request and wait for the desired page.
+            yield return webRequest.SendWebRequest();
+            if (webRequest.isNetworkError)
+            {
+                Debug.Log("WebUpdateSheet Error: " + webRequest.error);
+            }
+            else
+            {
+                CSVFile csvFile = new CSVFile(webRequest.downloadHandler.text);
+
+                string domain = csvFile.Get<string>(0, "Domain");
+                Debug.Log("CSV Domain " + domain);
+                Expect.StaticAsset.StringAsset.Domain.DynamicDomain = domain;
+            }
+
+            if (OnDynamicDomainIsGet != null)
+                OnDynamicDomainIsGet();
+        }
+    }
 
     public static void Curl(string url, HTTPMethods httpMethods, string rawJsonObject, System.Action<bool, string> callback) {
         var r = new BestHTTP.HTTPRequest(new System.Uri(url), httpMethods, (request, response) =>
@@ -81,5 +112,4 @@ public class APIHttpRequest
             }
         }
     }
-
 }
