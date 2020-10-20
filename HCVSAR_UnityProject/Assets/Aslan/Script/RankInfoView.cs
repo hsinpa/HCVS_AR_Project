@@ -31,7 +31,6 @@ namespace Expect.View
 
         private List<TypeFlag.SocketDataType.StudentRankType> studentRankData;
         private List<string> FilterDeptList = new List<string>();
-        private List<string> FilterClassList = new List<string>();
         private List<Transform> selectTransformList = new List<Transform>();
 
         private string class_id;
@@ -233,6 +232,29 @@ namespace Expect.View
             searchButton.onClick.RemoveAllListeners();
             DeptSelection.onValueChanged.RemoveAllListeners();
             ClassSelection.onValueChanged.RemoveAllListeners();
+        }
+
+
+        public void ShowUserScoreId(TypeFlag.SocketDataType.StudentDatabaseType studentObj, bool isConnect, TypeFlag.UserType ownerType)
+        {
+
+            string uri = StringAsset.GetFullAPIUri(string.Format(StringAsset.API.GetStudentScore, studentObj.id));
+
+            var modal = Modals.instance.OpenModal<UserInfoModal>();
+
+            //modal.SetUserInfo(OnKickUserEvent, studentObj, isConnect);
+
+            StartCoroutine(
+                APIHttpRequest.NativeCurl(uri, UnityWebRequest.kHttpVerbGET, null, (string json) =>
+                {
+                    var scoreType = JsonHelper.FromJson<TypeFlag.SocketDataType.UserScoreType>(json);
+
+                    modal.SetContent(scoreType, ownerType);
+
+                }, () => {
+
+                })
+            );
         }
     }
 }
