@@ -144,7 +144,7 @@ public class MissionsController : Singleton<MissionsController>
         yield return ARSession.CheckAvailability();
 
         text.text = "support";
-        isARsupport = true;
+        //isARsupport = true;
 
         switch (ARSession.state)
         {
@@ -173,6 +173,7 @@ public class MissionsController : Singleton<MissionsController>
                 break;
         }
 
+        isARsupport = true;
         SwitchMainCamera(isARsupport);
     }
 }
