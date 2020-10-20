@@ -80,6 +80,11 @@ namespace Expect.View
                         studentRankData = tempStudentRankData.ToList();
 
                         var rankData = studentRankData.OrderByDescending(data => data.total_score).ToList();
+
+                        var sameScore = studentRankData.GroupBy(s => s.total_score).ToList();
+
+                        foreach (var s in sameScore) { Debug.Log("i: " + s.First().total_score); }
+
                         RankInfo(rankData);
                     }
                 }, null));
@@ -235,26 +240,28 @@ namespace Expect.View
         }
 
 
-        public void ShowUserScoreId(TypeFlag.SocketDataType.StudentDatabaseType studentObj, bool isConnect, TypeFlag.UserType ownerType)
+        public void ShowUserScoreId(TypeFlag.SocketDataType.StudentDatabaseType studentObj)
         {
 
             string uri = StringAsset.GetFullAPIUri(string.Format(StringAsset.API.GetStudentScore, studentObj.id));
-
-            var modal = Modals.instance.OpenModal<UserInfoModal>();
-
-            //modal.SetUserInfo(OnKickUserEvent, studentObj, isConnect);
 
             StartCoroutine(
                 APIHttpRequest.NativeCurl(uri, UnityWebRequest.kHttpVerbGET, null, (string json) =>
                 {
                     var scoreType = JsonHelper.FromJson<TypeFlag.SocketDataType.UserScoreType>(json);
-
-                    modal.SetContent(scoreType, ownerType);
+                    GenerateScoreBoard(scoreType);
 
                 }, () => {
 
                 })
             );
+        }
+
+        private void GenerateScoreBoard(TypeFlag.SocketDataType.UserScoreType[] scoreArray)
+        {
+
+            var scoreList = scoreArray.ToList();
+            
         }
     }
 }

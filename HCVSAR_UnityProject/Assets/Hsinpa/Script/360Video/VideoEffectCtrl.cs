@@ -15,7 +15,7 @@ namespace Hsinpa.Video
         private float _speed, _target;
 
         private const string TransitionTet = "_Transition";
-        private float[] VideoRotation = new float[] {205, 0, 265, 0, 285, 0, 0, 209, 269, 0};
+        private float[] VideoRotation = new float[] {205, 0, 265, 0, 0, 0, 0, 209, 269, 0}; //mission4 -> 285
         private float time;
         private int VideoNumber;
         private Camera _camera;
@@ -61,12 +61,12 @@ namespace Hsinpa.Video
 
         private void Update()
         {
-            //transform.rotation = MainCompass.main.gameObject.transform.rotation;
-            //this.transform.Rotate(new Vector3(0, VideoRotation[VideoNumber], 0));
+            transform.rotation = MainCompass.main.gameObject.transform.rotation;
+            this.transform.Rotate(new Vector3(0, VideoRotation[VideoNumber], 0));
             //this.transform.position = _camera.transform.position;
             if (time > 1)
             {
-                if (time > 10)
+                if (time > 5)
                 {
                     time = 0;
 
