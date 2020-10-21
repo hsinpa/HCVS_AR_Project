@@ -45,10 +45,9 @@ namespace Hsinpa.AR
 
             int hasSpecialSkin = PlayerPrefs.GetInt(GeneralFlag.PlayerPrefKey.ZeroJet_Skin, -1);
             SetSkinBtnEvent(index: 0, normalSkin);
-            SetSkinBtnEvent(index: hasSpecialSkin, normalSkin);
+            SetSkinBtnEvent(index: hasSpecialSkin, specialSkin);
 
             RandomSkinString = UtilityMethod.RollDice() == 0 ? GeneralFlag.ARZero.TrackImage_1 : GeneralFlag.ARZero.TrackImage_2;
-
             StartCoroutine(CheckIfNoARCore());
         }
 
@@ -79,7 +78,7 @@ namespace Hsinpa.AR
 
         private void SetSkinBtnEvent(int index, Button skinBtn) {
 
-            if (index < 0)
+            if (index <= 0)
             {
                 skinBtn.gameObject.SetActive(false);
                 return;
