@@ -50,14 +50,10 @@ public class Mission5 : ViewController
 
         videoEffect.SetCoverPercent(1);
         JoeMain.Main.PlayGame(6);
-        //fingerClick = fingerClickController.currentClick;
-        //videoEffect.SetCoverPercentAnim(0, 0.01f);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
 
-        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        //fingerClick.Click += ClickCount; // Add fingerClick event
         ClickNextButton();
         nextButton.onClick.AddListener(ClickCount);
     }
@@ -89,8 +85,6 @@ public class Mission5 : ViewController
 
     private void Qusteion()
     {
-        //InitFingerClick();
-        //fingerClick.Click -= ClickCount;
         SwitchButton(false);
         dialogMissionView.Show(false);
         questionMissionView.Show(true);
@@ -104,9 +98,6 @@ public class Mission5 : ViewController
         questionMissionView.Show(false);
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(dogName, correctMessage_1, dog);
-
-        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        //fingerClick.Click += QuestionReult; // Add fingerClick event
 
         ClickNextButton();
         nextButton.onClick.AddListener(QuestionReult);
@@ -187,8 +178,6 @@ public class Mission5 : ViewController
 
     private void LeaveMission(int score)
     {
-        //InitFingerClick();
-        //fingerClick.Click -= QuestionReult;
         foreach (var m in models) { m.SetActive(false); }
 
         SwitchButton(false);
@@ -202,8 +191,6 @@ public class Mission5 : ViewController
     private void LeaveEvent()
     {
         endMissionView.Show(false);
-
-        //InitFingerClick();
         RemoveAllEvent();
         RemoveAllListeners();
 
@@ -242,10 +229,4 @@ public class Mission5 : ViewController
         endMissionView.OnEnable -= LeaveEvent;
         questionMissionView.buttonClick -= OpenClickEvent;
     }
-    /*
-    private void InitFingerClick()
-    {
-        fingerClick.boxCollider.enabled = false;
-        clickCount = 0; // initial
-    }*/
 }
