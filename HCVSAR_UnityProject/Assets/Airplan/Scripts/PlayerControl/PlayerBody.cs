@@ -34,7 +34,7 @@ public class PlayerBody : MonoBehaviour {
 	void OnTriggerEnter(Collider co){
 		// hit the bullet
 		if(co.tag == "Bullet"){
-			pl.Damage(transform) ;	// call damage function
+			//pl.Damage(transform) ;	// call damage function
 			Destroy(co.gameObject) ;	// destory the bullet
 		}
 	}

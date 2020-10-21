@@ -31,6 +31,7 @@ public class Mission1 : ViewController
 
     public GameObject hideBG;
     public GameObject[] models;
+    public MainBaseVIew mainBaseVIew;
 
     private void Start()
     {
@@ -40,9 +41,10 @@ public class Mission1 : ViewController
 
     private void SuccessClick()
     {
-        fingerClick = fingerClickController.currentClick;
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += Count; // Add fingerClick event
+        //fingerClick = fingerClickController.currentClick;
+        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
+        //fingerClick.Click += Count; // Add fingerClick event
+        ClickNextButton();
         isSuccess = true;
 
         bagPanel.Show(false);
@@ -54,9 +56,12 @@ public class Mission1 : ViewController
 
     private void FailClick()
     {
-        fingerClick = fingerClickController.currentClick;
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += Count; // Add fingerClick event
+        //fingerClick = fingerClickController.currentClick;
+        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
+        //fingerClick.Click += Count; // Add fingerClick event
+        ClickNextButton();
+        nextButton.onClick.AddListener(ClickCount);
+
         isSuccess = false;
 
         bagPanel.Show(false);
@@ -66,7 +71,7 @@ public class Mission1 : ViewController
         MissionsController.Instance.ARSession.enabled = true;
     }
 
-    private void Count()
+    private void ClickCount()
     {
         clickCount++;
         mainCanvas.interactable = false;
@@ -87,6 +92,7 @@ public class Mission1 : ViewController
 
         if (clickCount >= 2)
         {
+            mainBaseVIew.PanelController(false);
             StarHistory(2);
         }
     }
@@ -100,6 +106,7 @@ public class Mission1 : ViewController
 
         if (clickCount == 2)
         {
+            mainBaseVIew.PanelController(false);
             dialogMissionView.DialogView(dogName, faultMessage_2, dog);
         }
 
@@ -146,8 +153,8 @@ public class Mission1 : ViewController
         endMissionView.Show(false);
         hideBG.SetActive(true);
 
-        InitFingerClick();
-        RemoveAllEvent();
+        //InitFingerClick();
+        //RemoveAllEvent();
         RemoveAllListeners();
 
         mainCanvas.interactable = true;
@@ -162,11 +169,12 @@ public class Mission1 : ViewController
     private void RemoveAllListeners()
     {
         endMissionView.RemoveListeners();
+        nextButton.onClick.RemoveAllListeners();
     }
-
+    /*
     private void RemoveAllEvent()
     {
-        fingerClick.Click -= Count;
+        //fingerClick.Click -= Count;
         endMissionView.OnEnable -= LeaveEvent;
     }
 
@@ -175,5 +183,5 @@ public class Mission1 : ViewController
         fingerClick.boxCollider.enabled = false;
         fingerClick.Click -= Count;
         clickCount = 0; // initial
-    }
+    }*/
 }

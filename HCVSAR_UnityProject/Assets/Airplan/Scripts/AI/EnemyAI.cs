@@ -18,7 +18,9 @@ public class EnemyAI : MonoBehaviour {
 
 	void Awake(){
 		pl = Object.FindObjectOfType<Player>() ;
-        Player.monsterQuantity++;
+        Debug.Log("Add");
+       
+        PlayerFire.og += Over;
 	}
 	
 	// Moving function
@@ -65,6 +67,11 @@ public class EnemyAI : MonoBehaviour {
             Dead ();
             //Instantiate(DeadCreate,transform.position,transform.rotation);//生成掉落物
         }
+    }
+
+    public void Over()
+    {
+        Destroy(gameObject);
     }
 
     public void Dead()

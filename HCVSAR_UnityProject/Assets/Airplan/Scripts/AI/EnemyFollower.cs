@@ -3,10 +3,11 @@ using System.Collections;
 
 public class EnemyFollower : EnemyAI {
 
-   /* void Start()
+   void Start()
     {
         targetPoint = pl.transform.position;
-    }*/
+        Player.monsterQuantity++;
+    }
 
     void Update(){
         if (onSphere)

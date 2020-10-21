@@ -11,9 +11,9 @@ public class Player : MonoBehaviour {
     public List<DragonBody> myBodies = new List<DragonBody>() ;	// current bodies
     public LockMonter LM; //敵人鎖定
     public Camera C;
-    public Transform tl;
+    
     static public int monsterQuantity;
-	int KillMonster;
+	public int KillMonster;
 	public Text KillUI;
 
 	[Header("移動數值")]
@@ -43,7 +43,7 @@ public class Player : MonoBehaviour {
 
     void Awake(){
 		main = this;
-		Game.ShowCursor(false) ;
+		//Game.ShowCursor(false) ;
 		sphere = GetComponent<SphereCollider>() ;
 		ballRadius = sphere.radius ;
 		targetPoint = transform.Find("TargetPoint").GetChild(0) ;

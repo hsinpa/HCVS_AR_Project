@@ -37,7 +37,7 @@ public class Mission2 : ViewController
         hideBG.SetActive(false);
 
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
-        fingerClick = fingerClickController.currentClick;
+        //fingerClick = fingerClickController.currentClick;
         JoeMain.Main.Start360Video(2);
 
         StartCoroutine(EnterVideoView());
@@ -55,9 +55,10 @@ public class Mission2 : ViewController
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
 
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += ClickCount; // Add fingerClick event
-
+        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
+        //fingerClick.Click += ClickCount; // Add fingerClick event
+        ClickNextButton();
+        nextButton.onClick.AddListener(ClickCount);
     }
 
     void ClickCount()
@@ -69,7 +70,7 @@ public class Mission2 : ViewController
             Convercestion();
         }
 
-        Debug.Log("clickCount: " + clickCount);
+        //Debug.Log("clickCount: " + clickCount);
     }
 
     void Convercestion()
@@ -77,10 +78,11 @@ public class Mission2 : ViewController
 
         if (clickCount == 1)
         {
+            SwitchButton(false);
             JoeMain.Main.Play360Video();
             situationMissionView.Show(false);
-            InitFingerClick();
-            Debug.Log("==== clickCount: " + clickCount);
+            //InitFingerClick();
+            //Debug.Log("==== clickCount: " + clickCount);
         }
     }
 
@@ -134,7 +136,7 @@ public class Mission2 : ViewController
         endMissionView.Show(false);
         hideBG.SetActive(true);
 
-        InitFingerClick();
+        //InitFingerClick();
         RemoveAllListeners();
         RemoveAllEvent();
         MissionsController.Instance.ReSetMissions();
@@ -148,19 +150,20 @@ public class Mission2 : ViewController
     {
         endMissionView.RemoveListeners();
         questionMissionView.RemoveListeners();
+        nextButton.onClick.RemoveAllListeners();
     }
 
     private void RemoveAllEvent()
     {
-        fingerClick.Click -= ClickCount;
+        //fingerClick.Click -= ClickCount;
         endMissionView.OnEnable -= LeaveMission;
         questionMissionView.buttonClick -= QuestionReult;
     }
-
+    /*
     private void InitFingerClick()
     {
         fingerClick.boxCollider.enabled = false;
         fingerClick.Click -= ClickCount;
         clickCount = 0; // initial
-    }
+    }*/
 }
