@@ -19,6 +19,8 @@ public class Game07 : MonoBehaviour
     public GameObject speakMan;
     public GameObject arGameObject;
     public GameObject targetStone;
+    public Image stoneCurve;
+
     public Camera ARCamera;
     public Camera MainCamera;
     private Camera _camera;
@@ -29,21 +31,23 @@ public class Game07 : MonoBehaviour
     {
         _camera = MissionsController.Instance.isARsupport ? ARCamera : MainCamera;
         
-        arGameObject.SetActive(false);
+        arGameObject.SetActive(true);
         speakMan.SetActive(false);
-        targetStone.SetActive(false);
+        gameMan.SetActive(false);
+        targetStone.SetActive(true);
     }
 
     public void UI_Start()
     {
         StartEvent.Invoke();
+        stoneCurve.enabled = false;
         isARStoneFollowCamera = true;
         arGameObject.SetActive(true);
-        targetStone.SetActive(true);
+        gameMan.SetActive(true);
     }
     public void UI_Enter()
     {
-        if (Mathf.Abs(movieCubeTransform.localPosition.x)<0.5)
+        if (Mathf.Abs(movieCubeTransform.localPosition.x)<0.8)
         {
             Invoke("right", 1);
             ani.speed = 0;

@@ -37,13 +37,16 @@ public class Mission6 : ViewController
         hideBG.SetActive(false);
 
         JoeMain.Main.ControllerVideoPlane(true);
-        fingerClick = fingerClickController.currentClick;
+        //fingerClick = fingerClickController.currentClick;
 
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(oldPeopleName, oldPeopleMessage1, primeMinister);
 
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += ClickCount; // Add fingerClick event
+        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
+        //fingerClick.Click += ClickCount; // Add fingerClick event
+
+        ClickNextButton();
+        nextButton.onClick.AddListener(ClickCount);
     }
 
     void ClickCount()
@@ -65,13 +68,14 @@ public class Mission6 : ViewController
         if (clickCount == 2)
         {
             StarGame();
+            SwitchButton(false);
             Debug.Log("Game");
         }
     }
 
     private void StarGame()
     {
-        InitFingerClick();
+        //InitFingerClick();
         dialogMissionView.Show(false);
 
         closeVideo.SetActive(false);
@@ -89,8 +93,10 @@ public class Mission6 : ViewController
 
     private void FailClick()
     {
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += Count; // Add fingerClick event
+        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
+        //fingerClick.Click += Count; // Add fingerClick event
+        ClickNextButton();
+        nextButton.onClick.AddListener(Count);
         isSuccess = false;
 
         dialogMissionView.Show(true);
@@ -158,6 +164,7 @@ public class Mission6 : ViewController
     {
         int score = success ? 5 : 0;
 
+        SwitchButton(false);
         dialogMissionView.Show(false);
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);
@@ -169,7 +176,7 @@ public class Mission6 : ViewController
     {
         endMissionView.Show(false);
 
-        InitFingerClick();
+        //InitFingerClick();
         RemoveAllEvent();
         RemoveAllListeners();
 
@@ -186,20 +193,21 @@ public class Mission6 : ViewController
     private void RemoveAllListeners()
     {
         endMissionView.RemoveListeners();
+        nextButton.onClick.RemoveAllListeners();
     }
 
     private void RemoveAllEvent()
     {
-        fingerClick.Click -= ClickCount;
-        fingerClick.Click -= Count;
+        //fingerClick.Click -= ClickCount;
+        //fingerClick.Click -= Count;
         endMissionView.OnEnable -= LeaveEvent;
     }
-
+    /*
     private void InitFingerClick()
     {
         fingerClick.boxCollider.enabled = false;
         fingerClick.Click -= ClickCount;
         fingerClick.Click -= Count;
         clickCount = 0; // initial
-    }
+    }*/
 }

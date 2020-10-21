@@ -28,10 +28,12 @@ public class Mission9 : ViewController
 
         //JoeMain.Main.ControllerVideoPlane(true);
         JoeMain.Main.PlayARGame(5);
-        fingerClick = fingerClickController.currentClick;
+        //fingerClick = fingerClickController.currentClick;
 
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += ClickCount; // Add fingerClick event
+        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
+        //fingerClick.Click += ClickCount; // Add fingerClick event
+        ClickNextButton();
+        nextButton.onClick.AddListener(ClickCount);
     }
 
     void ClickCount()
@@ -73,19 +75,20 @@ public class Mission9 : ViewController
     private void LeaveEvent()
     {
         dialogMissionView.Show(false);
-        InitFingerClick();
+        //InitFingerClick();
         hideBG.SetActive(true);
 
         JoeMain.Main.CloseARGame(5);
         JoeMain.Main.ControllerVideoPlane(false);
         MissionsController.Instance.ReSetMissions();
+        nextButton.onClick.RemoveAllListeners();
         Debug.Log("Mission 9 Leave");
     }
-
+    /*
     private void InitFingerClick()
     {
         fingerClick.boxCollider.enabled = false;
         fingerClick.Click -= ClickCount;
         clickCount = 0; // initial
-    }
+    }*/
 }

@@ -79,7 +79,7 @@ public class JoeMain : MonoBehaviour
 #if UNITY_ANDROID
     IEnumerator CoroutineTest()
     {
-        yield return new WaitForSeconds(3f);
+        //yield return new WaitForSeconds(5f);
         vp.Play();
 
         yield return new WaitForSeconds(0.1f);

@@ -6,6 +6,7 @@ using Expect.StaticAsset;
 using UnityEngine.Networking;
 using System.Linq;
 using Hsinpa.View;
+using System.Threading.Tasks;
 
 namespace Expect.View
 {
@@ -77,26 +78,24 @@ namespace Expect.View
 
                     if (tempStudentRankData != null)
                     {
-                        studentRankData = tempStudentRankData.ToList();
+                        studentRankData = tempStudentRankData.ToList();                                                                      
 
-                        var rankData = studentRankData.OrderByDescending(data => data.total_score).ToList();
-
-                        var sameScore = studentRankData.GroupBy(s => s.total_score).ToList();
-
-                        foreach (var s in sameScore) { Debug.Log("i: " + s.First().total_score); }
-
-                        RankInfo(rankData);
+                        RankInfo(studentRankData);
                     }
                 }, null));
         }
 
         private void RankInfo(List<TypeFlag.SocketDataType.StudentRankType> studentRankData)
         {
+            var rankData = studentRankData.OrderByDescending(data => data.total_score).ToList();
+
             float height = 30f;
             float containHeight = 10f; ;
             string rank;
+            //List<int> rankIndex = new List<int>();
+            //List<Task<float>> sameScoreList = new List<Task<float>>();
 
-            for (int i = 0; i < studentRankData.Count; i++)
+            for (int i = 0; i < rankData.Count; i++)
             {
                 if (i < 10)
                     rank = "0" + (i + 1).ToString();
@@ -111,13 +110,99 @@ namespace Expect.View
                 containRect.sizeDelta = new Vector2(0, containHeight + height);
                 rankRectTransform.anchoredPosition = new Vector2(0, -height * (i + 1));
                 rankTransform.Find("rank").GetComponent<Text>().text = rank;
-                rankTransform.Find("name").GetComponent<Text>().text = studentRankData[i].student_name;
-                rankTransform.Find("number").GetComponent<Text>().text = studentRankData[i].student_id;
-                rankTransform.Find("score").GetComponent<Text>().text = studentRankData[i].total_score.ToString();
+                rankTransform.Find("name").GetComponent<Text>().text = rankData[i].student_name;
+                rankTransform.Find("number").GetComponent<Text>().text = rankData[i].student_id;
+                rankTransform.Find("score").GetComponent<Text>().text = rankData[i].total_score.ToString();
 
                 selectTransformList.Add(rankTransform);
                 rankTransform.gameObject.SetActive(true);
+
+                /*
+                foreach (var r in sameScore)
+                {
+                    if (rankData[i].total_score == r.Key)
+                    {
+                        rankIndex.Add(i);
+                        //Task t = PrepareserScore(rankData[i].student_id);
+                        sameScoreList.Add(PrepareScore(rankData[i].student_id));
+                        
+                        Debug.Log("rankData[i].student_id " + rankData[i].student_id);
+                    }
+
+                }
+
+                foreach (var s in sameScoreList) { var a = s;  Debug.Log("=======s " + s); }
+                */
             }
+        }
+
+        private async Task ProcessSameScore(List<TypeFlag.SocketDataType.StudentRankType> rankData, int i)
+        {
+            var sameScore = studentRankData.GroupBy(s => s.total_score).Where(g => g.Count() > 1).ToList();
+            List<int> rankIndex = new List<int>();
+            List<Task<float>> sameScoreList = new List<Task<float>>();
+
+            foreach (var r in sameScore)
+            {
+                if (rankData[i].total_score == r.Key)
+                {
+                    rankIndex.Add(i);
+                    //Task t = PrepareserScore(rankData[i].student_id);
+                    sameScoreList.Add(PrepareScore(rankData[i].student_id));
+
+                    Debug.Log("rankData[i].student_id " + rankData[i].student_id);
+                }
+
+            }
+
+            foreach (var s in sameScoreList) { var a = await s; Debug.Log("=======s " + s); }
+        }
+
+        // same score
+
+        private async Task<float> PrepareScore(string id)
+        {
+            var prepareScore = await Task.Run(() => GetUserScore(id));
+            return prepareScore;
+        }
+
+        private float GetUserScore(string id)
+        {
+            string uri = StringAsset.GetFullAPIUri(string.Format(StringAsset.API.GetStudentScore, id));
+            float scoreWeight = 0;
+
+            _ = StartCoroutine(
+                APIHttpRequest.NativeCurl(uri, UnityWebRequest.kHttpVerbGET, null, (string json) =>
+                {
+                    var scoreType = JsonHelper.FromJson<TypeFlag.SocketDataType.UserScoreType>(json);
+
+                    scoreWeight = GenerateScoreBoard(scoreType);
+
+                }, () =>
+                {
+
+                })
+            );
+
+            return scoreWeight;
+        }
+
+        private float GenerateScoreBoard(TypeFlag.SocketDataType.UserScoreType[] scoreArray)
+        {
+            var scoreList = scoreArray.ToList();
+            float sunScore = 0;
+            float sumID = 0;
+
+            foreach (var s in scoreList)
+            {
+                sumID += s.id + 1;
+                sunScore += s.score;
+                Debug.Log("id: " + s.id + " score: " + s.score);
+                Debug.Log("sumID: " + sumID + " sunScore: " + sunScore);
+            }
+
+            return scoreList.Count / (sumID + 1 * 10000) + sunScore;// sameScoreList.Add(scoreList.Count / (sumID+1 * 10000) + sunScore);
+
         }
 
         private void GetDropdownData()
@@ -237,31 +322,6 @@ namespace Expect.View
             searchButton.onClick.RemoveAllListeners();
             DeptSelection.onValueChanged.RemoveAllListeners();
             ClassSelection.onValueChanged.RemoveAllListeners();
-        }
-
-
-        public void ShowUserScoreId(TypeFlag.SocketDataType.StudentDatabaseType studentObj)
-        {
-
-            string uri = StringAsset.GetFullAPIUri(string.Format(StringAsset.API.GetStudentScore, studentObj.id));
-
-            StartCoroutine(
-                APIHttpRequest.NativeCurl(uri, UnityWebRequest.kHttpVerbGET, null, (string json) =>
-                {
-                    var scoreType = JsonHelper.FromJson<TypeFlag.SocketDataType.UserScoreType>(json);
-                    GenerateScoreBoard(scoreType);
-
-                }, () => {
-
-                })
-            );
-        }
-
-        private void GenerateScoreBoard(TypeFlag.SocketDataType.UserScoreType[] scoreArray)
-        {
-
-            var scoreList = scoreArray.ToList();
-            
         }
     }
 }

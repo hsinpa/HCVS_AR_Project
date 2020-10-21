@@ -48,15 +48,18 @@ public class Mission8 : ViewController
 
         videoEffect.SetCoverPercentAnim(0, 0.01f);
 
-        fingerClick = fingerClickController.currentClick;
+        //fingerClick = fingerClickController.currentClick;
     }
 
     public override void NextAction()
     {
         Debug.Log("8 Finish");
 
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += ClickCount; // Add fingerClick event
+        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
+        //fingerClick.Click += ClickCount; // Add fingerClick event
+
+        ClickNextButton();
+        nextButton.onClick.AddListener(ClickCount);
     }
 
     void ClickCount()
@@ -102,15 +105,17 @@ public class Mission8 : ViewController
     {
         JoeMain.Main.Stop360Video();
         videoEffect.SetCoverPercent(1);
-
-        InitFingerClick();
-        RemoveAllEvent();
+        SwitchButton(false);
+        //InitFingerClick();
+        //RemoveAllEvent();
 
         hideBG.SetActive(true);
         MainView.Instance.warnImage.enabled = false;
         MissionsController.Instance.ReSetMissions();
-    }
 
+        nextButton.onClick.RemoveAllListeners();
+    }
+    /*
     private void RemoveAllEvent()
     {
         fingerClick.Click -= ClickCount;
@@ -121,5 +126,5 @@ public class Mission8 : ViewController
         fingerClick.boxCollider.enabled = false;
         fingerClick.Click -= ClickCount;
         clickCount = 0; // initial
-    }
+    }*/
 }

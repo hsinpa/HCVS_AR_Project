@@ -11,8 +11,10 @@ public class PlayerFire : MonoBehaviour {
     public float cd = 0.5f;
     public bool L;
     int mb=1;
-
-    
+    public delegate void gameOver();
+    public static event gameOver og;
+    public launcher1 launcher;
+    public GameObject OverUI;
     //public Transform[] T;
 
     float Tt;
@@ -71,15 +73,21 @@ public class PlayerFire : MonoBehaviour {
         // hit the bullet
         if (co.tag == "Bullet")
         {
+            launcher.enabled = false;
+            og();
+            Player.monsterQuantity = 0;
+            pl.KillMonster = -1;
+            pl.KillM();
+            OverUI.SetActive(true);
             if (pl.myBodies.Count>=2)
             {
-                pl.Damage(pl.myBodies[1].body);
+              //  pl.Damage(pl.myBodies[1].body);
                 
             }
             else
             {
-                Destroy(gameObject);
-                SceneManager.LoadScene("DemoScene", LoadSceneMode.Single);
+              //  Destroy(gameObject);
+              //  SceneManager.LoadScene("DemoScene", LoadSceneMode.Single);
             } // call damage function
             
             Destroy(co.gameObject); // destory the bullet

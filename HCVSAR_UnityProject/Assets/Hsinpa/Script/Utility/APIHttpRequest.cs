@@ -42,7 +42,7 @@ public class APIHttpRequest
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
-            webRequest.timeout = 4;
+            webRequest.timeout = 40;
             webRequest.method = httpMethods;
 
             if (rawJsonObject != null) {
