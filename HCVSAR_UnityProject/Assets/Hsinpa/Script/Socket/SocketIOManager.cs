@@ -24,6 +24,9 @@ namespace Hsinpa.Socket {
 
         public SocketIOManager()
         {
+        }
+
+        public void SetUpSocketIoManager() {
             _socketManager = new SocketManager(new Uri(StringAsset.GetFullAPIUri(StringAsset.API.Socket)));
             RegisterSocket(_socketManager);
         }
