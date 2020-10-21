@@ -41,9 +41,6 @@ public class Mission1 : ViewController
 
     private void SuccessClick()
     {
-        //fingerClick = fingerClickController.currentClick;
-        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        //fingerClick.Click += Count; // Add fingerClick event
         ClickNextButton();
         isSuccess = true;
 
@@ -56,9 +53,6 @@ public class Mission1 : ViewController
 
     private void FailClick()
     {
-        //fingerClick = fingerClickController.currentClick;
-        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        //fingerClick.Click += Count; // Add fingerClick event
         ClickNextButton();
         nextButton.onClick.AddListener(ClickCount);
 
@@ -153,8 +147,6 @@ public class Mission1 : ViewController
         endMissionView.Show(false);
         hideBG.SetActive(true);
 
-        //InitFingerClick();
-        //RemoveAllEvent();
         RemoveAllListeners();
 
         mainCanvas.interactable = true;
@@ -171,17 +163,4 @@ public class Mission1 : ViewController
         endMissionView.RemoveListeners();
         nextButton.onClick.RemoveAllListeners();
     }
-    /*
-    private void RemoveAllEvent()
-    {
-        //fingerClick.Click -= Count;
-        endMissionView.OnEnable -= LeaveEvent;
-    }
-
-    private void InitFingerClick()
-    {
-        fingerClick.boxCollider.enabled = false;
-        fingerClick.Click -= Count;
-        clickCount = 0; // initial
-    }*/
 }

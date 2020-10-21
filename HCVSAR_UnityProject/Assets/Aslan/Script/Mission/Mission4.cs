@@ -50,7 +50,6 @@ public class Mission4 : ViewController
         messageUI.SetActive(false);
 
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
-        //fingerClick = fingerClickController.currentClick;
         JoeMain.Main.Start360Video(4);
 
         StartCoroutine(EnterGameView());
@@ -59,7 +58,6 @@ public class Mission4 : ViewController
     public IEnumerator EnterGameView()
     {
         videoEffect.FaceVideoToCameraFront(_camera, 4);
-        //videoEffect.FaceDirection(new Vector3(0,0,0));
         videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
 
         yield return new WaitForSeconds(2);
@@ -70,19 +68,10 @@ public class Mission4 : ViewController
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
 
-        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        //fingerClick.Click += ClickCount; // Add fingerClick event
         ClickNextButton();
         nextButton.onClick.AddListener(ClickCount);
     }
-    /*
-    public override void ClickNextButton()
-    {
-        base.ClickNextButton();
 
-        nextButton.onClick.AddListener(ClickCount);
-    }
-    */
     void ClickCount()
     {
         clickCount++;
@@ -115,9 +104,7 @@ public class Mission4 : ViewController
         }
         if (clickCount == 5)
         {
-            Debug.Log("Finish");
             StarGame();
-            //InitFingerClick();
         }
     }
 
@@ -133,8 +120,6 @@ public class Mission4 : ViewController
 
     private void SuccessClick()
     {
-        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        //fingerClick.Click += Count; // Add fingerClick event
         ClickButton();
         isSuccess = true;
 
@@ -145,8 +130,6 @@ public class Mission4 : ViewController
 
     private void FailClick()
     {
-        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        //fingerClick.Click += Count; // Add fingerClick event
         ClickButton();
         isSuccess = false;
 
@@ -246,16 +229,6 @@ public class Mission4 : ViewController
 
     private void RemoveAllEvent()
     {
-        //fingerClick.Click -= ClickCount;
-        //fingerClick.Click -= Count;
         endMissionView.OnEnable -= LeaveEvent;
     }
-    /*
-    private void InitFingerClick()
-    {
-        fingerClick.boxCollider.enabled = false;
-        fingerClick.Click -= ClickCount;
-        fingerClick.Click -= Count;
-        clickCount = 0; // initial
-    }*/
 }

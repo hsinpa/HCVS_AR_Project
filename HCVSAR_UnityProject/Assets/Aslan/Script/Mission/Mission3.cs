@@ -42,7 +42,6 @@ public class Mission3 : ViewController
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
         videoEffect.FaceVideoToCameraFront(_camera, 3);
 
-        //fingerClick = fingerClickController.currentClick;
         hideBG.SetActive(false);
         seccess.onClick.AddListener(SuccessClick);
         fail.onClick.AddListener(FailClick);
@@ -50,8 +49,6 @@ public class Mission3 : ViewController
 
     private void SuccessClick()
     {
-        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        //fingerClick.Click += Count; // Add fingerClick event
         ClickButton();
         isSuccess = true;
 
@@ -62,8 +59,6 @@ public class Mission3 : ViewController
 
     private void FailClick()
     {
-        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        //fingerClick.Click += Count; // Add fingerClick event
         ClickButton();
         isSuccess = false;
 
@@ -167,7 +162,7 @@ public class Mission3 : ViewController
         hideBG.SetActive(true);
         endMissionView.Show(false);
         picture.enabled = false;
-        //InitFingerClick();
+
         RemoveAllListeners();
         RemoveAllEvent();
 
@@ -189,11 +184,4 @@ public class Mission3 : ViewController
         endMissionView.RemoveListeners();
         nextButton.onClick.RemoveAllListeners();
     }
-    /*
-    private void InitFingerClick()
-    {
-        fingerClick.boxCollider.enabled = false;
-        fingerClick.Click -= Count;
-        clickCount = 0; // initial
-    }*/
 }

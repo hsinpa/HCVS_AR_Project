@@ -47,26 +47,33 @@ public class Mission8 : ViewController
         yield return new WaitForSeconds(2);
 
         videoEffect.SetCoverPercentAnim(0, 0.01f);
-
-        //fingerClick = fingerClickController.currentClick;
     }
 
     public override void NextAction()
     {
         Debug.Log("8 Finish");
 
-        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        //fingerClick.Click += ClickCount; // Add fingerClick event
+        StartCoroutine(NextClick());
+    }
+
+    private IEnumerator NextClick()
+    {
+
+        yield return new WaitForSeconds(2);
 
         ClickNextButton();
         nextButton.onClick.AddListener(ClickCount);
+
+        video.SetActive(false);
+        dialogMissionView.Show(true);
+        dialogMissionView.DialogView(dogName, dogMessage1, dog);
     }
 
     void ClickCount()
     {
         clickCount++;
 
-        if (clickCount >= 0)
+        if (clickCount > 0)
         {
             EndMessage();
         }
@@ -76,38 +83,24 @@ public class Mission8 : ViewController
 
     private void EndMessage()
     {
-
         if (clickCount == 1)
-        {
-            video.SetActive(false);
-            dialogMissionView.Show(true);
-            dialogMissionView.DialogView(dogName, dogMessage1, dog);
-        }
-
-        if (clickCount == 2)
         {
             dialogMissionView.DialogView(dogName, dogMessage2, dog);
         }
 
-        if (clickCount == 3)
+        if (clickCount == 2)
         {
+            SwitchButton(false);
             dialogMissionView.Show(false);
             toolView.SetActive(true);
         }
-
-        if (clickCount == 4)
-        {
-            LeaveEvent();
-        }
     }
 
-    private void LeaveEvent()
+    public void LeaveEvent()
     {
         JoeMain.Main.Stop360Video();
         videoEffect.SetCoverPercent(1);
         SwitchButton(false);
-        //InitFingerClick();
-        //RemoveAllEvent();
 
         hideBG.SetActive(true);
         MainView.Instance.warnImage.enabled = false;
@@ -115,16 +108,4 @@ public class Mission8 : ViewController
 
         nextButton.onClick.RemoveAllListeners();
     }
-    /*
-    private void RemoveAllEvent()
-    {
-        fingerClick.Click -= ClickCount;
-    }
-
-    private void InitFingerClick()
-    {
-        fingerClick.boxCollider.enabled = false;
-        fingerClick.Click -= ClickCount;
-        clickCount = 0; // initial
-    }*/
 }

@@ -49,7 +49,6 @@ public class Mission0 : ViewController
         hideBG.SetActive(false);
 
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
-        //fingerClick = fingerClickController.currentClick;
         JoeMain.Main.Start360Video(0);
 
         StartCoroutine(EnterVideoView());
@@ -68,8 +67,6 @@ public class Mission0 : ViewController
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
 
-        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        //fingerClick.Click += ClickCount; // Add fingerClick event
         ClickNextButton();
         nextButton.onClick.AddListener(ClickCount);
     }
@@ -193,7 +190,6 @@ public class Mission0 : ViewController
         JoeMain.Main.Stop360Video();
         videoEffect.SetCoverPercent(1);
 
-        //InitFingerClick();
         RemoveAllListeners();
         RemoveAllEvent();
 
@@ -232,15 +228,7 @@ public class Mission0 : ViewController
 
     private void RemoveAllEvent()
     {
-        //fingerClick.Click -= ClickCount;
         endMissionView.OnEnable -= LeaveMission;
         questionMissionView.buttonClick -= QuestionReult;
     }
-    /*
-    private void InitFingerClick()
-    {
-        fingerClick.boxCollider.enabled = false;
-        fingerClick.Click -= ClickCount;
-        clickCount = 0; // initial
-    }*/
 }

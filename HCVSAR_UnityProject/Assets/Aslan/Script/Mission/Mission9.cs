@@ -10,7 +10,7 @@ public class Mission9 : ViewController
     // Message
     private string dogName = StringAsset.MissionsDialog.Person.dog;
     private string dogMessage1 = StringAsset.MissionsDialog.Nine.d1;
-    private string[] historyMessage = { StringAsset.MissionsDialog.Eight.history1, StringAsset.MissionsDialog.Eight.history2 };
+    private string[] historyMessage = { StringAsset.MissionsDialog.Nine.history1, StringAsset.MissionsDialog.Nine.history2 };
 
     [HideInInspector]
     public bool isEnterMission;
@@ -26,12 +26,11 @@ public class Mission9 : ViewController
         hideBG.SetActive(false);
         video.SetActive(true);
 
-        //JoeMain.Main.ControllerVideoPlane(true);
         JoeMain.Main.PlayARGame(5);
-        //fingerClick = fingerClickController.currentClick;
 
-        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        //fingerClick.Click += ClickCount; // Add fingerClick event
+        dialogMissionView.Show(true);
+        dialogMissionView.DialogView(dogName, historyMessage[0], dog);
+
         ClickNextButton();
         nextButton.onClick.AddListener(ClickCount);
     }
@@ -40,7 +39,7 @@ public class Mission9 : ViewController
     {
         clickCount++;
 
-        if (clickCount >= 0)
+        if (clickCount > 0)
         {
             StarHistory();
         }
@@ -50,12 +49,11 @@ public class Mission9 : ViewController
 
     private void StarHistory()
     {
-        int historyCount = historyMessage.Length + 1;
+        int historyCount = historyMessage.Length;
 
         if (clickCount >= 1 && clickCount < historyCount)
         {
-            dialogMissionView.Show(true);
-            dialogMissionView.DialogView(dogName, historyMessage[clickCount - 1], dog);
+            dialogMissionView.DialogView(dogName, historyMessage[1], dog);
         }
 
         if (clickCount == historyCount)
@@ -68,6 +66,7 @@ public class Mission9 : ViewController
             //TODO: End Video
             leaveButton.SetActive(true);
             dialogMissionView.Show(false);
+            SwitchButton(false);
             leaveButton.GetComponent<Button>().onClick.AddListener(LeaveEvent);
         }
     }
@@ -75,7 +74,6 @@ public class Mission9 : ViewController
     private void LeaveEvent()
     {
         dialogMissionView.Show(false);
-        //InitFingerClick();
         hideBG.SetActive(true);
 
         JoeMain.Main.CloseARGame(5);
@@ -84,11 +82,4 @@ public class Mission9 : ViewController
         nextButton.onClick.RemoveAllListeners();
         Debug.Log("Mission 9 Leave");
     }
-    /*
-    private void InitFingerClick()
-    {
-        fingerClick.boxCollider.enabled = false;
-        fingerClick.Click -= ClickCount;
-        clickCount = 0; // initial
-    }*/
 }
