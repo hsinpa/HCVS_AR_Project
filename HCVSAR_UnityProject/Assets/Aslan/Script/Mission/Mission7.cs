@@ -38,7 +38,7 @@ public class Mission7 : ViewController
         hideBG.SetActive(false);
 
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
-        fingerClick = fingerClickController.currentClick;
+        //fingerClick = fingerClickController.currentClick;
         JoeMain.Main.Start360Video(7);
 
         StartCoroutine(EnterVideoView());
@@ -57,9 +57,10 @@ public class Mission7 : ViewController
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
 
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += ClickCount; // Add fingerClick event
-
+        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
+        //fingerClick.Click += ClickCount; // Add fingerClick event
+        ClickNextButton();
+        nextButton.onClick.AddListener(ClickCount);
     }
 
     void ClickCount()
@@ -84,8 +85,9 @@ public class Mission7 : ViewController
         if (clickCount == 2)
         {
             dialogMissionView.Show(false);
+            SwitchButton(false);
             JoeMain.Main.Play360Video();
-            InitFingerClick();
+            //InitFingerClick();
         }
     }
 
@@ -137,7 +139,7 @@ public class Mission7 : ViewController
     private void LeaveMission()
     {
         endMissionView.Show(false);
-        InitFingerClick();
+        //InitFingerClick();
         RemoveAllListeners();
         RemoveAllEvent();
 
@@ -154,19 +156,20 @@ public class Mission7 : ViewController
     {
         endMissionView.RemoveListeners();
         questionMissionView.RemoveListeners();
+        nextButton.onClick.RemoveAllListeners();
     }
 
     private void RemoveAllEvent()
     {
-        fingerClick.Click -= ClickCount;
+        //fingerClick.Click -= ClickCount;
         endMissionView.OnEnable -= LeaveMission;
         questionMissionView.buttonClick -= QuestionReult;
     }
-
+    /*
     private void InitFingerClick()
     {
         fingerClick.boxCollider.enabled = false;
         fingerClick.Click -= ClickCount;
         clickCount = 0; // initial
-    }
+    }*/
 }

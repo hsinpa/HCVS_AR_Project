@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Expect.View;
 
 public class ViewController : MonoBehaviour
@@ -9,14 +10,15 @@ public class ViewController : MonoBehaviour
     public bool isEnter;
     [HideInInspector]
     public int clickCount;
-    [HideInInspector]
-    public FingerClickEvent fingerClick;
+    //[HideInInspector]
+    //public FingerClickEvent fingerClick;
 
     public SituationMissionView situationMissionView;
     public DialogMissionView dialogMissionView;
     public QuestionMissionView questionMissionView;
     public EndMissionView endMissionView;
-    public FingerClickController fingerClickController;
+    public Button nextButton;
+    //public FingerClickController fingerClickController;
 
     public virtual void Enable()
     {
@@ -27,5 +29,17 @@ public class ViewController : MonoBehaviour
     public virtual void NextAction()
     {
         Debug.Log("NextAction");
+    }
+
+    public void ClickNextButton()
+    {
+        clickCount = 0;
+        SwitchButton(true);
+        nextButton.onClick.RemoveAllListeners();
+    }
+
+    public void SwitchButton(bool isOpne)
+    {
+        nextButton.GetComponent<Image>().enabled = isOpne;
     }
 }

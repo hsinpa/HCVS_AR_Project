@@ -66,7 +66,7 @@ namespace Hsinpa.AR
             _ = UtilityMethod.DoDelayWork(7, () =>
             {
                 Debug.Log("ZeroJet : Change scene");
-                StartCoroutine(LoadYourAsyncScene());
+               // StartCoroutine(LoadYourAsyncScene());
             });
         }
 

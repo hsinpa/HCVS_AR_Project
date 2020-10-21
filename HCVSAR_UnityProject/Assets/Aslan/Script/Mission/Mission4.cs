@@ -50,7 +50,7 @@ public class Mission4 : ViewController
         messageUI.SetActive(false);
 
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
-        fingerClick = fingerClickController.currentClick;
+        //fingerClick = fingerClickController.currentClick;
         JoeMain.Main.Start360Video(4);
 
         StartCoroutine(EnterGameView());
@@ -59,6 +59,7 @@ public class Mission4 : ViewController
     public IEnumerator EnterGameView()
     {
         videoEffect.FaceVideoToCameraFront(_camera, 4);
+        //videoEffect.FaceDirection(new Vector3(0,0,0));
         videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
 
         yield return new WaitForSeconds(2);
@@ -69,35 +70,39 @@ public class Mission4 : ViewController
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
 
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += ClickCount; // Add fingerClick event
-
+        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
+        //fingerClick.Click += ClickCount; // Add fingerClick event
+        ClickNextButton();
+        nextButton.onClick.AddListener(ClickCount);
     }
+    /*
+    public override void ClickNextButton()
+    {
+        base.ClickNextButton();
 
+        nextButton.onClick.AddListener(ClickCount);
+    }
+    */
     void ClickCount()
     {
         clickCount++;
 
-        if (clickCount >= 0)
+        if (clickCount > 0)
         {
             Convercestion();
         }
-
-        Debug.Log("clickCount: " + clickCount);
     }
 
     void Convercestion()
     {
         if (clickCount == 1)
         {
-            Debug.Log("clickCount1: " + clickCount);
             situationMissionView.Show(false);
             dialogMissionView.Show(true);
             dialogMissionView.DialogView(studentName, studenMessage1, student);
         }
         if (clickCount == 2)
         {
-            Debug.Log("clickCount2: " + clickCount);
             dialogMissionView.DialogView(dogName, dogMessage1, dog);
         }
         if (clickCount == 3)
@@ -112,12 +117,13 @@ public class Mission4 : ViewController
         {
             Debug.Log("Finish");
             StarGame();
-            InitFingerClick();
+            //InitFingerClick();
         }
     }
 
     private void StarGame()
     {
+        SwitchButton(false);
         dialogMissionView.Show(false);
         JoeMain.Main.PlayARGame(2);
 
@@ -127,8 +133,9 @@ public class Mission4 : ViewController
 
     private void SuccessClick()
     {
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += Count; // Add fingerClick event
+        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
+        //fingerClick.Click += Count; // Add fingerClick event
+        ClickButton();
         isSuccess = true;
 
         gameUI.SetActive(false);
@@ -138,8 +145,9 @@ public class Mission4 : ViewController
 
     private void FailClick()
     {
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += Count; // Add fingerClick event
+        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
+        //fingerClick.Click += Count; // Add fingerClick event
+        ClickButton();
         isSuccess = false;
 
         gameUI.SetActive(false);
@@ -147,13 +155,19 @@ public class Mission4 : ViewController
         dialogMissionView.DialogView(studentName, faultMessage_1, student);
     }
 
+    private void ClickButton()
+    {
+        ClickNextButton();
+        nextButton.onClick.AddListener(Count);
+    }
+
     private void Count()
     {
         clickCount++;
         picture.enabled = true;
         picture.sprite = pic;
-        Debug.Log("Count ++" + clickCount);
-        if (clickCount >= 0)
+        
+        if (clickCount > 0)
         {
             if (isSuccess) { GameSuccess(); }
             if (!isSuccess) { GameFail(); }
@@ -175,9 +189,9 @@ public class Mission4 : ViewController
 
     private void GameFail()
     {
-        if (clickCount >= 0)
+        if (clickCount > 0)
         {
-            StarHistory(0);
+            StarHistory(1);
         }
     }
 
@@ -198,6 +212,7 @@ public class Mission4 : ViewController
     {
         int score = success ? 5 : 0;
 
+        SwitchButton(false);
         dialogMissionView.Show(false);
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);
@@ -212,7 +227,7 @@ public class Mission4 : ViewController
         hideBG.SetActive(true);
         picture.enabled = false;
 
-        InitFingerClick();
+        //InitFingerClick();
         RemoveAllEvent();
         RemoveAllListeners();
 
@@ -226,20 +241,21 @@ public class Mission4 : ViewController
     private void RemoveAllListeners()
     {
         endMissionView.RemoveListeners();
+        nextButton.onClick.RemoveAllListeners();
     }
 
     private void RemoveAllEvent()
     {
-        fingerClick.Click -= ClickCount;
-        fingerClick.Click -= Count;
+        //fingerClick.Click -= ClickCount;
+        //fingerClick.Click -= Count;
         endMissionView.OnEnable -= LeaveEvent;
     }
-
+    /*
     private void InitFingerClick()
     {
         fingerClick.boxCollider.enabled = false;
         fingerClick.Click -= ClickCount;
         fingerClick.Click -= Count;
         clickCount = 0; // initial
-    }
+    }*/
 }
