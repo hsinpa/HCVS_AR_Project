@@ -6,8 +6,10 @@ public class MainCompass : MonoBehaviour
 {
     public static MainCompass main;
     public Transform camera;
+    private ARLocation.ARLocationProvider locationProvider;
     float dushu = 0;
     float tempdushu = 0;
+    public float stpos;
     // Start is called before the first frame update
     public void Awake()
     {
@@ -16,8 +18,10 @@ public class MainCompass : MonoBehaviour
 
     void Start()
     {
-        Input.location.Start();
-        Input.compass.enabled = true;
+        locationProvider = ARLocation.ARLocationProvider.Instance;
+        stpos= (float)ARLocation.ARLocationProvider.Instance.CurrentHeading.heading;
+        //Input.location.Start();
+        //Input.compass.enabled = true;
         if (MissionsController.Instance.isARsupport) {
             //gameObject.SetActive(false);
         }
@@ -31,10 +35,18 @@ public class MainCompass : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transform.position = camera.position+new Vector3(0,-2,0);
+        
 
+           //transform.position = camera.position+new Vector3(0,-2,0);
+           var currentHeading = locationProvider.CurrentHeading.heading;
+        //var currentMagneticHeading = locationProvider.CurrentHeading.magneticHeading;
+        //var currentAccuracy = locationProvider.Provider.CurrentHeading.accuracy;
+
+     
+        //transform.rotation = Quaternion.Euler(0, 0, (float)currentMagneticHeading);
+        transform.rotation = Quaternion.Euler(0, -(float)currentHeading, 0);
         //Input.location.Start();
-
+        /*
         dushu = Input.compass.trueHeading;
 
 
@@ -43,5 +55,6 @@ public class MainCompass : MonoBehaviour
             tempdushu = dushu;
             transform.eulerAngles = new Vector3(0,-dushu, 0);
         }
+        */
     }
 }

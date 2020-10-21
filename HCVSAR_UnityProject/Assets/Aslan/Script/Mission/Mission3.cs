@@ -42,7 +42,7 @@ public class Mission3 : ViewController
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
         videoEffect.FaceVideoToCameraFront(_camera, 3);
 
-        fingerClick = fingerClickController.currentClick;
+        //fingerClick = fingerClickController.currentClick;
         hideBG.SetActive(false);
         seccess.onClick.AddListener(SuccessClick);
         fail.onClick.AddListener(FailClick);
@@ -50,8 +50,9 @@ public class Mission3 : ViewController
 
     private void SuccessClick()
     {
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += Count; // Add fingerClick event
+        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
+        //fingerClick.Click += Count; // Add fingerClick event
+        ClickButton();
         isSuccess = true;
 
         JoeMain.Main.CloseGame(1);
@@ -61,8 +62,9 @@ public class Mission3 : ViewController
 
     private void FailClick()
     {
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += Count; // Add fingerClick event
+        //fingerClick.boxCollider.enabled = true; //open fingerClick trigger
+        //fingerClick.Click += Count; // Add fingerClick event
+        ClickButton();
         isSuccess = false;
 
         JoeMain.Main.CloseGame(1);
@@ -70,7 +72,13 @@ public class Mission3 : ViewController
         dialogMissionView.DialogView(dogName, failMessage_1, dog);
     }
 
-    private void Count()
+    private void ClickButton()
+    {
+        ClickNextButton();
+        nextButton.onClick.AddListener(ClickCount);
+    }
+
+    private void ClickCount()
     {
         clickCount++;
 
@@ -86,6 +94,7 @@ public class Mission3 : ViewController
         if (clickCount >= 1)
         {
             dialogMissionView.Show(false);
+            SwitchButton(false);
             JoeMain.Main.Play360Video();
         }
     }
@@ -136,6 +145,7 @@ public class Mission3 : ViewController
         }
         else
         {
+            SwitchButton(false);
             StartCoroutine(EndPause(score));
         }
 
@@ -157,7 +167,7 @@ public class Mission3 : ViewController
         hideBG.SetActive(true);
         endMissionView.Show(false);
         picture.enabled = false;
-        InitFingerClick();
+        //InitFingerClick();
         RemoveAllListeners();
         RemoveAllEvent();
 
@@ -177,12 +187,13 @@ public class Mission3 : ViewController
         seccess.onClick.RemoveAllListeners();
         fail.onClick.RemoveAllListeners();
         endMissionView.RemoveListeners();
+        nextButton.onClick.RemoveAllListeners();
     }
-
+    /*
     private void InitFingerClick()
     {
         fingerClick.boxCollider.enabled = false;
         fingerClick.Click -= Count;
         clickCount = 0; // initial
-    }
+    }*/
 }
