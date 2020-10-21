@@ -26,7 +26,10 @@ public class MainApp : Singleton<MainApp>
 
     private void Awake()
     {
+        StartCoroutine(APIHttpRequest.LoadServerCSVLink());
+
         _socketManager = new SocketIOManager();
+        APIHttpRequest.OnDynamicDomainIsGet += OnServerDomainIsReturn;
         subject = new Subject();
 
         RegisterAllController(subject);
@@ -41,19 +44,23 @@ public class MainApp : Singleton<MainApp>
 
     public void Init() {
         LoginCtrl loginCtrl = GetObserver<LoginCtrl>();
+
+        LoginModal loginModal = Modals.instance.GetModal<LoginModal>();
+        loginCtrl.SetUp(loginModal, _socketManager);
+        loginCtrl.ProcessLogin();
+    }
+
+    private void OnServerDomainIsReturn() {
+        _socketManager.SetUpSocketIoManager();
         HostRoomCtrl hostRoomCtrl = GetObserver<HostRoomCtrl>();
         MonitorCtrl monitorCtrl = GetObserver<MonitorCtrl>();
         UserInfoCtrl userInfoCtrl = GetObserver<UserInfoCtrl>();
         ClassScoreCtrl classScoreCtrl = GetObserver<ClassScoreCtrl>();
 
-        LoginModal loginModal = Modals.instance.GetModal<LoginModal>();
-        loginCtrl.SetUp(loginModal, _socketManager);
         hostRoomCtrl.SetUp(Modals.instance.GetModal<HostRoomModal>(), _socketManager);
         monitorCtrl.SetUp(_socketManager);
         userInfoCtrl.SetUp(_socketManager, Modals.instance.GetModal<UserInfoModal>());
         classScoreCtrl.SetUp(Modals.instance.GetModal<ClassInfoModal>());
-        //hostRoomCtrl.Process();
-        loginCtrl.ProcessLogin();
     }
 
     private void RegisterAllController(Subject p_subject)

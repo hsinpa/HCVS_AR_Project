@@ -331,6 +331,9 @@ namespace Expect.StaticAsset {
             public const string LocalHost = "http://localhost:8020/";
             public const string GooglePoorServer = "http://34.82.74.32:81/";
             public const string GoogleYuriServer = "http://35.197.38.83:81/";
+
+            public const string ServerDomainCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQAyCfqm9J5kMSTL8wYon8LWLx2kO6YeyEpTogq2GF6YH6-MrgNDK-BmECPQ5UIeaNYXQgpf5I5ZITJ/pub?gid=1629709052&single=true&output=csv";
+            public static string DynamicDomain = null;
         }
 
         public class API {
@@ -350,7 +353,10 @@ namespace Expect.StaticAsset {
 
         public static string GetFullAPIUri(string apiUrl)
         {
-            return Domain.GoogleYuriServer + apiUrl;
+            if (string.IsNullOrEmpty(Domain.DynamicDomain)) {
+                return Domain.GoogleYuriServer + apiUrl;
+            }
+            return Domain.DynamicDomain + apiUrl;
         }
 
     }
