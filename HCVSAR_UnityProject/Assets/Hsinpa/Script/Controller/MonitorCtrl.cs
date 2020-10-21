@@ -91,7 +91,6 @@ namespace Hsinpa.Controller
         #region Button Event
         private void OnGameStartBtnClickEvent(Button btn) {
             var dialogueModal = Modals.instance.OpenModal<DialogueModal>();
-            dialogueModal.DecorateSideImage(GameStartSprite);
             dialogueModal.SetDialogue(StringAsset.UserInfo.GameStartTitle, StringAsset.UserInfo.GameStartDesc,
                 new DialogueModal.ButtonType[] { DialogueModal.ButtonType.Accept, DialogueModal.ButtonType.Cancel },
                 (x) =>
@@ -106,6 +105,8 @@ namespace Hsinpa.Controller
                     }
                 }
             );
+
+            dialogueModal.DecorateSideImage(GameStartSprite);
         }
 
         private void OnTerminateBtnClickEvent(Button btn)
@@ -118,8 +119,6 @@ namespace Hsinpa.Controller
         private void OnLogoutClick(Button btn)
         {
             var dialogueModal = Modals.instance.OpenModal<DialogueModal>();
-
-            dialogueModal.DecorateSideImage(TerminateStartSprite);
 
             dialogueModal.SetDialogue(StringAsset.UserInfo.TeacherLeaveTitle, StringAsset.UserInfo.TeacherLeaveDesc,
                 new DialogueModal.ButtonType[] { DialogueModal.ButtonType.Accept, DialogueModal.ButtonType.Cancel }, (x) =>
@@ -135,6 +134,8 @@ namespace Hsinpa.Controller
                     }
                 }
             );
+
+            dialogueModal.DecorateSideImage(TerminateStartSprite);
 
             //MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowUserInfo, studentItem.studentDatabaseType, studentItem.isOnline);
         }
@@ -226,7 +227,6 @@ namespace Hsinpa.Controller
 
         private void ShowTerminateModal(Button btn, string terminateContentText, DialogueModal.ButtonType[] buttonTypes) {
             var dialogueModal = Modals.instance.OpenModal<DialogueModal>();
-            dialogueModal.DecorateSideImage(TerminateStartSprite);
 
             MissionItemSObj missionItemSObj = MainApp.Instance.database.MissionItemSObj;
 
@@ -248,6 +248,8 @@ namespace Hsinpa.Controller
                     }
                 }
             );
+
+            dialogueModal.DecorateSideImage(TerminateStartSprite);
 
             dialogueModal.SetDropDown(missionItemSObj.missionArray.Select(x => x.mission_name).ToArray());
         }
