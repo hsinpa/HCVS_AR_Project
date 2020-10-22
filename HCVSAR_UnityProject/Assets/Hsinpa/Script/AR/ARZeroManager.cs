@@ -112,7 +112,7 @@ namespace Hsinpa.AR
 private IEnumerator LoadYourAsyncScene()
         {
             string TargetScene = "AirScene";
-            AirPlaneGame.SetActive(true);
+            //AirPlaneGame.SetActive(true);
             // AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(TargetScene);
 
             // Wait until the asynchronous scene fully loads

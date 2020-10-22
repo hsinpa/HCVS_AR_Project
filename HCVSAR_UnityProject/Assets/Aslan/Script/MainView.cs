@@ -87,11 +87,14 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [HideInInspector]
     public TypeFlag.SocketDataType.LoginDatabaseType loginData;
     [HideInInspector]
+    public bool isEndMissionOpen;
+
     public int missionNumber;
+
     public TypeFlag.SocketDataType.StudentType studentScoreData;
     public GameObject endMission;
     public Image warnImage;
-    public bool isEndMissionOpen;
+    public StarVideoController starVideoController;
 
     private TypeFlag.InGameType.MissionType[] guestMissionArray;
     private TypeFlag.SocketDataType.ClassScoreHolderType classScore;
@@ -145,14 +148,19 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     public void Setup()
     {
         TryRegisterOnLoginEvent();
+        InitSet();
     }
 
     private void TryRegisterOnLoginEvent()
     {
         var loginCtrl = MainApp.Instance.GetObserver<LoginCtrl>();
         loginCtrl.OnLoginEvent += OnReceiveLoginEvent;
+    }
+
+    private void InitSet()
+    {
         SwitchLoginButton(false);
-        warnImage.enabled = false;
+        warnImage.enabled = false;        
     }
 
     private void OnReceiveLoginEvent(TypeFlag.SocketDataType.LoginDatabaseType loginType, SocketIOManager socketIOManager)
@@ -296,12 +304,14 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
     private void StarGame(TypeFlag.UserType type)
     {
+        // Video
+        HasPlayStarVideo();
+
         // UI
         this.GetComponent<CanvasGroup>().interactable = true;
         this.GetComponent<CanvasGroup>().blocksRaycasts = true;
         EndView.alpha = 0;
         endMission.SetActive(false); // open score =>= 70
-        
 
         // ibeacon open
         JoeGM.joeGM.StartBeacom(type);        
@@ -426,6 +436,11 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         bool hasAirplane = studentData.Exists(d => d.mission_id == airplaneMark);
         int getAirplane = hasAirplane ? 1 : 0;
         PlayerPrefs.SetInt("HAS_AIRPLANE_SKIN", getAirplane);
+    }
+
+    private void HasPlayStarVideo()
+    {
+        starVideoController.StartPlay();
     }
 
     private void RefreshHealthBar(int score)
