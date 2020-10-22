@@ -34,11 +34,11 @@ public class ViewController : MonoBehaviour
     public void ClickNextButton()
     {
         clickCount = 0;
-        SwitchButton(true);
+        OnClickButton(true);
         nextButton.onClick.RemoveAllListeners();
     }
 
-    public void SwitchButton(bool isOpne)
+    public void OnClickButton(bool isOpne)
     {
         nextButton.GetComponent<Image>().enabled = isOpne;
     }

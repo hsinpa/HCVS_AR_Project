@@ -42,6 +42,7 @@ public class Mission1 : ViewController
     private void SuccessClick()
     {
         ClickNextButton();
+        nextButton.onClick.AddListener(ClickCount);
         isSuccess = true;
 
         bagPanel.Show(false);
@@ -70,7 +71,7 @@ public class Mission1 : ViewController
         clickCount++;
         mainCanvas.interactable = false;
 
-        if (clickCount >= 0)
+        if (clickCount > 0)
         {
             if (isSuccess) { GameSuccess(); }
             if (!isSuccess) { GameFail(); }
@@ -82,8 +83,9 @@ public class Mission1 : ViewController
         if (clickCount == 1)
         {
             dialogMissionView.DialogView(policeName, correctMessage_1, police);
+            Debug.Log("sss");
         }
-
+        
         if (clickCount >= 2)
         {
             mainBaseVIew.PanelController(false);
@@ -136,6 +138,7 @@ public class Mission1 : ViewController
 
         mailInfo.SetActive(false);
         dialogMissionView.Show(false);
+        OnClickButton(false);
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveEvent;

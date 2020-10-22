@@ -80,7 +80,7 @@ public class Mission0 : ViewController
             Convercestion();
         }
     }
-    
+
     void Convercestion()
     {
         int number = 3;
@@ -98,10 +98,10 @@ public class Mission0 : ViewController
 
         if (clickCount == number)
         {
-            SwitchButton(false);
+            OnClickButton(false);
             JoeMain.Main.Play360Video();
             dialogMissionView.Show(false);
-            SwitchButton(false);
+            OnClickButton(false);
             //InitFingerClick();
         }
     }
