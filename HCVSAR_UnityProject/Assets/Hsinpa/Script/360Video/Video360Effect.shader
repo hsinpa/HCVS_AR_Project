@@ -70,6 +70,11 @@ Shader "Hsinpa/Video360Effect"
                 return o;
 			}
 
+			float2x2 rotate2d(float _angle){
+                return float2x2(cos(_angle),-sin(_angle),
+                            sin(_angle),cos(_angle));
+            }
+
 			
 			float RescaleNumber(float number, float min, float max) {
 				return (number - min) / (max - min);
@@ -91,7 +96,7 @@ Shader "Hsinpa/Video360Effect"
 				if (mask < _Transition && diff < _BorderRange) {
 				
 					newColor *= _BorderColor;
-					newColor.a = 1-lerp(0, 0.9, RescaleNumber(diff, 0, _BorderRange));
+					newColor.a = 1-lerp(0, 1, RescaleNumber(diff, 0, _BorderRange));
 
 				} else if (mask < _Transition) {
 					newColor.a = 0;
@@ -102,16 +107,22 @@ Shader "Hsinpa/Video360Effect"
             
             fixed4 frag (v2f i) : SV_Target
             {
+				//i.uv -= float2(.5, .5);
+
 				float2 uv;
 				uv = i.uv;
 				
 				fixed4 col = tex2D(_MainTex, uv);
 
-				float2 distortUV = float2(sin(uv.x * _Time.y), sin(uv.y * _Time.x) ) * 0.1;
-                fixed4 noiseTex = tex2D(_NoiseTex, uv + distortUV) * _Distort;
-				float centerNoise = noiseTex.x * 2 - 1;
+				float2 distortUV = float2((uv.x *sin(_Time.y)), (uv.y * cos(_Time.y)) ) * 0.1;
+                fixed4 noiseTex = tex2D(_NoiseTex, uv - distortUV) * _Distort;
+				float centerNoiseX = (noiseTex.x -1) * 2;
+				float centerNoiseY = (noiseTex.y -1) * 2;
 
-                fixed4 maskTex = tex2D(_MaskTex, uv + fixed2(centerNoise, centerNoise) );
+				//i.uv = mul(i.uv, rotate2d(_Time.x));
+                fixed4 maskTex = tex2D(_MaskTex, uv + fixed2(centerNoiseX, centerNoiseY) -  fixed2(centerNoiseY, centerNoiseX) );
+
+
 
                 return ApplyTexTransition(col, maskTex.x);
             }
