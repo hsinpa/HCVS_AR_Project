@@ -17,6 +17,7 @@ public class Mission9 : ViewController
     public GameObject hideBG;
     public GameObject video;
     public GameObject leaveButton;
+    public GameObject endObject;
 
     public override void Enable()
     {
@@ -26,6 +27,7 @@ public class Mission9 : ViewController
         hideBG.SetActive(false);
         video.SetActive(true);
 
+        endObject.SetActive(false);
         JoeMain.Main.PlayARGame(5);
 
         dialogMissionView.Show(true);
@@ -63,10 +65,10 @@ public class Mission9 : ViewController
 
         if (clickCount == historyCount + 1)
         {
-            //TODO: End Video
             leaveButton.SetActive(true);
             dialogMissionView.Show(false);
             SwitchButton(false);
+            endObject.SetActive(true);
             leaveButton.GetComponent<Button>().onClick.AddListener(LeaveEvent);
         }
     }

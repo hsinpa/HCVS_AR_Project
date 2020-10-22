@@ -22,6 +22,8 @@ namespace Hsinpa.AR
 
         public static string RandomSkinString;
 
+        public GameObject AirPlaneGame;
+
         [Header("Skin Buttons")]
         [SerializeField]
         private Button normalSkin;
@@ -110,14 +112,15 @@ namespace Hsinpa.AR
 private IEnumerator LoadYourAsyncScene()
         {
             string TargetScene = "AirScene";
-
-            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(TargetScene);
+            AirPlaneGame.SetActive(true);
+            // AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(TargetScene);
 
             // Wait until the asynchronous scene fully loads
-            while (!asyncLoad.isDone)
-            {
-                yield return null;
-            }
+            /* while (!asyncLoad.isDone)
+             {
+                 yield return null;
+             }*/
+            yield return null;
         }
 
 
