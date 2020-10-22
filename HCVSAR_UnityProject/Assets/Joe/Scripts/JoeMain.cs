@@ -50,6 +50,7 @@ public class JoeMain : MonoBehaviour
     {
         NowVideoData = VideoData[number];
         vp.clip = NowVideoData.clip;
+        vp.Prepare();
 
         StartCoroutine(CoroutineTest());
 
@@ -79,9 +80,10 @@ public class JoeMain : MonoBehaviour
 #if UNITY_ANDROID
     IEnumerator CoroutineTest()
     {
-        //yield return new WaitForSeconds(5f);
-        vp.Play();
-
+        if(vp.isPrepared)
+        {
+            vp.Play();
+        }
         yield return new WaitForSeconds(0.1f);
         vp.Pause();
     }
