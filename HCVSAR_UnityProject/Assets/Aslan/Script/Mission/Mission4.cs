@@ -110,7 +110,7 @@ public class Mission4 : ViewController
 
     private void StarGame()
     {
-        SwitchButton(false);
+        OnClickButton(false);
         dialogMissionView.Show(false);
         JoeMain.Main.PlayARGame(2);
 
@@ -195,7 +195,7 @@ public class Mission4 : ViewController
     {
         int score = success ? 5 : 0;
 
-        SwitchButton(false);
+        OnClickButton(false);
         dialogMissionView.Show(false);
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);

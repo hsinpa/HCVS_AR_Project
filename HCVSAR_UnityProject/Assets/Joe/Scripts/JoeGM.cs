@@ -306,10 +306,10 @@ public class JoeGM : MonoBehaviour
                 break;
         }
 
-        Invoke("startIbeacon", 1);
+        //Invoke("startIbeacon", 1);
     }
 
-    void startIbeacon()
+    public void startIbeacon()
     {
         example.btn_StartStop();
         isGameStart=true;

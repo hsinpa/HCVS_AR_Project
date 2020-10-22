@@ -85,7 +85,7 @@ public class Mission5 : ViewController
 
     private void Qusteion()
     {
-        SwitchButton(false);
+        OnClickButton(false);
         dialogMissionView.Show(false);
         questionMissionView.Show(true);
 
@@ -123,12 +123,12 @@ public class Mission5 : ViewController
 
             if (clickCount == number)
             {
-                
+
                 dialogMissionView.Show(false);
 
                 foreach (var m in models) { m.SetActive(false); }
                 JoeMain.Main.StarAndPlay360Video(5);
-                SwitchButton(false);
+                OnClickButton(false);
 
                 _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
                 videoEffect.FaceVideoToCameraFront(_camera, 5);
@@ -180,7 +180,7 @@ public class Mission5 : ViewController
     {
         foreach (var m in models) { m.SetActive(false); }
 
-        SwitchButton(false);
+        OnClickButton(false);
         dialogMissionView.Show(false);
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);

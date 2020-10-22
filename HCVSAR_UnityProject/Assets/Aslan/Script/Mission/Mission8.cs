@@ -90,7 +90,7 @@ public class Mission8 : ViewController
 
         if (clickCount == 2)
         {
-            SwitchButton(false);
+            OnClickButton(false);
             dialogMissionView.Show(false);
             toolView.SetActive(true);
         }
@@ -100,7 +100,7 @@ public class Mission8 : ViewController
     {
         JoeMain.Main.Stop360Video();
         videoEffect.SetCoverPercent(1);
-        SwitchButton(false);
+        OnClickButton(false);
 
         hideBG.SetActive(true);
         MainView.Instance.warnImage.enabled = false;

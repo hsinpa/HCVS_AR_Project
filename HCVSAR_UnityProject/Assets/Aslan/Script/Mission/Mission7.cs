@@ -82,7 +82,7 @@ public class Mission7 : ViewController
         if (clickCount == 2)
         {
             dialogMissionView.Show(false);
-            SwitchButton(false);
+            OnClickButton(false);
             JoeMain.Main.Play360Video();
             //InitFingerClick();
         }
