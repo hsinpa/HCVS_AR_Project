@@ -45,12 +45,11 @@ public class MainCompass : MonoBehaviour
         
         dushu = Input.compass.trueHeading;
 
-
         if (Mathf.Abs(tempdushu - dushu) > 1)
         {
             tempdushu = dushu;
             transform.eulerAngles = new Vector3(0, (Camera.main.transform.rotation.eulerAngles.y - (float)ARLocation.ARLocationProvider.Instance.CurrentHeading.heading), 0);
         }
-        
+
     }
 }

@@ -38,7 +38,6 @@ namespace Hsinpa.Video
             this.transform.position = camera.transform.position;
             _camera = camera;
         }
-
         
 
         public void FaceDirection(Vector3 vector) {
