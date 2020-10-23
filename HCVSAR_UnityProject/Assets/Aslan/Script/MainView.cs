@@ -180,7 +180,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             InitGuestMissionScore();
             StarGame(loginType.userType);
         }
-        StarGame(loginType.userType); //use for no teacher
+        //StarGame(loginType.userType); //use for no teacher
     }
 
     private void InitGuestMissionScore()
@@ -299,7 +299,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             isEndEvent = false;
         }
 
-        //StarGame(loginData.userType);  //use for Listen teacher
+        StarGame(loginData.userType);  //use for Listen teacher
     }
 
     private void StarGame(TypeFlag.UserType type)
@@ -314,7 +314,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         endMission.SetActive(false); // open score =>= 70
 
         // ibeacon open
-        JoeGM.joeGM.StartBeacom(type);        
+        JoeGM.joeGM.StartBeacom(type);
+        //JoeGM.joeGM.startIbeacon();
 
         // switch button
         SwitchLoginButton(true);

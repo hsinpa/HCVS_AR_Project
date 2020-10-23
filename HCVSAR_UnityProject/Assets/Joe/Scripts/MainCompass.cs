@@ -18,8 +18,8 @@ public class MainCompass : MonoBehaviour
     void Start()
     {
         //locationProvider = ARLocation.ARLocationProvider.Instance;
-        Input.location.Start();
-        Input.compass.enabled = true;
+        //Input.location.Start();
+        //Input.compass.enabled = true;
         if (MissionsController.Instance.isARsupport) {
             //gameObject.SetActive(false);
         }
@@ -38,18 +38,15 @@ public class MainCompass : MonoBehaviour
         //var currentMagneticHeading = locationProvider.CurrentHeading.magneticHeading;
         //var currentAccuracy = locationProvider.Provider.CurrentHeading.accuracy;
 
-     
+
         //transform.rotation = Quaternion.Euler(0, 0, (float)currentMagneticHeading);
         //transform.rotation = Quaternion.Euler(0, (float)currentHeading, 0);
         //Input.location.Start();
-        
-        dushu = Input.compass.trueHeading;
 
-        if (Mathf.Abs(tempdushu - dushu) > 1)
-        {
-            tempdushu = dushu;
-            transform.eulerAngles = new Vector3(0, (Camera.main.transform.rotation.eulerAngles.y - (float)ARLocation.ARLocationProvider.Instance.CurrentHeading.heading), 0);
-        }
+        //dushu = Input.compass.trueHeading;
+        transform.eulerAngles = new Vector3(0, (Camera.main.transform.rotation.eulerAngles.y - (float)ARLocation.ARLocationProvider.Instance.CurrentHeading.heading), 0);
+       
+        //transform.eulerAngles = new Vector3(0, Camera.main.transform.rotation.eulerAngles.y, 0);
 
     }
 }

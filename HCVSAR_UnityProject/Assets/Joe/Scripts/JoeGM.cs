@@ -305,7 +305,7 @@ public class JoeGM : MonoBehaviour
                 
                 break;
         }
-
+        
         //Invoke("startIbeacon", 1);
     }
 
