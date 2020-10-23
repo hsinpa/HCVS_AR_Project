@@ -54,6 +54,10 @@ namespace Hsinpa.AR
                 _ARZeroManager.OnSkinChangeClick += OnSkinChange;
                 //_ARZeroManager.ForceUpdate();
 
+#if UNITY_ANDROID
+                UpdatePlanePosRot(Vector3.zero, mainObject.transform.localRotation, mainObject.transform.localScale * 0.4f);
+#endif
+
                 OnSkinChange(0);
             }
         }
@@ -69,9 +73,13 @@ namespace Hsinpa.AR
 
             ARDataSync.ARData data = aRDataSync.FindArData(_ARTrackedImage.referenceImage.name);
 
-            mainObject.transform.localPosition = data.position;
-            mainObject.transform.localRotation = data.rotation;
-            mainObject.transform.localScale = data.scale;
+            UpdatePlanePosRot(data.position, data.rotation, data.scale);
+        }
+
+        private void UpdatePlanePosRot(Vector3 position, Quaternion rotation, Vector3 scale) {
+            mainObject.transform.localPosition = position;
+            mainObject.transform.localRotation = rotation;
+            mainObject.transform.localScale = scale;
         }
 
         private void OnTakeOffEvent() {
