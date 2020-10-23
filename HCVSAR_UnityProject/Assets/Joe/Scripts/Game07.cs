@@ -31,7 +31,7 @@ public class Game07 : MonoBehaviour
     {
         _camera = MissionsController.Instance.isARsupport ? ARCamera : MainCamera;
         
-        arGameObject.SetActive(true);
+        arGameObject.SetActive(false);
         speakMan.SetActive(false);
         gameMan.SetActive(false);
         targetStone.SetActive(true);
@@ -82,7 +82,7 @@ public class Game07 : MonoBehaviour
             isARStoneFollowCamera = false;
 
             var _cameraFront = _camera.transform.forward;
-            var _frontPos = _cameraFront * 10;
+            var _frontPos = _cameraFront * 15;
 
             _cameraFront.y = 0;
             arGameObject.transform.position = _camera.transform.position + _frontPos;

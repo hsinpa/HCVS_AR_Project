@@ -30,6 +30,7 @@ namespace Expect.View
         private TypeFlag.InGameType.MissionType[] missionArray;
         private Dictionary<string, TypeFlag.InGameType.MissionType> missionLookupTable;
         private List<Transform> selectTransformList = new List<Transform>();
+        private List<string> guestMissionList = new List<string>();
 
         private bool isConnection;
 
@@ -47,6 +48,7 @@ namespace Expect.View
 
         private void StudentInfo(TypeFlag.UserType type)
         {
+            List<TypeFlag.SocketDataType.StudentType> studentData = MainView.Instance.studentData;
             string student_name = "Guest";
             string student_id = "None";
 
@@ -71,8 +73,7 @@ namespace Expect.View
                     case TypeFlag.UserType.Student:
                         student_id = MainView.Instance.loginData.user_id;
                         student_name = MainView.Instance.loginData.username;
-                        List<TypeFlag.SocketDataType.StudentType> studentData = MainView.Instance.studentData;
-
+                        
                         for (int j = 0; j < studentData.Count; j++)
                         {
                             if (missionArray[i].mission_id == studentData[j].mission_id)
@@ -85,8 +86,19 @@ namespace Expect.View
                         break;
 
                     case TypeFlag.UserType.Guest:
-                        missionTransform.Find("score").GetComponent<Text>().color = green;
-                        missionTransform.Find("id").GetComponent<Text>().color = green;
+
+                        string currentID = MainView.Instance.studentScoreData.mission_id;
+                        guestMissionList.Add(currentID);
+
+                        for (int j = 0; j < guestMissionList.Count; j++)
+                        {
+                            if (missionArray[i].mission_id == guestMissionList[j])
+                            {
+                                missionTransform.Find("score").GetComponent<Text>().color = green;
+                                missionTransform.Find("id").GetComponent<Text>().color = green;
+                            }
+                            
+                        }
 
                         break;
                         

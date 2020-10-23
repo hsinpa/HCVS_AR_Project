@@ -64,7 +64,7 @@ public class Mission6 : ViewController
         if (clickCount == 2)
         {
             StarGame();
-            SwitchButton(false);
+            OnClickButton(false);
             Debug.Log("Game");
         }
     }
@@ -158,7 +158,7 @@ public class Mission6 : ViewController
     {
         int score = success ? 5 : 0;
 
-        SwitchButton(false);
+        OnClickButton(false);
         dialogMissionView.Show(false);
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);

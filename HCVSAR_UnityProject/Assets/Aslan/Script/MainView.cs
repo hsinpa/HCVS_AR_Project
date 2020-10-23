@@ -314,7 +314,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         endMission.SetActive(false); // open score =>= 70
 
         // ibeacon open
-        JoeGM.joeGM.StartBeacom(type);        
+        JoeGM.joeGM.StartBeacom(type);
+        //JoeGM.joeGM.startIbeacon();
 
         // switch button
         SwitchLoginButton(true);

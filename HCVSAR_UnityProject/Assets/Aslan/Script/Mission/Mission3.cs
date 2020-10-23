@@ -89,7 +89,7 @@ public class Mission3 : ViewController
         if (clickCount >= 1)
         {
             dialogMissionView.Show(false);
-            SwitchButton(false);
+            OnClickButton(false);
             JoeMain.Main.Play360Video();
         }
     }
@@ -140,7 +140,7 @@ public class Mission3 : ViewController
         }
         else
         {
-            SwitchButton(false);
+            OnClickButton(false);
             StartCoroutine(EndPause(score));
         }
 

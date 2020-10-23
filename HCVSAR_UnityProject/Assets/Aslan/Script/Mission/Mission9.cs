@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Expect.StaticAsset;
+using UnityEngine.Playables;
+using System.Collections;
 
 public class Mission9 : ViewController
 {
@@ -17,7 +19,7 @@ public class Mission9 : ViewController
     public GameObject hideBG;
     public GameObject video;
     public GameObject leaveButton;
-    public GameObject endObject;
+    public PlayableDirector playableDirector;
 
     public override void Enable()
     {
@@ -27,7 +29,7 @@ public class Mission9 : ViewController
         hideBG.SetActive(false);
         video.SetActive(true);
 
-        endObject.SetActive(false);
+        StartCoroutine(StarPause());
         JoeMain.Main.PlayARGame(5);
 
         dialogMissionView.Show(true);
@@ -35,6 +37,12 @@ public class Mission9 : ViewController
 
         ClickNextButton();
         nextButton.onClick.AddListener(ClickCount);
+    }
+
+    private IEnumerator StarPause()
+    {
+        yield return new WaitForSeconds(0.1f);
+        playableDirector.Pause();
     }
 
     void ClickCount()
@@ -67,8 +75,8 @@ public class Mission9 : ViewController
         {
             leaveButton.SetActive(true);
             dialogMissionView.Show(false);
-            SwitchButton(false);
-            endObject.SetActive(true);
+            OnClickButton(false);
+            playableDirector.Play();
             leaveButton.GetComponent<Button>().onClick.AddListener(LeaveEvent);
         }
     }
