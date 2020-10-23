@@ -10,11 +10,12 @@ public class Game09 : MonoBehaviour
     public GameObject UI;
     public Text text;
     public string[] vs;
-    
+    public GameObject video360;
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = Camera.main.transform.position;
+        video360.SetActive(false);
+        transform.position = new Vector3(Camera.main.transform.position.x, transform.position.y, Camera.main.transform.position.z);
         transform.rotation = MainCompass.main.transform.rotation;
 
     }
@@ -22,7 +23,7 @@ public class Game09 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        transform.rotation = MainCompass.main.transform.rotation;
     }
 
   

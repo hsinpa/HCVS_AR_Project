@@ -29,7 +29,7 @@ public class Mission9 : ViewController
         hideBG.SetActive(false);
         video.SetActive(true);
 
-        StartCoroutine(StarPlay());
+        StartCoroutine(StarPause());
         JoeMain.Main.PlayARGame(5);
 
         dialogMissionView.Show(true);
@@ -39,10 +39,9 @@ public class Mission9 : ViewController
         nextButton.onClick.AddListener(ClickCount);
     }
 
-    private IEnumerator StarPlay()
+    private IEnumerator StarPause()
     {
-        playableDirector.Play();
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
         playableDirector.Pause();
     }
 

@@ -18,6 +18,7 @@ public class StarVideoController : MonoBehaviour
         
         if (isPlayVideo == 1)
         {
+            Invoke("startIbeacon", 1);
             videoObject.SetActive(false);
         }
         else
@@ -29,12 +30,17 @@ public class StarVideoController : MonoBehaviour
         }
     }
 
+    void startIbeacon()
+    {
+        JoeGM.joeGM.startIbeacon();
+    }
+
     void OnMovieFinished(VideoPlayer player)
     {
         isStarVideoEnd = true;
-        PlayerPrefs.SetInt("StarPlayVideo", 1);
-        videoObject.SetActive(false);
+        PlayerPrefs.SetInt("StarPlayVideo", 1);        
         cameraButton.enabled = true;
         JoeGM.joeGM.startIbeacon();
+        videoObject.SetActive(false);
     }
 }
