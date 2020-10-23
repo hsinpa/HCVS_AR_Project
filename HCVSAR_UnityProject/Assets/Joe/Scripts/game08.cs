@@ -12,7 +12,15 @@ public class game08 : MonoBehaviour
     void Start()
     {
         isARsupport = MissionsController.Instance.isARsupport;
-        SewitchModel(isARsupport);
+        
+        transform.position = new Vector3(Camera.main.transform.position.x, transform.position.y, Camera.main.transform.position.z);
+        transform.rotation = MainCompass.main.transform.rotation;
+        
+        //SewitchModel(isARsupport);
+    }
+    private void Update()
+    {
+        transform.rotation = MainCompass.main.transform.rotation;
     }
 
     void SewitchModel(bool _isARsupport)

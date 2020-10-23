@@ -73,7 +73,7 @@ public class Mission2 : ViewController
 
         if (clickCount == 1)
         {
-            SwitchButton(false);
+            OnClickButton(false);
             JoeMain.Main.Play360Video();
             situationMissionView.Show(false);
         }
