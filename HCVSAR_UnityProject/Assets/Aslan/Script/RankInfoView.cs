@@ -80,19 +80,21 @@ namespace Expect.View
                     {
                         studentRankData = tempStudentRankData.ToList();                                                                      
 
-                        RankInfo(studentRankData);
+                        _ = RankInfoAsync(studentRankData);
                     }
                 }, null));
         }
 
-        private void RankInfo(List<TypeFlag.SocketDataType.StudentRankType> studentRankData)
+        private async Task RankInfoAsync(List<TypeFlag.SocketDataType.StudentRankType> studentRankData)
         {
+            var sameScore = studentRankData.GroupBy(s => s.total_score).Where(g => g.Count() > 1).ToList();
             var rankData = studentRankData.OrderByDescending(data => data.total_score).ToList();
 
             float height = 30f;
             float containHeight = 10f; ;
             string rank;
-            //List<int> rankIndex = new List<int>();
+            List<int> rankIndex = new List<int>();
+            List<float> sameScoreList = new List<float>();
             //List<Task<float>> sameScoreList = new List<Task<float>>();
 
             for (int i = 0; i < rankData.Count; i++)
@@ -118,52 +120,32 @@ namespace Expect.View
                 rankTransform.gameObject.SetActive(true);
 
                 /*
-                foreach (var r in sameScore)
+                // get same score index
+                foreach (var s in sameScore)
                 {
-                    if (rankData[i].total_score == r.Key)
-                    {
-                        rankIndex.Add(i);
-                        //Task t = PrepareserScore(rankData[i].student_id);
-                        sameScoreList.Add(PrepareScore(rankData[i].student_id));
-                        
-                        Debug.Log("rankData[i].student_id " + rankData[i].student_id);
-                    }
+                    if (rankData[i].total_score == s.Key) { rankIndex.Add(i); }
 
+                    //var prepareScore = await GetUserScore(rankData[i].student_id);
+                    var prepareScore = await Task.Run(() => GetUserScore(rankData[i].student_id));
+                    sameScoreList.Add(prepareScore);
                 }
-
-                foreach (var s in sameScoreList) { var a = s;  Debug.Log("=======s " + s); }
                 */
             }
-        }
-
-        private async Task ProcessSameScore(List<TypeFlag.SocketDataType.StudentRankType> rankData, int i)
-        {
-            var sameScore = studentRankData.GroupBy(s => s.total_score).Where(g => g.Count() > 1).ToList();
-            List<int> rankIndex = new List<int>();
-            List<Task<float>> sameScoreList = new List<Task<float>>();
-
-            foreach (var r in sameScore)
+            /*
+            for (int k = 0; k <= rankData.Count(); k++)
             {
-                if (rankData[i].total_score == r.Key)
+                foreach (var r in rankIndex)
                 {
-                    rankIndex.Add(i);
-                    //Task t = PrepareserScore(rankData[i].student_id);
-                    sameScoreList.Add(PrepareScore(rankData[i].student_id));
-
-                    Debug.Log("rankData[i].student_id " + rankData[i].student_id);
+                    if (k == r)
+                    {
+                        //rankData[k].total_score = sameScoreList[r];
+                        // TODO:send weight score to original index
+                    }
                 }
 
             }
-
-            foreach (var s in sameScoreList) { var a = await s; Debug.Log("=======s " + s); }
-        }
-
-        // same score
-
-        private async Task<float> PrepareScore(string id)
-        {
-            var prepareScore = await Task.Run(() => GetUserScore(id));
-            return prepareScore;
+            */
+            // TODO:OrderByDescending again
         }
 
         private float GetUserScore(string id)
