@@ -159,7 +159,7 @@ public class TypeFlag
         [System.Serializable]
         public struct StudentRankType
         {
-            public int total_score;
+            public float total_score; //int to float
             public string student_id;
             public string student_name;
         }
