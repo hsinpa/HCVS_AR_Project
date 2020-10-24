@@ -120,6 +120,7 @@ namespace Expect.View
         {
             foreach (var t in selectTransformList) { Destroy(t.gameObject); }
             foreach (var t in selectTransformList) { Destroy(t.GetChild(0).gameObject); }
+            selectTransformList.Clear();
 
             foreach (Button b in SelectButtons) { b.image.sprite = SelectDefault; }
             foreach (Button b in SelectButtons) { b.interactable = true; }

@@ -169,7 +169,7 @@ PlayerSettings:
     iPhone: com.expect.arkitscene
   buildNumber: {}
   AndroidBundleVersionCode: 2
-  AndroidMinSdkVersion: 28
+  AndroidMinSdkVersion: 26
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
   aotOptions: 
