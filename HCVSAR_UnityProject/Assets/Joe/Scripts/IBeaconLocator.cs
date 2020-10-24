@@ -9,30 +9,34 @@ using System.Runtime.InteropServices;
 public class IBeaconLocator : MonoBehaviour
 {
     JoeGM GM;
-    // Start is called before the first frame update
-
-    public InputField[] z;
-    
     Point point;
     Point p1;
     Point p2;
     Point p3;
-    public Transform ct;
-    public InputField[] pos;
-    public Text[] poss;
-    public Transform box;
+    Vector3 targetPosition;
+    // Start is called before the first frame update
+
+    public int[] PointNumber = new int[3];
+    public float[] PointPosotions = new float[6];
+    //public Transform ct;
+    //public InputField[] pos;
+
+
+
     public bool st;
+    Transform _camera;
     void Start()
     {
         if (MissionsController.Instance.isARsupport)
         {
+            _camera = MissionsController.Instance.ARcamera.transform;
             //gameObject.SetActive(false);
         }
         else
         {
-            JoeGM.beaconUPD += posUPD;
+            _camera = MissionsController.Instance.MainCamera.transform;
         }
-      
+       
         GM = JoeGM.joeGM;
         p1 = new Point();
         p2 = new Point();
@@ -41,111 +45,59 @@ public class IBeaconLocator : MonoBehaviour
 
     }
 
-    public void addbox()
+    public void UI_start()
     {
-        Instantiate(box, box.transform.position, box.rotation);
+        JoeGM.beaconUPD += posUPD;
+        st = true;
+       
     }
 
-    public void UI_st()
+    public void UI_Stop()
     {
-        st = true;
+        JoeGM.beaconUPD -= posUPD;
+        st = false;
+       
     }
-    public Text dd;
     // Update is called once per frame
+    private Vector3 velocity = Vector3.zero;
+    private float Intervals = 0.3f;
     void Update()
     {
-        
-        
-    }
-
-    public void posUPD()
-    {
-        //Debug.Log(example.mybeacons.Count);
-        poss[0].text = box.position.x.ToString();
-        poss[1].text = box.position.y.ToString();
-        poss[2].text = box.position.z.ToString();
-        try
-        {
-
-        }
-        catch
-        {
-
-        }
 
         if (st)
         {
 
+            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, Intervals);
+        }
 
-            p1.X = float.Parse(pos[0].text);
-            p1.Y = float.Parse(pos[1].text);
-            //p1.Distance = 1;
-            try
-            {
-                p1.Distance = GM.IBeaconDistances[int.Parse(z[0].text)];
-            }
-            catch
-            {
-                p1.Distance = 5;
-            }
+    }
 
+    public void posUPD()
+    {
+       
 
+        if (st)
+        {
 
-            p2.X = float.Parse(pos[2].text);
-            p2.Y = float.Parse(pos[3].text);
-            //p2.Distance = 1;
-            try
-            {
-                p2.Distance = GM.IBeaconDistances[int.Parse(z[1].text)];
-            }
-            catch
-            {
-                p2.Distance = 5;
-            }
+            p1.X = PointPosotions[0] + _camera.position.x;
+            p1.Y = PointPosotions[1] + _camera.position.z;
+            p2.X = PointPosotions[2] + _camera.position.x;
+            p2.Y = PointPosotions[3] + _camera.position.z;
+            p3.X = PointPosotions[4] + _camera.position.x;
+            p3.Y = PointPosotions[5] + _camera.position.z;
 
-
-
-            p3.X = float.Parse(pos[4].text);
-            p3.Y = float.Parse(pos[5].text);
-            //p3.Distance = 1;
-            try
-            {
-                p3.Distance = GM.IBeaconDistances[int.Parse(z[2].text)];
-            }
-            catch
-            {
-                p3.Distance = 5;
-            }
-
-
-
+            p1.Distance = GM.IBeaconDistances[PointNumber[0]];
+            p2.Distance = GM.IBeaconDistances[PointNumber[1]];
+            p3.Distance = GM.IBeaconDistances[PointNumber[2]];
+           
             point = GetPiontByThree(p1, p2, p3);
 
-            ct.position = new Vector3(point.X, ct.position.y, point.Y);
+            targetPosition = new Vector3(point.X- +_camera.position.x, transform.position.y, point.Y - _camera.position.z);
 
 
         }
     }
-
-    public Transform p1t;
-    public Transform p2t;
-    public Transform p3t;
-    public Transform target;
-    public Transform target2;
-    public void testttt()
-    {
-        p1.X = p1t.position.x;
-        p1.Y = p1t.position.z;
-        p1.Distance = Vector3.Distance(target.position, p1t.position);
-        p2.X = p2t.position.x;
-        p2.Y = p2t.position.z;
-        p2.Distance = Vector3.Distance(target.position, p2t.position);
-        p3.X = p3t.position.x;
-        p3.Y = p3t.position.z;
-        p3.Distance = Vector3.Distance(target.position, p3t.position);
-        point = GetPiontByThree(p1, p2, p3);
-        target2.position = new Vector3(point.X, ct.position.y, point.Y);
-    }
+    
 
     public void setprint()
     {
@@ -182,7 +134,7 @@ public class IBeaconLocator : MonoBehaviour
         Point P = new Point() { X = (float)x, Y = (float)y, Distance = 0 };
         return P;
     }
-
+    [System.Serializable]
     public class Point
     {
         public float X { get; set; }

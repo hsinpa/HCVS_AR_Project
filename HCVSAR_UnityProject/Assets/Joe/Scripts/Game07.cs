@@ -53,6 +53,7 @@ public class Game07 : MonoBehaviour
             ani.speed = 0;
             ani.SetBool("OK", false);
             gameMan.transform.localPosition = new Vector3(-0.03f, -0.56f, 0f);
+            targetStone.SetActive(false);
 
         }
         else
@@ -60,6 +61,7 @@ public class Game07 : MonoBehaviour
             OverEvent.Invoke();
             ani.speed = 0;
             gameMan.GetComponent<Rigidbody>().isKinematic = false;
+            targetStone.SetActive(false);
         }
       
     }

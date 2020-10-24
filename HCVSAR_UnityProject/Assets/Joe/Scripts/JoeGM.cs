@@ -180,7 +180,7 @@ public class JoeGM : MonoBehaviour
 
                     if (CheckDistance && MissionsController.Instance.isEnter != true)
                     {
-                        if (example.mybeacons[i].accuracy < 5f&& example.mybeacons[i].accuracy!=0)
+                        if (example.mybeacons[i].accuracy < 8f&& example.mybeacons[i].accuracy!=0)
                         {
 
                             if (example.mybeacons[i].accuracy < MinDistance)
@@ -205,7 +205,7 @@ public class JoeGM : MonoBehaviour
             }
 
 
-            if (MinDistance < 5)
+            if (MinDistance < 8)
             {
                 textlog("OVERMin" + MinNumber);
 
@@ -260,7 +260,7 @@ public class JoeGM : MonoBehaviour
     {
         if (MissionNumber == 3)
         {
-            AirRaid = accuracy < 5f;
+            AirRaid = accuracy < 8f;
         }
 
         if (MissionNumber == 11)

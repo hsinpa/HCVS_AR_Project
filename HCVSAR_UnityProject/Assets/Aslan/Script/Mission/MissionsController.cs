@@ -173,7 +173,6 @@ public class MissionsController : Singleton<MissionsController>
                 break;
         }
 
-        isARsupport = true;
         SwitchMainCamera(isARsupport);
     }
 }
