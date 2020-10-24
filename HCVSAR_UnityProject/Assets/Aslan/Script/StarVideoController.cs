@@ -35,7 +35,7 @@ public class StarVideoController : MonoBehaviour
         isStarVideoEnd = true;
         PlayerPrefs.SetInt("StarPlayVideo", 1);        
         cameraButton.enabled = true;
-        JoeGM.joeGM.startIbeacon();
         videoObject.SetActive(false);
+        JoeGM.joeGM.startIbeacon();
     }
 }
