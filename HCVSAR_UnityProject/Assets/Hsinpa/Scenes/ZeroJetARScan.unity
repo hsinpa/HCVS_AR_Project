@@ -2973,7 +2973,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 100
   field of view: 60
   orthographic: 0
@@ -3054,7 +3054,7 @@ MonoBehaviour:
   m_Device: 0
   m_PoseSource: 2
   m_PoseProviderComponent: {fileID: 0}
-  m_TrackingType: 1
+  m_TrackingType: 0
   m_UpdateType: 0
   m_UseRelativeTransform: 0
 --- !u!1 &1200317317
@@ -3092,7 +3092,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.88500005, y: 0.7666701}
   m_AnchorMax: {x: 0.97729695, y: 0.91281635}
-  m_AnchoredPosition: {x: -0.21200562, y: -1}
+  m_AnchoredPosition: {x: -0.21203613, y: -1}
   m_SizeDelta: {x: -3.548767, y: 4.793579}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1200317319
