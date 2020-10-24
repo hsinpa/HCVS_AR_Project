@@ -30,11 +30,6 @@ public class StarVideoController : MonoBehaviour
         }
     }
 
-    void startIbeacon()
-    {
-        JoeGM.joeGM.startIbeacon();
-    }
-
     void OnMovieFinished(VideoPlayer player)
     {
         isStarVideoEnd = true;

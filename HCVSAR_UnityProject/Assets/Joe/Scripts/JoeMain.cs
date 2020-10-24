@@ -51,7 +51,7 @@ public class JoeMain : MonoBehaviour
         NowVideoData = VideoData[number];
         vp.clip = NowVideoData.clip;
         vp.Prepare();
-
+        
         StartCoroutine(CoroutineTest());
 
         UI_rePlayVideo();
