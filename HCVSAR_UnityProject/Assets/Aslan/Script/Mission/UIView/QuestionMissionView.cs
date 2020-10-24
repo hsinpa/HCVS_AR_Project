@@ -73,7 +73,7 @@ namespace Expect.View
 
         private void AnswerText(string[] answer)
         {
-            float height = 40f;
+            float height = 37f;
 
             for (int i = 0; i < answer.Length; i++)
             {

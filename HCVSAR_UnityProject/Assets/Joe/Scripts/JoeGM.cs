@@ -27,9 +27,9 @@ public class JoeGM : MonoBehaviour
 
     public GameObject RightBotton;
     public GameObject FullBotton;
-
+    public double[] MissionMinDistances = new double[15]; 
     public double[] IBeaconDistances = new double[30];
-
+    public GameObject[] RedPoints;
     public delegate void BeaconUPD();
     public static event BeaconUPD beaconUPD;
     public bool isGameStart;
@@ -151,7 +151,7 @@ public class JoeGM : MonoBehaviour
 
             //textlog("studentData" + studentData.Count);
             MinDistance = 100;
-
+            RedPoints[MinNumber].SetActive(false);
             try
             {
                 for (int i = 0; i < example.mybeacons.Count; i++)
@@ -180,7 +180,7 @@ public class JoeGM : MonoBehaviour
 
                     if (CheckDistance && MissionsController.Instance.isEnter != true)
                     {
-                        if (example.mybeacons[i].accuracy < 8f&& example.mybeacons[i].accuracy!=0)
+                        if (example.mybeacons[i].accuracy!=0)
                         {
 
                             if (example.mybeacons[i].accuracy < MinDistance)
@@ -203,9 +203,9 @@ public class JoeGM : MonoBehaviour
             {
                 textlog("ErrorLoop");
             }
-
-
-            if (MinDistance < 8)
+           
+            RedPoints[MinNumber].SetActive(true);
+            if (MinDistance < MissionMinDistances[MinNumber])
             {
                 textlog("OVERMin" + MinNumber);
 
