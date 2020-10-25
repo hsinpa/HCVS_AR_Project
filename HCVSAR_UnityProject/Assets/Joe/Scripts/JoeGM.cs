@@ -142,7 +142,7 @@ public class JoeGM : MonoBehaviour
     public string c;
     private void UpdateIBeaconMain()
     {
-
+       
         //studentData = MainView.Instance.studentData;
         //textlog("01");
         //MainView.Instance.studentScoreData
@@ -159,12 +159,9 @@ public class JoeGM : MonoBehaviour
 
                     MissionNumber = example.mybeacons[i].major * 10 + example.mybeacons[i].minor;
                     IBeaconDistances[MissionNumber] = example.mybeacons[i].accuracy;
-                    if (MissionNumber >= missionName.Length)
-                    {
-                        continue;
-                    }
+                    
 
-                    if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3|| MissionNumber == 9|| MissionNumber == 1)
+                    if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3|| MissionNumber == 1)
                     {
                         CheckMission(example.mybeacons[i].accuracy);
                         goto OverLoop;
@@ -203,8 +200,19 @@ public class JoeGM : MonoBehaviour
             {
                 textlog("ErrorLoop");
             }
-           
-            RedPoints[MinNumber].SetActive(true);
+
+            if (IBeaconDistances[3]<MinDistance)
+            {
+                RedPoints[3].SetActive(true);
+            }else if (IBeaconDistances[1] < MinDistance)
+            {
+                RedPoints[1].SetActive(true);
+            }
+            else
+            {
+                RedPoints[MinNumber].SetActive(true);
+            }
+            
             if (MinDistance < MissionMinDistances[MinNumber])
             {
                 textlog("OVERMin" + MinNumber);
@@ -263,14 +271,16 @@ public class JoeGM : MonoBehaviour
             AirRaid = accuracy < 8f;
         }
 
-        if (MissionNumber == 11)
+        if (MissionNumber == 1)
         {
             RightBotton.SetActive(accuracy < 5f);
+            //FullBotton.SetActive(!(accuracy < 5f));
         }
 
         if (MissionNumber == 12)
         {
-            RightBotton.SetActive(accuracy < 5f);
+            //RightBotton.SetActive(!(accuracy < 5f));
+            //FullBotton.SetActive(accuracy < 5f);
         }
         
     }

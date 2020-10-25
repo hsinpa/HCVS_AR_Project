@@ -26,9 +26,19 @@ public class StartLocator : MonoBehaviour
     }
     private void Update()
     {
-     
-        transform.rotation = MainCompass.main.transform.rotation;
-        
+
+       
+        if (MissionsController.Instance.isARsupport)
+        {
+            if (JoeMain.Main.isIOS)
+            {
+                transform.rotation = MainCompass.main.transform.rotation;
+            }
+        }
+        else
+        {
+            transform.rotation = MainCompass.main.transform.rotation;
+        }
 
     }
 }

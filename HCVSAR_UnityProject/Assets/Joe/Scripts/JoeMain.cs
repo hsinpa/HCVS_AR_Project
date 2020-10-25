@@ -33,7 +33,7 @@ public class JoeMain : MonoBehaviour
     
     private ES_MessageSystem msgSys;
     public GameObject[] games;
-
+    public bool isIOS;
     private void Awake()
     {
         Main = this;
@@ -72,6 +72,7 @@ public class JoeMain : MonoBehaviour
     {
         vp.Play();
 
+        isIOS = true;
         yield return new WaitForSeconds(0.1f);
         vp.Pause();
     }
@@ -84,6 +85,7 @@ public class JoeMain : MonoBehaviour
         {
             vp.Play();
         }
+        isIOS = false;
         yield return new WaitForSeconds(0.1f);
         vp.Pause();
     }

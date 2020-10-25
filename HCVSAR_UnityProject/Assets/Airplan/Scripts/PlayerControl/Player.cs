@@ -15,6 +15,7 @@ public class Player : MonoBehaviour {
     static public int monsterQuantity;
 	public int KillMonster;
 	public Text KillUI;
+	public Text KillUI2;
 
 	[Header("移動數值")]
 	public float lookSpeed = 5f ;	// camera look speed
@@ -39,7 +40,8 @@ public class Player : MonoBehaviour {
     {
 		KillMonster++;
 		KillUI.text = KillMonster.ToString();
-    }
+		KillUI2.text = KillMonster.ToString();
+	}
 
     void Awake(){
 		main = this;
@@ -99,7 +101,7 @@ public class Player : MonoBehaviour {
 	// Sphere
 	//=========
 	void ScaleBall(){
-		sphere.radius = Mathf.Lerp(sphere.radius, ballRadius*(1+ballScaleRate*(myBodies.Count-1)),13f*Time.deltaTime) ;
+		sphere.radius = Mathf.Lerp(sphere.radius, ballRadius*(3+ballScaleRate*(myBodies.Count-1)),13f*Time.deltaTime) ;
 	}
 	
 	//========

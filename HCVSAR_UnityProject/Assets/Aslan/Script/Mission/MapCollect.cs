@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Expect.View;
 using Expect.StaticAsset;
 
-public class MapCollect : MonoBehaviour
+public class MapCollect : ViewController
 {
     [SerializeField]
     private Sprite dog;
@@ -27,8 +27,6 @@ public class MapCollect : MonoBehaviour
     [SerializeField]
     BagPanel bagPanel;
 
-    FingerClickEvent fingerClick;
-
     // Message
     private string dogName = StringAsset.MissionsDialog.Person.dog;
     private string mapName = StringAsset.MissionsDialog.Person.map;
@@ -43,7 +41,6 @@ public class MapCollect : MonoBehaviour
 
     public GameObject toolView;
     public MainBaseVIew mainBaseVIew;
-    public FingerClickController fingerClickController;
 
     private void Start()
     {
@@ -77,12 +74,11 @@ public class MapCollect : MonoBehaviour
     public IEnumerator GetAllMap()
     {
         mainBaseVIew.PanelController(true);
-        fingerClick = fingerClickController.currentClick;
 
         yield return new WaitForSeconds(1);
 
-        fingerClick.boxCollider.enabled = true; //open fingerClick trigger
-        fingerClick.Click += ClickCount; // Add fingerClick event
+        ClickNextButton();
+        nextButton.onClick.AddListener(ClickCount);
 
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(dogName, dogMessage1, dog);
@@ -92,7 +88,7 @@ public class MapCollect : MonoBehaviour
     {
         clickCount++;
 
-        if (clickCount >= 0)
+        if (clickCount > 0)
         {
             Convercestion();
         }
@@ -145,7 +141,6 @@ public class MapCollect : MonoBehaviour
         bagPanel.RemoveMapChip();
         bagPanel.AddAllMapInfo();
 
-        InitFingerClick();
         RemoveAllEvent();
         RemoveAllListeners();
 
@@ -162,15 +157,7 @@ public class MapCollect : MonoBehaviour
 
     private void RemoveAllEvent()
     {
-        fingerClick.Click -= ClickCount;
         endMissionView.OnEnable -= LeaveEvent;
-    }
-
-    private void InitFingerClick()
-    {
-        fingerClick.boxCollider.enabled = false;
-        fingerClick.Click -= ClickCount;
-        clickCount = 0; // initial
     }
 
 }
