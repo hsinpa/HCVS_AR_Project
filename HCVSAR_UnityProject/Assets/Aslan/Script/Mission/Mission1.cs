@@ -43,12 +43,15 @@ public class Mission1 : ViewController
     {
         ClickNextButton();
         nextButton.onClick.AddListener(ClickCount);
+
         isSuccess = true;
 
         bagPanel.Show(false);
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(dogName, dogMessage1, dog);
 
+        MainView.Instance.studentScoreData.mission_id = "B";
+        MainView.Instance.missionNumber = 1;
         MissionsController.Instance.ARSession.enabled = true;
     }
 
@@ -63,6 +66,8 @@ public class Mission1 : ViewController
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(dogName, dogMessage1, dog);
 
+        MainView.Instance.studentScoreData.mission_id = "B";
+        MainView.Instance.missionNumber = 1;
         MissionsController.Instance.ARSession.enabled = true;
     }
 
@@ -83,7 +88,6 @@ public class Mission1 : ViewController
         if (clickCount == 1)
         {
             dialogMissionView.DialogView(policeName, correctMessage_1, police);
-            Debug.Log("sss");
         }
         
         if (clickCount >= 2)

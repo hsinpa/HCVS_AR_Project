@@ -95,6 +95,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     public GameObject endMission;
     public Image warnImage;
     public StarVideoController starVideoController;
+    public List<string> guestMissionList = new List<string>(); // save guest mission id
 
     private TypeFlag.InGameType.MissionType[] guestMissionArray;
     private TypeFlag.SocketDataType.ClassScoreHolderType classScore;
@@ -180,7 +181,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             InitGuestMissionScore();
             StarGame(loginType.userType);
         }
-        //StarGame(loginType.userType); //use for no teacher
+        StarGame(loginType.userType); //use for no teacher
     }
 
     private void InitGuestMissionScore()
@@ -299,7 +300,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             isEndEvent = false;
         }
 
-        StarGame(loginData.userType);  //use for Listen teacher
+        //StarGame(loginData.userType);  //use for Listen teacher
     }
 
     private void StarGame(TypeFlag.UserType type)
