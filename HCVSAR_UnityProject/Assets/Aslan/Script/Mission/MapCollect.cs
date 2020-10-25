@@ -20,10 +20,10 @@ public class MapCollect : ViewController
     [SerializeField]
     private Button map2Button;
 
-    [SerializeField]
-    DialogMissionView dialogMissionView;
-    [SerializeField]
-    EndMissionView endMissionView;    
+    //[SerializeField]
+    //DialogMissionView dialogMissionView;
+    //[SerializeField]
+    //EndMissionView endMissionView;    
     [SerializeField]
     BagPanel bagPanel;
 
@@ -37,7 +37,6 @@ public class MapCollect : ViewController
 
     private bool isCollectMap1;
     private bool isCollectMap2;
-    private int clickCount;
 
     public GameObject toolView;
     public MainBaseVIew mainBaseVIew;
@@ -122,6 +121,7 @@ public class MapCollect : ViewController
     {
         int score = 15;
         toolView.SetActive(false);
+        OnClickButton(false);
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveEvent;

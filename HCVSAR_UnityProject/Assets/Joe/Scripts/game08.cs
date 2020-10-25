@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class game08 : MonoBehaviour
 {
-    public GameObject ARmodel;
+    //public GameObject ARmodel; ??
     public GameObject CameraModel;
 
     private bool isARsupport;
@@ -25,7 +25,7 @@ public class game08 : MonoBehaviour
 
     void SewitchModel(bool _isARsupport)
     {
-        ARmodel.SetActive(_isARsupport);
+        //ARmodel.SetActive(_isARsupport);
         CameraModel.SetActive(!_isARsupport);
     }
 }

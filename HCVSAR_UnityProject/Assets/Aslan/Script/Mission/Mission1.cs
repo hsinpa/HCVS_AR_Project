@@ -132,17 +132,19 @@ public class Mission1 : ViewController
         }
     }
 
-    private void LeaveMission(bool success)
+    private void LeaveMission(bool isSuccess)
     {
-        int score = success ? 5 : 0;
+        int score = isSuccess ? 5 : 0;
 
+        success.enabled = false;
         mailInfo.SetActive(false);
         dialogMissionView.Show(false);
         OnClickButton(false);
         endMissionView.Show(true);
+
+        PostScoreEvent.Instance.PostScore(score, MainView.Instance.loginData.userType);
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveEvent;
-        PostScoreEvent.Instance.PostScore(score, MainView.Instance.loginData.userType);
     }
 
     private void LeaveEvent()
