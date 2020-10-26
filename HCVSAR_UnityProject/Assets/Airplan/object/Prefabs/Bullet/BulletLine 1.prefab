@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6df61cb238d5cc04db5de80f08194dc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 60
+  speed: 15
   rSpeed: 100
   HP: 3
   DeadEffect: []
