@@ -34,6 +34,7 @@ public class JoeMain : MonoBehaviour
     private ES_MessageSystem msgSys;
     public GameObject[] games;
     public bool isIOS;
+   
     private void Awake()
     {
         Main = this;
@@ -44,6 +45,9 @@ public class JoeMain : MonoBehaviour
         //vp.Play();
 
         msgSys = this.GetComponent<ES_MessageSystem>();
+        
+
+        StartCoroutine(StartBool());
     }
     
     public void Start360Video(int number)
@@ -66,13 +70,35 @@ public class JoeMain : MonoBehaviour
         VideoPlane.SetActive(true);
         
     }
+#if UNITY_IOS
+    IEnumerator StartBool()
+    {
+      
+
+        isIOS = true;
+        
+        yield return new WaitForSeconds(0.1f);
+       
+    }
+#endif
+
+#if UNITY_ANDROID
+    IEnumerator StartBool()
+    {
+       
+        isIOS = false;
+        yield return new WaitForSeconds(0.1f);
+        
+    }
+#endif
+
 
 #if UNITY_IOS
     IEnumerator CoroutineTest()
     {
         vp.Play();
 
-        isIOS = true;
+        
         yield return new WaitForSeconds(0.1f);
         vp.Pause();
     }
@@ -85,7 +111,7 @@ public class JoeMain : MonoBehaviour
         {
             vp.Play();
         }
-        isIOS = false;
+        
         yield return new WaitForSeconds(0.1f);
         vp.Pause();
     }

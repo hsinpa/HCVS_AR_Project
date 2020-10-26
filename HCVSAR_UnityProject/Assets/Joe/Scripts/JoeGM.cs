@@ -273,7 +273,7 @@ public class JoeGM : MonoBehaviour
 
         if (MissionNumber == 1)
         {
-            RightBotton.SetActive(accuracy < 5f);
+            RightBotton.SetActive(accuracy < MissionMinDistances[1]);
             //FullBotton.SetActive(!(accuracy < 5f));
         }
 

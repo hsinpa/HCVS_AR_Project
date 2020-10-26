@@ -16,7 +16,7 @@ public class Game09 : MonoBehaviour
     void Start()
     {
         //video360.SetActive(false);
-        _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
+        _camera = MissionsController.Instance.isARsupport ? Camera.main : MissionsController.Instance.MainCamera;
         transform.position = new Vector3(_camera.transform.position.x, transform.position.y, _camera.transform.position.z);
         transform.rotation = MainCompass.main.transform.rotation;
 
@@ -25,7 +25,17 @@ public class Game09 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.rotation = MainCompass.main.transform.rotation;
+        if (MissionsController.Instance.isARsupport)
+        {
+            if (JoeMain.Main.isIOS)
+            {
+                transform.rotation = MainCompass.main.transform.rotation;
+            }
+        }
+        else
+        {
+            transform.rotation = MainCompass.main.transform.rotation;
+        }
     }
 
   

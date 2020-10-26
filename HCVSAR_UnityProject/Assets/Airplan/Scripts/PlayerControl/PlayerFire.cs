@@ -75,9 +75,7 @@ public class PlayerFire : MonoBehaviour {
         {
             launcher.enabled = false;
             og();
-            Player.monsterQuantity = 0;
-            pl.KillMonster = -1;
-            pl.KillM();
+            
             OverUI.SetActive(true);
             if (pl.myBodies.Count>=2)
             {
@@ -92,6 +90,14 @@ public class PlayerFire : MonoBehaviour {
             
             Destroy(co.gameObject); // destory the bullet
         }
+    }
+
+
+    public void UI_re()
+    {
+        Player.monsterQuantity = 0;
+        pl.KillMonster = -1;
+        pl.KillM();
     }
 
 }

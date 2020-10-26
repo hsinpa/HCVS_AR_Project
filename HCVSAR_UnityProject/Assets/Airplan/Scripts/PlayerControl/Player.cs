@@ -101,7 +101,7 @@ public class Player : MonoBehaviour {
 	// Sphere
 	//=========
 	void ScaleBall(){
-		sphere.radius = Mathf.Lerp(sphere.radius, ballRadius*(3+ballScaleRate*(myBodies.Count-1)),13f*Time.deltaTime) ;
+		sphere.radius = Mathf.Lerp(sphere.radius, ballRadius*(2+ballScaleRate*(myBodies.Count-1)),13f*Time.deltaTime) ;
 	}
 	
 	//========

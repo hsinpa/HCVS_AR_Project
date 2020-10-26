@@ -87,7 +87,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [HideInInspector]
     public TypeFlag.SocketDataType.LoginDatabaseType loginData;
     [HideInInspector]
-    public bool isEndMissionOpen;
+    public bool isEndMissionOpen = true;
 
     public int missionNumber;
 
