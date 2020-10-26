@@ -37,6 +37,7 @@ namespace Expect.View
 
         private float height;
         private bool isMailClick;
+        private bool isMapClick;
         private List<Transform> mapTransformList = new List<Transform>();
         private string[] objectInfo = { StringAsset.BagObjectInfo.mail, StringAsset.BagObjectInfo.map1, StringAsset.BagObjectInfo.map2, StringAsset.BagObjectInfo.mapAll };
         private string[] detailInfo = { StringAsset.BagObjectInfo.mailDetail, StringAsset.BagObjectInfo.map1Detail, StringAsset.BagObjectInfo.map2Detail, StringAsset.BagObjectInfo.mapAlDetail };
@@ -80,7 +81,9 @@ namespace Expect.View
             infoTransform.Find("Button").GetComponent<Image>().sprite = eventImage[index];
             infoTransform.Find("Button").GetComponent<Button>().onClick.AddListener(() => AddDetailInfo(index));
 
-            if (index == 0) { isMailClick = true; }
+            if (index == 1 || index == 2) { isMapClick = true; }
+            if (index == 0 && !isMapClick) { isMailClick = true; }
+            if (index == 0 && isMapClick) { isMailClick = false; }
             if (index > 0 ) { mapTransformList.Add(infoTransform); }
             infoTransform.gameObject.SetActive(true);
         }
@@ -88,14 +91,15 @@ namespace Expect.View
         public void RemoveMapChip()
         {
             foreach (var t in mapTransformList) { Destroy(t.gameObject); }
-            foreach (var t in mapTransformList) { Destroy(t.GetChild(0).gameObject); }            
+            foreach (var t in mapTransformList) { Destroy(t.GetChild(0).gameObject); }
+            mapTransformList.Clear();
         }
 
         public void AddAllMapInfo()
         {
             int index = 3;
-            int currentHeight = isMailClick? 160 : 80;
-
+            int currentHeight = isMailClick? 180 : 80;
+            if (!isMailClick) { height = 90; }
             Transform infoTransform = Instantiate(Info, Container);
             RectTransform infoRectTransform = infoTransform.GetComponent<RectTransform>();
 

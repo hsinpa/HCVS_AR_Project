@@ -114,6 +114,7 @@ public class MapCollect : ViewController
             mapImage.enabled = false;
             dialogMissionView.Show(false);
             toolView.SetActive(true);
+            OnClickButton(false);
         }
     }
 
@@ -121,7 +122,7 @@ public class MapCollect : ViewController
     {
         int score = 15;
         toolView.SetActive(false);
-        OnClickButton(false);
+        
         endMissionView.Show(true);
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveEvent;
