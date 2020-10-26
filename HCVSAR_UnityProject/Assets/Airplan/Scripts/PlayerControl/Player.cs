@@ -14,12 +14,8 @@ public class Player : MonoBehaviour {
     
     static public int monsterQuantity;
 	public int KillMonster;
-<<<<<<< HEAD
 	public Text KillUI;
 	public Text KillUI2;
-=======
-	public Text KillUI;
->>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
 
 	[Header("移動數值")]
 	public float lookSpeed = 5f ;	// camera look speed

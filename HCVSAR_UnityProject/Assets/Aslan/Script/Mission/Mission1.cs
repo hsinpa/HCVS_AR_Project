@@ -43,10 +43,7 @@ public class Mission1 : ViewController
     {
         ClickNextButton();
         nextButton.onClick.AddListener(ClickCount);
-<<<<<<< HEAD
 
-=======
->>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
         isSuccess = true;
 
         bagPanel.Show(false);
@@ -91,7 +88,6 @@ public class Mission1 : ViewController
         if (clickCount == 1)
         {
             dialogMissionView.DialogView(policeName, correctMessage_1, police);
-            Debug.Log("sss");
         }
         
         if (clickCount >= 2)

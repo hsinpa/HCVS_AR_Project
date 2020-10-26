@@ -142,11 +142,7 @@ public class JoeGM : MonoBehaviour
     public string c;
     private void UpdateIBeaconMain()
     {
-<<<<<<< HEAD
        
-=======
-
->>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
         //studentData = MainView.Instance.studentData;
         //textlog("01");
         //MainView.Instance.studentScoreData
@@ -163,18 +159,9 @@ public class JoeGM : MonoBehaviour
 
                     MissionNumber = example.mybeacons[i].major * 10 + example.mybeacons[i].minor;
                     IBeaconDistances[MissionNumber] = example.mybeacons[i].accuracy;
-<<<<<<< HEAD
                     
 
                     if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3|| MissionNumber == 1)
-=======
-                    if (MissionNumber >= missionName.Length)
-                    {
-                        continue;
-                    }
-
-                    if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3|| MissionNumber == 9|| MissionNumber == 1)
->>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
                     {
                         CheckMission(example.mybeacons[i].accuracy);
                         goto OverLoop;
@@ -213,7 +200,6 @@ public class JoeGM : MonoBehaviour
             {
                 textlog("ErrorLoop");
             }
-<<<<<<< HEAD
 
             if (IBeaconDistances[3]<MinDistance)
             {
@@ -227,10 +213,6 @@ public class JoeGM : MonoBehaviour
                 RedPoints[MinNumber].SetActive(true);
             }
             
-=======
-           
-            RedPoints[MinNumber].SetActive(true);
->>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
             if (MinDistance < MissionMinDistances[MinNumber])
             {
                 textlog("OVERMin" + MinNumber);

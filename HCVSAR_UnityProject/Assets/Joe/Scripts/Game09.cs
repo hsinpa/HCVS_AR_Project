@@ -10,7 +10,6 @@ public class Game09 : MonoBehaviour
     public GameObject UI;
     public Text text;
     public string[] vs;
-<<<<<<< HEAD
     private Camera _camera;
     //public GameObject video360;
     // Start is called before the first frame update
@@ -19,21 +18,12 @@ public class Game09 : MonoBehaviour
         //video360.SetActive(false);
         _camera = MissionsController.Instance.isARsupport ? Camera.main : MissionsController.Instance.MainCamera;
         transform.position = new Vector3(_camera.transform.position.x, transform.position.y, _camera.transform.position.z);
-=======
-    public GameObject video360;
-    // Start is called before the first frame update
-    void Start()
-    {
-        video360.SetActive(false);
-        transform.position = new Vector3(Camera.main.transform.position.x, transform.position.y, Camera.main.transform.position.z);
->>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
         transform.rotation = MainCompass.main.transform.rotation;
 
     }
 
     // Update is called once per frame
     void Update()
-<<<<<<< HEAD
     {
         if (MissionsController.Instance.isARsupport)
         {
@@ -46,10 +36,6 @@ public class Game09 : MonoBehaviour
         {
             transform.rotation = MainCompass.main.transform.rotation;
         }
-=======
-    {
-        transform.rotation = MainCompass.main.transform.rotation;
->>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
     }
 
   

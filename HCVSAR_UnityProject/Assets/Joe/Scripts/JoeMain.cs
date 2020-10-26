@@ -70,7 +70,6 @@ public class JoeMain : MonoBehaviour
         VideoPlane.SetActive(true);
         
     }
-<<<<<<< HEAD
 #if UNITY_IOS
     IEnumerator StartBool()
     {
@@ -93,8 +92,6 @@ public class JoeMain : MonoBehaviour
     }
 #endif
 
-=======
->>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
 
 #if UNITY_IOS
     IEnumerator CoroutineTest()
@@ -114,10 +111,7 @@ public class JoeMain : MonoBehaviour
         {
             vp.Play();
         }
-<<<<<<< HEAD
         
-=======
->>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
         yield return new WaitForSeconds(0.1f);
         vp.Pause();
     }
