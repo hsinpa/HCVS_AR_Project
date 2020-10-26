@@ -25,6 +25,7 @@ public class JoeGM : MonoBehaviour
     string uist;
     public List<IBCCC> mybeacons;
 
+    public GameObject useButton;
     public GameObject RightBotton;
     public GameObject FullBotton;
     public double[] MissionMinDistances = new double[15]; 
@@ -274,6 +275,7 @@ public class JoeGM : MonoBehaviour
         if (MissionNumber == 1)
         {
             RightBotton.SetActive(accuracy < MissionMinDistances[1]);
+            useButton.SetActive(accuracy < MissionMinDistances[1]);
             //FullBotton.SetActive(!(accuracy < 5f));
         }
 

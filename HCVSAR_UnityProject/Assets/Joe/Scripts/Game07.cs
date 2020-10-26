@@ -19,7 +19,7 @@ public class Game07 : MonoBehaviour
     public GameObject speakMan;
     public GameObject arGameObject;
     public GameObject targetStone;
-    public Image stoneCurve;
+    public GameObject stoneCurve;
 
     public Camera ARCamera;
     public Camera MainCamera;
@@ -40,7 +40,7 @@ public class Game07 : MonoBehaviour
     public void UI_Start()
     {
         StartEvent.Invoke();
-        stoneCurve.enabled = false;
+        stoneCurve.SetActive(false);
         isARStoneFollowCamera = true;
         arGameObject.SetActive(true);
         gameMan.SetActive(true);
