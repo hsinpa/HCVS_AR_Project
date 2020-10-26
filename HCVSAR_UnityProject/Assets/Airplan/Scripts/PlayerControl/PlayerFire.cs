@@ -75,7 +75,13 @@ public class PlayerFire : MonoBehaviour {
         {
             launcher.enabled = false;
             og();
+<<<<<<< HEAD
             
+=======
+            Player.monsterQuantity = 0;
+            pl.KillMonster = -1;
+            pl.KillM();
+>>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
             OverUI.SetActive(true);
             if (pl.myBodies.Count>=2)
             {

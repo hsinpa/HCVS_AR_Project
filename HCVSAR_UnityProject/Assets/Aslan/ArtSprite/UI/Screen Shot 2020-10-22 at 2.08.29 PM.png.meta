@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+<<<<<<< HEAD:HCVSAR_UnityProject/Assets/Aslan/ArtSprite/UI/Screen Shot 2020-10-22 at 2.08.29 PM.png.meta
 guid: d63ce03042b214efcb022ad49723c4de
+=======
+guid: bd80357c130bd6e44bc2db6e2f381ba1
+>>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7:HCVSAR_UnityProject/Assets/Aslan/EndPackage/drive-download-20201020T122942Z-001/texture/capsule_uv3try_initialShadingGroup_SpecularSmoothness.png.meta
+=======
+guid: d63ce03042b214efcb022ad49723c4de
+>>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

@@ -3,7 +3,10 @@ using UnityEngine.UI;
 using Expect.StaticAsset;
 using UnityEngine.Playables;
 using System.Collections;
+<<<<<<< HEAD
 using UnityEngine.SceneManagement;
+=======
+>>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
 
 public class Mission9 : ViewController
 {
@@ -21,8 +24,11 @@ public class Mission9 : ViewController
     public GameObject video;
     public GameObject leaveButton;
     public PlayableDirector playableDirector;
+<<<<<<< HEAD
     public CanvasGroup endView;
     public GameObject mainTop;
+=======
+>>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
 
     public override void Enable()
     {
@@ -80,7 +86,11 @@ public class Mission9 : ViewController
             dialogMissionView.Show(false);
             OnClickButton(false);
             playableDirector.Play();
+<<<<<<< HEAD
             StartCoroutine(LeaveView());
+=======
+            leaveButton.GetComponent<Button>().onClick.AddListener(LeaveEvent);
+>>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
         }
     }
 

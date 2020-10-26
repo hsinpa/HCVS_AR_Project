@@ -30,17 +30,21 @@ public class StarVideoController : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
     public void startIbeacon()
     {
         JoeGM.joeGM.startIbeacon();
     }
 
+=======
+>>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
     void OnMovieFinished(VideoPlayer player)
     {
         isStarVideoEnd = true;
         PlayerPrefs.SetInt("StarPlayVideo", 1);        
         cameraButton.enabled = true;
         videoObject.SetActive(false);
+<<<<<<< HEAD
         try
         {
             JoeGM.joeGM.startIbeacon();
@@ -50,5 +54,8 @@ public class StarVideoController : MonoBehaviour
         {
             Debug.Log("Star ibeacon error");
         }
+=======
+        JoeGM.joeGM.startIbeacon();
+>>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
     }
 }

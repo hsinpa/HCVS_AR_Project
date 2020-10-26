@@ -87,7 +87,11 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [HideInInspector]
     public TypeFlag.SocketDataType.LoginDatabaseType loginData;
     [HideInInspector]
+<<<<<<< HEAD
     public bool isEndMissionOpen = true;
+=======
+    public bool isEndMissionOpen;
+>>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
 
     public int missionNumber;
 
@@ -95,7 +99,10 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     public GameObject endMission;
     public Image warnImage;
     public StarVideoController starVideoController;
+<<<<<<< HEAD
     public List<string> guestMissionList = new List<string>(); // save guest mission id
+=======
+>>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
 
     private TypeFlag.InGameType.MissionType[] guestMissionArray;
     private TypeFlag.SocketDataType.ClassScoreHolderType classScore;
@@ -305,6 +312,10 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
     private void StarGame(TypeFlag.UserType type)
     {
+<<<<<<< HEAD
+=======
+        PlayerPrefs.SetInt("StarPlayVideo", 0);
+>>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
         // Video
         HasPlayStarVideo();
 

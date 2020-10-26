@@ -71,6 +71,7 @@ public class EnemyAI : MonoBehaviour {
 
     public void Over()
     {
+<<<<<<< HEAD
         try
         {
             Destroy(gameObject);
@@ -79,6 +80,9 @@ public class EnemyAI : MonoBehaviour {
         {
 
         }
+=======
+        Destroy(gameObject);
+>>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
     }
 
     public void Dead()

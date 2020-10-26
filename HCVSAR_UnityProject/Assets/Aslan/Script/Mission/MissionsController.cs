@@ -114,7 +114,11 @@ public class MissionsController : Singleton<MissionsController>
         TypeFlag.InGameType.MissionType[] missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
         MainView.Instance.studentScoreData.mission_id = missionArray[missionNumber].mission_id;
         MainView.Instance.missionNumber = missionNumber;
+<<<<<<< HEAD
         Debug.Log("missioncontroller mission_id  " + missionArray[missionNumber].mission_id);
+=======
+        
+>>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
         if (missionNumber == 3)
         {
             isEnter = true;
@@ -144,7 +148,11 @@ public class MissionsController : Singleton<MissionsController>
         yield return ARSession.CheckAvailability();
 
         text.text = "support";
+<<<<<<< HEAD
         isARsupport = true;
+=======
+        //isARsupport = true;
+>>>>>>> c4a371fde35a598e9a39b438470ce6b2c962a9d7
 
         switch (ARSession.state)
         {
