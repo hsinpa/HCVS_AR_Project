@@ -81,7 +81,8 @@ MonoBehaviour:
   speed: 15
   rSpeed: 100
   HP: 3
-  DeadEffect: []
+  DeadEffect:
+  - {fileID: 8654629172717996890, guid: 066cbb62a8a744fd8bb12b94623ca2fd, type: 3}
   initialPosition: {x: 0, y: 0, z: 0}
   initialDirection: {x: 1, y: 0, z: 0}
   rotateCurve:
@@ -90,7 +91,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  DestroyTime: 3
+  DestroyTime: 1
 --- !u!1 &2840061957440443
 GameObject:
   m_ObjectHideFlags: 0

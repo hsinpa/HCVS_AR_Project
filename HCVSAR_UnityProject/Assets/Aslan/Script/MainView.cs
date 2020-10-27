@@ -67,6 +67,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private CanvasGroup EndView;
     [SerializeField]
     private MainBaseVIew mainBaseVIew;
+    [SerializeField]
+    private CanvasGroup closeEnterMissionView;
 
     [SerializeField]
     private BagPanel bagPanel;
@@ -272,9 +274,10 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     {
         if (args.Length > 0)
         {
-
             var terminateData = JsonUtility.FromJson<TypeFlag.SocketDataType.TerminateGameType>(args[0].ToString());
             TerminateGameAction(terminateData.location_id);
+            JoeGM.joeGM.isGameStart = false;
+            closeEnterMissionView.alpha = 0;
         }
     }
 

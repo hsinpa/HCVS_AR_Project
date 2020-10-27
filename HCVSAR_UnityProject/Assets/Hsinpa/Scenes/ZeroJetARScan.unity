@@ -1175,17 +1175,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2087078901}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
       - m_Target: {fileID: 767497654}
         m_MethodName: SetActive
         m_Mode: 6
@@ -1196,17 +1185,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2087078902}
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 330775876}
         m_MethodName: UI_re
@@ -2363,40 +2341,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 767497657}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2087078901}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 767497654}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2087078902}
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &767497657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5148,6 +5093,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2087078903}
   - component: {fileID: 2087078902}
+  - component: {fileID: 2087078904}
   m_Layer: 0
   m_Name: 0
   m_TagString: Untagged
@@ -5175,7 +5121,7 @@ MonoBehaviour:
   B_ring_quantity: 12
   B_loop_Qt: 99999
   bout: 10
-  B_CD: 2
+  B_CD: 5
   L_CD: 0
   delay: 0
   replace: 0
@@ -5201,6 +5147,38 @@ Transform:
   m_Father: {fileID: 353212640}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2087078904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087078901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e6e54189af0e9b4c817d1c4d1197b16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  child: {fileID: 0}
+  B_bullet: {fileID: 1000013665047874, guid: 9b0e15f6c07a31e44963ec7cc7aca468, type: 3}
+  Mode: 0
+  B_angle: 360
+  B_ring_quantity: 12
+  B_loop_Qt: 99999
+  bout: 10
+  B_CD: 2
+  L_CD: 0
+  delay: 0
+  replace: 0
+  initialPosition: {x: 0, y: 0, z: 0}
+  initialDirection: {x: 1, y: 0, z: 0}
+  rotateCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2089669938
 GameObject:
   m_ObjectHideFlags: 0

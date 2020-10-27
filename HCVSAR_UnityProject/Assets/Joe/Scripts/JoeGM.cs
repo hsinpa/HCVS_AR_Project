@@ -227,11 +227,14 @@ public class JoeGM : MonoBehaviour
 
                     if (Random.Range(0, TT) == 0)
                     {
+                        Handheld.Vibrate();
                         MissionsController.Instance.Missions(3);
+                        
                         LeaveMission();
                     }
                     else
                     {
+                        Handheld.Vibrate();
                         MissionsController.Instance.Missions(MinNumber);
                     }
                 }
@@ -239,6 +242,7 @@ public class JoeGM : MonoBehaviour
                 {
                     if (MainView.Instance.isEndMissionOpen == true)
                     {
+                        Handheld.Vibrate();
                         MissionsController.Instance.Missions(MinNumber);
                     }
                     else
@@ -249,6 +253,7 @@ public class JoeGM : MonoBehaviour
                 else
                 {
                     textlog("StartNumber" + MinNumber);
+                    Handheld.Vibrate();
                     MissionsController.Instance.Missions(MinNumber);
 
 
@@ -294,6 +299,7 @@ public class JoeGM : MonoBehaviour
 
     public void LeaveMission()
     {
+        Missioned[3] = true;
         Invoke("timeStop", 10f);
     }
     public void timeStop()

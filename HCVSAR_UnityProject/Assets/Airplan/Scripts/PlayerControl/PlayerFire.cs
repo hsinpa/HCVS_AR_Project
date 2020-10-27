@@ -73,7 +73,7 @@ public class PlayerFire : MonoBehaviour {
         // hit the bullet
         if (co.tag == "Bullet")
         {
-            launcher.enabled = false;
+            launcher.gameObject.SetActive(false);
             og();
             
             OverUI.SetActive(true);
@@ -98,6 +98,7 @@ public class PlayerFire : MonoBehaviour {
         Player.monsterQuantity = 0;
         pl.KillMonster = -1;
         pl.KillM();
+        launcher.gameObject.SetActive(true);
     }
 
 }

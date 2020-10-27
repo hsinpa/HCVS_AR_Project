@@ -43,7 +43,7 @@ public class StarVideoController : MonoBehaviour
         videoObject.SetActive(false);
         try
         {
-            JoeGM.joeGM.startIbeacon();
+            Invoke("startIbeacon", 1);
 
         }
         catch

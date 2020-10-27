@@ -66,7 +66,7 @@ public class launcher1 : MonoBehaviour {
     }
 
 	void Update () {
-        if (Player.monsterQuantity<10) 
+        if (Player.monsterQuantity<6) 
         {
             Create();
         }
