@@ -12,6 +12,7 @@ export interface UserComponentType {
     user_id : string,
     room_id : string,
     type : UserStatus,
+    connection : boolean,
     
     //Only teacher might have this value
     mobilephone? : number,

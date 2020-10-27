@@ -7,6 +7,7 @@ export function CreateUserType(socket : SocketIO.Socket) : UserComponentType{
         name : "",
         user_id : "",
         room_id : "",
+        connection:true,
         type : UserStatus.Guest
     };
 }

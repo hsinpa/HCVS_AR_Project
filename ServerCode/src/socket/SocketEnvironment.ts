@@ -24,13 +24,13 @@ class SocketEnvironment {
 
     CreateRoom(host_id : string, room_id: string, socket_id : string) : boolean {
         //No duplicate room
-        if (this.rooms.has(room_id))  {
-            let existRoom = this.rooms.get(room_id);
+        // if (this.rooms.has(room_id))  {
+        //     let existRoom = this.rooms.get(room_id);
 
-            //Someone else, is using the classRoom
-            if (existRoom.host_id != host_id)
-                return false;
-        }
+        //     //Someone else, is using the classRoom
+        //     if (existRoom.host_id != host_id)
+        //         return false;
+        // }
 
         this.rooms.set(room_id, {
             host_id : host_id,
@@ -151,7 +151,8 @@ class SocketEnvironment {
 
     AutoJoinAllUserInClass(socket : SocketIO.Socket, room_id : string) {
         this.users.forEach(userComp => {
-            if (userComp && userComp.room_id == room_id && this.CheckIfRoomAvailable(userComp)) {
+            if (userComp && userComp.room_id == room_id && userComp.connection &&
+                this.CheckIfRoomAvailable(userComp)) {
                 let userSocket = this.socketID2SocketTable.get(userComp.socket_id);
 
                 if (userSocket != null)
@@ -163,7 +164,7 @@ class SocketEnvironment {
     FindAllUserInClass(room_id : string) : UserComponentType[]{
         let userComps : UserComponentType[] = [];
         this.users.forEach(userComp => {
-            if (userComp && userComp.room_id == room_id) {
+            if (userComp && userComp.room_id == room_id && userComp.connection) {
                 userComps.push(userComp);
             }
         });

@@ -65,6 +65,8 @@ namespace Hsinpa.AR
         private void OnClickTakeOffBtnEvent() {
             if (OnTakeOffBtnEvent != null) OnTakeOffBtnEvent();
 
+            arImageManager.enabled = false;
+
             _ = UtilityMethod.DoDelayWork(6, () =>
             {
                 Debug.Log("ZeroJet : Change scene");

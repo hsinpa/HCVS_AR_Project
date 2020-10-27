@@ -65,6 +65,9 @@ class SocketReconnectHelper {
         let userComp = this.socketEnv.users.get(rootSocketID);
 
         if (userComp && userComp.room_id ) {
+            userComp.connection = true;
+            this.socketEnv.users.set(rootSocketID, userComp);
+
             this.userEmitter.EmitUserJoinRoom(socket, userComp.room_id, userComp);
 
             //If Student, and room is close before reconnect
@@ -90,6 +93,10 @@ class SocketReconnectHelper {
 
         if (!this.socketEnv.users.has(ReconnectRequestType.root_id)) return;
 
+        let userComp = this.socketEnv.users.get(ReconnectRequestType.root_id);
+        userComp.connection = false;
+
+        this.socketEnv.users.set(ReconnectRequestType.root_id, userComp);
         this.reserveUserList.push(ReconnectRequestType);
     }
 
