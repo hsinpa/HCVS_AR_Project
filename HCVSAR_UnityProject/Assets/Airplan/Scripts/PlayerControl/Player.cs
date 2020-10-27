@@ -13,8 +13,10 @@ public class Player : MonoBehaviour {
     public Camera C;
     
     static public int monsterQuantity;
+	static public int airplane;
 	public int KillMonster;
 	public Text KillUI;
+	public Text KillUI2;
 
 	[Header("移動數值")]
 	public float lookSpeed = 5f ;	// camera look speed
@@ -34,12 +36,20 @@ public class Player : MonoBehaviour {
 	Quaternion look ;
     Transform targetPoint ;
 
+	[SerializeField]
+	private GameObject _skintype_W;
+	[SerializeField]
+	private GameObject _skintype_G;
+	[SerializeField]
+	private GameObject _skintype_B;
+
 	public static Player main;
 	public void KillM()
     {
 		KillMonster++;
 		KillUI.text = KillMonster.ToString();
-    }
+		KillUI2.text = KillMonster.ToString();
+	}
 
     void Awake(){
 		main = this;
@@ -51,6 +61,18 @@ public class Player : MonoBehaviour {
     }
 	
 	void Start(){
+        if(airplane == 1)
+        {
+			_skintype_B.SetActive(true);
+		}
+		if (airplane == 2)
+		{
+			_skintype_G.SetActive(true);
+		}
+		if (airplane == 3)
+		{
+			_skintype_W.SetActive(true);
+		}
 		InitBody() ; 
 		//for(int i=0 ; i<4 ; i++){SpawnBody();}  // Spawn 4 body (test only)
 	}
@@ -99,7 +121,7 @@ public class Player : MonoBehaviour {
 	// Sphere
 	//=========
 	void ScaleBall(){
-		sphere.radius = Mathf.Lerp(sphere.radius, ballRadius*(1+ballScaleRate*(myBodies.Count-1)),13f*Time.deltaTime) ;
+		sphere.radius = Mathf.Lerp(sphere.radius, ballRadius*(2+ballScaleRate*(myBodies.Count-1)),13f*Time.deltaTime) ;
 	}
 	
 	//========

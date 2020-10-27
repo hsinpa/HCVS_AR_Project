@@ -15,9 +15,9 @@ namespace Hsinpa.Video
         private float _speed, _target;
 
         private const string TransitionTet = "_Transition";
-        private float[] VideoRotation = new float[] {115, 0, 310, 0, 0, 0, 0, 299, 269, 0}; //mission4 -> 285
+        private float[] VideoRotation = new float[] {115, 0, 310, 330, 0, 130, 0, 359, 269, 0}; //mission4 -> 285
         private Camera _camera;
-
+        private float R;
         private void Start()
         {
             _mat = _renderer.material;
@@ -35,6 +35,9 @@ namespace Hsinpa.Video
             cameraForward.y = 0;
             this.transform.rotation = MainCompass.main.gameObject.transform.rotation;
             this.transform.Rotate(new Vector3(0, VideoRotation[missionNumber], 0));
+            R = VideoRotation[missionNumber];
+            StartCompass = true;
+            Invoke("StopCompass",5);
             this.transform.position = camera.transform.position;
             _camera = camera;
         }
@@ -55,9 +58,22 @@ namespace Hsinpa.Video
             isAnime = true;
         }
 
+        bool StartCompass;
+
+        void StopCompass()
+        {
+            StartCompass = false;
+        }
+
         private void Update()
         {
             if (!isAnime) return;
+            if (StartCompass)
+            {
+                
+                this.transform.rotation = MainCompass.main.gameObject.transform.rotation;
+                this.transform.Rotate(new Vector3(0, R, 0));
+            }
             
             float currentValue = _mat.GetFloat(TransitionTet);
             float finalValue = Mathf.Lerp(currentValue, _target, _speed);

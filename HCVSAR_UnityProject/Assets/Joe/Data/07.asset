@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3d70ef6331e6604f98cd9e126106436, type: 3}
   m_Name: 07
   m_EditorClassIdentifier: 
-  clip: {fileID: 32900000, guid: 005ed7f14538e46cfbaff2e50220ec9d, type: 3}
+  clip: {fileID: 32900000, guid: ce31971f04ec84314b39610320328a38, type: 3}
   videoTimes:
   - time: 0.5
     text: "\u5594\uFF5E\u539F\u4F86\u662F\u4E2D\u83EF\u6C11\u570B\u7E3D\u7D71\u8523\u4E2D\u6B63\u7684\u592B\u4EBA\u5B8B\u7F8E\u9F61\u4F86\u8A2A\u554A\uFF01"

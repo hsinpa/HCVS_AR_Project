@@ -172,8 +172,9 @@ public class Mission5 : ViewController
 
     public override void NextAction()
     {
+        int score = MainView.Instance.studentScoreData.score;
         videoUI.SetActive(false);
-        LeaveMission(5);
+        LeaveMission(score);
     }
 
     private void LeaveMission(int score)

@@ -15,6 +15,8 @@ public class PlayerFire : MonoBehaviour {
     public static event gameOver og;
     public launcher1 launcher;
     public GameObject OverUI;
+    public GameObject fp;
+    public GameObject p;
     //public Transform[] T;
 
     float Tt;
@@ -73,11 +75,10 @@ public class PlayerFire : MonoBehaviour {
         // hit the bullet
         if (co.tag == "Bullet")
         {
-            launcher.enabled = false;
+            launcher.gameObject.SetActive(false);
             og();
-            Player.monsterQuantity = 0;
-            pl.KillMonster = -1;
-            pl.KillM();
+            Instantiate(fp, p.transform.position, p.transform.rotation);
+            p.SetActive(false);
             OverUI.SetActive(true);
             if (pl.myBodies.Count>=2)
             {
@@ -92,6 +93,16 @@ public class PlayerFire : MonoBehaviour {
             
             Destroy(co.gameObject); // destory the bullet
         }
+    }
+
+
+    public void UI_re()
+    {
+        p.SetActive(true);
+        Player.monsterQuantity = 0;
+        pl.KillMonster = -1;
+        pl.KillM();
+        launcher.gameObject.SetActive(true);
     }
 
 }

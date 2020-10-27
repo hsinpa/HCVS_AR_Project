@@ -43,12 +43,15 @@ public class Mission1 : ViewController
     {
         ClickNextButton();
         nextButton.onClick.AddListener(ClickCount);
+
         isSuccess = true;
 
         bagPanel.Show(false);
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(dogName, dogMessage1, dog);
 
+        MainView.Instance.studentScoreData.mission_id = "B";
+        MainView.Instance.missionNumber = 1;
         MissionsController.Instance.ARSession.enabled = true;
     }
 
@@ -63,6 +66,8 @@ public class Mission1 : ViewController
         dialogMissionView.Show(true);
         dialogMissionView.DialogView(dogName, dogMessage1, dog);
 
+        MainView.Instance.studentScoreData.mission_id = "B";
+        MainView.Instance.missionNumber = 1;
         MissionsController.Instance.ARSession.enabled = true;
     }
 
@@ -83,7 +88,6 @@ public class Mission1 : ViewController
         if (clickCount == 1)
         {
             dialogMissionView.DialogView(policeName, correctMessage_1, police);
-            Debug.Log("sss");
         }
         
         if (clickCount >= 2)
@@ -132,17 +136,19 @@ public class Mission1 : ViewController
         }
     }
 
-    private void LeaveMission(bool success)
+    private void LeaveMission(bool isSuccess)
     {
-        int score = success ? 5 : 0;
+        int score = isSuccess ? 5 : 0;
 
+        success.enabled = false;
         mailInfo.SetActive(false);
         dialogMissionView.Show(false);
         OnClickButton(false);
         endMissionView.Show(true);
+
+        PostScoreEvent.Instance.PostScore(score, MainView.Instance.loginData.userType);
         endMissionView.EndMission(score, endMessage);
         endMissionView.OnEnable += LeaveEvent;
-        PostScoreEvent.Instance.PostScore(score, MainView.Instance.loginData.userType);
     }
 
     private void LeaveEvent()

@@ -67,6 +67,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private CanvasGroup EndView;
     [SerializeField]
     private MainBaseVIew mainBaseVIew;
+    [SerializeField]
+    private CanvasGroup closeEnterMissionView;
 
     [SerializeField]
     private BagPanel bagPanel;
@@ -87,7 +89,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [HideInInspector]
     public TypeFlag.SocketDataType.LoginDatabaseType loginData;
     [HideInInspector]
-    public bool isEndMissionOpen;
+    public bool isEndMissionOpen = true;
 
     public int missionNumber;
 
@@ -95,6 +97,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     public GameObject endMission;
     public Image warnImage;
     public StarVideoController starVideoController;
+    public List<string> guestMissionList = new List<string>(); // save guest mission id
 
     private TypeFlag.InGameType.MissionType[] guestMissionArray;
     private TypeFlag.SocketDataType.ClassScoreHolderType classScore;
@@ -271,9 +274,10 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     {
         if (args.Length > 0)
         {
-
             var terminateData = JsonUtility.FromJson<TypeFlag.SocketDataType.TerminateGameType>(args[0].ToString());
             TerminateGameAction(terminateData.location_id);
+            JoeGM.joeGM.isGameStart = false;
+            closeEnterMissionView.alpha = 0;
         }
     }
 
@@ -304,7 +308,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
     private void StarGame(TypeFlag.UserType type)
     {
-        PlayerPrefs.SetInt("StarPlayVideo", 0);
         // Video
         HasPlayStarVideo();
 
@@ -314,8 +317,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         EndView.alpha = 0;
         endMission.SetActive(false); // open score =>= 70
 
-        // ibeacon open
-        JoeGM.joeGM.StartBeacom(type);
+        
 
         // switch button
         SwitchLoginButton(true);
@@ -342,6 +344,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
                 break;
         }
+        // ibeacon open
+        JoeGM.joeGM.StartBeacom(type);
     }
 
     public void SetTimerAndGameStart(long endTimestamp)
@@ -368,6 +372,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
                     studentData = tempStudentData.ToList();
                     StudentTotalScore(studentData);
                     GetAirplaneSkin(studentData); // ask airplane skin
+
+                    JoeGM.joeGM.UpdateIBeaconStudent(); //update ibeacon missions
                 }
                 
             }, null));

@@ -30,7 +30,6 @@ namespace Expect.View
         private TypeFlag.InGameType.MissionType[] missionArray;
         private Dictionary<string, TypeFlag.InGameType.MissionType> missionLookupTable;
         private List<Transform> selectTransformList = new List<Transform>();
-        private List<string> guestMissionList = new List<string>();
 
         private bool isConnection;
 
@@ -87,12 +86,11 @@ namespace Expect.View
 
                     case TypeFlag.UserType.Guest:
 
-                        string currentID = MainView.Instance.studentScoreData.mission_id;
-                        guestMissionList.Add(currentID);
+                        var missionList = MainView.Instance.guestMissionList;
 
-                        for (int j = 0; j < guestMissionList.Count; j++)
+                        for (int j = 0; j < missionList.Count; j++)
                         {
-                            if (missionArray[i].mission_id == guestMissionList[j])
+                            if (missionArray[i].mission_id == missionList[j])
                             {
                                 missionTransform.Find("score").GetComponent<Text>().color = green;
                                 missionTransform.Find("id").GetComponent<Text>().color = green;
@@ -103,8 +101,6 @@ namespace Expect.View
                         break;
                         
                 }
-
-                Debug.Log("studentData: " + MainView.Instance.studentScoreData.mission_id);
 
                 if (missionArray[i].total_score < 10)
                     score = "0" + missionArray[i].total_score.ToString();

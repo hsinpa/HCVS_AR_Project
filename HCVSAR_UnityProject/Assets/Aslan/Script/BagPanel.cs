@@ -35,9 +35,12 @@ namespace Expect.View
         public Button close;
         public MainBaseVIew mainBaseVIew;
 
+        private List<int> countIndex = new List<int>();
         private float height;
         private bool isMailClick;
+        private bool isMapClick;
         private List<Transform> mapTransformList = new List<Transform>();
+        private List<Transform> selectTransformList = new List<Transform>();
         private string[] objectInfo = { StringAsset.BagObjectInfo.mail, StringAsset.BagObjectInfo.map1, StringAsset.BagObjectInfo.map2, StringAsset.BagObjectInfo.mapAll };
         private string[] detailInfo = { StringAsset.BagObjectInfo.mailDetail, StringAsset.BagObjectInfo.map1Detail, StringAsset.BagObjectInfo.map2Detail, StringAsset.BagObjectInfo.mapAlDetail };
 
@@ -80,21 +83,23 @@ namespace Expect.View
             infoTransform.Find("Button").GetComponent<Image>().sprite = eventImage[index];
             infoTransform.Find("Button").GetComponent<Button>().onClick.AddListener(() => AddDetailInfo(index));
 
-            if (index == 0) { isMailClick = true; }
-            if (index > 0 ) { mapTransformList.Add(infoTransform); }
-            infoTransform.gameObject.SetActive(true);
-        }
+            countIndex.Add(index);
 
-        public void RemoveMapChip()
-        {
-            foreach (var t in mapTransformList) { Destroy(t.gameObject); }
-            foreach (var t in mapTransformList) { Destroy(t.GetChild(0).gameObject); }            
+            if (index == 1 || index == 2) { isMapClick = true; }
+            if (index == 0 && !isMapClick) { isMailClick = true; }
+            if (index == 0 && isMapClick) { isMailClick = false; }
+            if (index > 0 ) { mapTransformList.Add(infoTransform); }
+
+            selectTransformList.Add(infoTransform);
+            infoTransform.gameObject.SetActive(true);
         }
 
         public void AddAllMapInfo()
         {
             int index = 3;
-            int currentHeight = isMailClick? 160 : 80;
+            int currentHeight = isMailClick? 180 : 80;
+
+            if (!isMailClick) { height = 90; }
 
             Transform infoTransform = Instantiate(Info, Container);
             RectTransform infoRectTransform = infoTransform.GetComponent<RectTransform>();
@@ -104,7 +109,48 @@ namespace Expect.View
             infoTransform.Find("Text").GetComponent<Text>().text = objectInfo[index];
             infoTransform.Find("Button").GetComponent<Image>().sprite = eventImage[index];
             infoTransform.Find("Button").GetComponent<Button>().onClick.AddListener(() => AddDetailInfo(index));
+
+            infoTransform.gameObject.SetActive(true);
             
+            countIndex.Remove(1);
+            countIndex.Remove(2);
+            countIndex.Add(3);
+
+            selectTransformList.Clear();
+
+            if (countIndex.Count > 1)
+            {
+                selectTransformList.Add(infoTransform);
+                selectTransformList.Add(infoTransform);
+            }
+            else
+            {
+                selectTransformList.Add(infoTransform);
+            }
+        }
+
+        public void UseMail()
+        {
+            height = 90f;
+
+            RemoveShowData();
+            countIndex.Remove(0);
+            
+            Transform infoTransform = Instantiate(Info, Container);
+            RectTransform infoRectTransform = infoTransform.GetComponent<RectTransform>();
+
+            for (int index = 0; index < countIndex.Count; index++)
+            {                
+                infoRectTransform.anchoredPosition = new Vector2(0, -height * index);
+            }
+
+            foreach (var index in countIndex)
+            {
+                infoTransform.Find("Text").GetComponent<Text>().text = objectInfo[index];
+                infoTransform.Find("Button").GetComponent<Image>().sprite = eventImage[index];
+                infoTransform.Find("Button").GetComponent<Button>().onClick.AddListener(() => AddDetailInfo(index));
+            }
+
             infoTransform.gameObject.SetActive(true);
         }
 
@@ -120,6 +166,23 @@ namespace Expect.View
                 detailTxt.text = detailInfo[index];
                 detailGameObject.SetActive(true);
             }
+        }
+
+        public void RemoveShowData()
+        {
+            if (selectTransformList.Count > 0)
+            {
+                foreach (var t in selectTransformList) { Destroy(t.gameObject); }
+                foreach (var t in selectTransformList) { Destroy(t.GetChild(0).gameObject); }
+                selectTransformList.Clear();
+            }
+        }
+
+        public void RemoveMapChip()
+        {
+            foreach (var t in mapTransformList) { Destroy(t.gameObject); }
+            foreach (var t in mapTransformList) { Destroy(t.GetChild(0).gameObject); }
+            mapTransformList.Clear();
         }
     }
 }

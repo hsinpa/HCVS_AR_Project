@@ -25,6 +25,7 @@ public class JoeGM : MonoBehaviour
     string uist;
     public List<IBCCC> mybeacons;
 
+    public GameObject useButton;
     public GameObject RightBotton;
     public GameObject FullBotton;
     public double[] MissionMinDistances = new double[15]; 
@@ -116,19 +117,19 @@ public class JoeGM : MonoBehaviour
         
     }
 
-    private void UpdateIBeaconStudent()
+    public void UpdateIBeaconStudent()
     {
         studentData = MainView.Instance.studentData;
 
         for (int i = 0; i < missionName.Length; i++)
         {
-            
+            Debug.Log("Student"+ studentData.Count);
             foreach (TypeFlag.SocketDataType.StudentType studentType in studentData)
             {
-
+                Debug.Log("3");
                 if (studentType.mission_id == missionName[i])
                 {
-
+                    Debug.Log("2");
                     Missioned[i] = true;
                 }
 
@@ -142,7 +143,7 @@ public class JoeGM : MonoBehaviour
     public string c;
     private void UpdateIBeaconMain()
     {
-
+       
         //studentData = MainView.Instance.studentData;
         //textlog("01");
         //MainView.Instance.studentScoreData
@@ -159,12 +160,9 @@ public class JoeGM : MonoBehaviour
 
                     MissionNumber = example.mybeacons[i].major * 10 + example.mybeacons[i].minor;
                     IBeaconDistances[MissionNumber] = example.mybeacons[i].accuracy;
-                    if (MissionNumber >= missionName.Length)
-                    {
-                        continue;
-                    }
+                    
 
-                    if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3|| MissionNumber == 9|| MissionNumber == 1)
+                    if (MissionNumber == 11 || MissionNumber == 12 || MissionNumber == 3|| MissionNumber == 1)
                     {
                         CheckMission(example.mybeacons[i].accuracy);
                         goto OverLoop;
@@ -203,8 +201,19 @@ public class JoeGM : MonoBehaviour
             {
                 textlog("ErrorLoop");
             }
-           
-            RedPoints[MinNumber].SetActive(true);
+
+            if (IBeaconDistances[3]<MinDistance)
+            {
+                RedPoints[3].SetActive(true);
+            }else if (IBeaconDistances[1] < MinDistance)
+            {
+                RedPoints[1].SetActive(true);
+            }
+            else
+            {
+                RedPoints[MinNumber].SetActive(true);
+            }
+            
             if (MinDistance < MissionMinDistances[MinNumber])
             {
                 textlog("OVERMin" + MinNumber);
@@ -218,11 +227,14 @@ public class JoeGM : MonoBehaviour
 
                     if (Random.Range(0, TT) == 0)
                     {
+                        Handheld.Vibrate();
                         MissionsController.Instance.Missions(3);
+                        
                         LeaveMission();
                     }
                     else
                     {
+                        Handheld.Vibrate();
                         MissionsController.Instance.Missions(MinNumber);
                     }
                 }
@@ -230,6 +242,7 @@ public class JoeGM : MonoBehaviour
                 {
                     if (MainView.Instance.isEndMissionOpen == true)
                     {
+                        Handheld.Vibrate();
                         MissionsController.Instance.Missions(MinNumber);
                     }
                     else
@@ -240,6 +253,7 @@ public class JoeGM : MonoBehaviour
                 else
                 {
                     textlog("StartNumber" + MinNumber);
+                    Handheld.Vibrate();
                     MissionsController.Instance.Missions(MinNumber);
 
 
@@ -260,17 +274,20 @@ public class JoeGM : MonoBehaviour
     {
         if (MissionNumber == 3)
         {
-            AirRaid = accuracy < 8f;
+            AirRaid = accuracy < MissionMinDistances[3];
         }
 
-        if (MissionNumber == 11)
+        if (MissionNumber == 1)
         {
-            RightBotton.SetActive(accuracy < 5f);
+            RightBotton.SetActive(accuracy < MissionMinDistances[1]);
+            useButton.SetActive(accuracy < MissionMinDistances[1]);
+            //FullBotton.SetActive(!(accuracy < 5f));
         }
 
         if (MissionNumber == 12)
         {
-            RightBotton.SetActive(accuracy < 5f);
+            //RightBotton.SetActive(!(accuracy < 5f));
+            //FullBotton.SetActive(accuracy < 5f);
         }
         
     }
@@ -282,6 +299,7 @@ public class JoeGM : MonoBehaviour
 
     public void LeaveMission()
     {
+        Missioned[3] = true;
         Invoke("timeStop", 10f);
     }
     public void timeStop()
@@ -291,6 +309,7 @@ public class JoeGM : MonoBehaviour
 
     public void StartBeacom(TypeFlag.UserType type)
     {
+        Debug.Log("1");
         GameType = type;
         CheckDistance = true;
         example = expectObj.GetComponent<Example>();
@@ -301,7 +320,8 @@ public class JoeGM : MonoBehaviour
                 break;
 
             case TypeFlag.UserType.Student:
-                UpdateIBeaconStudent();
+                Debug.Log("Student");
+                //UpdateIBeaconStudent();
                 
                 break;
         }
