@@ -961,6 +961,8 @@ MonoBehaviour:
   L: 0
   launcher: {fileID: 2087078902}
   OverUI: {fileID: 767497654}
+  fp: {fileID: 8654629172717996890, guid: 066cbb62a8a744fd8bb12b94623ca2fd, type: 3}
+  p: {fileID: 1519551114}
 --- !u!135 &330775877
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2009,6 +2011,10 @@ PrefabInstance:
     - target: {fileID: 1000012051450876, guid: 812e5e7c3f18b4c39a3b69ec7c3e9ca3, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014195727512, guid: 812e5e7c3f18b4c39a3b69ec7c3e9ca3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224000010782965452, guid: 812e5e7c3f18b4c39a3b69ec7c3e9ca3,
         type: 3}

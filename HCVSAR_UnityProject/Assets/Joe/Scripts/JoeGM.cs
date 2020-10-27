@@ -117,19 +117,19 @@ public class JoeGM : MonoBehaviour
         
     }
 
-    private void UpdateIBeaconStudent()
+    public void UpdateIBeaconStudent()
     {
         studentData = MainView.Instance.studentData;
 
         for (int i = 0; i < missionName.Length; i++)
         {
-            
+            Debug.Log("Student"+ studentData.Count);
             foreach (TypeFlag.SocketDataType.StudentType studentType in studentData)
             {
-
+                Debug.Log("3");
                 if (studentType.mission_id == missionName[i])
                 {
-
+                    Debug.Log("2");
                     Missioned[i] = true;
                 }
 
@@ -274,7 +274,7 @@ public class JoeGM : MonoBehaviour
     {
         if (MissionNumber == 3)
         {
-            AirRaid = accuracy < 8f;
+            AirRaid = accuracy < MissionMinDistances[3];
         }
 
         if (MissionNumber == 1)
@@ -309,6 +309,7 @@ public class JoeGM : MonoBehaviour
 
     public void StartBeacom(TypeFlag.UserType type)
     {
+        Debug.Log("1");
         GameType = type;
         CheckDistance = true;
         example = expectObj.GetComponent<Example>();
@@ -319,7 +320,8 @@ public class JoeGM : MonoBehaviour
                 break;
 
             case TypeFlag.UserType.Student:
-                UpdateIBeaconStudent();
+                Debug.Log("Student");
+                //UpdateIBeaconStudent();
                 
                 break;
         }

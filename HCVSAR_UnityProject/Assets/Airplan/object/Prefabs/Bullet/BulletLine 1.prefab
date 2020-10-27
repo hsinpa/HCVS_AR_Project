@@ -81,8 +81,7 @@ MonoBehaviour:
   speed: 15
   rSpeed: 100
   HP: 3
-  DeadEffect:
-  - {fileID: 8654629172717996890, guid: 066cbb62a8a744fd8bb12b94623ca2fd, type: 3}
+  DeadEffect: []
   initialPosition: {x: 0, y: 0, z: 0}
   initialDirection: {x: 1, y: 0, z: 0}
   rotateCurve:

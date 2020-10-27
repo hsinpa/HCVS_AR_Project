@@ -15,6 +15,8 @@ public class PlayerFire : MonoBehaviour {
     public static event gameOver og;
     public launcher1 launcher;
     public GameObject OverUI;
+    public GameObject fp;
+    public GameObject p;
     //public Transform[] T;
 
     float Tt;
@@ -75,7 +77,8 @@ public class PlayerFire : MonoBehaviour {
         {
             launcher.gameObject.SetActive(false);
             og();
-            
+            Instantiate(fp, p.transform.position, p.transform.rotation);
+            p.SetActive(false);
             OverUI.SetActive(true);
             if (pl.myBodies.Count>=2)
             {
@@ -95,6 +98,7 @@ public class PlayerFire : MonoBehaviour {
 
     public void UI_re()
     {
+        p.SetActive(true);
         Player.monsterQuantity = 0;
         pl.KillMonster = -1;
         pl.KillM();

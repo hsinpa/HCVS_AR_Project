@@ -317,8 +317,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         EndView.alpha = 0;
         endMission.SetActive(false); // open score =>= 70
 
-        // ibeacon open
-        JoeGM.joeGM.StartBeacom(type);
+        
 
         // switch button
         SwitchLoginButton(true);
@@ -345,6 +344,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
                 break;
         }
+        // ibeacon open
+        JoeGM.joeGM.StartBeacom(type);
     }
 
     public void SetTimerAndGameStart(long endTimestamp)
@@ -371,6 +372,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
                     studentData = tempStudentData.ToList();
                     StudentTotalScore(studentData);
                     GetAirplaneSkin(studentData); // ask airplane skin
+
+                    JoeGM.joeGM.UpdateIBeaconStudent(); //update ibeacon missions
                 }
                 
             }, null));

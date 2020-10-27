@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 136000010878045212}
   - component: {fileID: 114808997148242124}
   m_Layer: 0
-  m_Name: P_F_L_HP20_RC0.2
+  m_Name: F4Fb
   m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   rSpeed: 10
-  HP: 7
+  HP: 1
   DeadEffect: []
   initialPosition: {x: 0.25, y: 0, z: 0}
   initialDirection: {x: 1, y: 0, z: 0}
