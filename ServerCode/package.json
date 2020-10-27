@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prod": "./node_modules/.bin/pm2 start ./dist/index.js --name 'GameMultiServer'",
-    "prod_restart": "./node_modules/.bin/pm2 restart 'GameMultiServer'",
+    "prod": "./node_modules/.bin/pm2 start ./dist/index.js --name 'GameMultiServer' --log-date-format 'YYYY-MM-DD HH:mm'",
+    "prod_restart": "./node_modules/.bin/pm2 restart 'GameMultiServer' --log-date-format 'YYYY-MM-DD HH:mm'",
     "dev": "./node_modules/.bin/nodemon --use_strict ./dist/index.js"
   },
   "keywords": [],
