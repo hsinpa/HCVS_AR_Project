@@ -69,6 +69,7 @@ namespace Hsinpa.AR
 
             _ = UtilityMethod.DoDelayWork(6, () =>
             {
+                AirPlaneGame.SetActive(true);
                 Debug.Log("ZeroJet : Change scene");
                // StartCoroutine(LoadYourAsyncScene());
             });
