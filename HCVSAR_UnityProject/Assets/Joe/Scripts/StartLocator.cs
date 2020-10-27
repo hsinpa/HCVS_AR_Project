@@ -11,11 +11,14 @@ public class StartLocator : MonoBehaviour
     float p1;
     float p2;
     public UnityEngine.UI.Text text;
+    private Camera _camera;
+    
     // Start is called before the first frame update
     void Start()
     {
+        _camera = MissionsController.Instance.isARsupport ? Camera.main : MissionsController.Instance.MainCamera;
         gM = JoeGM.joeGM;
-        transform.position = new Vector3(Camera.main.transform.position.x, transform.position.y, Camera.main.transform.position.z);
+        transform.position = new Vector3(_camera.transform.position.x, transform.position.y, _camera.transform.position.z);
         //p1 = (float)gM.IBeaconDistances[(int)BeaconNumber.x];
         //p2 = (float)gM.IBeaconDistances[(int)BeaconNumber.y];
         //float v =p1/(p1 + p2);
@@ -26,9 +29,19 @@ public class StartLocator : MonoBehaviour
     }
     private void Update()
     {
-     
-        transform.rotation = MainCompass.main.transform.rotation;
-        
+
+       
+        if (MissionsController.Instance.isARsupport)
+        {
+            if (JoeMain.Main.isIOS)
+            {
+                transform.rotation = MainCompass.main.transform.rotation;
+            }
+        }
+        else
+        {
+            transform.rotation = MainCompass.main.transform.rotation;
+        }
 
     }
 }

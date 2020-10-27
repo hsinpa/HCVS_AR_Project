@@ -24,14 +24,22 @@ namespace Hsinpa.AR
         [SerializeField]
         private Texture _skintype_2;
 
+        
+
+
         private AudioSource _audioSource;
 
         private Texture _originalTex
         {
             get {
                 if (ARZeroManager.RandomSkinString == GeneralFlag.ARZero.TrackImage_2)
+                {
+                    Player.airplane = 1;
                     return _skintype_2;
 
+                }
+
+                Player.airplane = 3;
                 return _skintype_1;
             }
         }
@@ -100,6 +108,8 @@ namespace Hsinpa.AR
             //Special
             if (p_skinIndex == 1) {
                 _meshRenderer.material.SetTexture(MatTexName, _specialTex);
+
+                Player.airplane = 2;
             }
         }
 

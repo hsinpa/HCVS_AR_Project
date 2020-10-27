@@ -40,18 +40,18 @@ public class PostScoreEvent : Singleton<PostScoreEvent>
 
         }, () => {
             //TODO: ADD Mission ID
-            Debug.Log("Error: POST Fail, Fail Mission: " + log);
+            Debug.Log("Error: POST Fail, Fail Mission: " + log + "PSOT studentScoreData id: " + studentScoreData.mission_id);
         }));
     }
 
     private void RefreshGuestScore(int score)
     {
         var guestMissionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
-
         guestMissionArray[MainView.Instance.missionNumber].total_score = score;
 
         MainApp.Instance.database.MissionShortNameObj.missionArray = guestMissionArray;
-
+        MainView.Instance.guestMissionList.Add(MainView.Instance.studentScoreData.mission_id);
         MainView.Instance.GuestTotalScore();
+        Debug.Log("post MainView.Instance.studentScoreData.mission_id  " + MainView.Instance.studentScoreData.mission_id + "score " + score + "MainView.Instance.missionNumber" + MainView.Instance.missionNumber);
     }
 }

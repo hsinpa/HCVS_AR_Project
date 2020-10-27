@@ -12,7 +12,8 @@ public class EnemyWanderer : EnemyAI {
 
     void Start(){
 		targetPoint = pl.DirToPoint(initialPosition) ;
-	}
+        Player.monsterQuantity++;
+    }
 	
 	public virtual void Update(){
         // Repeat elapse time

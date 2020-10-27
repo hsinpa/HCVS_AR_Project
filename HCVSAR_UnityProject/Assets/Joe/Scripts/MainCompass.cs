@@ -21,7 +21,7 @@ public class MainCompass : MonoBehaviour
         //locationProvider = ARLocation.ARLocationProvider.Instance;
         //Input.location.Start();
         //Input.compass.enabled = true;
-        _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
+        _camera = MissionsController.Instance.isARsupport ? Camera.main : MissionsController.Instance.MainCamera;
 
         if (MissionsController.Instance.isARsupport) {
             //gameObject.SetActive(false);
