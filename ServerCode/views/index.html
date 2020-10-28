@@ -1,0 +1,164 @@
+<html>
+<title>{{title}}</title>
+<head>
+    <!-- <link rel="stylesheet" type="text/css" href="/css/main.css" /> -->
+</head>
+<body>
+<h1>Server Console</h1>
+
+<form id="login_panel">
+  <h2>Login Panel</h2>
+  <select>
+    <option value="1">Teacher</option>
+    <option value="0">Student</option>
+    <option value="2">Guest</option>
+  </select>
+
+  <input placeholder="Account" name="account">
+  <!-- Only teacher need input password -->
+  <input placeholder="Password" name="password">
+  <input type="submit" value="Submit">
+</form>
+
+<br><br>
+
+<div class="createRoom">
+  <h2>Create Room</h2>
+
+  <select>
+  </select>
+  <button >Create Room</button>  
+</div>
+
+<br><br>
+
+<button class="gameStart">Game Start</button>
+<button class="forceEnd">Force End</button>
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+
+
+<script type="text/javascript">
+  var socket = io.connect();
+  let socket_id = "";
+  let user_id = "";
+  let accountType = 0;
+
+  let classRooms = [];
+
+  socket.on('OnConnect', function (data) {
+    console.log(data);
+    let connectJSON = JSON.parse(data);
+    socket_id = connectJSON["socket_id"];
+  });
+
+  socket.on('event@create_room', function (data) {
+    console.log(data);
+  });
+
+  socket.on('event@start_game', function (data) {
+    console.log(data);
+  });
+
+  socket.on('event@force_end_game', function (data) {
+    console.log(data);
+  });
+
+//#region Login
+let formDom =  document.querySelector("form");
+formDom.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    accountType = parseInt(e.target[0].value);
+    let account = e.target[1].value;
+    let password = e.target[2].value;
+
+    fetch('/login', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type : accountType,
+        account : account,
+        password : password
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success login:', data);
+
+      if (data.status) {
+        let dataResult = JSON.parse(data.result);
+
+        user_id = dataResult["user_id"];
+
+        UpdateUserData(dataResult);
+        FindAllRoom();
+
+      }
+    });
+  });
+//#endregion
+
+//#region Others
+
+function UpdateUserData(data) {
+  console.log(data);
+
+  socket.emit("event@update_userInfo", JSON.stringify({
+    userType : accountType,
+    socket_id : socket_id,
+    user_id : data.user_id,
+    user_name : data.username,
+    room_id : data.room_id
+  }));
+}
+
+//Create Room
+function FindAllRoom() {
+  fetch('/getAllClassInfo', {
+      method: 'GET', // or 'PUT'
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success getAllClassInfo:', data);
+      classRooms = (data);
+
+      CreateOptionToSelect(classRooms);
+    });
+}
+
+function CreateOptionToSelect(rooms) {
+  let selectDom = document.querySelector(".createRoom select");
+  selectDom.innerHTML = "";
+
+  let roomsArray = JSON.parse(rooms.result);
+  roomsArray.forEach(x => {
+    var option = document.createElement("option");
+
+    option.text = x["class_name"];
+    option.value =  x["class_id"];
+
+    selectDom.add(option);
+  });
+}
+
+document.querySelector(".createRoom button").addEventListener("click", (e) => {
+  e.preventDefault();
+
+  let selectValue = document.querySelector(".createRoom select").value;
+  let roomComp = classRooms.find(x=>x.class_id == selectValue);
+
+  console.log(roomComp);
+
+  if (roomComp)
+    socket.emit("event@create_room", {socket_id : socket_id, user_id : user_id, room_id : selectValue, year : roomComp.year});
+});
+
+
+//#endregion
+
+</script>
+</html>

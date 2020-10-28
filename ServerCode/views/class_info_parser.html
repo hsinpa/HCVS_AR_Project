@@ -1,0 +1,64 @@
+<html>
+<head>
+</head>
+<body>
+<h1>ClassInfo Console</h1>
+
+<p>上傳刷新 教室資料 會一併 重制學生, 分數資料</p>
+
+<form>
+    <input type="file" id="class_info">
+    <input type="submit" value="提交" />
+</form>
+
+</body>
+
+<script type="text/javascript">
+    const form = document.querySelector('form');
+    const submitURL = "upload_class_info";
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const files = document.querySelector('[type=file]').files
+        const formData = new FormData();
+              
+        var fr=new FileReader(); 
+
+        fr.onload=function(){ 
+            UploadToServer(fr.result);
+        }
+
+        fr.readAsText(files[0]); 
+
+        // var object = {};
+        // formData.forEach(function(value, key){
+        //     console.log(value);
+        //     object[key] = value;
+        // });
+        // var json = JSON.stringify(object);
+
+        // console.log(json);
+
+        // fetch(submitURL, {
+        //     method: 'POST',
+        //     body: formData,
+        // }).then((response) => {
+        //     console.log(response)
+        // });
+    });
+
+    function UploadToServer(rawCSVString) {
+        console.log(rawCSVString);
+
+        fetch(submitURL, {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                csvfile : rawCSVString,
+            })
+        });
+    }
+
+</script>
+</html>
