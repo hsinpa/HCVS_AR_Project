@@ -40,16 +40,12 @@ public class Mission7 : ViewController
         
         JoeMain.Main.Start360Video(7);
 
-        StartCoroutine(EnterVideoView());
+        EnterVideoView();
     }
 
-    public IEnumerator EnterVideoView()
+    public void EnterVideoView()
     {
         videoEffect.FaceVideoToCameraFront(_camera, 7);
-        videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
-
-        yield return new WaitForSeconds(2);
-
         videoEffect.SetCoverPercentAnim(0, 0.01f);
 
         situationMissionView.Show(true);

@@ -73,7 +73,6 @@ public class JoeMain : MonoBehaviour
 #if UNITY_IOS
     IEnumerator StartBool()
     {
-      
 
         isIOS = true;
         
@@ -107,12 +106,14 @@ public class JoeMain : MonoBehaviour
 #if UNITY_ANDROID
     IEnumerator CoroutineTest()
     {
+        float wait = 0.1f;
+
         if(vp.isPrepared)
         {
             vp.Play();
         }
         
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(wait);
         vp.Pause();
     }
 #endif

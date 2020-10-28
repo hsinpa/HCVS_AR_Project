@@ -15,13 +15,16 @@ namespace Hsinpa.Video
         private float _speed, _target;
 
         private const string TransitionTet = "_Transition";
-        private float[] VideoRotation = new float[] {115, 0, 310, 330, 0, 130, 0, 359, 269, 0}; //mission4 -> 285
+        private float[] VideoRotation = new float[] {115, 0, 310, 330, 0, 130, 0, 359, 269, 0};
         private Camera _camera;
         private float R;
         private void Start()
         {
             _mat = _renderer.material;
             _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
+
+            bool isARsupport = MissionsController.Instance.isARsupport;
+            if (!isARsupport) { VideoRotation = new float[] { 25, 0, 310, 330, 270, 40, 0, 269, 269, 0 }; }
         }
 
         //Might only need to set once

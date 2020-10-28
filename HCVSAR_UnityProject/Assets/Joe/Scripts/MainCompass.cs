@@ -23,13 +23,14 @@ public class MainCompass : MonoBehaviour
         //Input.compass.enabled = true;
         _camera = MissionsController.Instance.isARsupport ? Camera.main : MissionsController.Instance.MainCamera;
 
-        if (MissionsController.Instance.isARsupport) {
+        if (MissionsController.Instance.isARsupport)
+        {
             //gameObject.SetActive(false);
         }
         else
         {
-            //Input.location.Start();
-            //Input.compass.enabled = true;
+            Input.location.Start();
+            Input.compass.enabled = true;
         }
     }
 
@@ -45,10 +46,18 @@ public class MainCompass : MonoBehaviour
         //transform.rotation = Quaternion.Euler(0, 0, (float)currentMagneticHeading);
         //transform.rotation = Quaternion.Euler(0, (float)currentHeading, 0);
         //Input.location.Start();
-
+        if (MissionsController.Instance.isARsupport)
+        {
+            transform.eulerAngles = new Vector3(0, (_camera.transform.rotation.eulerAngles.y - (float)ARLocation.ARLocationProvider.Instance.CurrentHeading.heading), 0);
+        }
+        else
+        {
+      
+            transform.eulerAngles = new Vector3(0, (_camera.transform.rotation.eulerAngles.y - Input.compass.trueHeading), 0);
+        }
         //dushu = Input.compass.trueHeading;
-        transform.eulerAngles = new Vector3(0, (_camera.transform.rotation.eulerAngles.y - (float)ARLocation.ARLocationProvider.Instance.CurrentHeading.heading), 0);
-       
+        
+
         //transform.eulerAngles = new Vector3(0, Camera.main.transform.rotation.eulerAngles.y, 0);
 
     }

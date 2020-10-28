@@ -18,7 +18,7 @@ public class game08 : MonoBehaviour
         transform.position = new Vector3(_camera.transform.position.x, transform.position.y, _camera.transform.position.z);
         transform.rotation = MainCompass.main.transform.rotation;
         
-        //SewitchModel(isARsupport);
+        SewitchModel(isARsupport);
     }
     private void Update()
     {

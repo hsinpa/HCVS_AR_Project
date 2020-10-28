@@ -39,16 +39,12 @@ public class Mission2 : ViewController
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
         JoeMain.Main.Start360Video(2);
 
-        StartCoroutine(EnterVideoView());
+        EnterVideoView();
     }
 
-    public IEnumerator EnterVideoView()
+    public void EnterVideoView()
     {
         videoEffect.FaceVideoToCameraFront(_camera, 2);
-        videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
-
-        yield return new WaitForSeconds(2);
-
         videoEffect.SetCoverPercentAnim(0, 0.01f);
 
         situationMissionView.Show(true);

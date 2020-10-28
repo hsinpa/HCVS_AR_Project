@@ -30,7 +30,7 @@ public class Game07 : MonoBehaviour
     void Start()
     {
         _camera = MissionsController.Instance.isARsupport ? ARCamera : MainCamera;
-        
+
         arGameObject.SetActive(false);
         speakMan.SetActive(false);
         gameMan.SetActive(false);

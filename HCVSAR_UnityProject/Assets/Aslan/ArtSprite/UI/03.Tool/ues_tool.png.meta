@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:HCVSAR_UnityProject/Assets/Aslan/ArtSprite/MissionUI/NPC/man.png.meta
 guid: 1707cd6c81f844da69a6fdf4231f7081
-=======
-guid: 55b14ede1ef794bc99c71b7861b43d32
->>>>>>> 798915d366a3c3a064df9ed7fa053df5e0a2ecd7:HCVSAR_UnityProject/Assets/Aslan/ArtSprite/UI/03.Tool/ues_tool.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -61,14 +57,14 @@ TextureImporter:
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
-  applyGammaDecoding: 0
+  applyGammaDecoding: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -80,7 +76,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -89,30 +85,26 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: iPhone
-    maxTextureSize: 256
-    resizeAlgorithm: 0
-    textureFormat: 33
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 1
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-<<<<<<< HEAD:HCVSAR_UnityProject/Assets/Aslan/ArtSprite/MissionUI/NPC/man.png.meta
     maxTextureSize: 2048
-=======
-    maxTextureSize: 256
->>>>>>> 798915d366a3c3a064df9ed7fa053df5e0a2ecd7:HCVSAR_UnityProject/Assets/Aslan/ArtSprite/UI/03.Tool/ues_tool.png.meta
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 256
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
