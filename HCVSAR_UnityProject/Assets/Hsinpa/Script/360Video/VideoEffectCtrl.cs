@@ -40,7 +40,7 @@ namespace Hsinpa.Video
             }
             else
             {
-                VideoRotation = new float[] { 25, 0, 310, 330, 270, 40, 0, 269, 269, 0 };
+                VideoRotation = new float[] { 25, 0, 310, 330, 270, 40, 0, 269, 179, 0 };
             }
 
             cameraForward.y = 0;

@@ -7,8 +7,10 @@ using UnityEngine.Video;
 public class StarVideoController : MonoBehaviour
 {
     public VideoPlayer videoPlayer;
+    public SynopsisView synopsisView;
     public GameObject videoObject;
     public Button cameraButton;
+
     [HideInInspector]
     public bool isStarVideoEnd;
 
@@ -41,6 +43,7 @@ public class StarVideoController : MonoBehaviour
         PlayerPrefs.SetInt("StarPlayVideo", 1);        
         cameraButton.enabled = true;
         videoObject.SetActive(false);
+        synopsisView.OpenSynopsisView();
         try
         {
             Invoke("startIbeacon", 1);
