@@ -32,6 +32,7 @@ namespace Expect.View
 
         private List<TypeFlag.SocketDataType.StudentRankType> studentRankData;
         private List<string> FilterDeptList = new List<string>();
+        //private List<float> sameScoreList = new List<float>();
         private List<Transform> selectTransformList = new List<Transform>();
 
         private string class_id;
@@ -58,6 +59,7 @@ namespace Expect.View
             close.onClick.AddListener(() => {
                 this.Show(false);
                 mainBaseVIew.PanelController(false);
+                RemoveShowData();
                 RemoveListeners();
             });
         }
@@ -79,27 +81,69 @@ namespace Expect.View
                     if (tempStudentRankData != null)
                     {
                         studentRankData = tempStudentRankData.ToList();                                                                      
-
-                        RankInfo(studentRankData);
-                        //_ = PrepareRankInfo(studentRankData);
+                        PrepareRankInfo(studentRankData);
                     }
                 }, null));
         }
 
-        private void RankInfo(List<TypeFlag.SocketDataType.StudentRankType> studentRankData)
+        // MARK: Show UI
+        private void PrepareRankInfo(List<TypeFlag.SocketDataType.StudentRankType> studentRankData)
         {
+            List<int> rankIndex = new List<int>();
+            List<string> sameScoreID = new List<string>();
+            List<float> weightScoreList = new List<float>();
+
             var sameScore = studentRankData.GroupBy(s => s.total_score).Where(g => g.Count() > 1).ToList();
             var rankData = studentRankData.OrderByDescending(data => data.total_score).ToList();
 
-            float height = 30f;
-            float containHeight = 10f; ;
-            string rank;
-            List<int> rankIndex = new List<int>();
-            List<float> sameScoreList = new List<float>();
+            foreach (var score in sameScore)
+            {
+                foreach(var a in score)
+                {
+                    sameScoreID.Add(a.student_id);
+                }
+            }
 
             for (int i = 0; i < rankData.Count; i++)
             {
+                foreach (var id in sameScoreID)
+                {
+                    if (rankData[i].student_id == id) 
+                    {
+                        int recordCount = rankData[i].record_count;
+                        float weightScore;
 
+                        if (recordCount == 0) { recordCount = 1; }
+                        weightScore = (rankData[i].total_score / (recordCount * 1000)) + 0.9f + rankData[i].total_score;
+                        weightScoreList.Add(weightScore);
+                        rankIndex.Add(i); // get same score index
+                    }
+                    
+                }
+
+                for (int j = 0; j < rankIndex.Count; j++)
+                {
+                    if (i == rankIndex[j])
+                    {
+                        var totalScore = rankData[i];
+                        totalScore.total_score = weightScoreList[j]; // sign sameScore to origin rank data
+                        rankData[i] = totalScore;
+                    }
+                }
+            }
+
+            RankInfo(rankData);
+        }
+
+        private void RankInfo(List<TypeFlag.SocketDataType.StudentRankType> rankData)
+        {
+            var reRank = rankData.OrderByDescending(data => data.total_score).ToList();
+            float height = 30f;
+            float containHeight = 10f; ;
+            string rank;
+
+            for (int i = 0; i < rankData.Count; i++)
+            {
                 if (i < 10)
                     rank = "0" + (i + 1).ToString();
                 else
@@ -115,148 +159,12 @@ namespace Expect.View
                 rankTransform.Find("rank").GetComponent<Text>().text = rank;
                 rankTransform.Find("name").GetComponent<Text>().text = rankData[i].student_name;
                 rankTransform.Find("number").GetComponent<Text>().text = rankData[i].student_id;
-                rankTransform.Find("score").GetComponent<Text>().text = rankData[i].total_score.ToString();
-
-                selectTransformList.Add(rankTransform);
-                rankTransform.gameObject.SetActive(true);
-            }
-
-        }
-
-        // MARK: Show UI
-        private async Task PrepareRankInfo(List<TypeFlag.SocketDataType.StudentRankType> studentRankData)
-        {
-            var weightScoreList = await Task.Run(() => GetWeightScoreAsync(studentRankData)); // MARK: Get WeightScore
-            var reRank = weightScoreList.OrderByDescending(data => data.total_score).ToList();
-            float height = 30f;
-            float containHeight = 10f; ;
-            string rank;
-            Debug.Log("================== PrepareRankInfo 1");
-            for (int i = 0; i < weightScoreList.Count; i++)
-            {
-                if (i < 10)
-                    rank = "0" + (i + 1).ToString();
-                else
-                    rank = (i + 1).ToString();
-
-                Transform rankTransform = Instantiate(rankInfo, rankContainer);
-                RectTransform rankRectTransform = rankTransform.GetComponent<RectTransform>();
-                RectTransform containRect = rankContainer.GetComponent<RectTransform>();
-                
-                containHeight = containHeight + height;
-                containRect.sizeDelta = new Vector2(0, containHeight + height);
-                rankRectTransform.anchoredPosition = new Vector2(0, -height * (i + 1));
-                rankTransform.Find("rank").GetComponent<Text>().text = rank;
-                rankTransform.Find("name").GetComponent<Text>().text = weightScoreList[i].student_name;
-                rankTransform.Find("number").GetComponent<Text>().text = weightScoreList[i].student_id;
-                rankTransform.Find("score").GetComponent<Text>().text = weightScoreList[i].total_score.ToString();
+                rankTransform.Find("score").GetComponent<Text>().text = Mathf.FloorToInt(rankData[i].total_score).ToString();
 
                 selectTransformList.Add(rankTransform);
                 rankTransform.gameObject.SetActive(true);
             }
         }
-
-        private List<TypeFlag.SocketDataType.StudentRankType> GetWeightScoreAsync(List<TypeFlag.SocketDataType.StudentRankType> studentRankData)
-        {
-            var sameScore = studentRankData.GroupBy(s => s.total_score).Where(g => g.Count() > 1).ToList();
-            var rankData = studentRankData.OrderByDescending(data => data.total_score).ToList();
-            List<int> rankIndex = new List<int>();
-            List<Task<float>> sameScoreList = new List<Task<float>>();
-            //List<float> sameScoreList = new List<float>();
-
-            for (int i = 0; i < rankData.Count; i++)
-            {
-                // get same score index
-                foreach (var s in sameScore)
-                {
-                    if (rankData[i].total_score == s.Key) { rankIndex.Add(i); }
-                    sameScoreList.Add(GetUserScore(rankData[i].student_id));  // TODO: wait return!
-                }
-
-                foreach (var r in rankIndex)
-                {
-                    if (i == r)
-                    {
-                        var totalScore = rankData[i];
-                        //totalScore.total_score = sameScoreList[r]; // TODO: sign sameScore to origin rank data, ERROR?
-                        rankData[i] = totalScore;
-                    }
-                }
-                Debug.Log("================== GetWeightScore 3.5");
-            }
-
-            return rankData;
-        }
-
-        private Task<float> GetUserScore(string id)
-        {
-            var scoreWeight = Task.Run(() => getStudentScore(id));
-            Debug.Log("================== GetUserScore 4" + scoreWeight);
-            return scoreWeight;
-        }
-
-        // MARK: Get Student Score and ID
-        private float getStudentScore(string id)
-        {
-            string uri = StringAsset.GetFullAPIUri(string.Format(StringAsset.API.GetStudentScore, id));
-            float scoreWeight = 0;
-
-            _ = StartCoroutine(
-                APIHttpRequest.NativeCurl(uri, UnityWebRequest.kHttpVerbGET, null, (string json) =>
-                {
-                    var scoreType = JsonHelper.FromJson<TypeFlag.SocketDataType.UserScoreType>(json);
-
-                    scoreWeight = CaculateWeightScore(scoreType);
-                    Debug.Log("================== getStudentScore 5");
-                }, () =>
-                {
-
-                })
-            );
-            return scoreWeight;
-        }
-
-        // MARK: caculate weight score
-        private float CaculateWeightScore(TypeFlag.SocketDataType.UserScoreType[] scoreArray)
-        {
-            var scoreList = scoreArray.ToList();
-            float sunScore = 0;
-            float sumID = 0;
-
-            foreach (var s in scoreList)
-            {
-                sumID += s.id + 1;
-                sunScore += s.score;
-                Debug.Log("id: " + s.id + " score: " + s.score);
-                Debug.Log("sumID: " + sumID + " sunScore: " + sunScore);
-            }
-            Debug.Log("================== GenerateScoreBoard 5");
-            return scoreList.Count / (sumID + 1 * 10000) + sunScore;// sameScoreList.Add(scoreList.Count / (sumID+1 * 10000) + sunScore);
-
-        }
-
-        /*
-        private Task<float> GetUserScore1(string id)
-        {
-            string uri = StringAsset.GetFullAPIUri(string.Format(StringAsset.API.GetStudentScore, id));
-            float scoreWeight = 0;
-
-            _ = StartCoroutine(
-                APIHttpRequest.NativeCurl(uri, UnityWebRequest.kHttpVerbGET, null, (string json) =>
-                {
-                    var scoreType = JsonHelper.FromJson<TypeFlag.SocketDataType.UserScoreType>(json);
-
-                    scoreWeight = GenerateScoreBoard(scoreType);
-                    Debug.Log("================== GetUserScore 4");
-                }, () =>
-                {
-
-                })
-            );
-
-            return scoreWeight;
-        }
-*/
 
         private void GetDropdownData()
         {
