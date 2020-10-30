@@ -31,6 +31,8 @@ public class Mission5 : ViewController
     private string faultMessage_3 = StringAsset.MissionsSituation.Five.fault;
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
+    private bool isARsupport;
+
     [HideInInspector]
     public GameObject hideBG;
     public GameObject toolView;
@@ -123,14 +125,14 @@ public class Mission5 : ViewController
 
             if (clickCount == number)
             {
-
                 dialogMissionView.Show(false);
 
                 foreach (var m in models) { m.SetActive(false); }
                 JoeMain.Main.StarAndPlay360Video(5);
                 OnClickButton(false);
 
-                _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
+                float speed = isARsupport ? 0.01f : 1f;
+                _camera = isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
                 videoEffect.FaceVideoToCameraFront(_camera, 5);
                 videoEffect.SetCoverPercentAnim(0, 0.01f);
             }

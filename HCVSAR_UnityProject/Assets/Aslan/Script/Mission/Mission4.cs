@@ -40,6 +40,7 @@ public class Mission4 : ViewController
     private Camera _camera;
     public VideoEffectCtrl videoEffect;
     private bool isSuccess;
+    private bool isARsupport;
 
     public override void Enable()
     {
@@ -49,7 +50,8 @@ public class Mission4 : ViewController
         hideBG.SetActive(false);
         messageUI.SetActive(false);
 
-        _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
+        isARsupport = MissionsController.Instance.isARsupport;
+        _camera = isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
         JoeMain.Main.Start360Video(4);
 
         StartCoroutine(EnterGameView());
@@ -57,8 +59,9 @@ public class Mission4 : ViewController
 
     public IEnumerator EnterGameView()
     {
+        float speed = isARsupport ? 0.01f : 1f;
         videoEffect.FaceVideoToCameraFront(_camera, 4);
-        videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
+        videoEffect.SetCoverPercentAnim(0.8f, speed);
 
         yield return new WaitForSeconds(2);
 

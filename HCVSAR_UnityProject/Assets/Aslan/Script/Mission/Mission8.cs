@@ -23,6 +23,7 @@ public class Mission8 : ViewController
 
     [SerializeField]
     private VideoEffectCtrl videoEffect;
+    private bool isARsupport;
 
     public override void Enable()
     {
@@ -34,6 +35,7 @@ public class Mission8 : ViewController
         MainView.Instance.warnImage.enabled = true;
 
         JoeMain.Main.StarAndPlay360Video(8);
+        isARsupport = MissionsController.Instance.isARsupport;
         _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
 
         StartCoroutine(EnterVideoView());
@@ -41,8 +43,9 @@ public class Mission8 : ViewController
 
     public IEnumerator EnterVideoView()
     {
+        float speed = isARsupport ? 0.01f : 1f;
         videoEffect.FaceVideoToCameraFront(_camera, 8);
-        videoEffect.SetCoverPercentAnim(0.8f, 0.1f);
+        videoEffect.SetCoverPercentAnim(0.8f, speed);
 
         yield return new WaitForSeconds(2);
 

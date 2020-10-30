@@ -20,14 +20,16 @@ public class Mission7 : ViewController
     private string faultMessage = StringAsset.MissionsQustion.SEVEN.fault;
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
-    [HideInInspector]
-    public bool isEnterMission;
-    public GameObject hideBG;
-    public GameObject video;
-
     [SerializeField]
     private VideoEffectCtrl videoEffect;
+
+    [HideInInspector]
+    public bool isEnterMission;
+
+    public GameObject hideBG;
+    public GameObject video; 
     private Camera _camera;
+    private bool isARsupport;
 
     public override void Enable()
     {
@@ -36,7 +38,8 @@ public class Mission7 : ViewController
         isEnterMission = true;
         hideBG.SetActive(false);
 
-        _camera = MissionsController.Instance.isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
+        isARsupport = MissionsController.Instance.isARsupport;
+        _camera = isARsupport ? MissionsController.Instance.ARcamera : MissionsController.Instance.MainCamera;
         
         JoeMain.Main.Start360Video(7);
 
@@ -45,8 +48,9 @@ public class Mission7 : ViewController
 
     public void EnterVideoView()
     {
+        float speed = isARsupport ? 0.01f : 1f;
         videoEffect.FaceVideoToCameraFront(_camera, 7);
-        videoEffect.SetCoverPercentAnim(0, 0.01f);
+        videoEffect.SetCoverPercentAnim(0, speed);
 
         situationMissionView.Show(true);
         situationMissionView.SituationView(situationMessage);
