@@ -162,6 +162,7 @@ public class TypeFlag
             public float total_score; //int to float
             public string student_id;
             public string student_name;
+            public int record_count;
         }
         
         [System.Serializable]

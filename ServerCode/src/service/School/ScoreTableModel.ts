@@ -42,7 +42,7 @@ export default class ScoreTableModel {
 
     async GetClassRankingScore(class_id : string) {
         let query = `
-        SELECT SUM(IFNULL(score,0)) as total_score, Student.id as student_id, student_name
+        SELECT SUM(IFNULL(score,0)) as total_score, Student.id as student_id, student_name, COUNT(mission_id) as record_count
         FROM Student
         LEFT JOIN ScoreTable
         ON ScoreTable.student_id = Student.id
