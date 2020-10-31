@@ -8,6 +8,7 @@ public class StarVideoController : MonoBehaviour
 {
     public VideoPlayer videoPlayer;
     public SynopsisView synopsisView;
+    public CanvasGroup mainPanel;
     public GameObject videoObject;
     public Button cameraButton;
 
@@ -25,6 +26,7 @@ public class StarVideoController : MonoBehaviour
         }
         else
         {
+            mainPanel.alpha = 0;
             cameraButton.enabled = false;
             videoObject.SetActive(true);
             videoPlayer.Play();
@@ -42,6 +44,7 @@ public class StarVideoController : MonoBehaviour
         isStarVideoEnd = true;
         PlayerPrefs.SetInt("StarPlayVideo", 1);        
         cameraButton.enabled = true;
+        mainPanel.alpha = 1;
         videoObject.SetActive(false);
         synopsisView.OpenSynopsisView();
         try

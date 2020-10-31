@@ -27,10 +27,13 @@ public class Game07 : MonoBehaviour
 
     private bool isARStoneFollowCamera;
 
+    public CameraTest cameraPlane;
+
     void Start()
     {
         _camera = MissionsController.Instance.isARsupport ? ARCamera : MainCamera;
-
+        //cameraPlane = _camera.GetComponentInChildren<CameraTest>();
+        cameraPlane.gameObject.SetActive(true);
         arGameObject.SetActive(false);
         speakMan.SetActive(false);
         gameMan.SetActive(false);
@@ -90,5 +93,11 @@ public class Game07 : MonoBehaviour
             arGameObject.transform.position = _camera.transform.position + _frontPos;
             arGameObject.transform.rotation = Quaternion.LookRotation(_cameraFront);
         }
+    }
+
+
+    private void OnDisable()
+    {
+        cameraPlane.gameObject.SetActive(false);
     }
 }
