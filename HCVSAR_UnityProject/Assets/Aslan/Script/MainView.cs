@@ -313,7 +313,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
     private void StarGame(TypeFlag.UserType type)
     {
-        PlayerPrefs.SetInt("StarPlayVideo", 0);
         // Video
         HasPlayStarVideo();
 
