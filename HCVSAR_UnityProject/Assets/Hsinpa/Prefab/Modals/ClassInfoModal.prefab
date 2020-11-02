@@ -19534,7 +19534,7 @@ MonoBehaviour:
   axisConfig:
     verticalAxisConfig:
       labelsConfig:
-        labelSize: 16
+        labelSize: 12
         labelColor: {r: 1, g: 1, b: 1, a: 0.9411765}
         labelMargin: 10
         labelFont: {fileID: 0}
@@ -19554,7 +19554,7 @@ MonoBehaviour:
         customValues: []
     horizontalAxisConfig:
       labelsConfig:
-        labelSize: 14
+        labelSize: 10
         labelColor: {r: 1, g: 1, b: 1, a: 0.9411765}
         labelMargin: 10
         labelFont: {fileID: 0}
