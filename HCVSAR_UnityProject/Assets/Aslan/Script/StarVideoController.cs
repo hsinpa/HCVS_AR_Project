@@ -47,14 +47,6 @@ public class StarVideoController : MonoBehaviour
         mainPanel.alpha = 1;
         videoObject.SetActive(false);
         synopsisView.OpenSynopsisView();
-        try
-        {
-            Invoke("startIbeacon", 1);
-
-        }
-        catch
-        {
-            Debug.Log("Star ibeacon error");
-        }
+        
     }
 }

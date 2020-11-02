@@ -21,6 +21,20 @@ public class SynopsisView : BaseView
         close.onClick.AddListener(() => {
             this.Show(false);
             mainBaseVIew.PanelController(false);
+            try
+            {
+                Invoke("startIbeacon", 1);
+
+            }
+            catch
+            {
+                Debug.Log("Star ibeacon error");
+            }
         });
+    }
+
+    public void startIbeacon()
+    {
+        JoeGM.joeGM.startIbeacon();
     }
 }

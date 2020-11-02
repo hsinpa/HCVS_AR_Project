@@ -43,6 +43,15 @@ public class Mission6 : ViewController
 
         ClickNextButton();
         nextButton.onClick.AddListener(ClickCount);
+
+#if UNITY_ANDROID
+        bool isARsupport = MissionsController.Instance.isARsupport;
+        if (!UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.Camera) && !isARsupport)
+        {
+            UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.Camera);
+
+        }
+#endif
     }
 
     void ClickCount()

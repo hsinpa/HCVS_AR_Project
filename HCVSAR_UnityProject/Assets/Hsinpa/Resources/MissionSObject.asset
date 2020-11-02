@@ -18,7 +18,7 @@ MonoBehaviour:
     total_score: 0
     hide: 0
   - mission_id: B
-    mission_name: "\u6D77\u6E05\u820A\u6821\u9580\u53E3"
+    mission_name: "\u6D77\u9752\u820A\u6821\u9580\u53E3"
     total_score: 0
     hide: 0
   - mission_id: C
@@ -30,7 +30,7 @@ MonoBehaviour:
     total_score: 0
     hide: 0
   - mission_id: E
-    mission_name: "\u6D77\u6E05\u7B2C\u4E00\u5C46\u7562\u696D\u5408\u7167"
+    mission_name: "\u6D77\u9752\u7B2C\u4E00\u5C46\u7562\u696D\u5408\u7167"
     total_score: 0
     hide: 0
   - mission_id: F
