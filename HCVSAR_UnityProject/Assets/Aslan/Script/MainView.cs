@@ -108,12 +108,12 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private SocketIOManager _socketIOManager;
     private bool isEndEvent;
 
-    /*
+    
     void Start()
     {
         Setup();
     }
-    */
+    
     private void Update()
     {
         if (endTime == DateTime.MinValue) return;
@@ -295,7 +295,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             isEndEvent = false;
         }
 
-        StarGame(loginData.userType);  //use for Listen teacher
+        if (loginData.userType == TypeFlag.UserType.Student) { StarGame(loginData.userType); }//use for Listen teacher
     }
 
     private void StarGame(TypeFlag.UserType type)
