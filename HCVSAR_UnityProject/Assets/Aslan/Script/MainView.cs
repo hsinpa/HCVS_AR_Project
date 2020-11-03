@@ -108,11 +108,12 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private SocketIOManager _socketIOManager;
     private bool isEndEvent;
 
+    /*
     void Start()
     {
         Setup();
     }
-    
+    */
     private void Update()
     {
         if (endTime == DateTime.MinValue) return;
@@ -138,20 +139,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
         
     }
-    /*
-    public bool CountDown(double addTime)
-    {
-        DateTime timeUp = DateTime.UtcNow.AddMinutes(addTime);
-        TimeSpan t = timeUp - DateTime.UtcNow;
-
-        if (t.Seconds < 0)
-        {
-            Debug.Log("Time Up");
-            return true;
-        }
-        return false;
-    }
-    */
 
     public void Setup()
     {
