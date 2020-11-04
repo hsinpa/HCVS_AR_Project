@@ -79,6 +79,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [SerializeField]
     private ConnectView connectPanel;
 
+    private TypeFlag.InGameType.MissionType[] missionArray;
     private string participant = StringAsset.ClassInfo.Participant;
     private string averageScore = StringAsset.ClassInfo.AverageScore;
 
@@ -208,7 +209,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     }
     
     private void ShowMissionInfo(int index, TypeFlag.UserType type)
-    {
+    {        
         switch (type)
         {
             case TypeFlag.UserType.Guest:
@@ -234,11 +235,15 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
     private void ShowClassScore(int index)
     {
+        // get student data
+        PrepareClassScore(loginData.room_id);
         _ = PrepareMissionInfo(classScore, index);
     }
 
     private async Task PrepareMissionInfo(TypeFlag.SocketDataType.ClassScoreHolderType classScoreHolder, int index)
     {
+        missionArray = MainApp.Instance.database.MissionShortNameObj.missionArray;
+
         var participantValue = await Task.Run(() => PrepareParticipantValue(classScoreHolder, index));
         var averageScoreVlaue = await Task.Run(() => PrepareAveragetValue(classScoreHolder, index));
 
@@ -250,15 +255,20 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private float PrepareParticipantValue(TypeFlag.SocketDataType.ClassScoreHolderType data, int index)
     {
         var participant = data.participant_count.ToList();
+        int onlineScoreIndex = participant.FindIndex(x => x.mission_id == missionArray[index].mission_id);
 
-        return participant[index].main_value;
+        return participant[onlineScoreIndex].main_value;
     }
 
     private float PrepareAveragetValue(TypeFlag.SocketDataType.ClassScoreHolderType data, int index)
     {
         var average = data.average_score.ToList();
+        int onlineScoreIndex = average.FindIndex(x => x.mission_id == missionArray[index].mission_id);
 
-        return average[index].main_value;
+        Debug.Log("missionArray " + missionArray[index].mission_id);
+        Debug.Log("onlineScoreIndex " + onlineScoreIndex);
+
+        return average[onlineScoreIndex].main_value;
     }
 
     // End Game Event
