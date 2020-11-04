@@ -22,8 +22,11 @@ namespace Hsinpa.Socket {
         public System.Action<OnSocketEventDelegate> OnSocketEvent;
         public System.Action<BestHTTP.SocketIO.Socket> OnSocketReconnected;
 
+        Queue<EmitStruct> emitStructsQueue;
+
         public SocketIOManager()
         {
+            emitStructsQueue = new Queue<EmitStruct>();
         }
 
         public void SetUpSocketIoManager() {
@@ -47,6 +50,8 @@ namespace Hsinpa.Socket {
                 else
                     Reconnect(socket.Id);
             }
+
+            SendQueueItem();
         }
 
         private void Reconnect(string newSocketID) {
@@ -63,12 +68,17 @@ namespace Hsinpa.Socket {
         }
 
         public void Emit(string event_id, string raw_json = "{}") {
-            if (!IsConnected || string.IsNullOrEmpty(event_id)) return;
+            if (!IsConnected || string.IsNullOrEmpty(event_id)) {
+                emitStructsQueue.Enqueue(new EmitStruct(event_id, raw_json));
+                _socketManager.Open();
+                return;
+            };
 
             _socket.Emit(event_id, raw_json);
         }
 
         public void ManulControlConnection(bool isOpen) {
+
             if (isOpen) {
                 _socketManager.Open();
                 RegisterSocket(_socketManager);
@@ -78,5 +88,28 @@ namespace Hsinpa.Socket {
                 _socketManager.Close();
         }
 
+        private void SendQueueItem() {
+            for (int i = 0; i < emitStructsQueue.Count; i++) {
+                var emitStruct = emitStructsQueue.Dequeue();
+                Emit(emitStruct.event_id, emitStruct.json);
+            }
+        }
+
+        public bool CheckIfIsConnect() {
+            if (!IsConnected)
+                _socketManager.Open();
+
+            return IsConnected;
+        }
+
+        private struct EmitStruct {
+            public string event_id;
+            public string json;
+
+            public EmitStruct(string p_event, string p_json) {
+                this.event_id = p_event;
+                this.json = p_json;
+            }
+        }
     }
 }

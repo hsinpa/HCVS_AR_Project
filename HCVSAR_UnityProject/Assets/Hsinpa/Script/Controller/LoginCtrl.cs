@@ -175,6 +175,8 @@ namespace Hsinpa.Controller {
                     break;
             }
 
+            _socketIOManager.CheckIfIsConnect();
+
             if (OnLoginEvent != null)
                 OnLoginEvent(userDataInfo, _socketIOManager);
         }
