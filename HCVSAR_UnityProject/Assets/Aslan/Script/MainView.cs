@@ -294,7 +294,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         var missionLookupTable = MainApp.Instance.database.MissionShortNameObj.MissionTable;
         string missionName = missionLookupTable.Single(s => s.Key == location).Value.mission_name;
 
-        this.GetComponent<CanvasGroup>().interactable = false;
+        mainBaseVIew.PanelController(true);
         EndView.alpha = 1;        
 
         EndLocationText.text = missionName;
