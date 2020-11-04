@@ -135,7 +135,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             if (OnTimeUpEvent != null) OnTimeUpEvent();
 
             endTime = DateTime.MinValue;
-            this.GetComponent<CanvasGroup>().interactable = false;
+            mainBaseVIew.PanelController(true);
         }
 
         
@@ -197,7 +197,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         MainButtons.SetActive(isLogin);
     }
 
-    public void PrepareClassScore(string class_id)
+    public void PrepareClassScore(string class_id, int index)
     {
         string getClassScoreURI = string.Format(StringAsset.API.GetClassScore, class_id);
         
@@ -205,6 +205,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         APIHttpRequest.NativeCurl(StringAsset.GetFullAPIUri(getClassScoreURI), UnityWebRequest.kHttpVerbGET, null, (string json) =>
         {
             classScore = JsonUtility.FromJson<TypeFlag.SocketDataType.ClassScoreHolderType>(json);
+            _ = PrepareMissionInfo(classScore, index);
         }, null));
     }
     
@@ -236,8 +237,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private void ShowClassScore(int index)
     {
         // get student data
-        PrepareClassScore(loginData.room_id);
-        _ = PrepareMissionInfo(classScore, index);
+        PrepareClassScore(loginData.room_id, index);
+        
     }
 
     private async Task PrepareMissionInfo(TypeFlag.SocketDataType.ClassScoreHolderType classScoreHolder, int index)
@@ -257,7 +258,11 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         var participant = data.participant_count.ToList();
         int onlineScoreIndex = participant.FindIndex(x => x.mission_id == missionArray[index].mission_id);
 
-        return participant[onlineScoreIndex].main_value;
+        float mainValue = 0;
+
+        if (onlineScoreIndex >= 0) { mainValue = participant[onlineScoreIndex].main_value; }
+
+        return mainValue;
     }
 
     private float PrepareAveragetValue(TypeFlag.SocketDataType.ClassScoreHolderType data, int index)
@@ -265,10 +270,11 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         var average = data.average_score.ToList();
         int onlineScoreIndex = average.FindIndex(x => x.mission_id == missionArray[index].mission_id);
 
-        Debug.Log("missionArray " + missionArray[index].mission_id);
-        Debug.Log("onlineScoreIndex " + onlineScoreIndex);
+        float mainValue = 0;
 
-        return average[onlineScoreIndex].main_value;
+        if (onlineScoreIndex >= 0) { mainValue = average[onlineScoreIndex].main_value; }
+
+        return mainValue;
     }
 
     // End Game Event
@@ -342,7 +348,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
                 // get student data
                 PrepareScoreData(loginData.user_id);
-                PrepareClassScore(loginData.room_id);
+                //PrepareClassScore(loginData.room_id);
 
                 break;
         }
@@ -483,8 +489,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         });
 
         bag.onClick.AddListener(() => {
-            bagPanel.Show(true);
             mainBaseVIew.PanelController(true);
+            bagPanel.Show(true);
         });
 
         rank.onClick.AddListener(() => {
@@ -494,8 +500,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         });
 
         connect.onClick.AddListener(() => {
-            connectPanel.Show(true);
             mainBaseVIew.PanelController(true);
+            connectPanel.Show(true);
             connectPanel.ConnectStart();
         });
     }
