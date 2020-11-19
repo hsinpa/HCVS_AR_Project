@@ -137,6 +137,7 @@ namespace Hsinpa.Controller
 
             dialogueModal.DecorateSideImage(TerminateStartSprite);
 
+
             //MainApp.Instance.Notify(GeneralFlag.ObeserverEvent.ShowUserInfo, studentItem.studentDatabaseType, studentItem.isOnline);
         }
 
@@ -237,7 +238,14 @@ namespace Hsinpa.Controller
                     if (x == DialogueModal.ButtonType.Accept)
                     {
                         int dropDownIndex = dialogueModal.dropDownMenu.value;
-                        string location_id = missionItemSObj.missionArray[dropDownIndex].mission_id;
+
+                        //string location_id = missionItemSObj.missionArray[dropDownIndex].mission_id;
+
+                        string location_id = missionItemSObj.defaultMission.mission_id;
+
+                        if (!string.IsNullOrEmpty(dialogueModal.inputValue) && dialogueModal.inputValue.Length > 1) {
+                            location_id = dialogueModal.inputValue;
+                        }
 
                         EmitTerminateEvent(selectedRoomData.class_id, location_id);
 
@@ -251,7 +259,9 @@ namespace Hsinpa.Controller
 
             dialogueModal.DecorateSideImage(TerminateStartSprite);
 
-            dialogueModal.SetDropDown(missionItemSObj.missionArray.Select(x => x.mission_name).ToArray());
+            //dialogueModal.SetDropDown(missionItemSObj.missionArray.Select(x => x.mission_name).ToArray());
+
+            dialogueModal.SetInputField("");
         }
 
 #if UNITY_EDITOR

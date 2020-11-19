@@ -45,7 +45,7 @@ export default class SocketManager {
             );
     
             socket.on(UniversalSocketEvent.Reconnect, function (data:string) {
-                console.log("OnReconnect");
+                console.log("OnReconnect " + data);
                 let parseData : ReconnectRequestType = JSON.parse(data);
                 self.reconnectHandler.RepairSocketID(parseData, socket);
                 self.reconnectHandler.ReconnectUserProcess(socket);

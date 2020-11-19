@@ -8,14 +8,15 @@ export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketI
 //#region Teacher Section
     socket.on(TeacherSocketEvent.CreateRoom, function (data : string) {
         let parseData : TeacherCreateMsgRoomType = JSON.parse(data);
-        let isSucess = socektEnv.CreateRoom(parseData.user_id, parseData.room_id, parseData.root_socket_id);
+        let isSucess = socektEnv.CreateRoom(parseData.user_id, parseData.user_name, parseData.room_id, parseData.root_socket_id);
 
         if (isSucess) {
             socket.join(parseData.room_id);
 
             socektEnv.AutoJoinAllUserInClass(socket, parseData.room_id);
         }
-
+        
+        console.log("CreateRoom " + data);
         socket.emit(TeacherSocketEvent.CreateRoom, JSON.stringify({
             status : isSucess,
         }));

@@ -17,6 +17,10 @@ namespace Expect.View
         private Text contentText;
 
         [SerializeField]
+        private InputField inputField;
+        public string inputValue => inputField.text;
+
+        [SerializeField]
         private Dropdown _dropDownMenu;
         public Dropdown dropDownMenu => _dropDownMenu;
 
@@ -46,6 +50,12 @@ namespace Expect.View
             contentText.text = content;
 
             RegisterButtons(allowBtns, btnEvent);
+        }
+
+        public void SetInputField(string defaultText) {
+            inputField.gameObject.SetActive(true);
+
+            inputField.text = defaultText;
         }
 
         public void SetDropDown(string[] options) {
@@ -80,6 +90,7 @@ namespace Expect.View
             DecorateSideImage(null);
 
             dropDownMenu.gameObject.SetActive(false);
+            inputField.gameObject.SetActive(false);
 
             buttons.ForEach(x => x.gameObject.SetActive(false));
         }

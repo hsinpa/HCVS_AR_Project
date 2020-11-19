@@ -283,16 +283,20 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         if (args.Length > 0)
         {
             var terminateData = JsonUtility.FromJson<TypeFlag.SocketDataType.TerminateGameType>(args[0].ToString());
-            TerminateGameAction(terminateData.location_id);
+            TerminateGameAction(terminateData);
             JoeGM.joeGM.isGameStart = false;
             closeEnterMissionView.alpha = 0;
         }
     }
 
-    public void TerminateGameAction(string location)
+    public void TerminateGameAction(TypeFlag.SocketDataType.TerminateGameType terminateGameType)
     {
         var missionLookupTable = MainApp.Instance.database.MissionShortNameObj.MissionTable;
-        string missionName = missionLookupTable.Single(s => s.Key == location).Value.mission_name;
+
+        string missionName = terminateGameType.location_id;
+        if (terminateGameType.IsLocationIDValid) {
+            missionName = missionLookupTable.Single(s => s.Key == terminateGameType.location_id).Value.mission_name;
+        }
 
         mainBaseVIew.PanelController(true);
         EndView.alpha = 1;        

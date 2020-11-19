@@ -21,6 +21,7 @@ export interface UserComponentType {
 export interface RoomComponentType {
     room_id : string,
     host_id : string,
+    host_name : string,
 
     start_time : number,
     end_time : number,
@@ -48,6 +49,7 @@ export const SocketIOKey = {
 
 export interface TeacherCreateMsgRoomType {
     user_id : string,
+    user_name : string,
     room_id : string,
     root_socket_id : string
 }

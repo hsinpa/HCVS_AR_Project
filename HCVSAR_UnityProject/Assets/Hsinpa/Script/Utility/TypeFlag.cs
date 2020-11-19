@@ -97,6 +97,7 @@ public class TypeFlag
         public struct TeacherCreateMsgRoomType
         {
             public string user_id;
+            public string user_name;
             public string room_id;
             public string root_socket_id;
         }
@@ -137,6 +138,7 @@ public class TypeFlag
         {
             public string room_id;
             public string host_id;
+            public string host_name;
             public long start_time;
             public long end_time;
 
@@ -178,6 +180,9 @@ public class TypeFlag
         {
             public string room_id;
             public string location_id;
+
+            //ID is just a single letter
+            public bool IsLocationIDValid => location_id != null && location_id.Length == 1;
         }
 
         public struct ReconnectRequestType

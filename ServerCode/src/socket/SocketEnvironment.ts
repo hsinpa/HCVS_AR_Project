@@ -22,7 +22,7 @@ class SocketEnvironment {
         this.cacheLastRoomHistory = new Map<string, string>();
     }
 
-    CreateRoom(host_id : string, room_id: string, socket_id : string) : boolean {
+    CreateRoom(host_id : string, host_name : string, room_id: string, socket_id : string) : boolean {
         //No duplicate room
         // if (this.rooms.has(room_id))  {
         //     let existRoom = this.rooms.get(room_id);
@@ -34,6 +34,7 @@ class SocketEnvironment {
 
         this.rooms.set(room_id, {
             host_id : host_id,
+            host_name : host_name,
             room_id : room_id,
             start_time : 0,
             end_time : 0,

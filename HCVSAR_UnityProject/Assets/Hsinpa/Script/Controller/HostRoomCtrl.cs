@@ -81,6 +81,7 @@ namespace Hsinpa.Controller
             var teacherCreateMsgRoomType = new TypeFlag.SocketDataType.TeacherCreateMsgRoomType();
             teacherCreateMsgRoomType.room_id = roomData.class_id;
             teacherCreateMsgRoomType.user_id = userDataInfo.user_id;
+            teacherCreateMsgRoomType.user_name = userDataInfo.username;
             teacherCreateMsgRoomType.root_socket_id = _socketIOManager.originalSocketID;
 
             Debug.Log("_socketIOManager.Emit");
