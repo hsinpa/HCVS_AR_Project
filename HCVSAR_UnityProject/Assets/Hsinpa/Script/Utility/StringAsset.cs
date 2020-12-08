@@ -56,7 +56,6 @@ namespace Expect.StaticAsset {
         {
             public const string school = "高雄市立海青高直工商職業學校";
             public const string add = "813009 高雄市左營區左營大路1號";
-            public const string teacherName = "課堂老師：曾敏泰 老師";
             public const string schoolPhone = "學校電話：";
             public const string teacherPhone = "老師電話：";
         }

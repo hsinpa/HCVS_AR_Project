@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.UI;
+using Hsinpa.View;
+
 public class JoeGM : MonoBehaviour
 {
     Example example;
@@ -34,6 +36,8 @@ public class JoeGM : MonoBehaviour
     public delegate void BeaconUPD();
     public static event BeaconUPD beaconUPD;
     public bool isGameStart;
+    public bool hasMail;
+
     [System.Serializable]
     public class LogArrayData
     {
@@ -280,7 +284,8 @@ public class JoeGM : MonoBehaviour
         if (MissionNumber == 1)
         {
             RightBotton.SetActive(accuracy < MissionMinDistances[1]);
-            useButton.SetActive(accuracy < MissionMinDistances[1]);
+            useButton.SetActive(accuracy < MissionMinDistances[1] && hasMail);
+            
             //FullBotton.SetActive(!(accuracy < 5f));
         }
 

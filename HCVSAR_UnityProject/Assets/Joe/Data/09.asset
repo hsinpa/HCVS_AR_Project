@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3d70ef6331e6604f98cd9e126106436, type: 3}
   m_Name: 09
   m_EditorClassIdentifier: 
+  clip: {fileID: 32900000, guid: c6671950406404a4fba0088c31c3c9a2, type: 3}
   videoTimes: []
-  clip: {fileID: 0}

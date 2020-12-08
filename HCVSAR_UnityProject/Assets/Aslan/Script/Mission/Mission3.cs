@@ -120,6 +120,13 @@ public class Mission3 : ViewController
     public override void NextAction()
     {
         Debug.Log("3 Finish");
+        StartCoroutine(WaitForEndView());
+    }
+
+    private IEnumerator WaitForEndView()
+    {
+        yield return new WaitForSeconds(2f);
+
         video.SetActive(false);
         LeaveMission(isSuccess);
     }

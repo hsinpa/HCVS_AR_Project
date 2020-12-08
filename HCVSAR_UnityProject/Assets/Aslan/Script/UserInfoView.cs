@@ -26,12 +26,14 @@ namespace Expect.View
         [Header("SiwtchPanel")]
         public Button close;
         public MainBaseVIew mainBaseVIew;
+        public BagPanel bagPanel;
 
         private TypeFlag.InGameType.MissionType[] missionArray;
         private Dictionary<string, TypeFlag.InGameType.MissionType> missionLookupTable;
         private List<Transform> selectTransformList = new List<Transform>();
 
         private bool isConnection;
+        private bool isCheck;
 
         public void UserInfoStart(TypeFlag.UserType type)
         {
@@ -81,6 +83,8 @@ namespace Expect.View
                                 missionTransform.Find("id").GetComponent<Text>().color = green;
                                 missionArray[i].total_score = studentData[j].score;
                             }
+
+                            if (missionArray[i].mission_id == "F" && !isCheck) { bagPanel.AddContentInfo(0); isCheck = true; }
                         }
                         break;
 

@@ -10,7 +10,7 @@ namespace Expect.View
     public class ConnectView : BaseView
     {
         [SerializeField]
-        private Text ConnectText;
+        private Text HostText;
 
         //[SerializeField]
         //private Button callPhoneButton;
@@ -23,8 +23,9 @@ namespace Expect.View
         private string schoolName = StringAsset.ConnectTeacherInfo.school;
         private string schoolAdd = StringAsset.ConnectTeacherInfo.add;
         private string schoolPhone = StringAsset.ConnectTeacherInfo.schoolPhone;
-        private string teacherName = StringAsset.ConnectTeacherInfo.teacherName;
         private string teacherPhone = StringAsset.ConnectTeacherInfo.teacherPhone;
+
+        private string teacherName;
 
         public void ConnectStart()
         {
@@ -34,7 +35,7 @@ namespace Expect.View
 
         private void GetConnectInfo()
         {
-            ConnectText.text = string.Format("{0}\n{1}\n{2}\n\n{3}", schoolName, schoolAdd, schoolPhone, teacherName);
+            HostText.text = MainView.Instance.teacherName; //string.Format("{0}\n{1}\n{2}\n\n{3}", schoolName, schoolAdd, schoolPhone, teacherName);
             //callPhoneButton.onClick.AddListener(CallPhone);
         }
 

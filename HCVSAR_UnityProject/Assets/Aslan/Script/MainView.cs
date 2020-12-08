@@ -93,6 +93,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     public bool isEndMissionOpen = true;
 
     public int missionNumber;
+    public string teacherName;
 
     public TypeFlag.SocketDataType.StudentType studentScoreData;
     public GameObject endMission;
@@ -107,13 +108,10 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private DateTime endTime = DateTime.MinValue;
     private System.Action OnTimeUpEvent;
     private SocketIOManager _socketIOManager;
-    private bool isEndEvent;
+    private string hostName;
+    private bool isEndEvent;    
 
-    
-    void Start()
-    {
-        Setup();
-    }
+    void Start() { Setup(); }
     
     private void Update()
     {
@@ -310,8 +308,9 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     {
         if (args.Length > 0)
         {
-            var roomComps = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
-            SetTimerAndGameStart(roomComps.end_time);
+            var roomComponent = JsonUtility.FromJson<TypeFlag.SocketDataType.RoomComponentType>(args[0].ToString());
+            SetTimerAndGameStart(roomComponent.end_time);
+            hostName = roomComponent.host_name;
             isEndEvent = false;
         }
 
@@ -329,8 +328,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         EndView.alpha = 0;
         endMission.SetActive(false); // open score =>= 70
 
-        
-
         // switch button
         SwitchLoginButton(true);
 
@@ -341,6 +338,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         {
             case TypeFlag.UserType.Guest:
                 RoomNameText.text = "Guest";
+                teacherName = "       -  -  ";
                 GuestTotalScore();
                 break;
 
@@ -353,6 +351,9 @@ public class MainView : Singleton<MainView>//MonoBehaviour
                 // get student data
                 PrepareScoreData(loginData.user_id);
                 //PrepareClassScore(loginData.room_id);
+
+                // get teacher name
+                teacherName = hostName;
 
                 break;
         }

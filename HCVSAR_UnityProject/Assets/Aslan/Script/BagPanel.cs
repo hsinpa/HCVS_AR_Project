@@ -70,7 +70,7 @@ namespace Expect.View
             });
         }
 
-        private void AddContentInfo(int index)
+        public void AddContentInfo(int index)
         {
             height += 90f;
 
@@ -85,6 +85,7 @@ namespace Expect.View
 
             countIndex.Add(index);
 
+            if (index == 0) { JoeGM.joeGM.hasMail = true; } // has mail show in JoeGM Usebutton
             if (index == 1 || index == 2) { isMapClick = true; }
             if (index == 0 && !isMapClick) { isMailClick = true; }
             if (index == 0 && isMapClick) { isMailClick = false; }
