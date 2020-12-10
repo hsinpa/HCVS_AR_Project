@@ -35,6 +35,11 @@ namespace Expect.View
         public Button close;
         public MainBaseVIew mainBaseVIew;
 
+        private bool isCheck;
+        private bool isPressMail;
+        private bool missionF;
+        private bool missionB;
+
         private List<int> countIndex = new List<int>();
         private float height;
         private bool isMailClick;
@@ -85,7 +90,7 @@ namespace Expect.View
 
             countIndex.Add(index);
 
-            if (index == 0) { JoeGM.joeGM.hasMail = true; } // has mail show in JoeGM Usebutton
+            if (index == 0) { JoeGM.joeGM.hasMail = true; isPressMail = true; } // has mail show in JoeGM Usebutton
             if (index == 1 || index == 2) { isMapClick = true; }
             if (index == 0 && !isMapClick) { isMailClick = true; }
             if (index == 0 && isMapClick) { isMailClick = false; }
@@ -132,11 +137,14 @@ namespace Expect.View
 
         public void UseMail()
         {
-            height = 90f;
-
             RemoveShowData();
             countIndex.Remove(0);
-            
+
+            if (countIndex.Count == 0) return;
+            Debug.Log("countIndex " + countIndex.Count);
+
+            height = 90f;
+
             Transform infoTransform = Instantiate(Info, Container);
             RectTransform infoRectTransform = infoTransform.GetComponent<RectTransform>();
 
@@ -166,6 +174,20 @@ namespace Expect.View
                 detailObject.sprite = detailInfoImage[index];
                 detailTxt.text = detailInfo[index];
                 detailGameObject.SetActive(true);
+            }
+        }
+
+        public void CheckGetMail()
+        {
+            if (isPressMail) return;
+
+            List<TypeFlag.SocketDataType.StudentType> studentData = MainView.Instance.studentData;
+
+            for (int i = 0; i < studentData.Count; i++)
+            {
+                if (studentData[i].mission_id == "F") { missionF = true; Debug.Log("missionF: " + missionF); }
+                if (studentData[i].mission_id == "B") { missionB = true; Debug.Log("missionB: " + missionB); }
+                if (missionF && !missionB && !isCheck) { AddContentInfo(0); isCheck = true; missionB = true; Debug.Log("isCheck: " + isCheck); }
             }
         }
 

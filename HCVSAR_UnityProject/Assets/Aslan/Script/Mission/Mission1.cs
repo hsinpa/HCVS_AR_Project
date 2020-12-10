@@ -30,7 +30,7 @@ public class Mission1 : ViewController
     private string endMessage = StringAsset.MissionsEnd.End.message;
 
     public GameObject hideBG;
-    public GameObject[] models;
+    //public GameObject[] models;
     public MainBaseVIew mainBaseVIew;
 
     private void Start()
@@ -160,7 +160,7 @@ public class Mission1 : ViewController
 
         mainCanvas.interactable = true;
 
-        foreach (var m in models) { m.SetActive(false); }
+        //foreach (var m in models) { m.SetActive(false); }
         MissionsController.Instance.ReSetMissions();
         JoeMain.Main.CloseARGame(4);
         JoeMain.Main.ControllerVideoPlane(false);

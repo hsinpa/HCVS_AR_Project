@@ -495,6 +495,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
         bag.onClick.AddListener(() => {
             mainBaseVIew.PanelController(true);
+            bagPanel.CheckGetMail();
             bagPanel.Show(true);
         });
 

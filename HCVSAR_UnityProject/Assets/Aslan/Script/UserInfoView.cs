@@ -34,6 +34,8 @@ namespace Expect.View
 
         private bool isConnection;
         private bool isCheck;
+        private bool missionF;
+        private bool missionB;
 
         public void UserInfoStart(TypeFlag.UserType type)
         {
@@ -83,8 +85,6 @@ namespace Expect.View
                                 missionTransform.Find("id").GetComponent<Text>().color = green;
                                 missionArray[i].total_score = studentData[j].score;
                             }
-
-                            if (missionArray[i].mission_id == "F" && !isCheck) { bagPanel.AddContentInfo(0); isCheck = true; }
                         }
                         break;
 
