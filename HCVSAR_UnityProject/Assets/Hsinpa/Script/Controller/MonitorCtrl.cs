@@ -209,8 +209,7 @@ namespace Hsinpa.Controller
             string jsonString = string.Format("{{\"room_id\" : \"{0}\", \"location_id\" : \"{1}\"}}",
                                                 class_id, location_id);
 
-            _socketIOManager.socket.Emit(TypeFlag.SocketEvent.TerminateGame, jsonString);
-
+            _socketIOManager.Emit(TypeFlag.SocketEvent.TerminateGame, jsonString);
         }
 
         private void OnReconnect(BestHTTP.SocketIO.Socket socket) {
