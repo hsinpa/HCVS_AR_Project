@@ -72,6 +72,7 @@ public class Mission0 : ViewController
     void ClickCount()
     {
         clickCount++;
+        dialogMissionView.TypeInit();
 
         if (clickCount > 0)
         {
@@ -99,7 +100,6 @@ public class Mission0 : ViewController
             OnClickButton(false);
             JoeMain.Main.Play360Video();
             dialogMissionView.Show(false);
-            OnClickButton(false);
             //InitFingerClick();
         }
     }
@@ -140,7 +140,7 @@ public class Mission0 : ViewController
 
     public IEnumerator EnterGameView()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);
 
         dialogMissionView.Show(false);
         enterGame.SetActive(true);

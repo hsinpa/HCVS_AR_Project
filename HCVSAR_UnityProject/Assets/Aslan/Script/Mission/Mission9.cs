@@ -51,6 +51,7 @@ public class Mission9 : ViewController
     void ClickCount()
     {
         clickCount++;
+        dialogMissionView.TypeInit();
 
         if (clickCount > 0)
         {

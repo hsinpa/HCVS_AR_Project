@@ -222,7 +222,11 @@ public class JoeGM : MonoBehaviour
             {
                 textlog("OVERMin" + MinNumber);
 
-
+                if (MissionNumber != 1)
+                {
+                    RightBotton.SetActive(false);
+                    useButton.SetActive(false);
+                }
 
                 if ((MinNumber == 0 || MinNumber == 2 || MinNumber == 6) && !Missioned[3])
                 {
@@ -285,7 +289,6 @@ public class JoeGM : MonoBehaviour
         {
             RightBotton.SetActive(accuracy < MissionMinDistances[1]);
             useButton.SetActive(accuracy < MissionMinDistances[1] && hasMail);
-            
             //FullBotton.SetActive(!(accuracy < 5f));
         }
 

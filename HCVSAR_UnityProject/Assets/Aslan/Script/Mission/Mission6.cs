@@ -57,6 +57,7 @@ public class Mission6 : ViewController
     void ClickCount()
     {
         clickCount++;
+        dialogMissionView.TypeInit();
 
         if (clickCount >= 0) { Convercestion(); }
 
@@ -109,6 +110,7 @@ public class Mission6 : ViewController
     private void Count()
     {
         clickCount++;
+        dialogMissionView.TypeInit();
 
         if (clickCount >= 0)
         {

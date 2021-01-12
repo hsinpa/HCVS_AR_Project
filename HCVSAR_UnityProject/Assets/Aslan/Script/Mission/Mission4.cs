@@ -78,6 +78,7 @@ public class Mission4 : ViewController
     void ClickCount()
     {
         clickCount++;
+        dialogMissionView.TypeInit();
 
         if (clickCount > 0)
         {
@@ -150,6 +151,7 @@ public class Mission4 : ViewController
     private void Count()
     {
         clickCount++;
+        dialogMissionView.TypeInit();
         picture.enabled = true;
         picture.sprite = pic;
         

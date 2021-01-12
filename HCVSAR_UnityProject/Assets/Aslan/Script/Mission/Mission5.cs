@@ -63,6 +63,7 @@ public class Mission5 : ViewController
     void ClickCount()
     {
         clickCount++;
+        dialogMissionView.TypeInit();
 
         if (clickCount >= 0)
         {
@@ -108,6 +109,7 @@ public class Mission5 : ViewController
     private void QuestionReult()
     {
         clickCount++;
+        dialogMissionView.TypeInit();
 
         int score = MainView.Instance.studentScoreData.score;
         int number;

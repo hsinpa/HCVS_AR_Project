@@ -74,6 +74,7 @@ public class Mission1 : ViewController
     private void ClickCount()
     {
         clickCount++;
+        dialogMissionView.TypeInit();
         mainCanvas.interactable = false;
 
         if (clickCount > 0)

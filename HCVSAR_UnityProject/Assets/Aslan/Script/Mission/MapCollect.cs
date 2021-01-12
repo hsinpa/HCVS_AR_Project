@@ -86,6 +86,7 @@ public class MapCollect : ViewController
     private void ClickCount()
     {
         clickCount++;
+        dialogMissionView.TypeInit();
 
         if (clickCount > 0)
         {

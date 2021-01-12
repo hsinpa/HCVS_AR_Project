@@ -134,6 +134,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
             endTime = DateTime.MinValue;
             mainBaseVIew.PanelController(true);
+            EndView.alpha = 1;
+            EndLocationText.text = "請等待老師指示集合地點";
         }
 
         
@@ -298,7 +300,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
         mainBaseVIew.PanelController(true);
         EndView.alpha = 1;        
-
         EndLocationText.text = missionName;
         isEndEvent = true;
     }
