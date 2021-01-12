@@ -51,16 +51,22 @@ namespace Expect.View
 
             this.classroomDataSet = classroomDataSet;
 
-            FilterYearList = classroomDataSet.GroupBy(test => test.year).Select(grp => grp.First().year.ToString()).ToList();
-            FilterGradeList = classroomDataSet.GroupBy(test => test.grade).Select(grp => grp.First().grade.ToString()).ToList();
+            //FilterYearList = classroomDataSet.GroupBy(test => test.year).Select(grp => grp.First().year.ToString()).ToList();
+            //FilterGradeList = classroomDataSet.GroupBy(test => test.grade).Select(grp => grp.First().grade.ToString()).ToList();
 
-            YearSelection.ClearOptions();
-            YearSelection.AddOptions(FilterYearList);
+            //YearSelection.ClearOptions();
+            //YearSelection.AddOptions(FilterYearList);
 
-            GradeSelection.ClearOptions();
-            GradeSelection.AddOptions(FilterGradeList);
+            //GradeSelection.ClearOptions();
+            //GradeSelection.AddOptions(FilterGradeList);
 
-            OnYearGradeSelectionChange(0);
+            //OnYearGradeSelectionChange(0);
+
+            var classIDArray = classroomDataSet.Select(x => new UnityEngine.UI.Dropdown.OptionData($"{x.class_name} {x.class_id}")).ToList();
+
+            ClassSelection.ClearOptions();
+            ClassSelection.AddOptions(classIDArray);
+
             OnClassSelectionChange(0);
         }
 
@@ -84,7 +90,7 @@ namespace Expect.View
         private void OnClassSelectionChange(int index) {
             if (index < 0) return;
 
-            ConfirnBtn.interactable = (index >= 0 && FilterYearList.Count >= 0);
+            ConfirnBtn.interactable = (index >= 0 && classroomDataSet.Count >= 0);
         }
 
         private List<TypeFlag.SocketDataType.ClassroomDatabaseType> FindFilterClassList() {
@@ -108,7 +114,7 @@ namespace Expect.View
             Debug.Log("OnHostRoomBtnClick " + ClassSelection.value);
 
             if(ClassSelection.value >= 0)
-                OnHostRoomEvent(FilterDatabaseList[ClassSelection.value]);
+                OnHostRoomEvent(classroomDataSet[ClassSelection.value]);
         }
 
 
