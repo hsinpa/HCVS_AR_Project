@@ -130,7 +130,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
         if (t.Minutes < 10) { minute = "0" + t.Minutes.ToString(); }
         if (t.Seconds < 10) { second = "0" + t.Seconds.ToString(); }
-        Debug.Log("t.Seconds" + t.Seconds);
+        
         // check device online every 5s
         if (t.Seconds % 5 == 0)
         {
@@ -149,7 +149,6 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             endTime = DateTime.MinValue;
             mainBaseVIew.PanelController(true);
             EndView.alpha = 1;
-            //EndLocationText.text = "請等待老師指示集合地點";
         }
         
     }

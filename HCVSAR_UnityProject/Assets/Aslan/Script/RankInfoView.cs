@@ -16,7 +16,7 @@ namespace Expect.View
         [SerializeField]
         private Dropdown DeptSelection;
 
-        [SerializeField]
+        //[SerializeField]
         private Dropdown ClassSelection;
 
         [Header("RankInfo")]
@@ -31,6 +31,7 @@ namespace Expect.View
         public Button searchButton;
 
         private List<TypeFlag.SocketDataType.StudentRankType> studentRankData;
+        private List<TypeFlag.SocketDataType.ClassroomDatabaseType> _classroomDataSet;
         private List<string> FilterDeptList = new List<string>();
         //private List<float> sameScoreList = new List<float>();
         private List<Transform> selectTransformList = new List<Transform>();
@@ -173,11 +174,73 @@ namespace Expect.View
             {
                 var classArray = JsonHelper.FromJson<TypeFlag.SocketDataType.ClassroomDatabaseType>(json);
 
-                if (classArray != null) { PerpareDropDownList(classArray); }
+                if (classArray != null)
+                {
+                    var classroomDataSet = classArray.ToList();
+                    DropDownList(classroomDataSet);
+                }
 
             }, null));
         }
 
+        private void DropDownList(List<TypeFlag.SocketDataType.ClassroomDatabaseType> classroomDataSet)
+        {
+            if (classroomDataSet == null) return;
+
+            _classroomDataSet = classroomDataSet;
+
+            var classIDArray = classroomDataSet.Select(x => x.class_name).ToList();
+            var studentDept = classroomDataSet.Where(c => c.class_id == class_id).ToList();
+            string deptIndex = "";
+
+            foreach (var dept in studentDept) { deptIndex = dept.class_name; }
+            
+            DeptSelection.ClearOptions();
+            DeptSelection.AddOptions(classIDArray);
+            DeptSelection.value = classIDArray.IndexOf(deptIndex);
+
+            DeptSelection.onValueChanged.AddListener(OnDeptSelectChange);
+            searchButton.onClick.AddListener(SearchClick);
+        }
+
+        private void OnDeptSelectChange(int index)
+        {
+            if (index <= 0) return;
+
+            searchDept = DeptSelection.options[DeptSelection.value].text;
+
+            searchButton.interactable = (index >= 0 && _classroomDataSet.Count >= 0);
+        }
+
+        private void SearchClick()
+        {
+            RemoveShowData();
+
+            var selectClassDept = from c in _classroomDataSet where c.class_name == searchDept select c;
+            foreach (var s in selectClassDept) class_id = s.class_id;
+
+            if (class_id == null) return;
+
+            PrepareRankData(class_id);
+        }
+
+        public void RemoveShowData()
+        {
+            if (selectTransformList.Count > 0)
+            {
+                foreach (var t in selectTransformList) { Destroy(t.gameObject); }
+                foreach (var t in selectTransformList) { Destroy(t.GetChild(0).gameObject); }
+                selectTransformList.Clear();
+            }
+        }
+
+        private void RemoveListeners()
+        {
+            searchButton.onClick.RemoveAllListeners();
+            DeptSelection.onValueChanged.RemoveAllListeners();
+        }
+
+        /* ======= dept class seperate
         private void PerpareDropDownList(TypeFlag.SocketDataType.ClassroomDatabaseType[] classArray)
         {
             string deptIndex = "";
@@ -284,5 +347,6 @@ namespace Expect.View
             DeptSelection.onValueChanged.RemoveAllListeners();
             ClassSelection.onValueChanged.RemoveAllListeners();
         }
+        */
     }
 }
