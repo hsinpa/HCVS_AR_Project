@@ -70,6 +70,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [SerializeField]
     private CanvasGroup MissionView;
     [SerializeField]
+    private CanvasGroup mainAllCanvaGroup;
+    [SerializeField]
     private MainBaseVIew mainBaseVIew;
     [SerializeField]
     private CanvasGroup closeEnterMissionView;
@@ -145,10 +147,9 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             if (OnTimeUpEvent != null) OnTimeUpEvent();
 
             endTime = DateTime.MinValue;
-            //mainBaseVIew.PanelController(true);
-            //EndView.alpha = 1;
-            LockView(EndView, true);
-            EndLocationText.text = "請等待老師指示集合地點";
+            mainBaseVIew.PanelController(true);
+            EndView.alpha = 1;
+            //EndLocationText.text = "請等待老師指示集合地點";
         }
         
     }
@@ -531,9 +532,10 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
     private void LockView(CanvasGroup canvasGroup, bool lockView)
     {
-        mainBaseVIew.PanelController(lockView);
         canvasGroup.alpha = lockView ? 1 : 0;
 
+        mainAllCanvaGroup.interactable = !lockView;
+        mainAllCanvaGroup.blocksRaycasts = !lockView;
         MissionView.interactable = !lockView;
         MissionView.blocksRaycasts = !lockView;
     }
