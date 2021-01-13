@@ -124,7 +124,7 @@ public class Mission7 : ViewController
 
     public IEnumerator EndPauser(int score)
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(6);
 
         dialogMissionView.Show(false);
         endMissionView.Show(true);

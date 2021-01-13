@@ -58,5 +58,14 @@ namespace Expect.View
             messageText.text = currentText;
             typeSound.Pause();
         }
+
+        public void DialogViewForMission6(string name, string message, Sprite sprite)
+        {
+            isTyping = true;
+
+            nameText.text = name;
+            messageText.text = message;
+            characterImage.sprite = sprite;
+        }
     }
 }

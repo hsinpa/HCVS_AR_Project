@@ -219,7 +219,7 @@ namespace Expect.StaticAsset {
 
             public class Seven
             {
-                public const string d1 = "真的是好壯闊的城牆啊！\n咦地上這是什麼東西！我們上前去看看吧？哇 這裡好多人！是什麼活動呢？\n我們上前去看看吧？";
+                public const string d1 = "哇 這裡好多人！是什麼活動呢？我們上前去看看吧？";
 
                 public const string history1 = "喔～原來是中華民國總統蔣中正的夫人宋美齡來訪啊！";
                 public const string history2 = "她可是｢中華婦女反共抗俄聯合會」，簡稱｢婦聯會」的主任委員喔，台灣各地很多眷村當年都是｢婦聯會」出錢幫忙蓋的呢！";

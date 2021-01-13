@@ -121,23 +121,23 @@ public class Mission6 : ViewController
     public IEnumerator GameSuccess()
     {
         dialogMissionView.Show(true);
-        dialogMissionView.DialogView(primeMinisterName, historyMessage[0], primeMinister);
+        dialogMissionView.DialogViewForMission6(primeMinisterName, historyMessage[0], primeMinister);
 
         yield return new WaitForSeconds(5);
 
-        dialogMissionView.DialogView(primeMinisterName, historyMessage[1], primeMinister);
+        dialogMissionView.DialogViewForMission6(primeMinisterName, historyMessage[1], primeMinister);
 
         yield return new WaitForSeconds(9);
 
-        dialogMissionView.DialogView(primeMinisterName, historyMessage[2], primeMinister);
+        dialogMissionView.DialogViewForMission6(primeMinisterName, historyMessage[2], primeMinister);
 
         yield return new WaitForSeconds(20);
 
-        dialogMissionView.DialogView(primeMinisterName, historyMessage[3], primeMinister);
+        dialogMissionView.DialogViewForMission6(primeMinisterName, historyMessage[3], primeMinister);
 
         yield return new WaitForSeconds(25);
 
-        dialogMissionView.DialogView(primeMinisterName, historyMessage[4], primeMinister);
+        dialogMissionView.DialogViewForMission6(primeMinisterName, historyMessage[4], primeMinister);
 
         yield return new WaitForSeconds(11);
 

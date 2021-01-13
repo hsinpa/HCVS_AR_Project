@@ -68,6 +68,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [SerializeField]
     private CanvasGroup ConnectErrorView;
     [SerializeField]
+    private CanvasGroup MissionView;
+    [SerializeField]
     private MainBaseVIew mainBaseVIew;
     [SerializeField]
     private CanvasGroup closeEnterMissionView;
@@ -531,5 +533,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     {
         mainBaseVIew.PanelController(lockView);
         canvasGroup.alpha = lockView ? 1 : 0;
+
+        MissionView.interactable = !lockView;
+        MissionView.blocksRaycasts = !lockView;
     }
 }
