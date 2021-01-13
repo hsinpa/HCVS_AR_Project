@@ -4,7 +4,6 @@ using UnityEngine.Events;
 using Expect.StaticAsset;
 using UnityEngine.Networking;
 using System.Collections.Generic;
-using Expect.View;
 
 public class PostScoreEvent : Singleton<PostScoreEvent>
 {

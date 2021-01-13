@@ -66,6 +66,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     [SerializeField]
     private CanvasGroup EndView;
     [SerializeField]
+    private CanvasGroup ConnectErrorView;
+    [SerializeField]
     private MainBaseVIew mainBaseVIew;
     [SerializeField]
     private CanvasGroup closeEnterMissionView;
@@ -109,7 +111,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private System.Action OnTimeUpEvent;
     private SocketIOManager _socketIOManager;
     private string hostName;
-    private bool isEndEvent;    
+    private bool isEndEvent;
+    private bool isNeedOnline;
 
     void Start() { Setup(); }
     
@@ -123,6 +126,13 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
         if (t.Minutes < 10) { minute = "0" + t.Minutes.ToString(); }
         if (t.Seconds < 10) { second = "0" + t.Seconds.ToString(); }
+        Debug.Log("t.Seconds" + t.Seconds);
+        // check device online every 5s
+        if (t.Seconds % 5 == 0)
+        {
+            if (!isNeedOnline) return;
+            StartCoroutine(APIHttpRequest.CheckInternectCinnection((bool callback) => { LockView(ConnectErrorView, !callback);}));
+        }
 
         TimerText.text = string.Format("{0}:{1}", minute, second);
 
@@ -133,11 +143,11 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             if (OnTimeUpEvent != null) OnTimeUpEvent();
 
             endTime = DateTime.MinValue;
-            mainBaseVIew.PanelController(true);
-            EndView.alpha = 1;
+            //mainBaseVIew.PanelController(true);
+            //EndView.alpha = 1;
+            LockView(EndView, true);
             EndLocationText.text = "請等待老師指示集合地點";
         }
-
         
     }
 
@@ -156,7 +166,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private void InitSet()
     {
         SwitchLoginButton(false);
-        warnImage.enabled = false;        
+        warnImage.enabled = false;
     }
 
     private void OnReceiveLoginEvent(TypeFlag.SocketDataType.LoginDatabaseType loginType, SocketIOManager socketIOManager)
@@ -285,6 +295,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             var terminateData = JsonUtility.FromJson<TypeFlag.SocketDataType.TerminateGameType>(args[0].ToString());
             TerminateGameAction(terminateData);
             JoeGM.joeGM.isGameStart = false;
+            isNeedOnline = false;
             closeEnterMissionView.alpha = 0;
         }
     }
@@ -355,6 +366,9 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
                 // get teacher name
                 teacherName = hostName;
+
+                // need online
+                isNeedOnline = true;
 
                 break;
         }
@@ -511,5 +525,11 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             connectPanel.Show(true);
             connectPanel.ConnectStart();
         });
+    }
+
+    private void LockView(CanvasGroup canvasGroup, bool lockView)
+    {
+        mainBaseVIew.PanelController(lockView);
+        canvasGroup.alpha = lockView ? 1 : 0;
     }
 }

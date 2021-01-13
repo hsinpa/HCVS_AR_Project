@@ -112,4 +112,20 @@ public class APIHttpRequest
             }
         }
     }
+
+    public static IEnumerator CheckInternectCinnection(System.Action<bool> callback)
+    {
+        string url = "https://www.google.com.tw/";
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+        {
+            webRequest.timeout = 10;
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.isNetworkError)
+                callback(false);
+            else
+                callback(true);
+        }
+    }
 }
