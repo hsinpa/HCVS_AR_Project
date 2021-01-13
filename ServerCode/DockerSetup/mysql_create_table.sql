@@ -4,7 +4,7 @@ CREATE TABLE Teacher (
     password VARCHAR(150) NOT NULL
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-CREATE TABLE ClassRoom (
+CREATE TABLE C (
 	id VARCHAR(150) PRIMARY KEY NOT NULL,
     year INT NOT NULL,
     semester INT NOT NULL,

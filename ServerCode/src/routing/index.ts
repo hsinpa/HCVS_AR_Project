@@ -18,6 +18,10 @@ module.exports =  (router : Router, rootPath:string, model : Models, socketManag
     await ctx.render('class_info_parser');
   });
 
+  router.get('/register_teacher', async function (ctx:any, next:any) {
+    await ctx.render('teacher_csv_parser');
+  });
+
   router.get('/manual_leave/:root_id', async function (ctx:any, next:any) {
     console.log("Hello leaver");
     socketManager.DiconnectAndCleanUp(ctx.params.root_id);
@@ -60,7 +64,11 @@ router.post('/insert_student_record', async function (ctx:any, next:any) {
   );
 });
 
+router.post('/upload_teacher_account', async function (ctx:any, next:any) {
+  let resultMsg = await model.UserModel.RegisterTeacher(ctx.request.body.csvfile);
 
+  ctx.body = resultMsg;
+});
 //#endregion
 
 //#region User Relate 
@@ -70,7 +78,7 @@ router.post('/login', async function (ctx:any, next:any) {
 });
 
 router.post('/register', async function (ctx:any, next:any) {
-  ctx.body = await model.UserModel.Register(ctx.request.body['account'], ctx.request.body['name'], ctx.request.body['class_id']);
+  ctx.body = await model.UserModel.RegisterStudent(ctx.request.body['account'], ctx.request.body['name'], ctx.request.body['class_id']);
 });
 //#endregion
 }

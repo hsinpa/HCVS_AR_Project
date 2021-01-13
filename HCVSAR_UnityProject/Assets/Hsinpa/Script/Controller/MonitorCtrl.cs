@@ -181,6 +181,8 @@ namespace Hsinpa.Controller
         {
             if (args.Length > 0)
             {
+                Debug.Log("OnRefreshUserStatusEvent");
+                Debug.Log(args[0].ToString());
                 var userComps = JsonHelper.FromJson<TypeFlag.SocketDataType.UserComponentType>(args[0].ToString());
                 if (_monitorView.isShow) _monitorView.SyncUserStateByArray(userComps);
             }
@@ -213,8 +215,8 @@ namespace Hsinpa.Controller
         }
 
         private void OnReconnect(BestHTTP.SocketIO.Socket socket) {
-            RequestUsersRefresh();
             RegisterSocketEvent();
+            RequestUsersRefresh();
         }
 
         private void RequestUsersRefresh() {
@@ -276,6 +278,12 @@ namespace Hsinpa.Controller
             if (Input.GetKeyDown(KeyCode.P))
             {
                 _socketIOManager.ManulControlConnection(false);
+            }
+
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                RequestUsersRefresh();
             }
         }
 #endif

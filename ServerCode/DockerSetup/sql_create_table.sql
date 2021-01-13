@@ -3,6 +3,8 @@ CREATE TABLE Teacher (
     account_name NVarchar(100) NOT NULL,
     email VARCHAR(150) NOT NULL,
     account_type VARCHAR(10),
+    register_date TIMESTAMP NOT NULL,
+    expire_date TIMESTAMP NOT NULL,
    	isValid BIT
 );
 

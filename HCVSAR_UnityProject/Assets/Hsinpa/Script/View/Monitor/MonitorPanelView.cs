@@ -134,6 +134,7 @@ namespace Hsinpa.View
                     item.ChangeStatus(true);
                 }
 
+                //Filter out user who is online;
                 int removeIndex = students.FindIndex(x => x.id == userCompList[i].user_id);
                 if (removeIndex >= 0)
                     students.RemoveAt(removeIndex);

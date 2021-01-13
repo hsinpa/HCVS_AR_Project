@@ -1,9 +1,12 @@
-import {SocketIOKey, LoginReturnType, UserStatus, DatabaseResultType} from '../../Utility/Flag/TypeFlag';
-import {GenerateRandomString} from '../../Utility/GeneralMethod';
+import { random } from 'underscore';
+import {SocketIOKey, LoginReturnType, UserStatus, DatabaseResultType, TeacherCSVKey} from '../../Utility/Flag/TypeFlag';
+import {GenerateRandomString, SHA256Hash} from '../../Utility/GeneralMethod';
 import Database from '../Database';
 import ClassModel from './ClassModel';
+import {parse} from 'csv';
 
 export default class LoginModel {
+    randomKey = "4@ekd/dje7)9_kduz7";
     _database : Database;
     _classModel : ClassModel;
 
@@ -29,18 +32,20 @@ export default class LoginModel {
     }
     
     async TeacherLogin(account: string, password : string) : Promise<DatabaseResultType> {
+        let hashPassword = SHA256Hash(password+this.randomKey);
 
         let q = `SELECT id, account_name
                 FROM Teacher 
                 WHERE id=? AND password=?`;
 
-        let r = await this._database.PrepareAndExecuteQuery(q, [account, password]);
+        let r = await this._database.PrepareAndExecuteQuery(q, [account, hashPassword]);
         let s : DatabaseResultType= {
             status : false,
             result : {}
         };
 
         console.log(r.result);
+
         r.result = JSON.parse(r.result);
 
         if (r.result.length > 0) {
@@ -77,8 +82,38 @@ export default class LoginModel {
         return s;
     }
 
-    async Register(account: string, name : string, class_id : string) {
-        let isAccountValid = await this.ValidUserAccount(account);
+    async RegisterTeacher(raw_csv_string : string) {
+        let isValid = true;
+
+        parse(raw_csv_string,{ columns: true }).on('data', async (row) => {
+
+            let _id = row[TeacherCSVKey.account_id];
+            let teacherName = row[TeacherCSVKey.name];
+            let password = row[TeacherCSVKey.password];
+            let hashPassword = SHA256Hash(password+this.randomKey);
+            let isAccountValid = await this.ValidAccount("Teacher", _id);
+
+            if (isValid && !isAccountValid)
+                isValid = false;
+
+            if (isAccountValid) {
+                let query = `INSERT INTO Teacher(id, account_name, password)
+                VALUES(?,?,?)`;
+
+                await(this._database.PrepareAndExecuteQuery(query, [_id, teacherName, hashPassword]));
+            }
+        })
+        .on('end', async () => {
+            
+        });
+
+        return {
+            status : isValid
+        };
+    }
+
+    async RegisterStudent(account: string, name : string, class_id : string) {
+        let isAccountValid = await this.ValidAccount("Student", account);
         let isClassValid = await this._classModel.IsClassIDExist(class_id);
 
         if (isAccountValid && isClassValid) {
@@ -93,9 +128,9 @@ export default class LoginModel {
         };
     }
 
-    async ValidUserAccount(account: string) {
+    async ValidAccount(table : string, account: string) {
         let query = `SELECT COUNT(*) as count 
-                    FROM Student
+                    FROM ${table}
                     WHERE id =?`;
 
         let r = await(this._database.PrepareAndExecuteQuery(query, [account]));

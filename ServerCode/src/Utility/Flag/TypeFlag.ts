@@ -113,3 +113,9 @@ export const ClassCSVKey = {
     class_name : "班級名稱",
     grade : "年級"
 }
+
+export const TeacherCSVKey = {
+    account_id : "帳號",
+    name : "姓名",
+    password : "密碼"
+}

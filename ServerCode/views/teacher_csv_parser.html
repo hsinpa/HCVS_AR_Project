@@ -1,0 +1,48 @@
+<html>
+<head>
+</head>
+<body>
+<h1>ClassInfo Console</h1>
+
+<p>只限開發者使用, 更新教師資料</p>
+
+<form>
+    <input type="file" id="class_info">
+    <input type="submit" value="提交" />
+</form>
+
+</body>
+
+<script type="text/javascript">
+    const form = document.querySelector('form');
+    const submitURL = "upload_teacher_account";
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const files = document.querySelector('[type=file]').files
+        const formData = new FormData();
+              
+        var fr=new FileReader(); 
+
+        fr.onload=function(){ 
+            UploadToServer(fr.result);
+        }
+
+        fr.readAsText(files[0]); 
+    });
+
+    function UploadToServer(rawCSVString) {
+        console.log(rawCSVString);
+
+        fetch(submitURL, {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                csvfile : rawCSVString,
+            })
+        });
+    }
+
+</script>
+</html>
