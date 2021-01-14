@@ -296,5 +296,12 @@ namespace Hsinpa.Controller
             _socketIOManager.socket.On(TypeFlag.SocketEvent.KickFromGame, OnKickFromGameEvent);
         }
 
+        private void OnApplicationFocus(bool focus)
+        {
+            if (focus) {
+                RequestUsersRefresh();
+            }
+        }
+
     }
 }
