@@ -117,6 +117,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     private string hostName;
     private bool isEndEvent;
     private bool isNeedOnline;
+    private bool offline;
 
     void Start() { Setup(); }
     
@@ -537,5 +538,14 @@ public class MainView : Singleton<MainView>//MonoBehaviour
         mainAllCanvaGroup.blocksRaycasts = !lockView;
         MissionView.interactable = !lockView;
         MissionView.blocksRaycasts = !lockView;
+
+        if (!lockView) { offline = true; }
+
+        if(offline && lockView)
+        {
+            offline = false;
+            TryRegisterOnLoginEvent(); // TODO: need register again??
+            Debug.Log("Connect again");
+        }
     }
 }
