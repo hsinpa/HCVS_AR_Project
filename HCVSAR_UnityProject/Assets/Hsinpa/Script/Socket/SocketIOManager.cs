@@ -61,10 +61,8 @@ namespace Hsinpa.Socket {
 
             Emit(TypeFlag.SocketEvent.Reconnect, JsonUtility.ToJson(reconnectRequestType));
 
-#if UNITY_EDITOR
             if (OnSocketReconnected != null)
                 OnSocketReconnected(_socketManager.Socket);
-#endif
         }
 
         public void Emit(string event_id, string raw_json = "{}") {
