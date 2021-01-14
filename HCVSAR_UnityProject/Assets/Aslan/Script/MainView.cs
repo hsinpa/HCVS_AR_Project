@@ -169,6 +169,7 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     {
         SwitchLoginButton(false);
         warnImage.enabled = false;
+
     }
 
     private void OnReceiveLoginEvent(TypeFlag.SocketDataType.LoginDatabaseType loginType, SocketIOManager socketIOManager)
@@ -178,9 +179,8 @@ public class MainView : Singleton<MainView>//MonoBehaviour
 
         if (_socketIOManager == null) {
             _socketIOManager = socketIOManager;
-
-            _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
-            _socketIOManager.socket.On(TypeFlag.SocketEvent.TerminateGame, OnTerminateEvent);
+            _socketIOManager.OnSocketReconnected += RegisterServerEvent;
+            RegisterServerEvent(_socketIOManager.socket);
         }
 
         if (loginType.userType == TypeFlag.UserType.Guest)
@@ -189,6 +189,11 @@ public class MainView : Singleton<MainView>//MonoBehaviour
             StarGame(loginType.userType);
         }
         //StarGame(loginType.userType); //use for no teacher
+    }
+
+    private void RegisterServerEvent(BestHTTP.SocketIO.Socket socket) {
+        _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
+        _socketIOManager.socket.On(TypeFlag.SocketEvent.TerminateGame, OnTerminateEvent);
     }
 
     private void InitGuestMissionScore()

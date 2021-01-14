@@ -97,4 +97,11 @@ public class MainApp : Singleton<MainApp>
 
         _socketManager.socket.Disconnect();
     }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (focus) {
+            _socketManager.CheckIfIsConnect();
+        }
+    }
 }
