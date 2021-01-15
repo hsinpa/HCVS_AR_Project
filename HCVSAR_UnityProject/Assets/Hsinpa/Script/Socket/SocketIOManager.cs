@@ -24,6 +24,8 @@ namespace Hsinpa.Socket {
 
         Queue<EmitStruct> emitStructsQueue;
 
+        private bool isUnderReconnectFlag = false;
+
         public SocketIOManager()
         {
             emitStructsQueue = new Queue<EmitStruct>();
@@ -55,6 +57,8 @@ namespace Hsinpa.Socket {
         }
 
         private void Reconnect(string newSocketID) {
+            isUnderReconnectFlag = false;
+
             TypeFlag.SocketDataType.ReconnectRequestType reconnectRequestType = new TypeFlag.SocketDataType.ReconnectRequestType();
             reconnectRequestType.reconnect_sid = newSocketID;
             reconnectRequestType.target_sid = originalSocketID;
@@ -63,12 +67,13 @@ namespace Hsinpa.Socket {
 
             if (OnSocketReconnected != null)
                 OnSocketReconnected(_socketManager.Socket);
+
         }
 
         public void Emit(string event_id, string raw_json = "{}") {
             if (!IsConnected || string.IsNullOrEmpty(event_id)) {
                 emitStructsQueue.Enqueue(new EmitStruct(event_id, raw_json));
-                _socketManager.Open();
+                CheckAndProcessIfUnconnect();
                 return;
             };
 
@@ -93,9 +98,12 @@ namespace Hsinpa.Socket {
             }
         }
 
-        public bool CheckIfIsConnect() {
-            if (!IsConnected)
+        public bool CheckAndProcessIfUnconnect() {
+
+            if (!IsConnected && !isUnderReconnectFlag && _socketManager != null) {
+                isUnderReconnectFlag = true;
                 _socketManager.Open();
+            }
 
             return IsConnected;
         }

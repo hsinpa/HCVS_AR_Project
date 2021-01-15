@@ -24,6 +24,11 @@ public class MainApp : Singleton<MainApp>
     private SimpleDatabase _database;
     public SimpleDatabase database => _database;
 
+    private float checkSocketConnectRecord;
+    private const float checkSocketConnectDelay = 5;
+    private float checkSocketAppendTime => Time.time + checkSocketConnectDelay;
+
+
     private void Awake()
     {
         StartCoroutine(APIHttpRequest.LoadServerCSVLink());
@@ -37,6 +42,14 @@ public class MainApp : Singleton<MainApp>
         Init();
     }
 
+    private void Update()
+    {
+        if (Time.time > checkSocketConnectRecord) {
+            _socketManager.CheckAndProcessIfUnconnect();
+            checkSocketConnectRecord = checkSocketAppendTime;
+        }
+    }
+
     public void Notify(string entity, params object[] objects)
     {
         subject.notify(entity, objects);
@@ -48,6 +61,8 @@ public class MainApp : Singleton<MainApp>
         LoginModal loginModal = Modals.instance.GetModal<LoginModal>();
         loginCtrl.SetUp(loginModal, _socketManager);
         loginCtrl.ProcessLogin();
+
+        checkSocketConnectRecord = checkSocketAppendTime;
     }
 
     private void OnServerDomainIsReturn() {
@@ -101,7 +116,8 @@ public class MainApp : Singleton<MainApp>
     private void OnApplicationFocus(bool focus)
     {
         if (focus) {
-            _socketManager.CheckIfIsConnect();
+            checkSocketConnectRecord = checkSocketAppendTime;
+            _socketManager.CheckAndProcessIfUnconnect();
         }
     }
 }
