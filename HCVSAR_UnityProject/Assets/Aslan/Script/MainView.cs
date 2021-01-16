@@ -300,8 +300,12 @@ public class MainView : Singleton<MainView>//MonoBehaviour
     {
         if (args.Length > 0)
         {
-            var terminateData = JsonUtility.FromJson<TypeFlag.SocketDataType.TerminateGameType>(args[0].ToString());
-            TerminateGameAction(terminateData);
+            if (loginData.userType == TypeFlag.UserType.Student)
+            {
+                var terminateData = JsonUtility.FromJson<TypeFlag.SocketDataType.TerminateGameType>(args[0].ToString());
+                TerminateGameAction(terminateData);
+            }
+
             JoeGM.joeGM.isGameStart = false;
             isNeedOnline = false;
             closeEnterMissionView.alpha = 0;
