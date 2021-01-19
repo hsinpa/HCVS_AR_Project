@@ -12,12 +12,11 @@ namespace Hsinpa.Socket {
         public delegate void OnSocketEventDelegate(string event_id, string rawData);
 
         private SocketManager _socketManager;
-        private BestHTTP.SocketIO.Socket _socket;
-        public BestHTTP.SocketIO.Socket socket => _socket;
+        public BestHTTP.SocketIO.Socket socket => (_socketManager == null) ? null : _socketManager.Socket;
 
         public string originalSocketID = null;
 
-        public bool IsConnected => (_socket != null && _socket.IsOpen);
+        public bool IsConnected => (socket != null && socket.IsOpen);
 
         public System.Action<OnSocketEventDelegate> OnSocketEvent;
         public System.Action<BestHTTP.SocketIO.Socket> OnSocketReconnected;
@@ -32,14 +31,18 @@ namespace Hsinpa.Socket {
         }
 
         public void SetUpSocketIoManager() {
-            _socketManager = new SocketManager(new Uri(StringAsset.GetFullAPIUri(StringAsset.API.Socket)));
+            var socketOption = new SocketOptions();
+            socketOption.ServerVersion = SupportedSocketIOVersions.v3;
+            _socketManager = new SocketManager(new Uri(StringAsset.GetFullAPIUri(StringAsset.API.Socket)), socketOption);
             RegisterSocket(_socketManager);
+
+
         }
 
         private void RegisterSocket(SocketManager manager) {
-            _socket = _socketManager.Socket;
-            _socket.On(TypeFlag.SocketEvent.OnConnect, OnConnectEvent);
-
+            socket.On(SocketIOEventTypes.Error, OnError);
+            socket.On(TypeFlag.SocketEvent.OnConnect, OnConnectEvent);
+            socket.On(TypeFlag.SocketEvent.Reconnect, OnReconnect);
         }
 
         void OnConnectEvent(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
@@ -47,11 +50,21 @@ namespace Hsinpa.Socket {
             if (args.Length > 0) {
                 Debug.Log(args[0].ToString());
 
-                if (string.IsNullOrEmpty(originalSocketID))
+                if (string.IsNullOrEmpty(originalSocketID)) {
+                    Debug.Log("Original Socket " + socket.Id);
                     originalSocketID = socket.Id;
+                }
                 else
                     Reconnect(socket.Id);
             }
+        }
+
+        private void OnReconnect(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
+        {
+            Debug.Log("OnReconnect");
+
+            if (OnSocketReconnected != null)
+                OnSocketReconnected(this.socket);
 
             SendQueueItem();
         }
@@ -64,10 +77,6 @@ namespace Hsinpa.Socket {
             reconnectRequestType.target_sid = originalSocketID;
 
             Emit(TypeFlag.SocketEvent.Reconnect, JsonUtility.ToJson(reconnectRequestType));
-
-            if (OnSocketReconnected != null)
-                OnSocketReconnected(_socketManager.Socket);
-
         }
 
         public void Emit(string event_id, string raw_json = "{}") {
@@ -77,18 +86,20 @@ namespace Hsinpa.Socket {
                 return;
             };
 
-            _socket.Emit(event_id, raw_json);
+            Debug.Log("event_id " + event_id + ",raw_json " + raw_json +", Open " + socket.IsOpen);
+
+            socket.Emit(event_id, raw_json);
         }
 
         public void ManulControlConnection(bool isOpen) {
 
-            if (isOpen) {
-                _socketManager.Open();
-                RegisterSocket(_socketManager);
-            }
+            //if (isOpen) {
+            //    _socketManager.Open();
+            //    RegisterSocket(_socketManager);
+            //}
 
-            else
-                _socketManager.Close();
+            //else
+            //    _socketManager.Close();
         }
 
         private void SendQueueItem() {
@@ -102,10 +113,32 @@ namespace Hsinpa.Socket {
 
             if (!IsConnected && !isUnderReconnectFlag && _socketManager != null) {
                 isUnderReconnectFlag = true;
-                _socketManager.Open();
+                Debug.Log("_socketManager.ReconnectAttempts " + _socketManager.ReconnectAttempts);
             }
 
             return IsConnected;
+        }
+
+
+        void OnError(BestHTTP.SocketIO.Socket socket, Packet packet, params object[] args)
+        {
+            Error error = args[0] as Error;
+
+            switch (error.Code)
+            {
+                case SocketIOErrors.User:
+                    Debug.Log("Exception in an event handler!");
+                    break;
+                case SocketIOErrors.Internal:
+                    Debug.Log("Internal error! Message: " + error.Message);
+                    break;
+                default:
+                    Debug.Log("Server error! Message: " + error.Message);
+                    break;
+            }
+
+            // Or just use ToString() to print out .Code and .Message:
+            Debug.Log(error.ToString());
         }
 
         private struct EmitStruct {

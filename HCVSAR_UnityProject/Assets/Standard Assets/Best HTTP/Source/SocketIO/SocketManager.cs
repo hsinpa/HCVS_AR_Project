@@ -56,7 +56,7 @@ namespace BestHTTP.SocketIO
         /// <summary>
         /// Supported Socket.IO protocol version
         /// </summary>
-        public const int MinProtocolVersion = 4;
+        public int ProtocolVersion { get { return this.Options.ServerVersion == SupportedSocketIOVersions.v3 ? 4 : 3; } }
 
         #region Public Properties
 
@@ -180,6 +180,11 @@ namespace BestHTTP.SocketIO
         /// </summary>
         private bool IsWaitingPong;
 
+        /// <summary>
+        /// In Engine.io v4 / socket.io v3 the server sends the ping messages, not the client.
+        /// </summary>
+        private DateTime lastPingReceived;
+
         #endregion
 
         #region Constructors
@@ -199,7 +204,7 @@ namespace BestHTTP.SocketIO
         public SocketManager(Uri uri, SocketOptions options)
         {
             Uri = uri;
-            Options = options;
+            Options = options ?? new SocketOptions();
             State = States.Initial;
             PreviousState = States.Initial;
             Encoder = SocketManager.DefaultEncoder;
@@ -275,7 +280,9 @@ namespace BestHTTP.SocketIO
             {
                 case TransportTypes.Polling: Transport = new PollingTransport(this); break;
 #if !BESTHTTP_DISABLE_WEBSOCKET
-                case TransportTypes.WebSocket: Transport = new WebSocketTransport(this); break;
+                case TransportTypes.WebSocket:
+                    Transport = new WebSocketTransport(this);
+                    break;
 #endif
             }
             Transport.Open();
@@ -327,6 +334,7 @@ namespace BestHTTP.SocketIO
 
             LastHeartbeat = DateTime.MinValue;
             IsWaitingPong = false;
+            lastPingReceived = DateTime.MinValue;
 
             if (removeSockets && OfflinePackets != null)
                 OfflinePackets.Clear();
@@ -340,6 +348,10 @@ namespace BestHTTP.SocketIO
             if (Transport != null)
                 Transport.Close();
             Transport = null;
+
+            if (UpgradingTransport != null)
+                UpgradingTransport.Close();
+            UpgradingTransport = null;
 
             closing = false;
         }
@@ -395,6 +407,8 @@ namespace BestHTTP.SocketIO
         /// </summary>
         bool IManager.OnTransportConnected(ITransport trans)
         {
+            HTTPManager.Logger.Information("SocketManager", string.Format("OnTransportConnected State: {0}, PreviousState: {1}, Current Transport: {2}, Upgrading Transport: {3}", this.State, this.PreviousState, trans.Type, UpgradingTransport != null ? UpgradingTransport.Type.ToString() : "null"));
+
             if (State != States.Opening)
                 return false;
 
@@ -406,12 +420,17 @@ namespace BestHTTP.SocketIO
             if (PreviousState == States.Reconnecting)
                 (this as IManager).EmitEvent("reconnect_before_offline_packets");
 
+            for (int i = 0; i < Sockets.Count; ++i)
+            {
+                var socket = Sockets[i];
+                if (socket != null)
+                    socket.OnTransportOpen();
+            }
+
             ReconnectAttempts = 0;
 
             // Send out packets that we collected while there were no available transport.
             SendOfflinePackets();
-
-            HTTPManager.Logger.Information("SocketManager", "Open");
 
 #if !BESTHTTP_DISABLE_WEBSOCKET
             // Can we upgrade to WebSocket transport?
@@ -483,6 +502,8 @@ namespace BestHTTP.SocketIO
         /// </summary>
         void IManager.SendPacket(Packet packet)
         {
+            HTTPManager.Logger.Information("SocketManager", "SendPacket " + packet.ToString());
+
             ITransport trans = SelectTransport();
 
             if (trans != null)
@@ -498,6 +519,8 @@ namespace BestHTTP.SocketIO
             }
             else
             {
+                HTTPManager.Logger.Information("SocketManager", "SendPacket - Offline stashing packet");
+
                 if (OfflinePackets == null)
                     OfflinePackets = new List<Packet>();
 
@@ -512,7 +535,10 @@ namespace BestHTTP.SocketIO
         void IManager.OnPacket(Packet packet)
         {
             if (State == States.Closed)
+            {
+                HTTPManager.Logger.Information("SocketManager", "OnPacket - State == States.Closed");
                 return;
+            }
 
             switch(packet.TransportEvent)
             {
@@ -521,15 +547,24 @@ namespace BestHTTP.SocketIO
                     {
                         Handshake = new HandshakeData();
                         if (!Handshake.Parse(packet.Payload))
-                            HTTPManager.Logger.Warning("SocketManager", "Expected handshake data, but wasn't able to pars. Payload: " + packet.Payload);
+                            HTTPManager.Logger.Warning("SocketManager", "Expected handshake data, but wasn't able to parse. Payload: " + packet.Payload);
 
                         (this as IManager).OnTransportConnected(Transport);
 
                         return;
                     }
+                    else
+                        HTTPManager.Logger.Information("SocketManager", "OnPacket - Already received handshake data!");
                     break;
 
                 case TransportEventTypes.Ping:
+                    if (this.Options.ServerVersion == SupportedSocketIOVersions.Unknown)
+                    {
+                        HTTPManager.Logger.Information("SocketManager", "Received Ping packet from server, setting ServerVersion to v3!");
+                        this.Options.ServerVersion = SupportedSocketIOVersions.v3;
+                    }
+
+                    lastPingReceived = DateTime.UtcNow;
                     (this as IManager).SendPacket(new Packet(TransportEventTypes.Pong, SocketIOEventTypes.Unknown, "/", string.Empty));
                     break;
 
@@ -657,23 +692,49 @@ namespace BestHTTP.SocketIO
                     if (LastHeartbeat == DateTime.MinValue)
                     {
                         LastHeartbeat = DateTime.UtcNow;
+                        lastPingReceived = DateTime.UtcNow;
+                        if (this.Options.ServerVersion == SupportedSocketIOVersions.Unknown) {
+                            (this as IManager).SendPacket(new Packet(TransportEventTypes.Ping, SocketIOEventTypes.Unknown, "/", string.Empty));
+                            IsWaitingPong = true;
+                        }
                         return;
                     }
 
-                    // It's time to send out a ping event to the server
-                    if (!IsWaitingPong && DateTime.UtcNow - LastHeartbeat > Handshake.PingInterval)
+                    switch (this.Options.ServerVersion)
                     {
-                        (this as IManager).SendPacket(new Packet(TransportEventTypes.Ping, SocketIOEventTypes.Unknown, "/", string.Empty));
+                        case SupportedSocketIOVersions.v2:
+                            // It's time to send out a ping event to the server
+                            if (!IsWaitingPong && DateTime.UtcNow - LastHeartbeat > Handshake.PingInterval)
+                            {
+                                (this as IManager).SendPacket(new Packet(TransportEventTypes.Ping, SocketIOEventTypes.Unknown, "/", string.Empty));
 
-                        LastHeartbeat = DateTime.UtcNow;
-                        IsWaitingPong = true;
-                    }
+                                LastHeartbeat = DateTime.UtcNow;
+                                IsWaitingPong = true;
+                            }
 
-                    // No pong event received in the given time, we are disconnected.
-                    if (IsWaitingPong && DateTime.UtcNow - LastHeartbeat > Handshake.PingTimeout)
-                    {
-                        IsWaitingPong = false;
-                        (this as IManager).TryToReconnect();
+                            // No pong event received in the given time, we are disconnected.
+                            if (IsWaitingPong && DateTime.UtcNow - LastHeartbeat > Handshake.PingTimeout)
+                            {
+                                IsWaitingPong = false;
+                                (this as IManager).TryToReconnect();
+                            }
+
+                            break;
+
+                        case SupportedSocketIOVersions.v3:
+                            if (DateTime.UtcNow - lastPingReceived > Handshake.PingInterval + Handshake.PingTimeout)
+                            {
+                                (this as IManager).TryToReconnect();
+                            }
+                            break;
+
+                        case SupportedSocketIOVersions.Unknown:
+                            var diff = DateTime.UtcNow - LastHeartbeat;
+                            if (diff > Handshake.PingTimeout)
+                            {
+                                this.Options.ServerVersion = IsWaitingPong ? SupportedSocketIOVersions.v3 : SupportedSocketIOVersions.v2;
+                            }
+                            break;
                     }
 
                     break; // case States.Open:

@@ -80,18 +80,13 @@ namespace BestHTTP.SocketIO
         /// </summary>
         void ISocket.Open()
         {
+            HTTPManager.Logger.Information("Socket", string.Format("Open - Manager.State = {0}", Manager.State));
+
             // The transport already established the connection
             if (Manager.State == SocketManager.States.Open)
-                OnTransportOpen(Manager.Socket, null);
-            else
-            {
-                // We want to receive a message when we are connected.
-                Manager.Socket.Off(EventNames.Connect, OnTransportOpen);
-                Manager.Socket.On(EventNames.Connect, OnTransportOpen);
-
-                if (Manager.Options.AutoConnect && Manager.State == SocketManager.States.Initial)
+                OnTransportOpen();
+            else if (Manager.Options.AutoConnect && Manager.State == SocketManager.States.Initial)
                     Manager.Open();
-            }
         }
 
         /// <summary>
@@ -372,7 +367,16 @@ namespace BestHTTP.SocketIO
             switch(packet.SocketIOEvent)
             {
                 case SocketIOEventTypes.Connect:
-                    this.Id = this.Namespace != "/" ? this.Namespace + "#" + this.Manager.Handshake.Sid : this.Manager.Handshake.Sid;
+                    if (this.Manager.Options.ServerVersion != SupportedSocketIOVersions.v3)
+                    {
+                        this.Id = this.Namespace != "/" ? this.Namespace + "#" + this.Manager.Handshake.Sid : this.Manager.Handshake.Sid;
+                    }
+                    else
+                    {
+                        var data = JSON.Json.Decode(packet.Payload) as Dictionary<string, object>;
+                        this.Id = data["sid"].ToString();
+                    }
+                    this.IsOpen = true;
                     break;
 
                 case SocketIOEventTypes.Disconnect:
@@ -469,16 +473,24 @@ namespace BestHTTP.SocketIO
         #region Private Helper Functions
 
         /// <summary>
-        /// Called when a "connect" event received to the root namespace
+        /// Called when the underlying transport is connected
         /// </summary>
-        private void OnTransportOpen(Socket socket, Packet packet, params object[] args)
+        internal void OnTransportOpen()
         {
-            // If this is not the root namespace, then we send a connect message to the server
-            if (this.Namespace != "/")
-                (Manager as IManager).SendPacket(new Packet(TransportEventTypes.Message, SocketIOEventTypes.Connect, this.Namespace, string.Empty));
+            HTTPManager.Logger.Information("Socket", "OnTransportOpen - IsOpen: " + this.IsOpen);
 
-            // and we are now open
-            IsOpen = true;
+            if (this.IsOpen)
+                return;
+
+            try
+            {
+                string authData = this.Manager.Options.Auth != null ? this.Manager.Options.Auth(this.Manager, this) : "{}";
+                (Manager as IManager).SendPacket(new Packet(TransportEventTypes.Message, SocketIOEventTypes.Connect, this.Namespace, authData));
+            }
+            catch(Exception ex)
+            {
+                HTTPManager.Logger.Exception("Socket", "OnTransportOpen", ex);
+            }
         }
 
         #endregion

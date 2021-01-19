@@ -1,6 +1,7 @@
 #if !BESTHTTP_DISABLE_PROXY
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using BestHTTP.Authentication;
@@ -22,6 +23,11 @@ namespace BestHTTP
         /// </summary>
         public Credentials Credentials { get; set; }
 
+        /// <summary>
+        /// Use the proxy except for addresses that start with these entries. Elements of this list are compared to the Host (DNS or IP address) part of the uri.
+        /// </summary>
+        public List<string> Exceptions { get; set; }
+
         internal Proxy(Uri address, Credentials credentials)
         {
             this.Address = address;
@@ -31,6 +37,18 @@ namespace BestHTTP
         internal abstract void Connect(Stream stream, HTTPRequest request);
 
         internal abstract string GetRequestPath(Uri uri);
+
+        internal bool UseProxyForAddress(Uri address)
+        {
+            if (this.Exceptions == null)
+                return true;
+
+            for (int i = 0; i < this.Exceptions.Count; ++i)
+                if (address.Host.StartsWith(this.Exceptions[i]))
+                    return false;
+
+            return true;
+        }
     }
 
     public sealed class HTTPProxy : Proxy
@@ -149,7 +167,7 @@ namespace BestHTTP
                         // Make sure to send all the wrote data to the wire
                         outStream.Flush();
 
-                        request.ProxyResponse = new HTTPResponse(request, stream, false, false);
+                        request.ProxyResponse = new HTTPResponse(request, stream, false, false, true);
 
                         // Read back the response of the proxy
                         if (!request.ProxyResponse.Receive(-1, true))

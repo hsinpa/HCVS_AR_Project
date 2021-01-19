@@ -50,7 +50,7 @@ namespace Hsinpa.Controller
         public void SetUp(SocketIOManager socketIOManager)
         {
             _socketIOManager = socketIOManager;
-            RegisterSocketEvent();
+            RegisterSocketEvent(_socketIOManager.socket);
 
             _socketIOManager.OnSocketReconnected += OnReconnect;
 
@@ -99,7 +99,7 @@ namespace Hsinpa.Controller
 
                     if (x == DialogueModal.ButtonType.Accept) {
                         string roomJSONString = string.Format("{{\"room_id\" : \"{0}\"}}", selectedRoomData.class_id);
-                        _socketIOManager.socket.Emit(TypeFlag.SocketEvent.StartGame, roomJSONString);
+                        _socketIOManager.Emit(TypeFlag.SocketEvent.StartGame, roomJSONString);
 
                         btn.interactable = false;
                     }
@@ -215,11 +215,12 @@ namespace Hsinpa.Controller
         }
 
         private void OnReconnect(BestHTTP.SocketIO.Socket socket) {
-            RegisterSocketEvent();
             RequestUsersRefresh();
         }
 
         private void RequestUsersRefresh() {
+            if (!_monitorView.isShow) return;
+
             TypeFlag.SocketDataType.AccessTokenType accessTokenType = new TypeFlag.SocketDataType.AccessTokenType();
             accessTokenType.socket_id = _socketIOManager.originalSocketID;
             _socketIOManager.Emit(TypeFlag.SocketEvent.RefreshUserStatus, JsonUtility.ToJson(accessTokenType));
@@ -288,15 +289,12 @@ namespace Hsinpa.Controller
         }
 #endif
 
-        private void RegisterSocketEvent() {
+        private void RegisterSocketEvent(BestHTTP.SocketIO.Socket socket) {
             _socketIOManager.socket.On(TypeFlag.SocketEvent.UserJoined, OnUserJoinEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.UserLeaved, OnUesrLeaveEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.RefreshUserStatus, OnRefreshUserStatusEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.StartGame, OnGameStartSocketEvent);
             _socketIOManager.socket.On(TypeFlag.SocketEvent.KickFromGame, OnKickFromGameEvent);
         }
-
-
-
     }
 }

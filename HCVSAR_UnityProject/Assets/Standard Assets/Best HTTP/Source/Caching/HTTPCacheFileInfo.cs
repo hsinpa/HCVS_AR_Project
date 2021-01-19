@@ -254,31 +254,74 @@ namespace BestHTTP.Caching
 
                 if (!string.IsNullOrEmpty(cacheControl))
                 {
-                    string[] options = cacheControl.ToLowerInvariant().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    HeaderParser parser = new HeaderParser(cacheControl);
 
-                    string[] kvp = options.FindOption("max-age");
-                    if (kvp != null)
+                    if (parser.Values != null)
                     {
-                        // Some cache proxies will return float values
-                        double maxAge;
-                        if (double.TryParse(kvp[1], out maxAge))
-                            this.MaxAge = (int)maxAge;
-                        else
-                            this.MaxAge = 0;
+                        for (int i = 0; i < parser.Values.Count; ++i)
+                        {
+                            var kvp = parser.Values[i];
+
+                            switch(kvp.Key.ToLowerInvariant())
+                            {
+                                case "max-age":
+                                    if (kvp.HasValue)
+                                    {
+                                        // Some cache proxies will return float values
+                                        double maxAge;
+                                        if (double.TryParse(kvp.Value, out maxAge))
+                                            this.MaxAge = (int)maxAge;
+                                        else
+                                            this.MaxAge = 0;
+                                    }
+                                    else
+                                        this.MaxAge = 0;
+                                    break;
+
+                                case "stale-while-revalidate":
+                                    this.StaleWhileRevalidate = kvp.HasValue ? kvp.Value.ToInt64(0) : 0;
+                                    break;
+
+                                case "stale-if-error":
+                                    this.StaleIfError = kvp.HasValue ? kvp.Value.ToInt64(0) : 0;
+                                    break;
+
+                                case "must-revalidate":
+                                    this.MustRevalidate = true;
+                                    break;
+
+                                case "no-cache":
+                                    this.NoCache = true;
+                                    break;
+                            }
+                        }
                     }
-                    else
-                        this.MaxAge = 0;
 
-                    kvp = options.FindOption("stale-while-revalidate");
-                    if (kvp != null && kvp.Length == 2 && !string.IsNullOrEmpty(kvp[1]))
-                        this.StaleWhileRevalidate = kvp[1].ToInt64(0);
-
-                    kvp = options.FindOption("stale-if-error");
-                    if (kvp != null && kvp.Length == 2 && !string.IsNullOrEmpty(kvp[1]))
-                        this.StaleIfError = kvp[1].ToInt64(0);
-
-                    this.MustRevalidate = cacheControl.Contains("must-revalidate");
-                    this.NoCache = cacheControl.Contains("no-cache");
+                    //string[] options = cacheControl.ToLowerInvariant().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    //
+                    //string[] kvp = options.FindOption("max-age");
+                    //if (kvp != null && kvp.Length > 1)
+                    //{
+                    //    // Some cache proxies will return float values
+                    //    double maxAge;
+                    //    if (double.TryParse(kvp[1], out maxAge))
+                    //        this.MaxAge = (int)maxAge;
+                    //    else
+                    //        this.MaxAge = 0;
+                    //}
+                    //else
+                    //    this.MaxAge = 0;
+                    //
+                    //kvp = options.FindOption("stale-while-revalidate");
+                    //if (kvp != null && kvp.Length == 2 && !string.IsNullOrEmpty(kvp[1]))
+                    //    this.StaleWhileRevalidate = kvp[1].ToInt64(0);
+                    //
+                    //kvp = options.FindOption("stale-if-error");
+                    //if (kvp != null && kvp.Length == 2 && !string.IsNullOrEmpty(kvp[1]))
+                    //    this.StaleIfError = kvp[1].ToInt64(0);
+                    //
+                    //this.MustRevalidate = cacheControl.Contains("must-revalidate");
+                    //this.NoCache = cacheControl.Contains("no-cache");
                 }
             }
 
@@ -347,7 +390,7 @@ namespace BestHTTP.Caching
 
             LastAccess = DateTime.UtcNow;
 
-            Stream stream = HTTPManager.IOService.CreateFileStream(GetPath(), FileStreamModes.Open);
+            Stream stream = HTTPManager.IOService.CreateFileStream(GetPath(), FileStreamModes.OpenRead);
             stream.Seek(-length, System.IO.SeekOrigin.End);
 
             return stream;
@@ -360,7 +403,7 @@ namespace BestHTTP.Caching
 
             LastAccess = DateTime.UtcNow;
 
-            using (Stream stream = HTTPManager.IOService.CreateFileStream(GetPath(), FileStreamModes.Open))
+            using (Stream stream = HTTPManager.IOService.CreateFileStream(GetPath(), FileStreamModes.OpenRead))
             {
                 var response = new HTTPResponse(request, stream, request.UseStreaming, true);
                 response.CacheFileInfo = this;

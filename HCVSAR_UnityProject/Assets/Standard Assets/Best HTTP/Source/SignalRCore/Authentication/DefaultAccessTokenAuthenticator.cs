@@ -51,8 +51,12 @@ namespace BestHTTP.SignalRCore.Authentication
                 request.SetHeader("Authorization", "Bearer " + this._connection.NegotiationResult.AccessToken);
             else
 #endif
+#if !BESTHTTP_DISABLE_WEBSOCKET
                 if (BestHTTP.Connections.HTTPProtocolFactory.GetProtocolFromUri(request.Uri) != BestHTTP.Connections.SupportedProtocols.WebSocket)
                     request.Uri = PrepareUriImpl(request.Uri);
+#else
+                ;
+#endif
         }
 
         public Uri PrepareUri(Uri uri)
@@ -68,9 +72,10 @@ namespace BestHTTP.SignalRCore.Authentication
                 return builder.Uri;
             }
 
-            // For WebSocket, PrepareRequest already changed the uri
+#if !BESTHTTP_DISABLE_WEBSOCKET
             if (BestHTTP.Connections.HTTPProtocolFactory.GetProtocolFromUri(uri) == BestHTTP.Connections.SupportedProtocols.WebSocket)
                 uri = PrepareUriImpl(uri);
+#endif
 
             return uri;
 

@@ -83,21 +83,22 @@ namespace BestHTTP.WebSocket
         }
 
 #if !UNITY_WEBGL || UNITY_EDITOR
+
         /// <summary>
         /// Set to true to start a new thread to send Pings to the WebSocket server
         /// </summary>
         public bool StartPingThread { get; set; }
 
         /// <summary>
-        /// The delay between two Pings in millisecs. Minimum value is 100, default is 1000.
+        /// The delay between two Pings in milliseconds. Minimum value is 100, default is 1000.
         /// </summary>
         public int PingFrequency { get; set; }
 
         /// <summary>
         /// If StartPingThread set to true, the plugin will close the connection and emit an OnError event if no
-        /// message is received from the server in the given time. Its default value is 10 sec.
+        /// message is received from the server in the given time. Its default value is 2 sec.
         /// </summary>
-        public TimeSpan CloseAfterNoMesssage { get; set; }
+        public TimeSpan CloseAfterNoMessage { get; set; }
 
         /// <summary>
         /// The internal HTTPRequest object.
@@ -160,7 +161,7 @@ namespace BestHTTP.WebSocket
 
 #if !UNITY_WEBGL || UNITY_EDITOR
         /// <summary>
-        /// Indicates wheter we sent out the connection request to the server.
+        /// Indicates whether we sent out the connection request to the server.
         /// </summary>
         private bool requestSent;
 
@@ -225,7 +226,7 @@ namespace BestHTTP.WebSocket
 #if !UNITY_WEBGL || UNITY_EDITOR
             // Set up some default values.
             this.PingFrequency = 1000;
-            this.CloseAfterNoMesssage = TimeSpan.FromSeconds(10);
+            this.CloseAfterNoMessage = TimeSpan.FromSeconds(2);
 
             InternalRequest = new HTTPRequest(uri, OnInternalRequestCallback);
 
@@ -271,7 +272,7 @@ namespace BestHTTP.WebSocket
 #if !BESTHTTP_DISABLE_PROXY
             // WebSocket is not a request-response based protocol, so we need a 'tunnel' through the proxy
             HTTPProxy httpProxy = HTTPManager.Proxy as HTTPProxy;
-            if (httpProxy != null)
+            if (httpProxy != null && httpProxy.UseProxyForAddress(uri))
                 InternalRequest.Proxy = new HTTPProxy(httpProxy.Address,
                                                       httpProxy.Credentials,
                                                       false, /*turn on 'tunneling'*/
@@ -341,11 +342,13 @@ namespace BestHTTP.WebSocket
             {
                 if (OnError != null)
                     OnError(this, reason);
-                else
+                else if (!HTTPManager.IsQuitting)
                     HTTPManager.Logger.Error("WebSocket", reason, this.Context);
             }
             else if (OnClosed != null)
                 OnClosed(this, (ushort)WebSocketStausCodes.NormalClosure, "Closed while opening");
+
+            this.State = WebSocketStates.Closed;
 
             if (!req.IsKeepAlive && resp != null && resp is WebSocketResponse)
                 (resp as WebSocketResponse).CloseStream();

@@ -38,7 +38,7 @@ namespace BestHTTP.Extensions
 
         public override string ToString()
         {
-            return string.Format("[TimerData Created: {0}, Interval: {1}, IsOnTime: {2}]", this.Created, this.Interval, this.IsOnTime(DateTime.Now));
+            return string.Format("[TimerData Created: {0}, Interval: {1}, IsOnTime: {2}]", this.Created.ToString(System.Globalization.CultureInfo.InvariantCulture), this.Interval, this.IsOnTime(DateTime.Now));
         }
     }
 

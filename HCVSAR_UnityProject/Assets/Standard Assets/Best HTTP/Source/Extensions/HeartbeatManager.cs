@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -84,6 +84,19 @@ namespace BestHTTP.Extensions
                     catch
                     { }
                 }
+            }
+        }
+
+        public void Clear()
+        {
+            rwLock.EnterWriteLock();
+            try
+            {
+                Heartbeats.Clear();
+            }
+            finally
+            {
+                rwLock.ExitWriteLock();
             }
         }
     }

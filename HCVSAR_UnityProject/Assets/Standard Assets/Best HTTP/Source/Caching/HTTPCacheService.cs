@@ -355,26 +355,51 @@ namespace BestHTTP.Caching
             {
                 if (cacheControls.Exists(headerValue =>
                 {
-                    string value = headerValue.ToLower();
-                    if (value.StartsWith("max-age"))
-                    {
-                        string[] kvp = headerValue.FindOption("max-age");
-                        if (kvp != null)
+                    HeaderParser parser = new HeaderParser(headerValue);
+                    if (parser.Values != null && parser.Values.Count > 0) {
+                        for (int i = 0; i < parser.Values.Count; ++i)
                         {
-                            // Some cache proxies will return float values
-                            double maxAge;
-                            if (double.TryParse(kvp[1], out maxAge))
+                            var value = parser.Values[i];
+
+                            // https://csswizardry.com/2019/03/cache-control-for-civilians/#no-store
+                            if (value.Key == "no-store")
+                                return true;
+
+                            if (value.Key == "max-age" && value.HasValue)
                             {
-                                // A negative max-age value is a no cache
-                                if (maxAge <= 0)
-                                    return false;
+                                double maxAge;
+                                if (double.TryParse(value.Value, out maxAge))
+                                {
+                                    // A negative max-age value is a no cache
+                                    if (maxAge <= 0)
+                                        return true;
+                                }
                             }
                         }
-
                     }
 
-                    // https://csswizardry.com/2019/03/cache-control-for-civilians/#no-store
-                    return value.Contains("no-store");
+                    return false;
+
+                    //string value = headerValue.ToLower();
+                    //if (value.StartsWith("max-age"))
+                    //{
+                    //    string[] kvp = headerValue.FindOption("max-age");
+                    //    if (kvp != null)
+                    //    {
+                    //        // Some cache proxies will return float values
+                    //        double maxAge;
+                    //        if (double.TryParse(kvp[1], out maxAge))
+                    //        {
+                    //            // A negative max-age value is a no cache
+                    //            if (maxAge <= 0)
+                    //                return false;
+                    //        }
+                    //    }
+                    //
+                    //}
+                    //
+                    //// https://csswizardry.com/2019/03/cache-control-for-civilians/#no-store
+                    //return value.Contains("no-store");
                 }))
                     return false;
             }
@@ -744,7 +769,7 @@ namespace BestHTTP.Caching
             library = new Dictionary<Uri, HTTPCacheFileInfo>(new UriComparer());
             try
             {
-                using (var fs = HTTPManager.IOService.CreateFileStream(LibraryPath, FileStreamModes.Open))
+                using (var fs = HTTPManager.IOService.CreateFileStream(LibraryPath, FileStreamModes.OpenRead))
                 using (var br = new System.IO.BinaryReader(fs))
                 {
                     version = br.ReadInt32();

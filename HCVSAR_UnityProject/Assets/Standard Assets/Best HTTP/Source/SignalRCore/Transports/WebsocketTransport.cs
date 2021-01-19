@@ -11,7 +11,7 @@ namespace BestHTTP.SignalRCore.Transports
 {
     /// <summary>
     /// WebSockets transport implementation.
-    /// https://github.com/aspnet/SignalR/blob/dev/specs/TransportProtocols.md#websockets-full-duplex
+    /// https://github.com/dotnet/aspnetcore/blob/master/src/SignalR/docs/specs/TransportProtocols.md#websockets-full-duplex
     /// </summary>
     internal sealed class WebSocketTransport : TransportBase
     {
@@ -80,7 +80,7 @@ namespace BestHTTP.SignalRCore.Transports
         {
             HTTPManager.Logger.Verbose("WebSocketTransport", "OnOpen", this.Context);
 
-            // https://github.com/aspnet/SignalR/blob/dev/specs/HubProtocol.md#overview
+            // https://github.com/dotnet/aspnetcore/blob/master/src/SignalR/docs/specs/HubProtocol.md#overview
             // When our websocket connection is open, send the 'negotiation' message to the server.
             (this as ITransport).Send(JsonProtocol.WithSeparator(string.Format("{{\"protocol\":\"{0}\", \"version\": 1}}", this.connection.Protocol.Name)));
         }

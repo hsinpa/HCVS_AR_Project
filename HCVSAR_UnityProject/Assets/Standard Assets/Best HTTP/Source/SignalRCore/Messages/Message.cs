@@ -11,37 +11,37 @@ namespace BestHTTP.SignalRCore.Messages
         Handshake  = 0,
 
         /// <summary>
-        /// https://github.com/aspnet/SignalR/blob/dev/specs/HubProtocol.md#invocation-message-encoding
+        /// https://github.com/dotnet/aspnetcore/blob/master/src/SignalR/docs/specs/HubProtocol.md#invocation-message-encoding
         /// </summary>
         Invocation = 1,
 
         /// <summary>
-        /// https://github.com/aspnet/SignalR/blob/dev/specs/HubProtocol.md#streamitem-message-encoding
+        /// https://github.com/dotnet/aspnetcore/blob/master/src/SignalR/docs/specs/HubProtocol.md#streamitem-message-encoding
         /// </summary>
         StreamItem = 2,
 
         /// <summary>
-        /// https://github.com/aspnet/SignalR/blob/dev/specs/HubProtocol.md#completion-message-encoding
+        /// https://github.com/dotnet/aspnetcore/blob/master/src/SignalR/docs/specs/HubProtocol.md#completion-message-encoding
         /// </summary>
         Completion = 3,
 
         /// <summary>
-        /// https://github.com/aspnet/SignalR/blob/dev/specs/HubProtocol.md#streaminvocation-message-encoding
+        /// https://github.com/dotnet/aspnetcore/blob/master/src/SignalR/docs/specs/HubProtocol.md#streaminvocation-message-encoding
         /// </summary>
         StreamInvocation = 4,
 
         /// <summary>
-        /// https://github.com/aspnet/SignalR/blob/dev/specs/HubProtocol.md#cancelinvocation-message-encoding
+        /// https://github.com/dotnet/aspnetcore/blob/master/src/SignalR/docs/specs/HubProtocol.md#cancelinvocation-message-encoding
         /// </summary>
         CancelInvocation = 5,
 
         /// <summary>
-        /// https://github.com/aspnet/SignalR/blob/dev/specs/HubProtocol.md#ping-message-encoding
+        /// https://github.com/dotnet/aspnetcore/blob/master/src/SignalR/docs/specs/HubProtocol.md#ping-message-encoding
         /// </summary>
         Ping = 6,
 
         /// <summary>
-        /// https://github.com/aspnet/SignalR/blob/dev/specs/HubProtocol.md#close-message-encoding
+        /// https://github.com/dotnet/aspnetcore/blob/master/src/SignalR/docs/specs/HubProtocol.md#close-message-encoding
         /// </summary>
         Close = 7
     }

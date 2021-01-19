@@ -1,12 +1,13 @@
 import {TeacherCreateMsgRoomType, TeacherCommonType, UserComponentType} from '../../Utility/Flag/TypeFlag';
 import {UniversalSocketEvent, TeacherSocketEvent} from '../../Utility/Flag/EventFlag';
+import { Socket,Server } from 'socket.io';
 
 
 export default class UserEmitter {
-
-    _socket : SocketIO.Server;
-
-    constructor(socket : SocketIO.Server) {
+    
+    _socket : Server;
+    
+    constructor(socket : Server) {
         this._socket = socket;
     }
 

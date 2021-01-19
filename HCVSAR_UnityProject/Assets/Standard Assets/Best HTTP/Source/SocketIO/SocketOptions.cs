@@ -1,4 +1,4 @@
-﻿#if !BESTHTTP_DISABLE_SOCKETIO
+#if !BESTHTTP_DISABLE_SOCKETIO
 
 using System;
 using System.Text;
@@ -13,6 +13,15 @@ using PlatformSupport.Collections.ObjectModel;
 
 namespace BestHTTP.SocketIO
 {
+    public delegate void HTTPRequestCallbackDelegate(SocketManager manager, HTTPRequest request);
+
+    public enum SupportedSocketIOVersions
+    {
+        Unknown,
+        v2,
+        v3
+    }
+
     public sealed class SocketOptions
     {
         #region Properties
@@ -61,7 +70,7 @@ namespace BestHTTP.SocketIO
         public bool AutoConnect { get; set; }
 
         /// <summary>
-        /// Additional query parameters that will be passed for the handshake uri. If the value is null, or an empty string it will be not appended to the query only the key.
+        /// Additional query parameters that will be passed for accessed uris. If the value is null, or an empty string it will be not appended to the query only the key.
         /// <remarks>The keys and values must be escaped properly, as the plugin will not escape these. </remarks>
         /// </summary>
         public ObservableDictionary<string, string> AdditionalQueryParams
@@ -89,6 +98,21 @@ namespace BestHTTP.SocketIO
         /// If it's false, the parameters in the AdditionalQueryParams will be passed for all HTTP requests. Its default value is true.
         /// </summary>
         public bool QueryParamsOnlyForHandshake { get; set; }
+
+        /// <summary>
+        /// A callback that called for every HTTPRequest the socket.io protocol sends out. It can be used to further customize (add additional request for example) requests.
+        /// </summary>
+        public HTTPRequestCallbackDelegate HTTPRequestCustomizationCallback { get; set; }
+
+        /// <summary>
+        /// Socket.IO protocol version of the server. If left as default (Unknown) the plugin tries to detect the server version.
+        /// </summary>
+        public SupportedSocketIOVersions ServerVersion { get; set; }
+
+        /// <summary>
+        /// Starting with Socket.IO v3, connecting to a namespace a client can send payload data. When the Auth callback function is set, the plugin going to call it when connecting to a namespace. Its return value must be a json string!
+        /// </summary>
+        public Func<SocketManager, Socket, string> Auth;
 
         #endregion
 

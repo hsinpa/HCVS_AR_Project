@@ -1,7 +1,7 @@
 import {RoomComponentType, UserComponentType, UserStatus} from '../Utility/Flag/TypeFlag';
 import {CreateUserType} from '../Utility/SocketUtility';
 import UserEmitter from './Listener/UserEmitter';
-import { start } from 'repl';
+import { Socket,Server } from 'socket.io';
 
 class SocketEnvironment {
 
@@ -150,7 +150,7 @@ class SocketEnvironment {
         return true;
     }
 
-    AutoJoinAllUserInClass(socket : SocketIO.Socket, room_id : string) {
+    AutoJoinAllUserInClass(socket : Socket, room_id : string) {
         this.users.forEach(userComp => {
             if (userComp && userComp.room_id == room_id && userComp.connection &&
                 this.CheckIfRoomAvailable(userComp)) {

@@ -1,6 +1,7 @@
 #if !BESTHTTP_DISABLE_SIGNALR_CORE
 
 #if CSHARP_7_OR_LATER
+using System.Threading;
 using System.Threading.Tasks;
 #endif
 
@@ -274,7 +275,7 @@ namespace BestHTTP.SignalRCore
 
             SetState(ConnectionStates.Negotiating);
 
-            // https://github.com/aspnet/SignalR/blob/dev/specs/TransportProtocols.md#post-endpoint-basenegotiate-request
+            // https://github.com/dotnet/aspnetcore/blob/master/src/SignalR/docs/specs/TransportProtocols.md#post-endpoint-basenegotiate-request
             // Send out a negotiation request. While we could skip it and connect right with the websocket transport
             //  it might return with additional information that could be useful.
 
@@ -351,7 +352,7 @@ namespace BestHTTP.SignalRCore
 
         private bool IsTransportSupported(string transportName)
         {
-            // https://github.com/aspnet/SignalR/blob/release/2.2/specs/TransportProtocols.md#post-endpoint-basenegotiate-request
+            // https://github.com/dotnet/aspnetcore/blob/master/src/SignalR/docs/specs/TransportProtocols.md#post-endpoint-basenegotiate-request
             // If the negotiation response contains only the url and accessToken, no 'availableTransports' list is sent
             if (this.NegotiationResult.SupportedTransports == null)
                 return true;
@@ -389,7 +390,7 @@ namespace BestHTTP.SignalRCore
 
                         // Room for improvement: check validity of the negotiation result:
                         //  If url and accessToken is present, the other two must be null.
-                        //  https://github.com/aspnet/SignalR/blob/dev/specs/TransportProtocols.md#post-endpoint-basenegotiate-request
+                        //  https://github.com/dotnet/aspnetcore/blob/master/src/SignalR/docs/specs/TransportProtocols.md#post-endpoint-basenegotiate-request
 
                         if (string.IsNullOrEmpty(errorReason))
                         {
@@ -466,6 +467,10 @@ namespace BestHTTP.SignalRCore
 
             switch(this.State)
             {
+                case ConnectionStates.Initial:
+                    SetState(ConnectionStates.Closed);
+                    break;
+
                 case ConnectionStates.Authenticating:
                     this.AuthenticationProvider.OnAuthenticationSucceded -= OnAuthenticationSucceded;
                     this.AuthenticationProvider.OnAuthenticationFailed -= OnAuthenticationFailed;
@@ -557,11 +562,22 @@ namespace BestHTTP.SignalRCore
 
         public Task<TResult> InvokeAsync<TResult>(string target, params object[] args)
         {
+            return InvokeAsync<TResult>(target, default(CancellationToken), args);
+        }
+
+        public Task<TResult> InvokeAsync<TResult>(string target, CancellationToken cancellationToken = default, params object[] args)
+        {
             TaskCompletionSource<TResult> tcs = new TaskCompletionSource<TResult>();
             long id = InvokeImp(target,
                 args,
                 (message) =>
                 {
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        tcs.TrySetCanceled(cancellationToken);
+                        return;
+                    }
+
                     bool isSuccess = string.IsNullOrEmpty(message.error);
                     if (isSuccess)
                         tcs.TrySetResult((TResult)this.Protocol.ConvertTo(typeof(TResult), message.result));
@@ -572,6 +588,8 @@ namespace BestHTTP.SignalRCore
 
             if (id < 0)
                 tcs.TrySetException(new Exception("Not in Connected state! Current state: " + this.State));
+            else
+                cancellationToken.Register(() => tcs.SetCanceled());
 
             return tcs.Task;
         }
@@ -604,22 +622,35 @@ namespace BestHTTP.SignalRCore
 
         public Task<object> SendAsync(string target, params object[] args)
         {
+            return SendAsync(target, default(CancellationToken), args);
+        }
+
+        public Task<object> SendAsync(string target, CancellationToken cancellationToken = default, params object[] args)
+        {
             TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
 
             long id = InvokeImp(target,
                 args,
                 (message) =>
+                {
+                    if (cancellationToken.IsCancellationRequested)
                     {
-                        bool isSuccess = string.IsNullOrEmpty(message.error);
-                        if (isSuccess)
-                            tcs.TrySetResult(message.item);
-                        else
-                            tcs.TrySetException(new Exception(message.error));
-                    },
+                        tcs.TrySetCanceled(cancellationToken);
+                        return;
+                    }
+
+                    bool isSuccess = string.IsNullOrEmpty(message.error);
+                    if (isSuccess)
+                        tcs.TrySetResult(message.item);
+                    else
+                        tcs.TrySetException(new Exception(message.error));
+                },
                 typeof(object));
 
             if (id < 0)
                 tcs.TrySetException(new Exception("Not in Connected state! Current state: " + this.State));
+            else
+                cancellationToken.Register(() => tcs.SetCanceled());
 
             return tcs.Task;
         }

@@ -1,7 +1,10 @@
-﻿#if !BESTHTTP_DISABLE_SOCKETIO
+#if !BESTHTTP_DISABLE_SOCKETIO
 
 using System;
+using System.Linq;
 using System.Text;
+
+using BestHTTP.Extensions;
 
 namespace BestHTTP.SocketIO.Transports
 {
@@ -57,7 +60,7 @@ namespace BestHTTP.SocketIO.Transports
 
             HTTPRequest request = new HTTPRequest(new Uri(string.Format(format,
                                                                         Manager.Uri.ToString(),
-                                                                        SocketManager.MinProtocolVersion,
+                                                                        Manager.ProtocolVersion,
                                                                         Manager.Timestamp.ToString(),
                                                                         Manager.RequestCounter++.ToString(),
                                                                         Manager.Handshake != null ? Manager.Handshake.Sid : string.Empty,
@@ -70,6 +73,9 @@ namespace BestHTTP.SocketIO.Transports
 #endif
 
             request.MaxRetries = 0;
+
+            if (this.Manager.Options.HTTPRequestCustomizationCallback != null)
+                this.Manager.Options.HTTPRequestCustomizationCallback(this.Manager, request);
 
             request.Send();
 
@@ -118,6 +124,65 @@ namespace BestHTTP.SocketIO.Transports
             if (IsRequestInProgress)
                 throw new Exception("Sending packets are still in progress!");
 
+            
+
+            LastRequest = new HTTPRequest(new Uri(string.Format("{0}?EIO={1}&transport=polling&t={2}-{3}&sid={4}{5}",
+                                                                 Manager.Uri.ToString(),
+                                                                 Manager.ProtocolVersion,
+                                                                 Manager.Timestamp.ToString(),
+                                                                 Manager.RequestCounter++.ToString(),
+                                                                 Manager.Handshake.Sid,
+                                                                 !Manager.Options.QueryParamsOnlyForHandshake ? Manager.Options.BuildQueryParams() : string.Empty)),
+                                          HTTPMethods.Post,
+                                          OnRequestFinished);
+
+
+#if !BESTHTTP_DISABLE_CACHING
+            // Don't even try to cache it
+            LastRequest.DisableCache = true;
+#endif
+
+            if (this.Manager.Options.ServerVersion == SupportedSocketIOVersions.v2)
+                SendV2(packets, LastRequest);
+            else
+                SendV3(packets, LastRequest);
+
+            if (this.Manager.Options.HTTPRequestCustomizationCallback != null)
+                this.Manager.Options.HTTPRequestCustomizationCallback(this.Manager, LastRequest);
+
+            LastRequest.Send();
+        }
+
+        StringBuilder sendBuilder = new StringBuilder();
+        private void SendV3(System.Collections.Generic.List<Packet> packets, HTTPRequest request)
+        {
+            sendBuilder.Length = 0;
+
+            try
+            {
+                sendBuilder.Append(packets[0].Encode());
+
+                for (int i = 1; i < packets.Count; ++i)
+                {
+                    sendBuilder.Append((char)0x1E);
+                    sendBuilder.Append(packets[i].Encode());
+                }
+
+                packets.Clear();
+            }
+            catch (Exception ex)
+            {
+                (Manager as IManager).EmitError(SocketIOErrors.Internal, ex.Message + " " + ex.StackTrace);
+                return;
+            }
+
+            var str = sendBuilder.ToString();
+            request.RawData = System.Text.Encoding.UTF8.GetBytes(str);
+            request.SetHeader("Content-Type", "text/plain; charset=UTF-8");
+        }
+
+        private void SendV2(System.Collections.Generic.List<Packet> packets, HTTPRequest request)
+        {
             byte[] buffer = null;
 
             try
@@ -141,26 +206,8 @@ namespace BestHTTP.SocketIO.Transports
                 return;
             }
 
-            LastRequest = new HTTPRequest(new Uri(string.Format("{0}?EIO={1}&transport=polling&t={2}-{3}&sid={4}{5}",
-                                                                 Manager.Uri.ToString(),
-                                                                 SocketManager.MinProtocolVersion,
-                                                                 Manager.Timestamp.ToString(),
-                                                                 Manager.RequestCounter++.ToString(),
-                                                                 Manager.Handshake.Sid,
-                                                                 !Manager.Options.QueryParamsOnlyForHandshake ? Manager.Options.BuildQueryParams() : string.Empty)),
-                                          HTTPMethods.Post,
-                                          OnRequestFinished);
-
-
-#if !BESTHTTP_DISABLE_CACHING
-            // Don't even try to cache it
-            LastRequest.DisableCache = true;
-#endif
-
-            LastRequest.SetHeader("Content-Type", "application/octet-stream");
-            LastRequest.RawData = buffer;
-
-            LastRequest.Send();
+            request.SetHeader("Content-Type", "application/octet-stream");
+            request.RawData = buffer;
         }
 
         private void OnRequestFinished(HTTPRequest req, HTTPResponse resp)
@@ -230,7 +277,7 @@ namespace BestHTTP.SocketIO.Transports
 
             PollRequest = new HTTPRequest(new Uri(string.Format("{0}?EIO={1}&transport=polling&t={2}-{3}&sid={4}{5}",
                                                                 Manager.Uri.ToString(),
-                                                                SocketManager.MinProtocolVersion,
+                                                                Manager.ProtocolVersion,
                                                                 Manager.Timestamp.ToString(),
                                                                 Manager.RequestCounter++.ToString(),
                                                                 Manager.Handshake.Sid,
@@ -244,6 +291,9 @@ namespace BestHTTP.SocketIO.Transports
 #endif
 
             PollRequest.MaxRetries = 0;
+
+            if (this.Manager.Options.HTTPRequestCustomizationCallback != null)
+                this.Manager.Options.HTTPRequestCustomizationCallback(this.Manager, PollRequest);
 
             PollRequest.Send();
         }
@@ -336,10 +386,127 @@ namespace BestHTTP.SocketIO.Transports
             }
         }
 
+        private SupportedSocketIOVersions GetServerVersion(HTTPResponse resp)
+        {
+            string contentTypeValue = resp.GetFirstHeaderValue("content-type");
+            if (string.IsNullOrEmpty(contentTypeValue))
+                return SupportedSocketIOVersions.v2;
+
+            HeaderParser contentType = new HeaderParser(contentTypeValue);
+            PayloadTypes type = contentType.Values.FirstOrDefault().Key == "text/plain" ? PayloadTypes.Text : PayloadTypes.Binary;
+
+            if (type != PayloadTypes.Text)
+                return SupportedSocketIOVersions.v2;
+
+            // https://github.com/socketio/engine.io-protocol/issues/35
+            // v3: 96:0{ "sid":"lv_VI97HAXpY6yYWAAAC","upgrades":["websocket"],"pingInterval":25000,"pingTimeout":5000}
+            // v4:    0{ "sid":"lv_VI97HAXpY6yYWAAAC","upgrades":["websocket"],"pingInterval":25000,"pingTimeout":5000}
+            for (int i = 0; i< resp.Data.Length; ++i)
+            {
+                if (resp.Data[i] == ':')
+                    return SupportedSocketIOVersions.v2;
+                if (resp.Data[i] == '{')
+                    return SupportedSocketIOVersions.v3;
+            }
+
+            return SupportedSocketIOVersions.Unknown;
+        }
+
+        private void ParseResponse(HTTPResponse resp)
+        {
+            if (this.Manager.Options.ServerVersion == SupportedSocketIOVersions.Unknown)
+                this.Manager.Options.ServerVersion = GetServerVersion(resp);
+
+            if (this.Manager.Options.ServerVersion == SupportedSocketIOVersions.v2)
+                this.ParseResponseV2(resp);
+            else
+                this.ParseResponseV3(resp);
+        }
+
+        private void ParseResponseV3(HTTPResponse resp)
+        {
+            try
+            {
+                if (resp == null || resp.Data == null || resp.Data.Length < 1)
+                    return;
+                
+                //HeaderParser contentType = new HeaderParser(resp.GetFirstHeaderValue("content-type"));
+                //PayloadTypes type = contentType.Values.FirstOrDefault().Key == "text/plain" ? PayloadTypes.Text : PayloadTypes.Binary;
+
+                int idx = 0;
+                while (idx < resp.Data.Length)
+                {
+                    int endIdx = FindNextRecordSeparator(resp.Data, idx);
+                    int length = endIdx - idx;
+
+                    if (length <= 0)
+                        break;
+
+                    Packet packet = null;
+
+                    if (resp.Data[idx] == 'b')
+                    {
+                        if (PacketWithAttachment != null)
+                        {
+                            // First byte is the binary indicator('b'). We must skip it, so we advance our idx and also have to decrease length
+                            idx++;
+                            length--;
+
+                            var base64Encoded = System.Text.Encoding.UTF8.GetString(resp.Data, idx, length);
+                            PacketWithAttachment.AddAttachmentFromServer(Convert.FromBase64String(base64Encoded), true);
+
+                            if (PacketWithAttachment.HasAllAttachment)
+                            {
+                                packet = PacketWithAttachment;
+                                PacketWithAttachment = null;
+                            }
+                        }
+                        else
+                            HTTPManager.Logger.Warning("PollingTransport", "Received binary but no packet to attach to!");
+                    }
+                    else
+                    {
+                        packet = new Packet(Encoding.UTF8.GetString(resp.Data, idx, length));
+                    }
+
+                    if (packet != null)
+                    {
+                        try
+                        {
+                            OnPacket(packet);
+                        }
+                        catch (Exception ex)
+                        {
+                            HTTPManager.Logger.Exception("PollingTransport", "ParseResponseV3 - OnPacket", ex);
+                            (Manager as IManager).EmitError(SocketIOErrors.Internal, ex.Message + " " + ex.StackTrace);
+                        }
+                    }
+
+                    idx = endIdx + 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                (Manager as IManager).EmitError(SocketIOErrors.Internal, ex.Message + " " + ex.StackTrace);
+
+                HTTPManager.Logger.Exception("PollingTransport", "ParseResponseV3", ex);
+            }
+        }
+
+        private int FindNextRecordSeparator(byte[] data, int startIdx)
+        {
+            for (int i = startIdx; i < data.Length; ++i)
+            {
+                if (data[i] == 0x1E)
+                    return i;
+            }
+            return data.Length;
+        }
+
         /// <summary>
         /// Will parse the response, and send out the parsed packets.
         /// </summary>
-        private void ParseResponse(HTTPResponse resp)
+        private void ParseResponseV2(HTTPResponse resp)
         {
             try
             {
@@ -437,7 +604,7 @@ namespace BestHTTP.SocketIO.Transports
                             }
                             catch (Exception ex)
                             {
-                                HTTPManager.Logger.Exception("PollingTransport", "ParseResponse - OnPacket", ex);
+                                HTTPManager.Logger.Exception("PollingTransport", "ParseResponseV2 - OnPacket", ex);
                                 (Manager as IManager).EmitError(SocketIOErrors.Internal, ex.Message + " " + ex.StackTrace);
                             }
                         }
@@ -451,7 +618,7 @@ namespace BestHTTP.SocketIO.Transports
             {
                 (Manager as IManager).EmitError(SocketIOErrors.Internal, ex.Message + " " + ex.StackTrace);
 
-                HTTPManager.Logger.Exception("PollingTransport", "ParseResponse", ex);
+                HTTPManager.Logger.Exception("PollingTransport", "ParseResponseV2", ex);
             }
         }
 

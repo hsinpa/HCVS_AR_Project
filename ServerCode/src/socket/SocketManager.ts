@@ -22,7 +22,8 @@ export default class SocketManager {
     private userEmitter : UserEmitter;
 
     constructor(app : http.Server) {
-        this.io = socket.listen(app);
+
+        this.io = new socket.Server(app);
         this.userEmitter = new UserEmitter(this.io);
         this.env = new SocketEnvironment(this.userEmitter);
         this.reconnectHandler = new SocketReconnectHelper(this, this.userEmitter, this.env); 
@@ -49,6 +50,7 @@ export default class SocketManager {
                 let parseData : ReconnectRequestType = JSON.parse(data);
                 self.reconnectHandler.RepairSocketID(parseData, socket);
                 self.reconnectHandler.ReconnectUserProcess(socket);
+                socket.emit(UniversalSocketEvent.Reconnect);
             });
 
             //When client discconected

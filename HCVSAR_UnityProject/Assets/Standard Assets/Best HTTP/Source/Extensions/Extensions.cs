@@ -314,7 +314,7 @@ namespace BestHTTP.Extensions
                 result = str.Read(ref pos, '\"');
 
                 // Next option
-                str.Read(ref pos, ',', false);
+                str.Read(ref pos, (ch) => ch != ',' && ch != ';', false);
             }
             else
                 // It's not a quoted text, so we will read until the next option

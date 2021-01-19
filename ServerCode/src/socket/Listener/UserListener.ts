@@ -1,8 +1,9 @@
 import {TeacherSocketEvent, UniversalSocketEvent} from '../../Utility/Flag/EventFlag';
 import {TeacherCreateMsgRoomType, TerminateEventType, TeacherCommonType, UserDataType, UserComponentType, AccessTokenType} from '../../Utility/Flag/TypeFlag';
 import SocketEnvironment from '../SocketEnvironment';
+import { Socket,Server } from 'socket.io';
 
-export function ListenUserEvent(socket : SocketIO.Socket, socketServer : SocketIO.Server, socektEnv : SocketEnvironment) {
+export function ListenUserEvent(socket : Socket, socketServer : Server, socektEnv : SocketEnvironment) {
     let self = this;
 
 //#region Teacher Section

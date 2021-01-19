@@ -1,4 +1,4 @@
-﻿#if !BESTHTTP_DISABLE_SOCKETIO
+#if !BESTHTTP_DISABLE_SOCKETIO
 
 using System.Collections.Generic;
 
@@ -40,7 +40,7 @@ namespace BestHTTP.SocketIO.Events
             if (!Table.TryGetValue(eventName, out events))
                 Table.Add(eventName, events = new List<EventDescriptor>(1));
 
-            // Find a matching desriptor
+            // Find a matching descriptor
             var desc = events.Find((d) => d.OnlyOnce == onlyOnce && d.AutoDecodePayload == autoDecodePayload);
 
             // If not found, create one
@@ -74,14 +74,21 @@ namespace BestHTTP.SocketIO.Events
         /// </summary>
         public void Call(string eventName, Packet packet, params object[] args)
         {
-            if (HTTPManager.Logger.Level <= BestHTTP.Logger.Loglevels.All)
-                HTTPManager.Logger.Verbose("EventTable", "Call - " + eventName);
-
             List<EventDescriptor> events;
 
             if (Table.TryGetValue(eventName, out events))
+            {
+                if (HTTPManager.Logger.Level <= BestHTTP.Logger.Loglevels.All)
+                    HTTPManager.Logger.Verbose("EventTable", string.Format("Call - {0} ({1})", eventName, events.Count));
+
                 for (int i = 0; i < events.Count; ++i)
                     events[i].Call(Socket, packet, args);
+            }
+            else
+            {
+                if (HTTPManager.Logger.Level <= BestHTTP.Logger.Loglevels.All)
+                    HTTPManager.Logger.Verbose("EventTable", string.Format("Call - {0} (0)", eventName));
+            }
         }
 
         /// <summary>

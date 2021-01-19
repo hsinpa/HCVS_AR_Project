@@ -25,7 +25,7 @@ namespace BestHTTP.SignalRCore.Messages
 
     /// <summary>
     /// Negotiation result of the /negotiation request.
-    /// <see cref="https://github.com/aspnet/SignalR/blob/dev/specs/TransportProtocols.md#post-endpoint-basenegotiate-request"/>
+    /// <see cref="https://github.com/dotnet/aspnetcore/blob/master/src/SignalR/docs/specs/TransportProtocols.md#post-endpoint-basenegotiate-request"/>
     /// </summary>
     public sealed class NegotiationResult
     {

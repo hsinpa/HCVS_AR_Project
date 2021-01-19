@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -62,14 +62,16 @@ namespace BestHTTP.Extensions
 
         private void ParseImplementation(string headerStr, ref int pos, bool isOptionIsAnOption)
         {
-            string key = headerStr.Read(ref pos, (ch) => ch != ';' && ch != '=' && ch != ',', true);
+            // According to https://tools.ietf.org/html/rfc7234#section-5.2.1.1
+            // Max-Age has a form "max-age=5", but some (imgur.com specifically) sends it as "max-age:5"
+            string key = headerStr.Read(ref pos, (ch) => ch != ';' && ch != '=' && ch != ':' && ch != ',', true);
             this.Key = key;
 
             char? skippedChar = headerStr.Peek(pos - 1);
-            bool isValue = skippedChar == '=';
+            bool isValue = skippedChar == '=' || skippedChar == ':';
             bool isOption = isOptionIsAnOption && skippedChar == ';';
 
-            while (skippedChar != null && isValue || isOption)
+            while ((skippedChar != null && isValue || isOption) && pos < headerStr.Length)
             {
 
                 if (isValue)
@@ -103,8 +105,23 @@ namespace BestHTTP.Extensions
 
         public override string ToString()
         {
-            if (!string.IsNullOrEmpty(Value))
-                return String.Concat(Key, '=', Value);
+            if (this.Options != null && this.Options.Count > 0)
+            {
+                StringBuilder sb = new StringBuilder(4);
+                sb.Append(Key);
+                sb.Append("=");
+                sb.Append(Value);
+
+                foreach(var option in Options)
+                {
+                    sb.Append(";");
+                    sb.Append(option.ToString());
+                }
+
+                return sb.ToString();
+            }
+            else if (!string.IsNullOrEmpty(Value))
+                return Key + '=' + Value;
             else
                 return Key;
         }

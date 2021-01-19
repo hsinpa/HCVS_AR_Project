@@ -55,9 +55,9 @@ namespace BestHTTP.SignalRCore.Transports
 
             this.State = TransportStates.Connecting;
 
-            // https://github.com/aspnet/SignalR/blob/dev/specs/HubProtocol.md#overview
+            // https://github.com/dotnet/aspnetcore/blob/master/src/SignalR/docs/specs/HubProtocol.md#overview
             // When our connection is open, send the 'negotiation' message to the server.
-            
+
             var request = new HTTPRequest(BuildUri(this.connection.Uri), HTTPMethods.Post, OnHandshakeRequestFinished);
             request.Context.Add("Transport", this.Context);
 

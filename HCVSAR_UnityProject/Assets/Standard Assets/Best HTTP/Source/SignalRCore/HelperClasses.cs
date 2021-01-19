@@ -191,7 +191,7 @@ namespace BestHTTP.SignalRCore
         public int MaxRedirects { get; set; }
 
         /// <summary>
-        /// The maximum time that the plugin allowed to spend trying to connect. Its default value is 1 minutes.
+        /// The maximum time that the plugin allowed to spend trying to connect. Its default value is 1 minute.
         /// </summary>
         public TimeSpan ConnectTimeout { get; set; }
 

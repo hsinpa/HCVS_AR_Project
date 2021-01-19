@@ -84,13 +84,13 @@ namespace Hsinpa.Controller
             teacherCreateMsgRoomType.user_name = userDataInfo.username;
             teacherCreateMsgRoomType.root_socket_id = _socketIOManager.originalSocketID;
 
-            Debug.Log("_socketIOManager.Emit");
-
             _socketIOManager.Emit(TypeFlag.SocketEvent.CreateRoom, JsonUtility.ToJson(teacherCreateMsgRoomType));
         }
 
         private void OnReconnect(BestHTTP.SocketIO.Socket socket)
         {
+            _socketIOManager.socket.Off(TypeFlag.SocketEvent.CreateRoom);
+
             _socketIOManager.socket.On(TypeFlag.SocketEvent.CreateRoom, OnSocketHostRoomEvent);
         }
 
